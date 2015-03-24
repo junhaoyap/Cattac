@@ -1,30 +1,28 @@
 /*
-    Node tests
+    The Node data structure tests
 */
 
 import XCTest
 
 class NodeTests: XCTestCase {
-
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    func testConstruct() {
+        let node = Node("A")
+        
+        XCTAssertEqual(node.getLabel(), "A", "Node label is not correct")
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testEqual_nodesWithSameLabel_isEqual() {
+        let node1 = Node("A")
+        let node2 = Node("A")
+        
+        XCTAssertEqual(node1, node2, "Nodes with same label should be equal")
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
+    func testEqual_nodeWithDifferentLabels_isNotEqual() {
+        let node1 = Node("A")
+        let node2 = Node("B")
+        
+        XCTAssertNotEqual(node1, node2, "Nodes with different labels should not be equal")
     }
 }
