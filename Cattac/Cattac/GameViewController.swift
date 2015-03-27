@@ -24,6 +24,7 @@ extension SKNode {
 class GameViewController: UIViewController {
     
     var scene: GameScene!
+    let levelGenerator = LevelGenerator.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +37,12 @@ class GameViewController: UIViewController {
         /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
         
-        scene = GameScene(skView.bounds.size, BasicLevel())
+        let level = levelGenerator.generateBasic()
+        
+        scene = GameScene(skView.bounds.size, level)
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
-        
         
         skView.presentScene(scene)
     }

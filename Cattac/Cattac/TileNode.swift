@@ -14,7 +14,8 @@ enum NodeType: Int, Printable {
     case Unknown = 0, Grass
     var spriteName: String {
         let spriteNames = [
-            "Grass.jpg"]
+            "Grass.jpg"
+        ]
         
         return spriteNames[rawValue - 1]
     }
@@ -29,6 +30,8 @@ class TileNode: Printable {
     var row: Int
     let nodeType: NodeType
     var sprite: SKSpriteNode?
+    
+    var occupants = [TileEntity]()
     
     init(column: Int, row: Int, nodeType: NodeType) {
         self.column = column

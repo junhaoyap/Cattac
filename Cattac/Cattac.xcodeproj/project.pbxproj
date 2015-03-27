@@ -54,6 +54,8 @@
 		76FC46EA1ABFEB4E0056B5F5 /* Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Array2D.swift */; };
 		BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
 		BDA19AA41AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
+		BDA19AA61AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
+		BDA19AA71AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +114,7 @@
 		76FC46E01ABFE6190056B5F5 /* Pusheen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pusheen.png; path = Images.xcassets/Pusheen.png; sourceTree = "<group>"; };
 		76FC46E91ABFEB4E0056B5F5 /* Array2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
 		BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
+		BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -323,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				342585401AACE196004A3CFD /* Cat.swift */,
+				BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */,
 				BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */,
 				342585461AACE252004A3CFD /* Doodad.swift */,
 				342585441AACE22C004A3CFD /* Item.swift */,
@@ -489,6 +493,7 @@
 				342585471AACE252004A3CFD /* Doodad.swift in Sources */,
 				342585211AACDF7A004A3CFD /* Edge.swift in Sources */,
 				3425854C1AACE288004A3CFD /* MediumLevel.swift in Sources */,
+				BDA19AA61AC556D200B7E9D4 /* TileEntity.swift in Sources */,
 				342585551AACE406004A3CFD /* ShopViewController.swift in Sources */,
 				342585371AACE0D8004A3CFD /* CatFactory.swift in Sources */,
 			);
@@ -508,6 +513,7 @@
 				342585151AACDECA004A3CFD /* QueueTests.swift in Sources */,
 				342585171AACDEDC004A3CFD /* StackTests.swift in Sources */,
 				342585291AACDFE3004A3CFD /* NodeTests.swift in Sources */,
+				BDA19AA71AC556D200B7E9D4 /* TileEntity.swift in Sources */,
 				3425852D1AACDFF2004A3CFD /* GraphTests.swift in Sources */,
 				3425852B1AACDFEB004A3CFD /* EdgeTests.swift in Sources */,
 			);

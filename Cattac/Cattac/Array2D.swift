@@ -11,6 +11,9 @@ struct Array2D<T> {
     
     subscript(column: Int, row: Int) -> T? {
         get {
+            if row >= rows || column >= columns || row < 0 || column < 0 {
+                return nil
+            }
             return array[row*columns + column]
         }
         set {

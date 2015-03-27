@@ -12,6 +12,7 @@ class GameScene: SKScene {
     
     let gameLayer = SKNode()
     let tilesLayer = SKNode()
+    let entityLayer = SKNode()
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -38,7 +39,24 @@ class GameScene: SKScene {
         tilesLayer.position = layerPosition
         gameLayer.addChild(tilesLayer)
         
+        entityLayer.position = layerPosition
+        gameLayer.addChild(entityLayer)
+        
         addTiles()
+    }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        /* Called when a touch begins */
+        
+        for touch: AnyObject in touches {
+            let location = touch.locationInNode(gameLayer)
+            
+            if let node = nodeForLocation(location) {
+                
+                let action = SKAction.moveTo(node.sprite!.position, duration: 1)  //rushed code
+                level.cats.first!.getSprite().runAction(action) //rushed code
+            }
+        }
     }
     
     private func pointForColumn(column: Int, _ row: Int) -> CGPoint {
@@ -47,18 +65,43 @@ class GameScene: SKScene {
             y: CGFloat(row) * tileSize + tileSize / 2)
     }
     
+    private func nodeForLocation(location: CGPoint) -> TileNode? {
+        let col = Int((location.x + 5 * tileSize) / tileSize) // rushed code
+        let row = Int((location.y + 5 * tileSize) / tileSize) // rushed code
+        return level.nodes[col, row]
+    }
+    
     private func addTiles() {
         for row in 0..<level.numRows {
             for column in 0..<level.numColumns {
-                let tileNode = SKSpriteNode(imageNamed: "Grass.jpg")
-                tileNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
-                tileNode.position = pointForColumn(column, row)
-                tilesLayer.addChild(tileNode)
-                let tileBorder = SKShapeNode(rectOfSize: tileNode.size)
-                tileBorder.strokeColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-                tileNode.addChild(tileBorder)
+                if let tileNode = level.nodeAtColumn(column, row: row) {
+                    drawTile(tileNode)
+                }
             }
         }
+    }
+    
+    private func drawTile(tileNode: TileNode) {
+        let spriteNode = tileNode.sprite!
+        spriteNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
+        spriteNode.position = pointForColumn(tileNode.column, tileNode.row)
+        tilesLayer.addChild(spriteNode)
+        let spriteBorder = SKShapeNode(rectOfSize: spriteNode.size)
+        spriteBorder.strokeColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        spriteNode.addChild(spriteBorder)
+        
+        if !tileNode.occupants.isEmpty {
+            for entity in tileNode.occupants {
+                self.drawTileEntity(spriteNode, entity)
+            }
+        }
+    }
+    
+    private func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
+        let entityNode = tileEntity.getSprite()
+        entityNode.size = spriteNode.size
+        entityNode.position = spriteNode.position
+        entityLayer.addChild(entityNode)
     }
    
     override func update(currentTime: CFTimeInterval) {
