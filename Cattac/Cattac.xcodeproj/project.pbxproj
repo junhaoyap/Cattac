@@ -46,6 +46,14 @@
 		342585511AACE30F004A3CFD /* LevelGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585501AACE30F004A3CFD /* LevelGenerator.swift */; };
 		342585531AACE392004A3CFD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
 		342585551AACE406004A3CFD /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
+		76FC46E11ABFE6190056B5F5 /* Grass.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DC1ABFE6190056B5F5 /* Grass.jpg */; };
+		76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DD1ABFE6190056B5F5 /* Grumpy.png */; };
+		76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DE1ABFE6190056B5F5 /* Nala.png */; };
+		76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DF1ABFE6190056B5F5 /* Nyan.png */; };
+		76FC46E51ABFE6190056B5F5 /* Pusheen.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46E01ABFE6190056B5F5 /* Pusheen.png */; };
+		76FC46EA1ABFEB4E0056B5F5 /* Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Array2D.swift */; };
+		BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
+		BDA19AA41AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +105,13 @@
 		342585501AACE30F004A3CFD /* LevelGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelGenerator.swift; sourceTree = "<group>"; };
 		342585521AACE392004A3CFD /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		76FC46DC1ABFE6190056B5F5 /* Grass.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Grass.jpg; path = Images.xcassets/Grass.jpg; sourceTree = "<group>"; };
+		76FC46DD1ABFE6190056B5F5 /* Grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grumpy.png; path = Images.xcassets/Grumpy.png; sourceTree = "<group>"; };
+		76FC46DE1ABFE6190056B5F5 /* Nala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nala.png; path = Images.xcassets/Nala.png; sourceTree = "<group>"; };
+		76FC46DF1ABFE6190056B5F5 /* Nyan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nyan.png; path = Images.xcassets/Nyan.png; sourceTree = "<group>"; };
+		76FC46E01ABFE6190056B5F5 /* Pusheen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pusheen.png; path = Images.xcassets/Pusheen.png; sourceTree = "<group>"; };
+		76FC46E91ABFEB4E0056B5F5 /* Array2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
+		BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +157,7 @@
 			children = (
 				342585081AACDC41004A3CFD /* DataStructures */,
 				342585091AACDC66004A3CFD /* Graph */,
+				76FC46E61ABFE62E0056B5F5 /* Images */,
 				3425850B1AACDCD1004A3CFD /* MusicFiles */,
 				3425850D1AACDD5E004A3CFD /* MusicPlayer */,
 				3425850A1AACDCBA004A3CFD /* SoundFiles */,
@@ -224,6 +240,7 @@
 				3425851E1AACDF61004A3CFD /* Node.swift */,
 				342585201AACDF7A004A3CFD /* Edge.swift */,
 				342585221AACDF91004A3CFD /* Graph.swift */,
+				76FC46E91ABFEB4E0056B5F5 /* Array2D.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -306,6 +323,7 @@
 			isa = PBXGroup;
 			children = (
 				342585401AACE196004A3CFD /* Cat.swift */,
+				BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */,
 				342585461AACE252004A3CFD /* Doodad.swift */,
 				342585441AACE22C004A3CFD /* Item.swift */,
 			);
@@ -328,6 +346,18 @@
 				342585501AACE30F004A3CFD /* LevelGenerator.swift */,
 			);
 			name = LevelGenerator;
+			sourceTree = "<group>";
+		};
+		76FC46E61ABFE62E0056B5F5 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				76FC46DC1ABFE6190056B5F5 /* Grass.jpg */,
+				76FC46DD1ABFE6190056B5F5 /* Grumpy.png */,
+				76FC46DE1ABFE6190056B5F5 /* Nala.png */,
+				76FC46DF1ABFE6190056B5F5 /* Nyan.png */,
+				76FC46E01ABFE6190056B5F5 /* Pusheen.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -410,10 +440,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76FC46E51ABFE6190056B5F5 /* Pusheen.png in Resources */,
 				342584F11AACDB03004A3CFD /* LaunchScreen.xib in Resources */,
+				76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */,
 				342584EE1AACDB03004A3CFD /* Images.xcassets in Resources */,
+				76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */,
 				342584E51AACDB03004A3CFD /* GameScene.sks in Resources */,
 				342584EC1AACDB03004A3CFD /* Main.storyboard in Resources */,
+				76FC46E11ABFE6190056B5F5 /* Grass.jpg in Resources */,
+				76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,12 +473,14 @@
 				3425854A1AACE27D004A3CFD /* BasicLevel.swift in Sources */,
 				342585411AACE196004A3CFD /* Cat.swift in Sources */,
 				3425851D1AACDF40004A3CFD /* SoundPlayer.swift in Sources */,
+				BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */,
 				342585511AACE30F004A3CFD /* LevelGenerator.swift in Sources */,
 				342585111AACDE61004A3CFD /* Stack.swift in Sources */,
 				3425851F1AACDF61004A3CFD /* Node.swift in Sources */,
 				342585231AACDF91004A3CFD /* Graph.swift in Sources */,
 				342585191AACDEFF004A3CFD /* MusicPlayer.swift in Sources */,
 				342585341AACE097004A3CFD /* GameEngine.swift in Sources */,
+				76FC46EA1ABFEB4E0056B5F5 /* Array2D.swift in Sources */,
 				342584E91AACDB03004A3CFD /* GameViewController.swift in Sources */,
 				342584E31AACDB03004A3CFD /* AppDelegate.swift in Sources */,
 				342585531AACE392004A3CFD /* MenuViewController.swift in Sources */,
@@ -462,6 +499,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3425852E1AACE049004A3CFD /* Queue.swift in Sources */,
+				BDA19AA41AC54D4500B7E9D4 /* TileNode.swift in Sources */,
 				3425852F1AACE049004A3CFD /* Stack.swift in Sources */,
 				342585301AACE049004A3CFD /* Node.swift in Sources */,
 				342585311AACE049004A3CFD /* Edge.swift in Sources */,
@@ -659,6 +697,7 @@
 				342585021AACDB03004A3CFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		342585031AACDB03004A3CFD /* Build configuration list for PBXNativeTarget "CattacTests" */ = {
 			isa = XCConfigurationList;
@@ -667,6 +706,7 @@
 				342585051AACDB03004A3CFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
