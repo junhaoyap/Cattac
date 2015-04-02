@@ -10,7 +10,7 @@ import Foundation
 
 import SpriteKit
 
-enum NodeType: Int, Printable {
+enum NodeType: Int {
     case Unknown = 0, Grass
     var spriteName: String {
         let spriteNames = [
@@ -19,13 +19,16 @@ enum NodeType: Int, Printable {
         
         return spriteNames[rawValue - 1]
     }
-    
+}
+
+extension NodeType: Printable {
     var description: String {
         return spriteName
     }
+    
 }
 
-class TileNode: Printable {
+class TileNode {
     var column: Int
     var row: Int
     let nodeType: NodeType
@@ -38,8 +41,24 @@ class TileNode: Printable {
         self.row = row
         self.nodeType = nodeType
     }
-    
+}
+
+extension TileNode: Printable {
     var description: String {
         return "type:\(nodeType) square:(\(column),\(row))"
     }
+    
 }
+
+extension TileNode: Hashable {
+    var hashValue: Int {
+        get {
+            return (UInt32(row) + UInt32(column) << 16).hashValue
+        }
+    }
+}
+
+func ==(lhs: TileNode, rhs: TileNode) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+

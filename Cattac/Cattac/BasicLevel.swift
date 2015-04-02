@@ -10,6 +10,7 @@ class BasicLevel {
     let numRows = Constants.BasicLevel.numRows
     
     var grid: Grid<TileNode>!
+    var graph: Graph<TileNode>!
     
     private var _cats = [String : Cat]()
     
@@ -19,6 +20,26 @@ class BasicLevel {
     
     init() {
         grid = Grid<TileNode>(columns: numColumns, rows: numRows)
+        initializeGraph()
+    }
+    
+    func initializeGraph() {
+        graph = Graph(isDirected: true)
+        
+        // Add all the nodes to the graph first
+        for node in grid {
+            graph.addNode(Node(node))
+        }
+        
+        // Adds the edges by finding the neighbours of each node
+        for sourceNode in grid {
+            for (direction, offset) in grid.neighboursOffset {
+                if let destNode = grid[sourceNode.row + offset.row,
+                    sourceNode.column + offset.column] {
+                        graph.addEdge(Edge(source: Node(sourceNode), destination: Node(destNode)))
+                }
+            }
+        }
     }
     
     func nodeAtColumn(column: Int, row: Int) -> TileNode? {

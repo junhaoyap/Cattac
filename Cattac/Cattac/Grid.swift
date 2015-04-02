@@ -8,6 +8,13 @@ struct Grid<T> {
     let rows: Int
     private var grid: [GridIndex:T] = [:]
     
+    let neighboursOffset: [String:(row: Int, column: Int)] = [
+        "top": (-1, 0),
+        "right": (0, 1),
+        "bottom": (1, 0),
+        "left": (0, -1)
+    ]
+    
     init(columns: Int, rows: Int) {
         self.columns = columns
         self.rows = rows
@@ -26,7 +33,24 @@ struct Grid<T> {
     }
 }
 
-struct GridIndex: Hashable {
+extension Grid: SequenceType {
+    func generate() -> GeneratorOf<T> {
+        var nextRow = 0
+        var nextColumn = 0
+        
+        return GeneratorOf<T> {
+            if nextRow == self.rows && nextColumn == self.columns {
+                return nil
+            } else if nextColumn == self.columns {
+                nextColumn = 0
+                nextRow++
+            }
+            return self.grid[GridIndex(nextRow, nextColumn)]
+        }
+    }
+}
+
+struct GridIndex {
     private var x: Int
     private var y: Int
     
@@ -42,7 +66,9 @@ struct GridIndex: Hashable {
     var col: Int {
         return self.y
     }
-    
+}
+
+extension GridIndex: Hashable {
     var hashValue: Int {
         get {
             return (UInt32(y) + UInt32(x) << 16).hashValue
