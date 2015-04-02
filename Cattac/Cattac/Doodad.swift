@@ -5,5 +5,9 @@
 import Foundation
 
 class Doodad {
-    // nothing for now
+    var name: String!
+    
+    init(doodadName: String) {
+        name = doodadName
+    }
 }

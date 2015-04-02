@@ -1,9 +1,13 @@
 /*
-    The Item object
+    The Doodad object
 */
 
 import Foundation
 
 class Item {
-    // nothing for now
+    var name: String!
+    
+    init(itemName: String) {
+        name = itemName
+    }
 }

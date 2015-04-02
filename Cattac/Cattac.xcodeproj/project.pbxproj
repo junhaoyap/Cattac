@@ -56,6 +56,7 @@
 		BDA19AA41AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
 		BDA19AA61AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
 		BDA19AA71AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
+		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		76FC46E91ABFEB4E0056B5F5 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
 		BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileEntity.swift; sourceTree = "<group>"; };
+		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,6 +312,7 @@
 			children = (
 				342585361AACE0D8004A3CFD /* CatFactory.swift */,
 				342585381AACE0E6004A3CFD /* DoodadFactory.swift */,
+				3471CA541ACDA11400B0E68D /* ItemFactory.swift */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 				342585111AACDE61004A3CFD /* Stack.swift in Sources */,
 				3425851F1AACDF61004A3CFD /* Node.swift in Sources */,
 				342585231AACDF91004A3CFD /* Graph.swift in Sources */,
+				3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */,
 				342585191AACDEFF004A3CFD /* MusicPlayer.swift in Sources */,
 				342585341AACE097004A3CFD /* GameEngine.swift in Sources */,
 				76FC46EA1ABFEB4E0056B5F5 /* Grid.swift in Sources */,
