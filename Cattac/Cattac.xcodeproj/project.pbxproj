@@ -46,6 +46,13 @@
 		342585511AACE30F004A3CFD /* LevelGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585501AACE30F004A3CFD /* LevelGenerator.swift */; };
 		342585531AACE392004A3CFD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
 		342585551AACE406004A3CFD /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
+		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
+		3471CA571ACDAE3E00B0E68D /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA561ACDAE3E00B0E68D /* Firebase.framework */; };
+		3471CA591ACDAE6500B0E68D /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA581ACDAE6500B0E68D /* libicucore.dylib */; };
+		3471CA5B1ACDAE7300B0E68D /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5A1ACDAE7300B0E68D /* libc++.dylib */; };
+		3471CA5D1ACDAE7D00B0E68D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */; };
+		3471CA5F1ACDAE8500B0E68D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5E1ACDAE8500B0E68D /* Security.framework */; };
+		3471CA611ACDAE8F00B0E68D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */; };
 		76FC46E11ABFE6190056B5F5 /* Grass.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DC1ABFE6190056B5F5 /* Grass.jpg */; };
 		76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DD1ABFE6190056B5F5 /* Grumpy.png */; };
 		76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DE1ABFE6190056B5F5 /* Nala.png */; };
@@ -56,7 +63,6 @@
 		BDA19AA41AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
 		BDA19AA61AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
 		BDA19AA71AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
-		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +114,14 @@
 		342585501AACE30F004A3CFD /* LevelGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelGenerator.swift; sourceTree = "<group>"; };
 		342585521AACE392004A3CFD /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
+		3471CA561ACDAE3E00B0E68D /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = ../../../../Downloads/Firebase.framework; sourceTree = "<group>"; };
+		3471CA581ACDAE6500B0E68D /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		3471CA5A1ACDAE7300B0E68D /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		3471CA5E1ACDAE8500B0E68D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		3471CA621ACDAEE400B0E68D /* Cattac-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cattac-Bridging-Header.h"; sourceTree = "<group>"; };
 		76FC46DC1ABFE6190056B5F5 /* Grass.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Grass.jpg; path = Images.xcassets/Grass.jpg; sourceTree = "<group>"; };
 		76FC46DD1ABFE6190056B5F5 /* Grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grumpy.png; path = Images.xcassets/Grumpy.png; sourceTree = "<group>"; };
 		76FC46DE1ABFE6190056B5F5 /* Nala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nala.png; path = Images.xcassets/Nala.png; sourceTree = "<group>"; };
@@ -116,7 +130,6 @@
 		76FC46E91ABFEB4E0056B5F5 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
 		BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileEntity.swift; sourceTree = "<group>"; };
-		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +137,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3471CA611ACDAE8F00B0E68D /* SystemConfiguration.framework in Frameworks */,
+				3471CA5F1ACDAE8500B0E68D /* Security.framework in Frameworks */,
+				3471CA5D1ACDAE7D00B0E68D /* CFNetwork.framework in Frameworks */,
+				3471CA5B1ACDAE7300B0E68D /* libc++.dylib in Frameworks */,
+				3471CA591ACDAE6500B0E68D /* libicucore.dylib in Frameworks */,
+				3471CA571ACDAE3E00B0E68D /* Firebase.framework in Frameworks */,
 				3425851B1AACDF11004A3CFD /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,6 +160,12 @@
 		342584D41AACDB02004A3CFD = {
 			isa = PBXGroup;
 			children = (
+				3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */,
+				3471CA5E1ACDAE8500B0E68D /* Security.framework */,
+				3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */,
+				3471CA5A1ACDAE7300B0E68D /* libc++.dylib */,
+				3471CA581ACDAE6500B0E68D /* libicucore.dylib */,
+				3471CA561ACDAE3E00B0E68D /* Firebase.framework */,
 				3425851A1AACDF11004A3CFD /* AVFoundation.framework */,
 				342584DF1AACDB02004A3CFD /* Cattac */,
 				342584F91AACDB03004A3CFD /* CattacTests */,
@@ -179,6 +204,7 @@
 				342584EA1AACDB03004A3CFD /* Main.storyboard */,
 				342584EF1AACDB03004A3CFD /* LaunchScreen.xib */,
 				342584E21AACDB03004A3CFD /* AppDelegate.swift */,
+				3471CA621ACDAEE400B0E68D /* Cattac-Bridging-Header.h */,
 				342584E01AACDB02004A3CFD /* Supporting Files */,
 			);
 			path = Cattac;
@@ -636,9 +662,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/yapjunhao/Downloads,
+				);
 				INFOPLIST_FILE = Cattac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -647,9 +681,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/yapjunhao/Downloads,
+				);
 				INFOPLIST_FILE = Cattac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
