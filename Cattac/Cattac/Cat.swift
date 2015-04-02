@@ -5,26 +5,20 @@
 import Foundation
 import SpriteKit
 
-enum CatType: Int {
-    case MAIN
-}
-
 class Cat: TileEntity {
-    private let _id: String
-    private let _type: CatType
     private let _sprite = SKSpriteNode(imageNamed: "Nala.png") //did this to try out only.
+    var name: String!
+    var hp: Int!
+    var puiDmg: Int!
+    var fartDmg: Int!
+    var poopDmg: Int!
     
-    var id: String {
-        return _id
-    }
-    
-    var type: CatType {
-        return _type
-    }
-    
-    init(_ id: String, _ type: CatType) {
-        _id = id
-        _type = type
+    init(catName: String, catHp: Int, catPuiDmg: Int, catFartDmg: Int) {
+        name = catName
+        hp = catHp
+        puiDmg = catPuiDmg
+        fartDmg = catFartDmg
+        poopDmg = Constants.catAttributes.poopDmg
     }
     
     func isVisible() -> Bool {
@@ -35,19 +29,3 @@ class Cat: TileEntity {
         return _sprite
     }
 }
-
-//class Cat {
-//    var name: String!
-//    var hp: Int!
-//    var puiDmg: Int!
-//    var fartDmg: Int!
-//    var poopDmg: Int!
-//    
-//    init(catName: String, catHp: Int, catPuiDmg: Int, catFartDmg: Int) {
-//        name = catName
-//        hp = catHp
-//        puiDmg = catPuiDmg
-//        fartDmg = catFartDmg
-//        poopDmg = Constants.catAttributes.poopDmg
-//    }
-//}

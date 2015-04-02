@@ -8,8 +8,10 @@ import SpriteKit
 private let _levelGeneratorSharedInstance: LevelGenerator = LevelGenerator()
 
 class LevelGenerator {
+    private let catFactory: CatFactory!
+    
     private init() {
-        
+        catFactory = CatFactory()
     }
     
     class var sharedInstance: LevelGenerator {
@@ -32,8 +34,7 @@ class LevelGenerator {
         let maxCol = UInt32(level.numColumns)
         let maxRow = UInt32(level.numRows)
         
-        level.addCat(.MAIN, Int(arc4random_uniform(maxCol)), Int(arc4random_uniform(maxRow)),
-            "somecyphertext-shouldweuseid?orshouldwedoawaywiththedict")
+        level.addCat(catFactory.createCat(Constants.catName.nalaCat)!, Int(arc4random_uniform(maxCol)), Int(arc4random_uniform(maxRow)))
         
         return level
     }
