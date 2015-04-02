@@ -33,12 +33,16 @@ class GameScene: SKScene {
         
         self.addChild(gameLayer)
         
+        // position of the general grid layer
         let layerPosition = CGPoint(
             x: -tileSize * CGFloat(level.numColumns) / 2,
             y: -tileSize * CGFloat(level.numRows) / 2)
+        
+        // adds tilesLayer to the grid layer
         tilesLayer.position = layerPosition
         gameLayer.addChild(tilesLayer)
         
+        // adds entityLayer to the grid layer
         entityLayer.position = layerPosition
         gameLayer.addChild(entityLayer)
         

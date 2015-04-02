@@ -9,7 +9,7 @@ class BasicLevel {
     let numColumns = Constants.BasicLevel.numColumns
     let numRows = Constants.BasicLevel.numRows
     
-    var nodes: Array2D<TileNode>!
+    var grid: Grid<TileNode>!
     
     private var _cats = [String : Cat]()
     
@@ -18,13 +18,13 @@ class BasicLevel {
     }
     
     init() {
-        nodes = Array2D<TileNode>(columns: numColumns, rows: numRows)
+        grid = Grid<TileNode>(columns: numColumns, rows: numRows)
     }
     
     func nodeAtColumn(column: Int, row: Int) -> TileNode? {
         assert(column >= 0 && column < numColumns)
         assert(row >= 0 && row < numRows)
-        return nodes[column, row]
+        return grid[row, column]
     }
     
     func addCat(type: CatType, _ posX: Int, _ posY: Int, _ id: String) {
