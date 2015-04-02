@@ -23,7 +23,7 @@ class BasicLevel {
         initializeGraph()
     }
     
-    func initializeGraph() {
+    private func initializeGraph() {
         graph = Graph(isDirected: true)
         
         // Add all the nodes to the graph first
@@ -48,12 +48,10 @@ class BasicLevel {
         return grid[row, column]
     }
     
-    func addCat(type: CatType, _ posX: Int, _ posY: Int, _ id: String) {
-        let cat = Cat(id, type)
-        
+    func addCat(cat: Cat, _ posX: Int, _ posY: Int) {
         let node  = nodeAtColumn(posX, row: posY)
         node!.occupants.append(cat)
         
-        _cats.updateValue(cat, forKey: cat.id)
+        _cats.updateValue(cat, forKey: "catID")
     }
 }
