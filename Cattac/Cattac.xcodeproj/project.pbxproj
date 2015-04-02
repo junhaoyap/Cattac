@@ -46,6 +46,7 @@
 		342585511AACE30F004A3CFD /* LevelGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585501AACE30F004A3CFD /* LevelGenerator.swift */; };
 		342585531AACE392004A3CFD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
 		342585551AACE406004A3CFD /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
+		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		342585501AACE30F004A3CFD /* LevelGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelGenerator.swift; sourceTree = "<group>"; };
 		342585521AACE392004A3CFD /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +292,7 @@
 			children = (
 				342585361AACE0D8004A3CFD /* CatFactory.swift */,
 				342585381AACE0E6004A3CFD /* DoodadFactory.swift */,
+				3471CA541ACDA11400B0E68D /* ItemFactory.swift */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				342585111AACDE61004A3CFD /* Stack.swift in Sources */,
 				3425851F1AACDF61004A3CFD /* Node.swift in Sources */,
 				342585231AACDF91004A3CFD /* Graph.swift in Sources */,
+				3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */,
 				342585191AACDEFF004A3CFD /* MusicPlayer.swift in Sources */,
 				342585341AACE097004A3CFD /* GameEngine.swift in Sources */,
 				342584E91AACDB03004A3CFD /* GameViewController.swift in Sources */,
@@ -659,6 +663,7 @@
 				342585021AACDB03004A3CFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		342585031AACDB03004A3CFD /* Build configuration list for PBXNativeTarget "CattacTests" */ = {
 			isa = XCConfigurationList;
@@ -667,6 +672,7 @@
 				342585051AACDB03004A3CFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
