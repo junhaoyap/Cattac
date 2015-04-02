@@ -72,7 +72,7 @@ class GameScene: SKScene {
     private func nodeForLocation(location: CGPoint) -> TileNode? {
         let col = Int((location.x + 5 * tileSize) / tileSize) // rushed code
         let row = Int((location.y + 5 * tileSize) / tileSize) // rushed code
-        return level.nodes[col, row]
+        return level.grid[col, row]
     }
     
     private func addTiles() {

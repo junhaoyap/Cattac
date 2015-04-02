@@ -25,7 +25,7 @@ class LevelGenerator {
             for column in 0..<level.numColumns {
                 let tileNode = TileNode(column: column, row: row, nodeType: .Grass)
                 tileNode.sprite = SKSpriteNode(imageNamed: "Grass.jpg")
-                level.nodes[column, row] = tileNode
+                level.grid[column, row] = tileNode
             }
         }
         
