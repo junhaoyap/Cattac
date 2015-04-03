@@ -34,7 +34,7 @@ class BasicLevel {
         }
     }
     
-    func nodeAtColumn(column: Int, row: Int) -> TileNode? {
+    func nodeAt(column: Int, row: Int) -> TileNode? {
         assert(column >= 0 && column < numColumns)
         assert(row >= 0 && row < numRows)
         return grid[row, column]
