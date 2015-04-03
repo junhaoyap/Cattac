@@ -90,9 +90,6 @@ class GameScene: SKScene {
         spriteNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
         spriteNode.position = pointForColumn(tileNode.column, tileNode.row)
         tilesLayer.addChild(spriteNode)
-        let spriteBorder = SKShapeNode(rectOfSize: spriteNode.size)
-        spriteBorder.strokeColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        spriteNode.addChild(spriteBorder)
         
         if !tileNode.occupants.isEmpty {
             for entity in tileNode.occupants {
