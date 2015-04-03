@@ -304,7 +304,6 @@ class Graph<T: Hashable> {
         nodeInfo[fromNode.hashValue] = (incomingEdge: nil, distance: 0)
         
         func relax(edge: E, sourceNodeDistance: Double) {
-            let sourceNode = edge.getSource()
             let destNode = edge.getDestination()
             let destNodeHash = destNode.hashValue
             
