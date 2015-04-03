@@ -47,12 +47,14 @@
 		342585531AACE392004A3CFD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
 		342585551AACE406004A3CFD /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
 		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
-		3471CA571ACDAE3E00B0E68D /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA561ACDAE3E00B0E68D /* Firebase.framework */; };
 		3471CA591ACDAE6500B0E68D /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA581ACDAE6500B0E68D /* libicucore.dylib */; };
 		3471CA5B1ACDAE7300B0E68D /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5A1ACDAE7300B0E68D /* libc++.dylib */; };
 		3471CA5D1ACDAE7D00B0E68D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */; };
 		3471CA5F1ACDAE8500B0E68D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5E1ACDAE8500B0E68D /* Security.framework */; };
 		3471CA611ACDAE8F00B0E68D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */; };
+		3471CA661ACEA01500B0E68D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA651ACEA01500B0E68D /* LoginViewController.swift */; };
+		3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */; };
+		3471CA6A1ACEAB3800B0E68D /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA691ACEAB3800B0E68D /* Firebase.framework */; };
 		76FC46E11ABFE6190056B5F5 /* Grass.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DC1ABFE6190056B5F5 /* Grass.jpg */; };
 		76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DD1ABFE6190056B5F5 /* Grumpy.png */; };
 		76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DE1ABFE6190056B5F5 /* Nala.png */; };
@@ -115,13 +117,15 @@
 		342585521AACE392004A3CFD /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
-		3471CA561ACDAE3E00B0E68D /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = ../../../../Downloads/Firebase.framework; sourceTree = "<group>"; };
 		3471CA581ACDAE6500B0E68D /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		3471CA5A1ACDAE7300B0E68D /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		3471CA5E1ACDAE8500B0E68D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3471CA621ACDAEE400B0E68D /* Cattac-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cattac-Bridging-Header.h"; sourceTree = "<group>"; };
+		3471CA651ACEA01500B0E68D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDifficultyViewController.swift; sourceTree = "<group>"; };
+		3471CA691ACEAB3800B0E68D /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		76FC46DC1ABFE6190056B5F5 /* Grass.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Grass.jpg; path = Images.xcassets/Grass.jpg; sourceTree = "<group>"; };
 		76FC46DD1ABFE6190056B5F5 /* Grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grumpy.png; path = Images.xcassets/Grumpy.png; sourceTree = "<group>"; };
 		76FC46DE1ABFE6190056B5F5 /* Nala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nala.png; path = Images.xcassets/Nala.png; sourceTree = "<group>"; };
@@ -140,9 +144,9 @@
 				3471CA611ACDAE8F00B0E68D /* SystemConfiguration.framework in Frameworks */,
 				3471CA5F1ACDAE8500B0E68D /* Security.framework in Frameworks */,
 				3471CA5D1ACDAE7D00B0E68D /* CFNetwork.framework in Frameworks */,
+				3471CA6A1ACEAB3800B0E68D /* Firebase.framework in Frameworks */,
 				3471CA5B1ACDAE7300B0E68D /* libc++.dylib in Frameworks */,
 				3471CA591ACDAE6500B0E68D /* libicucore.dylib in Frameworks */,
-				3471CA571ACDAE3E00B0E68D /* Firebase.framework in Frameworks */,
 				3425851B1AACDF11004A3CFD /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,8 +168,8 @@
 				3471CA5E1ACDAE8500B0E68D /* Security.framework */,
 				3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */,
 				3471CA5A1ACDAE7300B0E68D /* libc++.dylib */,
+				3471CA691ACEAB3800B0E68D /* Firebase.framework */,
 				3471CA581ACDAE6500B0E68D /* libicucore.dylib */,
-				3471CA561ACDAE3E00B0E68D /* Firebase.framework */,
 				3425851A1AACDF11004A3CFD /* AVFoundation.framework */,
 				342584DF1AACDB02004A3CFD /* Cattac */,
 				342584F91AACDB03004A3CFD /* CattacTests */,
@@ -240,9 +244,11 @@
 		342585061AACDB82004A3CFD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				342585521AACE392004A3CFD /* MenuViewController.swift */,
 				342584E81AACDB03004A3CFD /* GameViewController.swift */,
+				342585521AACE392004A3CFD /* MenuViewController.swift */,
 				342585541AACE406004A3CFD /* ShopViewController.swift */,
+				3471CA651ACEA01500B0E68D /* LoginViewController.swift */,
+				3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -499,7 +505,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3471CA661ACEA01500B0E68D /* LoginViewController.swift in Sources */,
 				342585391AACE0E6004A3CFD /* DoodadFactory.swift in Sources */,
+				3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */,
 				3425854E1AACE291004A3CFD /* HardLevel.swift in Sources */,
 				342584E71AACDB03004A3CFD /* GameScene.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
@@ -666,6 +674,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/yapjunhao/Downloads,
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Cattac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -685,6 +694,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/yapjunhao/Downloads,
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Cattac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
