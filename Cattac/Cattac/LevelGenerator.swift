@@ -4,14 +4,12 @@
 import Darwin
 import SpriteKit
 
-// simulate sington behaviour
+// simulate singleton behaviour
 private let _levelGeneratorSharedInstance: LevelGenerator = LevelGenerator()
 
 class LevelGenerator {
-    private let catFactory: CatFactory!
     
     private init() {
-        catFactory = CatFactory()
     }
     
     class var sharedInstance: LevelGenerator {
@@ -27,14 +25,14 @@ class LevelGenerator {
             for column in 0..<level.numColumns {
                 let tileNode = TileNode(column: column, row: row, nodeType: .Grass)
                 tileNode.sprite = SKSpriteNode(imageNamed: "Grass.jpg")
-                level.grid[column, row] = tileNode
+                level.grid[row, column] = tileNode
             }
         }
         
+        level.constructGraph()
+        
         let maxCol = UInt32(level.numColumns)
         let maxRow = UInt32(level.numRows)
-        
-        level.addCat(catFactory.createCat(Constants.catName.nalaCat)!, Int(arc4random_uniform(maxCol)), Int(arc4random_uniform(maxRow)))
         
         return level
     }

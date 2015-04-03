@@ -28,6 +28,9 @@ struct Grid<T> {
             return grid[GridIndex(row, column)]
         }
         set {
+            if row >= rows || column >= columns || row < 0 || column < 0 {
+                print("KeyError: Unable to add (row:\(row), column:\(column)) to grid")
+            }
             grid[GridIndex(row, column)] = newValue
         }
     }
@@ -45,7 +48,7 @@ extension Grid: SequenceType {
                 nextColumn = 0
                 nextRow++
             }
-            return self.grid[GridIndex(nextRow, nextColumn)]
+            return self.grid[GridIndex(nextRow, nextColumn++)]
         }
     }
 }
