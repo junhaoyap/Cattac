@@ -387,14 +387,46 @@
 			name = LevelGenerator;
 			sourceTree = "<group>";
 		};
-		76FC46E61ABFE62E0056B5F5 /* Images */ = {
+		3471CA6B1ACEB7B900B0E68D /* Cats */ = {
 			isa = PBXGroup;
 			children = (
-				76FC46DC1ABFE6190056B5F5 /* Grass.jpg */,
 				76FC46DD1ABFE6190056B5F5 /* Grumpy.png */,
 				76FC46DE1ABFE6190056B5F5 /* Nala.png */,
 				76FC46DF1ABFE6190056B5F5 /* Nyan.png */,
 				76FC46E01ABFE6190056B5F5 /* Pusheen.png */,
+			);
+			name = Cats;
+			sourceTree = "<group>";
+		};
+		3471CA6C1ACEB7C400B0E68D /* Arena */ = {
+			isa = PBXGroup;
+			children = (
+				76FC46DC1ABFE6190056B5F5 /* Grass.jpg */,
+			);
+			name = Arena;
+			sourceTree = "<group>";
+		};
+		3471CA6D1ACEB7D300B0E68D /* Doodads */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Doodads;
+			sourceTree = "<group>";
+		};
+		3471CA6E1ACEB7E900B0E68D /* Others */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Others;
+			sourceTree = "<group>";
+		};
+		76FC46E61ABFE62E0056B5F5 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				3471CA6C1ACEB7C400B0E68D /* Arena */,
+				3471CA6B1ACEB7B900B0E68D /* Cats */,
+				3471CA6D1ACEB7D300B0E68D /* Doodads */,
+				3471CA6E1ACEB7E900B0E68D /* Others */,
 			);
 			name = Images;
 			sourceTree = "<group>";
