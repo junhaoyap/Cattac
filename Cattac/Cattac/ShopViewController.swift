@@ -5,16 +5,14 @@
 import UIKit
 
 class ShopViewController: UIViewController {
+    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // do any customisation from here
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
     override func prefersStatusBarHidden() -> Bool {
