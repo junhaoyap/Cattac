@@ -9,6 +9,16 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let meowsRef = self.ref.childByAppendingPath("usersMeow").childByAppendingPath(self.ref.authData.uid)
+        
+        meowsRef.observeSingleEventOfType(.Value, withBlock: {
+            snapshot in
+            
+            let myNumberOfMeows: AnyObject! = snapshot.value["numberOfMeows"]
+            
+            println(myNumberOfMeows)
+        })
     }
     
     override func didReceiveMemoryWarning() {
