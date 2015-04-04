@@ -2,12 +2,31 @@
     The Doodad object
 */
 
-import Foundation
+import SpriteKit
 
-class Doodad {
-    var name: String!
+class Doodad: TileEntity {
     
-    init(doodadName: String) {
-        name = doodadName
+    private var removed = false
+    
+    func effect(cat: Cat) {
+        // inheriting doodads to implement effect, if any.
+    }
+    
+    func isRemoved() -> Bool {
+        return removed
+    }
+    
+    func setRemoved() {
+        removed = true
+    }
+    
+    func getSprite() -> SKSpriteNode {
+        // inheriting doodads to override.
+        return SKSpriteNode(imageNamed: "Nala.png")
+    }
+    
+    func isVisible() -> Bool {
+        // inheriting doodads to override.
+        return true
     }
 }

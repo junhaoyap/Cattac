@@ -33,13 +33,16 @@ class TileNode {
     var row: Int
     let nodeType: NodeType
     var sprite: SKSpriteNode?
-    
-    var occupants = [TileEntity]()
+    var doodads = [Doodad]()
     
     init(column: Int, row: Int, nodeType: NodeType) {
         self.column = column
         self.row = row
         self.nodeType = nodeType
+    }
+    
+    func addDoodad(doodad: Doodad) {
+        doodads += [doodad]
     }
 }
 

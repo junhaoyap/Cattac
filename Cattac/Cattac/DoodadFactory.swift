@@ -2,24 +2,43 @@
     Doodad Factory, for creating Doodad objects
 */
 
+private let _doodadFactorySharedInstance: DoodadFactory = DoodadFactory()
+
 class DoodadFactory {
     
-    func createCat(nameOfDoodadToCreate: String) -> Doodad? {
+    private init() {
+    }
+    
+    class var sharedInstance: DoodadFactory {
+        return _doodadFactorySharedInstance
+    }
+    
+    enum DoodadType: Int {
+        // let LandMine forever be the last doodad so the count works. any better implementation?
+        case Trampoline, LandMine
+        static var count: Int {
+            return DoodadType.LandMine.hashValue + 1
+        }
+    }
+    
+    func createDoodad(doodadType: DoodadType) -> Doodad? {
         var doodadToReturn: Doodad?
         
-        switch nameOfDoodadToCreate {
-        case Constants.doodadName.watchTower:
-            doodadToReturn = Doodad(doodadName: nameOfDoodadToCreate)
-        case Constants.doodadName.trampoline:
-            doodadToReturn = Doodad(doodadName: nameOfDoodadToCreate)
-        case Constants.doodadName.fortress:
-            doodadToReturn = Doodad(doodadName: nameOfDoodadToCreate)
-        case Constants.doodadName.wormhole:
-            doodadToReturn = Doodad(doodadName: nameOfDoodadToCreate)
+        switch doodadType {
+        case .Trampoline:
+            return TrampolineDoodad()
+        case .LandMine:
+            return LandMineDoodad()
         default:
-            break
+            return nil
         }
-        
-        return doodadToReturn
+    }
+    
+    func randomDoodad() -> Doodad {
+        return createDoodad(randomDoodadType())!
+    }
+    
+    func randomDoodadType() -> DoodadType {
+        return DoodadType(rawValue: Int(arc4random_uniform(UInt32(DoodadType.count))))!
     }
 }
