@@ -56,4 +56,19 @@ class GameViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    
+    @IBAction func puiButtonPressed(sender: AnyObject) {
+        scene.trigger("puiButtonPressed")
+    }
+    
+    
+    @IBAction func fartButtonPressed(sender: AnyObject) {
+        scene.trigger("fartButtonPressed")
+    }
+    
+    
+    @IBAction func poopButtonPressed(sender: AnyObject) {
+        scene.trigger("poopButtonPressed")
+    }
 }
