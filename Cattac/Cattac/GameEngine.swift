@@ -16,13 +16,27 @@ class GameEngine {
     private var grid: Grid<TileNode>!
     private var graph: Graph<TileNode>!
     private var allPlayerPositions: [String:TileNode] = [:]
+    private var allPlayerMoveToPositions: [String:TileNode] = [:]
+    private var allPlayerActions: [String:Action] = [:]
     var reachableNodes: [Int:Node<TileNode>] = [:]
-    var currentPlayerMoveToNode: TileNode!
+    private var events: [String:()->()] = [:]
     
     init(grid: Grid<TileNode>, graph: Graph<TileNode>) {
         self.grid = grid
         self.graph = graph
         addPlayers()
+        
+        self.on("puiButtonPressed") {
+            self.currentPlayerAction = PuiAction()
+        }
+        
+        self.on("fartButtonPressed") {
+            self.currentPlayerAction = FartAction(range: 2)
+        }
+        
+        self.on("poopButtonPressed") {
+            self.currentPlayerAction = PoopAction(targetNode: self.currentPlayerMoveToNode)
+        }
     }
     
     func gameLoop() {
@@ -74,16 +88,45 @@ class GameEngine {
             allPlayerPositions[player.name] = newValue
         }
     }
-    
+
     func precalculate() {
         for doodad in currentPlayerNode.doodads {
             doodad.effect(player)
         }
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
+        allPlayerActions = [:]
     }
     
     func postExecute() {
         player.postExecute()
+    }
+    
+    var currentPlayerMoveToNode: TileNode {
+        get {
+            return allPlayerMoveToPositions[player.name]!
+        }
+        set {
+            allPlayerMoveToPositions[player.name] = newValue
+        }
+    }
+    
+    var currentPlayerAction: Action? {
+        get {
+            return allPlayerActions[player.name]?
+        }
+        set {
+            allPlayerActions[player.name] = newValue
+        }
+    }
+    
+    func trigger(event: String) {
+        if let lambda = events[event] {
+            lambda()
+        }
+    }
+    
+    func on(event: String, _ lambda: ()->()) {
+        events[event] = lambda
     }
     
     func pathTo(node: TileNode) -> [Edge<TileNode>] {

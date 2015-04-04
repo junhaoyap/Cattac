@@ -59,16 +59,16 @@ class GameViewController: UIViewController {
     
     
     @IBAction func puiButtonPressed(sender: AnyObject) {
-        scene.trigger("puiButtonPressed")
+        scene.gameEngine.trigger("puiButtonPressed")
     }
     
     
     @IBAction func fartButtonPressed(sender: AnyObject) {
-        scene.trigger("fartButtonPressed")
+        scene.gameEngine.trigger("fartButtonPressed")
     }
     
     
     @IBAction func poopButtonPressed(sender: AnyObject) {
-        scene.trigger("poopButtonPressed")
+        scene.gameEngine.trigger("poopButtonPressed")
     }
 }

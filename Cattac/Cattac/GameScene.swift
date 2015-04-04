@@ -16,7 +16,6 @@ class GameScene: SKScene {
     let entityLayer = SKNode()
     
     private var previewNode: SKSpriteNode!
-    private var events: [String:()->()] = [:]
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -60,18 +59,6 @@ class GameScene: SKScene {
         previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
-        
-        self.on("puiButtonPressed") {
-            
-        }
-        
-        self.on("fartButtonPressed") {
-            
-        }
-        
-        self.on("poopButtonPressed") {
-            
-        }
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -111,16 +98,6 @@ class GameScene: SKScene {
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         previewNode.hidden = true
         gameEngine.nextState()
-    }
-    
-    func trigger(event: String) {
-        if let lambda = events[event] {
-            lambda()
-        }
-    }
-    
-    func on(event: String, _ lambda: ()->()) {
-        events[event] = lambda
     }
     
     private func pointFor(row: Int, _ column: Int) -> CGPoint {
