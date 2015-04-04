@@ -43,7 +43,7 @@ class GameScene: SKScene {
         let layerPosition = CGPoint(
             x: -tileSize * CGFloat(level.numColumns) / 2,
             y: -tileSize * CGFloat(level.numRows) / 2)
-        
+
         // adds tilesLayer to the grid layer
         tilesLayer.position = layerPosition
         gameLayer.addChild(tilesLayer)
@@ -59,7 +59,6 @@ class GameScene: SKScene {
         previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
-        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -158,6 +157,9 @@ class GameScene: SKScene {
         if gameEngine.state == GameState.StartMovesExecution {
             gameEngine.nextState()
             movePlayer()
+        } else if gameEngine.state == GameState.StartActionsExecution {
+            gameEngine.nextState()
+            performActions()
         }
     }
     
@@ -178,5 +180,12 @@ class GameScene: SKScene {
                 self.gameEngine.nextState()
             }
         )
+    }
+    
+    private func performActions() {
+        if let action = gameEngine.currentPlayerAction {
+            print(action)
+        }
+        gameEngine.nextState()
     }
 }
