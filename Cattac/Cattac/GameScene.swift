@@ -159,7 +159,7 @@ class GameScene: SKScene {
             let action = SKAction.moveTo(destNode.sprite!.position, duration: 0.25)
             pathSequence.append(action)
         }
-        println("ok")
+        
         gameEngine.player!.getSprite().runAction(
             SKAction.sequence(pathSequence),
             completion: {
