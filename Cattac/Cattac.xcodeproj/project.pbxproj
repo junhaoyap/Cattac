@@ -62,9 +62,12 @@
 		76FC46E51ABFE6190056B5F5 /* Pusheen.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46E01ABFE6190056B5F5 /* Pusheen.png */; };
 		76FC46EA1ABFEB4E0056B5F5 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Grid.swift */; };
 		BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
-		BDA19AA41AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
 		BDA19AA61AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
 		BDA19AA71AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
+		BDA19AB41AD029FF00B7E9D4 /* GameLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB31AD029FF00B7E9D4 /* GameLevel.swift */; };
+		BDA19AB61AD0330C00B7E9D4 /* TrampolineDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */; };
+		BDA19AB81AD034BF00B7E9D4 /* LandMineDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */; };
+		BDA19ABA1AD0382900B7E9D4 /* StatModification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB91AD0382900B7E9D4 /* StatModification.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +137,10 @@
 		76FC46E91ABFEB4E0056B5F5 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
 		BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileEntity.swift; sourceTree = "<group>"; };
+		BDA19AB31AD029FF00B7E9D4 /* GameLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
+		BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrampolineDoodad.swift; sourceTree = "<group>"; };
+		BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandMineDoodad.swift; sourceTree = "<group>"; };
+		BDA19AB91AD0382900B7E9D4 /* StatModification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatModification.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -362,7 +369,10 @@
 			children = (
 				342585401AACE196004A3CFD /* Cat.swift */,
 				BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */,
+				BDA19AB91AD0382900B7E9D4 /* StatModification.swift */,
+				BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */,
 				BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */,
+				BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */,
 				342585461AACE252004A3CFD /* Doodad.swift */,
 				342585441AACE22C004A3CFD /* Item.swift */,
 			);
@@ -373,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				342585491AACE27D004A3CFD /* BasicLevel.swift */,
+				BDA19AB31AD029FF00B7E9D4 /* GameLevel.swift */,
 				3425854B1AACE288004A3CFD /* MediumLevel.swift */,
 				3425854D1AACE291004A3CFD /* HardLevel.swift */,
 			);
@@ -539,6 +550,7 @@
 			files = (
 				342585391AACE0E6004A3CFD /* DoodadFactory.swift in Sources */,
 				3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */,
+				BDA19AB81AD034BF00B7E9D4 /* LandMineDoodad.swift in Sources */,
 				3425854E1AACE291004A3CFD /* HardLevel.swift in Sources */,
 				342584E71AACDB03004A3CFD /* GameScene.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
@@ -548,6 +560,8 @@
 				3425851D1AACDF40004A3CFD /* SoundPlayer.swift in Sources */,
 				BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */,
 				342585511AACE30F004A3CFD /* LevelGenerator.swift in Sources */,
+				BDA19AB41AD029FF00B7E9D4 /* GameLevel.swift in Sources */,
+				BDA19AB61AD0330C00B7E9D4 /* TrampolineDoodad.swift in Sources */,
 				342585111AACDE61004A3CFD /* Stack.swift in Sources */,
 				3425851F1AACDF61004A3CFD /* Node.swift in Sources */,
 				342585231AACDF91004A3CFD /* Graph.swift in Sources */,
@@ -566,6 +580,7 @@
 				BDA19AA61AC556D200B7E9D4 /* TileEntity.swift in Sources */,
 				342585551AACE406004A3CFD /* ShopViewController.swift in Sources */,
 				342585371AACE0D8004A3CFD /* CatFactory.swift in Sources */,
+				BDA19ABA1AD0382900B7E9D4 /* StatModification.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,7 +589,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3425852E1AACE049004A3CFD /* Queue.swift in Sources */,
-				BDA19AA41AC54D4500B7E9D4 /* TileNode.swift in Sources */,
 				3425852F1AACE049004A3CFD /* Stack.swift in Sources */,
 				342585301AACE049004A3CFD /* Node.swift in Sources */,
 				342585311AACE049004A3CFD /* Edge.swift in Sources */,

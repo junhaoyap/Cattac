@@ -20,6 +20,14 @@ struct Grid<T> {
         self.rows = rows
     }
     
+    subscript(gridIndex: GridIndex) -> T? {
+        get {
+            return grid[gridIndex]
+        }
+        set {
+            grid[gridIndex] = newValue
+        }
+    }
     subscript(row: Int, column: Int) -> T? {
         get {
             if row >= rows || column >= columns || row < 0 || column < 0 {

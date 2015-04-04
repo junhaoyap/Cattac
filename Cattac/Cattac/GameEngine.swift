@@ -5,7 +5,8 @@
 import Foundation
 
 enum GameState {
-    case Precalculation, PlayerAction, ServerUpdate, StartMovesExecution, MovesExecution, ActionsExecution
+    case Precalculation, PlayerAction, ServerUpdate,
+    StartMovesExecution, MovesExecution, ActionsExecution, PostExecution
 }
 
 class GameEngine {
@@ -26,36 +27,41 @@ class GameEngine {
     
     func gameLoop() {
         switch state {
-        case GameState.Precalculation:
-            reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: 2)
+        case .Precalculation:
+            precalculate()
             nextState()
-        case GameState.PlayerAction:
+        case .PlayerAction:
             break
-        case GameState.ServerUpdate:
+        case .ServerUpdate:
             // Goes to next state for now
             nextState()
-        case GameState.StartMovesExecution:
+        case .StartMovesExecution:
             break
-        case GameState.MovesExecution:
+        case .MovesExecution:
             break
-        case GameState.ActionsExecution:
+        case .ActionsExecution:
+            nextState()
+        case .PostExecution:
+            postExecute()
             nextState()
         }
     }
     
     func nextState() {
         switch state {
-        case GameState.Precalculation:
+        case .Precalculation:
             state = GameState.PlayerAction
-        case GameState.PlayerAction:
+        case .PlayerAction:
             state = GameState.ServerUpdate
-        case GameState.ServerUpdate:
+        case .ServerUpdate:
             state = GameState.StartMovesExecution
-        case GameState.StartMovesExecution:
+        case .StartMovesExecution:
             state = GameState.MovesExecution
-        case GameState.MovesExecution:
+        case .MovesExecution:
             state = GameState.ActionsExecution
-        case GameState.ActionsExecution:
+        case .ActionsExecution:
+            state = GameState.PostExecution
+        case .PostExecution:
             state = GameState.Precalculation
         }
     }
@@ -69,6 +75,17 @@ class GameEngine {
         }
     }
     
+    func precalculate() {
+        for doodad in currentPlayerNode.doodads {
+            doodad.effect(player)
+        }
+        reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
+    }
+    
+    func postExecute() {
+        player.postExecute()
+    }
+    
     func pathTo(node: TileNode) -> [Edge<TileNode>] {
         let fromNode = allPlayerPositions[player.name]!
         let edges = graph.shortestPathFromNode(Node(fromNode), toNode: Node(node))
@@ -78,8 +95,8 @@ class GameEngine {
     
     private func addPlayers() {
         let cat = catFactory.createCat(Constants.catName.nalaCat)!
-        grid[0,0]!.occupants.append(cat)
-        allPlayerPositions[cat.name] = grid[0,0]!
+        cat.position = GridIndex(0, 0)
+        allPlayerPositions[cat.name] = grid[cat.position]
         player = cat
         currentPlayerMoveToNode = currentPlayerNode
     }

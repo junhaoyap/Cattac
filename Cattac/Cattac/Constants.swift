@@ -6,9 +6,15 @@ import UIKit
 import Foundation
 
 struct Constants {
-    struct BasicLevel {
-        static let numRows: Int = 10
-        static let numColumns: Int = 10
+    struct Level {
+        static let basicRows: Int = 10
+        static let basicColumns: Int = 10
+        static let defaultDoodads: Int = 5
+    }
+    
+    struct Doodad {
+        static let trampolineMoveRangeModification = 1
+        static let landMineDamage = 10
     }
     
     // for randomising which player get which cat, copy the array before playing with it, only for

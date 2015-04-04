@@ -9,6 +9,8 @@ private let _levelGeneratorSharedInstance: LevelGenerator = LevelGenerator()
 
 class LevelGenerator {
     
+    let doodadFactory = DoodadFactory.sharedInstance
+    
     private init() {
     }
     
@@ -31,9 +33,21 @@ class LevelGenerator {
         
         level.constructGraph()
         
+        generateDoodad(level)
+        
+        return level
+    }
+    
+    private func generateDoodad(level: GameLevel) {
         let maxCol = UInt32(level.numColumns)
         let maxRow = UInt32(level.numRows)
         
-        return level
+        for i in 0...level.numDoodads {
+            let row = Int(arc4random_uniform(maxRow))
+            let col = Int(arc4random_uniform(maxCol))
+            let location = GridIndex(row, col)
+            let doodad = doodadFactory.randomDoodad()
+            level.addDoodad(doodad, atLocation: location)
+        }
     }
 }

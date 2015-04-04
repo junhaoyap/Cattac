@@ -53,6 +53,7 @@ class GameScene: SKScene {
         gameLayer.addChild(entityLayer)
         
         addTiles()
+        addPlayers()
         
         previewNode = SKSpriteNode(imageNamed: "Nala.png")
         previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
@@ -121,6 +122,14 @@ class GameScene: SKScene {
             }
         }
     }
+    
+    private func addPlayers() {
+        let spriteNode = level.grid[gameEngine.player.position]!.sprite!
+        let playerNode = gameEngine.player.getSprite()
+        playerNode.size = spriteNode.size
+        playerNode.position = spriteNode.position
+        entityLayer.addChild(playerNode)
+    }
 
     private func drawTile(tileNode: TileNode) {
         let spriteNode = tileNode.sprite!
@@ -128,9 +137,11 @@ class GameScene: SKScene {
         spriteNode.position = pointFor(tileNode.row, tileNode.column)
         tilesLayer.addChild(spriteNode)
         
-        if !tileNode.occupants.isEmpty {
-            for entity in tileNode.occupants {
-                self.drawTileEntity(spriteNode, entity)
+        if !tileNode.doodads.isEmpty {
+            for entity in tileNode.doodads {
+                if entity.isVisible() {
+                    self.drawTileEntity(spriteNode, entity)
+                }
             }
         }
     }
