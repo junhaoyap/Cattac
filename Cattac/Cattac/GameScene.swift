@@ -68,9 +68,9 @@ class GameScene: SKScene {
             let location = touch.locationInNode(gameLayer)
             
             if let node = nodeForLocation(location) {
-                if gameEngine!.state == GameState.PlayerAction {
-                    if gameEngine!.reachableNodes[Node(node).hashValue] != nil {
-                        gameEngine!.currentPlayerMoveToNode = node
+                if gameEngine.state == GameState.PlayerAction {
+                    if gameEngine.reachableNodes[Node(node).hashValue] != nil {
+                        gameEngine.currentPlayerMoveToNode = node
                         previewNode.position = pointForColumn(node.column, node.row)
                         previewNode.hidden = false
                     }
@@ -84,9 +84,9 @@ class GameScene: SKScene {
             let location = touch.locationInNode(gameLayer)
             
             if let node = nodeForLocation(location) {
-                if gameEngine!.state == GameState.PlayerAction {
-                    if gameEngine!.reachableNodes[Node(node).hashValue] != nil {
-                        gameEngine!.currentPlayerMoveToNode = node
+                if gameEngine.state == GameState.PlayerAction {
+                    if gameEngine.reachableNodes[Node(node).hashValue] != nil {
+                        gameEngine.currentPlayerMoveToNode = node
                         previewNode.position = pointForColumn(node.column, node.row)
                         previewNode.hidden = false
                     }
@@ -97,7 +97,7 @@ class GameScene: SKScene {
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         previewNode.hidden = true
-        gameEngine!.nextState()
+        gameEngine.nextState()
     }
     
     private func pointForColumn(column: Int, _ row: Int) -> CGPoint {
@@ -143,9 +143,9 @@ class GameScene: SKScene {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        gameEngine!.gameLoop()
-        if gameEngine!.state == GameState.StartMovesExecution {
-            gameEngine!.nextState()
+        gameEngine.gameLoop()
+        if gameEngine.state == GameState.StartMovesExecution {
+            gameEngine.nextState()
             movePlayer()
         }
     }
@@ -160,7 +160,7 @@ class GameScene: SKScene {
             pathSequence.append(action)
         }
         
-        gameEngine.player!.getSprite().runAction(
+        gameEngine.player.getSprite().runAction(
             SKAction.sequence(pathSequence),
             completion: {
                 self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
