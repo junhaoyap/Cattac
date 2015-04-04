@@ -137,10 +137,8 @@ class GameScene: SKScene {
         spriteNode.position = pointFor(tileNode.row, tileNode.column)
         tilesLayer.addChild(spriteNode)
         
-        if !tileNode.doodads.isEmpty {
-            for entity in tileNode.doodads {
-                self.drawTileEntity(spriteNode, entity)
-            }
+        if let doodad = tileNode.doodad {
+            self.drawTileEntity(spriteNode, doodad)
         }
     }
     

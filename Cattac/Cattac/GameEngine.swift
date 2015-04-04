@@ -76,7 +76,7 @@ class GameEngine {
     }
     
     func precalculate() {
-        for doodad in currentPlayerNode.doodads {
+        if let doodad = currentPlayerNode.doodad {
             doodad.effect(player)
         }
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
