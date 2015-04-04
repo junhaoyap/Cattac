@@ -71,7 +71,7 @@ class GameScene: SKScene {
                 if gameEngine.state == GameState.PlayerAction {
                     if gameEngine.reachableNodes[Node(node).hashValue] != nil {
                         gameEngine.currentPlayerMoveToNode = node
-                        previewNode.position = pointForColumn(node.column, node.row)
+                        previewNode.position = pointFor(node.row, node.column)
                         previewNode.hidden = false
                     }
                 }
@@ -87,7 +87,7 @@ class GameScene: SKScene {
                 if gameEngine.state == GameState.PlayerAction {
                     if gameEngine.reachableNodes[Node(node).hashValue] != nil {
                         gameEngine.currentPlayerMoveToNode = node
-                        previewNode.position = pointForColumn(node.column, node.row)
+                        previewNode.position = pointFor(node.row, node.column)
                         previewNode.hidden = false
                     }
                 }
@@ -100,7 +100,7 @@ class GameScene: SKScene {
         gameEngine.nextState()
     }
     
-    private func pointForColumn(column: Int, _ row: Int) -> CGPoint {
+    private func pointFor(row: Int, _ column: Int) -> CGPoint {
         return CGPoint(
             x: CGFloat(column) * tileSize + tileSize / 2,
             y: CGFloat(row) * tileSize + tileSize / 2)
@@ -125,7 +125,7 @@ class GameScene: SKScene {
     private func drawTile(tileNode: TileNode) {
         let spriteNode = tileNode.sprite!
         spriteNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
-        spriteNode.position = pointForColumn(tileNode.column, tileNode.row)
+        spriteNode.position = pointFor(tileNode.row, tileNode.column)
         tilesLayer.addChild(spriteNode)
         
         if !tileNode.occupants.isEmpty {
