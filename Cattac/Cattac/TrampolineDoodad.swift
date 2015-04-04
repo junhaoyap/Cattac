@@ -12,7 +12,7 @@ class TrampolineDoodad: Doodad {
         return true
     }
     
-    override func getSprite() -> SKSpriteNode {
-        return SKSpriteNode(imageNamed: "Pusheen.png")
+    override func getSprite() -> SKNode {
+        return SKLabelNode(text: "T")
     }
 }

@@ -13,7 +13,7 @@ class LandMineDoodad: Doodad {
         return false
     }
     
-    override func getSprite() -> SKSpriteNode {
-        return SKSpriteNode(imageNamed: "Grumpy.png")
+    override func getSprite() -> SKNode {
+        return SKLabelNode(text: "M")
     }
 }

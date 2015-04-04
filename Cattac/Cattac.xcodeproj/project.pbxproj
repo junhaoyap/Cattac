@@ -367,13 +367,11 @@
 		3425853D1AACE176004A3CFD /* GameObjects */ = {
 			isa = PBXGroup;
 			children = (
+				BDA19ABE1AD05F8200B7E9D4 /* Doodads */,
 				342585401AACE196004A3CFD /* Cat.swift */,
 				BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */,
 				BDA19AB91AD0382900B7E9D4 /* StatModification.swift */,
-				BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */,
 				BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */,
-				BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */,
-				342585461AACE252004A3CFD /* Doodad.swift */,
 				342585441AACE22C004A3CFD /* Item.swift */,
 			);
 			name = GameObjects;
@@ -440,6 +438,16 @@
 				3471CA6E1ACEB7E900B0E68D /* Others */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		BDA19ABE1AD05F8200B7E9D4 /* Doodads */ = {
+			isa = PBXGroup;
+			children = (
+				BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */,
+				BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */,
+				342585461AACE252004A3CFD /* Doodad.swift */,
+			);
+			name = Doodads;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

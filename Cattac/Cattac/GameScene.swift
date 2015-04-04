@@ -125,7 +125,7 @@ class GameScene: SKScene {
     
     private func addPlayers() {
         let spriteNode = level.grid[gameEngine.player.position]!.sprite!
-        let playerNode = gameEngine.player.getSprite()
+        let playerNode = gameEngine.player.getSprite() as SKSpriteNode
         playerNode.size = spriteNode.size
         playerNode.position = spriteNode.position
         entityLayer.addChild(playerNode)
@@ -148,7 +148,9 @@ class GameScene: SKScene {
     
     private func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
         let entityNode = tileEntity.getSprite()
-        entityNode.size = spriteNode.size
+        if entityNode is SKSpriteNode {
+            (entityNode as SKSpriteNode).size = spriteNode.size
+        }
         entityNode.position = spriteNode.position
         entityLayer.addChild(entityNode)
     }
