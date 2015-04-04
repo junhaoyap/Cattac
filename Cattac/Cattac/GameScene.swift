@@ -139,9 +139,7 @@ class GameScene: SKScene {
         
         if !tileNode.doodads.isEmpty {
             for entity in tileNode.doodads {
-                if entity.isVisible() {
-                    self.drawTileEntity(spriteNode, entity)
-                }
+                self.drawTileEntity(spriteNode, entity)
             }
         }
     }
@@ -150,6 +148,9 @@ class GameScene: SKScene {
         let entityNode = tileEntity.getSprite()
         if entityNode is SKSpriteNode {
             (entityNode as SKSpriteNode).size = spriteNode.size
+        }
+        if !tileEntity.isVisible() {
+            entityNode.alpha = 0.5
         }
         entityNode.position = spriteNode.position
         entityLayer.addChild(entityNode)

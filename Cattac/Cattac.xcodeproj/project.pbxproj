@@ -68,6 +68,7 @@
 		BDA19AB61AD0330C00B7E9D4 /* TrampolineDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */; };
 		BDA19AB81AD034BF00B7E9D4 /* LandMineDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */; };
 		BDA19ABA1AD0382900B7E9D4 /* StatModification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB91AD0382900B7E9D4 /* StatModification.swift */; };
+		BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,6 +142,7 @@
 		BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrampolineDoodad.swift; sourceTree = "<group>"; };
 		BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandMineDoodad.swift; sourceTree = "<group>"; };
 		BDA19AB91AD0382900B7E9D4 /* StatModification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatModification.swift; sourceTree = "<group>"; };
+		BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchTowerDoodad.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -445,6 +447,7 @@
 			children = (
 				BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */,
 				BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */,
+				BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */,
 				342585461AACE252004A3CFD /* Doodad.swift */,
 			);
 			name = Doodads;
@@ -562,6 +565,7 @@
 				3425854E1AACE291004A3CFD /* HardLevel.swift in Sources */,
 				342584E71AACDB03004A3CFD /* GameScene.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
+				BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */,
 				34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */,
 				3425854A1AACE27D004A3CFD /* BasicLevel.swift in Sources */,
 				342585411AACE196004A3CFD /* Cat.swift in Sources */,

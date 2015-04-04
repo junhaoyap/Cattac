@@ -13,6 +13,6 @@ class TrampolineDoodad: Doodad {
     }
     
     override func getSprite() -> SKNode {
-        return SKLabelNode(text: "T")
+        return SKLabelNode(text: "P")
     }
 }
