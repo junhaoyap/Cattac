@@ -15,6 +15,8 @@ class GameScene: SKScene {
     let tilesLayer = SKNode()
     let entityLayer = SKNode()
     
+    private var previewNode: SKSpriteNode!
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -51,6 +53,12 @@ class GameScene: SKScene {
         gameLayer.addChild(entityLayer)
         
         addTiles()
+        
+        previewNode = SKSpriteNode(imageNamed: "Nala.png")
+        previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
+        entityLayer.addChild(previewNode)
+        previewNode.hidden = true
+        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -60,18 +68,36 @@ class GameScene: SKScene {
             let location = touch.locationInNode(gameLayer)
             
             if let node = nodeForLocation(location) {
-                let path = gameEngine.pathTo(node)
-                var pathSequence: [SKAction] = []
-                
-                for edge in path {
-                    let destNode = edge.getDestination().getLabel()
-                    let action = SKAction.moveTo(destNode.sprite!.position, duration: 0.25)
-                    pathSequence.append(action)
+                if gameEngine!.state == GameState.PlayerAction {
+                    if gameEngine!.reachableNodes[Node(node).hashValue] != nil {
+                        gameEngine!.currentPlayerMoveToNode = node
+                        previewNode.position = pointForColumn(node.column, node.row)
+                        previewNode.hidden = false
+                    }
                 }
-                
-                gameEngine.player!.getSprite().runAction(SKAction.sequence(pathSequence))
             }
         }
+    }
+    
+    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+        for touch: AnyObject in touches {
+            let location = touch.locationInNode(gameLayer)
+            
+            if let node = nodeForLocation(location) {
+                if gameEngine!.state == GameState.PlayerAction {
+                    if gameEngine!.reachableNodes[Node(node).hashValue] != nil {
+                        gameEngine!.currentPlayerMoveToNode = node
+                        previewNode.position = pointForColumn(node.column, node.row)
+                        previewNode.hidden = false
+                    }
+                }
+            }
+        }
+    }
+    
+    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        previewNode.hidden = true
+        gameEngine!.nextState()
     }
     
     private func pointForColumn(column: Int, _ row: Int) -> CGPoint {
@@ -117,6 +143,29 @@ class GameScene: SKScene {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+        gameEngine!.gameLoop()
+        if gameEngine!.state == GameState.StartMovesExecution {
+            gameEngine!.nextState()
+            movePlayer()
+        }
+    }
+    
+    private func movePlayer() {
+        let path = gameEngine.pathTo(gameEngine.currentPlayerMoveToNode)
+        var pathSequence: [SKAction] = []
+
+        for edge in path {
+            let destNode = edge.getDestination().getLabel()
+            let action = SKAction.moveTo(destNode.sprite!.position, duration: 0.25)
+            pathSequence.append(action)
+        }
+        println("ok")
+        gameEngine.player!.getSprite().runAction(
+            SKAction.sequence(pathSequence),
+            completion: {
+                self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
+                self.gameEngine.nextState()
+            }
+        )
     }
 }

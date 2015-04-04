@@ -362,4 +362,32 @@ class Graph<T: Hashable> {
         
         return arrayToReturn.reverse()
     }
+    
+    func getNodesInRange(fromNode: N, range: Int) -> [Int:N] {
+        var nodes: [Int:N] = [:]
+        
+        if range == 0 {
+            return nodes
+        }
+        
+        let neighbours = adjacencyList[fromNode.hashValue]!.map { edge -> N in
+            return edge.getDestination()
+        }
+        
+        // Add all neighbours
+        for node in neighbours {
+            nodes[node.hashValue] = node
+        }
+        
+        // Add neighbours of neighbours
+        for node in neighbours {
+            let nodeNeighbours = getNodesInRange(node, range: range - 1)
+            for (hash, nodeNeighbour) in nodeNeighbours {
+                if nodes.indexForKey(hash) == nil {
+                    nodes[hash] = nodeNeighbour
+                }
+            }
+        }
+        return nodes
+    }
 }
