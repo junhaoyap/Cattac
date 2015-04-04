@@ -13,7 +13,7 @@ class Cat: TileEntity {
     
     var name: String!
     var position: GridIndex = GridIndex(0,0)
-    var hp: Int!
+    var hp: Int
     var puiDmg: Int!
     var fartDmg: Int!
     var poopDmg: Int!
@@ -59,7 +59,11 @@ class Cat: TileEntity {
     }
     
     func inflict(damage: Int) {
-        hp = hp - damage * 1/defence
+        self.hp -= damage * 1/defence
+    }
+    
+    func heal(hp: Int) {
+        self.hp += hp
     }
     
     func isVisible() -> Bool {
