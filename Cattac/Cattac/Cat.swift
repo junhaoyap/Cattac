@@ -43,7 +43,7 @@ class Cat: TileEntity {
         return true
     }
     
-    func getSprite() -> SKSpriteNode {
+    func getSprite() -> SKNode {
         return _sprite
     }
     

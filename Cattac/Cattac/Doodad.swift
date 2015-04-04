@@ -20,7 +20,7 @@ class Doodad: TileEntity {
         removed = true
     }
     
-    func getSprite() -> SKSpriteNode {
+    func getSprite() -> SKNode {
         // inheriting doodads to override.
         return SKSpriteNode(imageNamed: "Nala.png")
     }

@@ -124,7 +124,7 @@ class GameScene: SKScene {
     
     private func addPlayers() {
         let spriteNode = level.grid[gameEngine.player.position]!.sprite!
-        let playerNode = gameEngine.player.getSprite()
+        let playerNode = gameEngine.player.getSprite() as SKSpriteNode
         playerNode.size = spriteNode.size
         playerNode.position = spriteNode.position
         entityLayer.addChild(playerNode)
@@ -136,18 +136,19 @@ class GameScene: SKScene {
         spriteNode.position = pointFor(tileNode.row, tileNode.column)
         tilesLayer.addChild(spriteNode)
         
-        if !tileNode.doodads.isEmpty {
-            for entity in tileNode.doodads {
-                if entity.isVisible() {
-                    self.drawTileEntity(spriteNode, entity)
-                }
-            }
+        if let doodad = tileNode.doodad {
+            self.drawTileEntity(spriteNode, doodad)
         }
     }
     
     private func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
         let entityNode = tileEntity.getSprite()
-        entityNode.size = spriteNode.size
+        if entityNode is SKSpriteNode {
+            (entityNode as SKSpriteNode).size = spriteNode.size
+        }
+        if !tileEntity.isVisible() {
+            entityNode.alpha = 0.5
+        }
         entityNode.position = spriteNode.position
         entityLayer.addChild(entityNode)
     }

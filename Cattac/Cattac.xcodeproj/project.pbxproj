@@ -69,6 +69,8 @@
 		BDA19AB61AD0330C00B7E9D4 /* TrampolineDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */; };
 		BDA19AB81AD034BF00B7E9D4 /* LandMineDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */; };
 		BDA19ABA1AD0382900B7E9D4 /* StatModification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB91AD0382900B7E9D4 /* StatModification.swift */; };
+		BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */; };
+		BDA19AC21AD0675100B7E9D4 /* FortressDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AC11AD0675100B7E9D4 /* FortressDoodad.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +145,8 @@
 		BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrampolineDoodad.swift; sourceTree = "<group>"; };
 		BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandMineDoodad.swift; sourceTree = "<group>"; };
 		BDA19AB91AD0382900B7E9D4 /* StatModification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatModification.swift; sourceTree = "<group>"; };
+		BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchTowerDoodad.swift; sourceTree = "<group>"; };
+		BDA19AC11AD0675100B7E9D4 /* FortressDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FortressDoodad.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,13 +374,11 @@
 		3425853D1AACE176004A3CFD /* GameObjects */ = {
 			isa = PBXGroup;
 			children = (
+				BDA19ABE1AD05F8200B7E9D4 /* Doodads */,
 				342585401AACE196004A3CFD /* Cat.swift */,
 				BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */,
 				BDA19AB91AD0382900B7E9D4 /* StatModification.swift */,
-				BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */,
 				BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */,
-				BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */,
-				342585461AACE252004A3CFD /* Doodad.swift */,
 				342585441AACE22C004A3CFD /* Item.swift */,
 			);
 			name = GameObjects;
@@ -451,6 +453,18 @@
 				3471CA6E1ACEB7E900B0E68D /* Others */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		BDA19ABE1AD05F8200B7E9D4 /* Doodads */ = {
+			isa = PBXGroup;
+			children = (
+				BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */,
+				BDA19AC11AD0675100B7E9D4 /* FortressDoodad.swift */,
+				BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */,
+				BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */,
+				342585461AACE252004A3CFD /* Doodad.swift */,
+			);
+			name = Doodads;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -566,6 +580,7 @@
 				342584E71AACDB03004A3CFD /* GameScene.swift in Sources */,
 				761BB59E1AD04348007C31C1 /* Action.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
+				BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */,
 				34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */,
 				3425854A1AACE27D004A3CFD /* BasicLevel.swift in Sources */,
 				342585411AACE196004A3CFD /* Cat.swift in Sources */,
@@ -576,6 +591,7 @@
 				BDA19AB61AD0330C00B7E9D4 /* TrampolineDoodad.swift in Sources */,
 				342585111AACDE61004A3CFD /* Stack.swift in Sources */,
 				3425851F1AACDF61004A3CFD /* Node.swift in Sources */,
+				BDA19AC21AD0675100B7E9D4 /* FortressDoodad.swift in Sources */,
 				342585231AACDF91004A3CFD /* Graph.swift in Sources */,
 				3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */,
 				342585191AACDEFF004A3CFD /* MusicPlayer.swift in Sources */,

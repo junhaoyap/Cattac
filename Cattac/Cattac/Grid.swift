@@ -28,6 +28,7 @@ struct Grid<T> {
             grid[gridIndex] = newValue
         }
     }
+    
     subscript(row: Int, column: Int) -> T? {
         get {
             if row >= rows || column >= columns || row < 0 || column < 0 {

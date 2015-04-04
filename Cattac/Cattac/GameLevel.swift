@@ -39,6 +39,6 @@ class GameLevel {
     }
     
     func addDoodad(doodad: Doodad, atLocation gridIndex: GridIndex) {
-        grid[gridIndex]!.addDoodad(doodad)
+        grid[gridIndex]!.setDoodad(doodad)
     }
 }
