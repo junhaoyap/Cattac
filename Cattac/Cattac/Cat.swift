@@ -6,37 +6,60 @@ import Foundation
 import SpriteKit
 
 class Cat: TileEntity {
-    private let _sprite = SKSpriteNode(imageNamed: "Nala.png") //did this to try out only.
+    private let _sprite = SKSpriteNode(imageNamed: "Nala.png")
+    private let baseDefence: Int
+    private let baseMoveRange: Int
+    private let baseFartRange: Int
+    
     var name: String!
     var position: GridIndex = GridIndex(0,0)
-    private var _moveRange: Int = 2
-    private var _actionRange: Int = 1
     var hp: Int!
     var puiDmg: Int!
     var fartDmg: Int!
     var poopDmg: Int!
+    
+    var defenceMods = [StatModification]()
     var dmgMods = [StatModification]()
     var moveRangeMods = [StatModification]()
-    var actionRangeMods = [StatModification]()
+    var fartRangeMods = [StatModification]()
+    
+    var defence: Int {
+        var def = baseDefence
+        for mod in defenceMods {
+            def += mod.modification
+        }
+        return def
+    }
     
     var moveRange: Int {
-        var range = _moveRange
+        var range = baseMoveRange
         for mod in moveRangeMods {
             range += mod.modification
         }
         return range
     }
     
-    init(catName: String, catHp: Int, catPuiDmg: Int, catFartDmg: Int) {
+    var fartRange: Int {
+        var range = baseFartRange
+        for mod in fartRangeMods {
+            range += mod.modification
+        }
+        return range
+    }
+    
+    init(catName: String, catHp: Int, catDef: Int, catPuiDmg: Int, catFartDmg: Int) {
         name = catName
         hp = catHp
+        baseDefence = catDef
         puiDmg = catPuiDmg
         fartDmg = catFartDmg
         poopDmg = Constants.catAttributes.poopDmg
+        baseMoveRange = Constants.catAttributes.moveRange
+        baseFartRange = Constants.catAttributes.fartRange
     }
     
     func inflict(damage: Int) {
-        hp = hp - damage
+        hp = hp - damage * 1/defence
     }
     
     func isVisible() -> Bool {
