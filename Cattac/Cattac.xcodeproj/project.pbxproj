@@ -52,9 +52,9 @@
 		3471CA5D1ACDAE7D00B0E68D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */; };
 		3471CA5F1ACDAE8500B0E68D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5E1ACDAE8500B0E68D /* Security.framework */; };
 		3471CA611ACDAE8F00B0E68D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */; };
-		3471CA661ACEA01500B0E68D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA651ACEA01500B0E68D /* LoginViewController.swift */; };
 		3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */; };
 		3471CA6A1ACEAB3800B0E68D /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA691ACEAB3800B0E68D /* Firebase.framework */; };
+		34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA651ACEA01500B0E68D /* LoginViewController.swift */; };
 		76FC46E11ABFE6190056B5F5 /* Grass.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DC1ABFE6190056B5F5 /* Grass.jpg */; };
 		76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DD1ABFE6190056B5F5 /* Grumpy.png */; };
 		76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DE1ABFE6190056B5F5 /* Nala.png */; };
@@ -387,14 +387,46 @@
 			name = LevelGenerator;
 			sourceTree = "<group>";
 		};
-		76FC46E61ABFE62E0056B5F5 /* Images */ = {
+		3471CA6B1ACEB7B900B0E68D /* Cats */ = {
 			isa = PBXGroup;
 			children = (
-				76FC46DC1ABFE6190056B5F5 /* Grass.jpg */,
 				76FC46DD1ABFE6190056B5F5 /* Grumpy.png */,
 				76FC46DE1ABFE6190056B5F5 /* Nala.png */,
 				76FC46DF1ABFE6190056B5F5 /* Nyan.png */,
 				76FC46E01ABFE6190056B5F5 /* Pusheen.png */,
+			);
+			name = Cats;
+			sourceTree = "<group>";
+		};
+		3471CA6C1ACEB7C400B0E68D /* Arena */ = {
+			isa = PBXGroup;
+			children = (
+				76FC46DC1ABFE6190056B5F5 /* Grass.jpg */,
+			);
+			name = Arena;
+			sourceTree = "<group>";
+		};
+		3471CA6D1ACEB7D300B0E68D /* Doodads */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Doodads;
+			sourceTree = "<group>";
+		};
+		3471CA6E1ACEB7E900B0E68D /* Others */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Others;
+			sourceTree = "<group>";
+		};
+		76FC46E61ABFE62E0056B5F5 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				3471CA6C1ACEB7C400B0E68D /* Arena */,
+				3471CA6B1ACEB7B900B0E68D /* Cats */,
+				3471CA6D1ACEB7D300B0E68D /* Doodads */,
+				3471CA6E1ACEB7E900B0E68D /* Others */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -505,12 +537,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3471CA661ACEA01500B0E68D /* LoginViewController.swift in Sources */,
 				342585391AACE0E6004A3CFD /* DoodadFactory.swift in Sources */,
 				3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */,
 				3425854E1AACE291004A3CFD /* HardLevel.swift in Sources */,
 				342584E71AACDB03004A3CFD /* GameScene.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
+				34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */,
 				3425854A1AACE27D004A3CFD /* BasicLevel.swift in Sources */,
 				342585411AACE196004A3CFD /* Cat.swift in Sources */,
 				3425851D1AACDF40004A3CFD /* SoundPlayer.swift in Sources */,

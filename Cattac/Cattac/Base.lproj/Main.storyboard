@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="l9H-8g-f4a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="TEk-2s-IZx">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
@@ -56,11 +56,37 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dHr-Q7-u4n" userLabel="loginButton">
+                                <rect key="frame" x="346" y="497" width="77" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Login">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginButtonPressed:" destination="TEk-2s-IZx" eventType="touchUpInside" id="UHh-W5-Syp"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oBL-aY-BBq" userLabel="loginUsername">
+                                <rect key="frame" x="234" y="280" width="300" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BHI-Xf-HdU" userLabel="loginPassword">
+                                <rect key="frame" x="234" y="396" width="300" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="loginButton" destination="dHr-Q7-u4n" id="cPC-bR-9Ub"/>
+                        <outlet property="loginPassword" destination="BHI-Xf-HdU" id="Wd8-2f-g7g"/>
+                        <outlet property="loginUsername" destination="oBL-aY-BBq" id="ryT-jP-Bag"/>
+                        <segue destination="l9H-8g-f4a" kind="show" identifier="loginSegue" id="BCb-yr-bj4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uFH-PK-WZe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -69,7 +95,7 @@
         <!--Menu View Controller-->
         <scene sceneID="1St-wI-Ric">
             <objects>
-                <viewController title="Menu View Controller" id="l9H-8g-f4a" customClass="MenuViewController" customModule="Cattac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="menuViewContoller" title="Menu View Controller" id="l9H-8g-f4a" customClass="MenuViewController" customModule="Cattac" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3Sy-4l-gj1"/>
                         <viewControllerLayoutGuide type="bottom" id="Ymq-Xp-alk"/>
@@ -222,8 +248,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Ioc-6a-4bE"/>
-        <segue reference="DDe-gm-5Ky"/>
+        <segue reference="BCb-yr-bj4"/>
+        <segue reference="5Us-b3-nph"/>
         <segue reference="qh7-d1-Fhq"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -22,6 +22,7 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
+    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     
     var scene: GameScene!
     let levelGenerator = LevelGenerator.sharedInstance
