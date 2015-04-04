@@ -6,7 +6,8 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var level: BasicLevel!
+    let level: BasicLevel!
+    let gameEngine: GameEngine!
     
     let tileSize: CGFloat!
     
@@ -26,9 +27,12 @@ class GameScene: SKScene {
         super.init(size: size)
         
         level = basicLevel
+        gameEngine = GameEngine(grid: level.grid, graph: level.graph)
         
+        // Initialize tileSize based on the number of columns
         tileSize = size.width / CGFloat(level.numColumns + 2)
         
+        // Sets the anchorpoint for the scene to be the center of the screen
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
         self.addChild(gameLayer)
@@ -56,9 +60,16 @@ class GameScene: SKScene {
             let location = touch.locationInNode(gameLayer)
             
             if let node = nodeForLocation(location) {
+                let path = gameEngine.pathTo(node)
+                var pathSequence: [SKAction] = []
                 
-                let action = SKAction.moveTo(node.sprite!.position, duration: 1)  //rushed code
-                level.cats.first!.getSprite().runAction(action) //rushed code
+                for edge in path {
+                    let destNode = edge.getDestination().getLabel()
+                    let action = SKAction.moveTo(destNode.sprite!.position, duration: 0.25)
+                    pathSequence.append(action)
+                }
+                
+                gameEngine.player!.getSprite().runAction(SKAction.sequence(pathSequence))
             }
         }
     }
@@ -72,19 +83,19 @@ class GameScene: SKScene {
     private func nodeForLocation(location: CGPoint) -> TileNode? {
         let col = Int((location.x + 5 * tileSize) / tileSize) // rushed code
         let row = Int((location.y + 5 * tileSize) / tileSize) // rushed code
-        return level.grid[col, row]
+        return level.grid[row, col]
     }
     
     private func addTiles() {
         for row in 0..<level.numRows {
             for column in 0..<level.numColumns {
-                if let tileNode = level.nodeAtColumn(column, row: row) {
+                if let tileNode = level.nodeAt(column, row: row) {
                     drawTile(tileNode)
                 }
             }
         }
     }
-    
+
     private func drawTile(tileNode: TileNode) {
         let spriteNode = tileNode.sprite!
         spriteNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)

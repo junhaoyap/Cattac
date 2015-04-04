@@ -295,86 +295,71 @@ class Graph<T: Hashable> {
         
         var arrayToReturn: [E] = [E]()
         
-        var visited: Dictionary<Int, Bool> = Dictionary<Int, Bool>()
-        var sortedNodesToVisit: [(N, Double)] = [(N, Double)]()
-        var distances: Dictionary<Int, Double> = Dictionary<Int, Double>()
-        var prevEdge: Dictionary<Int, E> = Dictionary<Int, E>()
-        var currentNode: N? = fromNode
-        var currentNodeHashValue: Int? = currentNode!.hashValue
+        // The shortest path function uses Dijkstra's Algorithm, the priority 
+        // queue is simply a sorted array here. It will need to be implemented 
+        // properly in the future to improve the performance of the algorithm.
+        var queue: [(node: N, distance: Double)] = [(fromNode, 0)]
+        var nodeInfo: [Int:(incomingEdge: E?, distance: Double)] = [:]
         
-        distances[currentNode!.hashValue] = 0
+        nodeInfo[fromNode.hashValue] = (incomingEdge: nil, distance: 0)
         
-        //  Relaxes from source to destination
-        func relax(sourceNode: N, destinationNode: N) {
-            if let edgeConnectingNodes = edgesFromNode(sourceNode, toNode: destinationNode).first {
-                let destinationNodeHashValue: Int = destinationNode.hashValue
-                let distanceToCurrentNode: Double = distances[currentNodeHashValue!]!
-                let distanceToDestinationNode: Double? = distances[destinationNodeHashValue]
-                let edgeConnectingNodesWeight: Double = edgeConnectingNodes.getWeight()
-                
-                if distanceToDestinationNode == nil {
-                    distances[destinationNodeHashValue] = distanceToCurrentNode + edgeConnectingNodesWeight
-                    prevEdge[destinationNodeHashValue] = edgeConnectingNodes
-                } else {
-                    if distanceToDestinationNode > distanceToCurrentNode + edgeConnectingNodesWeight {
-                        distances[destinationNodeHashValue] = distanceToCurrentNode + edgeConnectingNodesWeight
-                        prevEdge[destinationNodeHashValue] = edgeConnectingNodes
+        func relax(edge: E, sourceNodeDistance: Double) {
+            let destNode = edge.getDestination()
+            let destNodeHash = destNode.hashValue
+            
+            // Calculate the new estimate to destination node using this edge
+            let estimateDistance = sourceNodeDistance + edge.getWeight()
+            
+            if let destNodeInfo = nodeInfo[destNodeHash] {
+                // Updates the entry in the queue if the new estimated distance
+                // exists and is shorter than the existing estimate
+                let destNodeDistance = destNodeInfo.distance
+                if estimateDistance < destNodeDistance {
+                    nodeInfo[destNodeHash] =
+                        (incomingEdge: edge, distance: estimateDistance)
+                    
+                    // Updates the existing queue entry by finding the queue
+                    // index
+                    if let nodeIndex = find(queue.map( { (node,_) -> N in
+                        return node} ), destNode) {
+                        queue[nodeIndex].distance = estimateDistance
                     }
                 }
-            }
-            
-            visited[sourceNode.hashValue] = true
-        }
-        
-        //  Helps insert a node with it's corresponding weight so far to keep the array sorted
-        func insertNodeSorted(nodeToInsert: N, weightSoFar: Double) {
-            var indexToInsertAt = 0
-            
-            if sortedNodesToVisit.isEmpty {
-                sortedNodesToVisit.append((nodeToInsert, weightSoFar))
             } else {
-                let numberOfNodesInsertedBefore = sortedNodesToVisit.count
+                // Add a new entry into the queue if there are no previous 
+                // estimates for this destination node
+                nodeInfo[destNodeHash] =
+                    (incomingEdge: edge, distance: estimateDistance)
+                queue.append(node: destNode, distance: estimateDistance)
                 
-                while indexToInsertAt < numberOfNodesInsertedBefore && sortedNodesToVisit[indexToInsertAt].1 > weightSoFar {
-                    indexToInsertAt++
-                }
-                
-                sortedNodesToVisit.insert((nodeToInsert, weightSoFar), atIndex: indexToInsertAt)
+            }
+            
+            // The priority queue must be sorted at all times.
+            // It is in descending order to make it easy to extract the
+            // smallest element by removing from the end
+            queue.sort() { (T1, T2) -> Bool in
+                return T1.distance > T2.distance
             }
         }
         
-        while currentNode != nil {
-            visited[currentNodeHashValue!] = true
-            
-            for nodeToRelax in adjacentNodesFromNode(currentNode!) {
-                relax(currentNode!, nodeToRelax)
-                
-                if visited[nodeToRelax.hashValue] == nil {
-                    insertNodeSorted(nodeToRelax, distances[nodeToRelax.hashValue]!)
+        // Dijkstra's algorithm
+        while !queue.isEmpty {
+            var (node, distance) = queue.removeLast()
+            if let edges = adjacencyList[node.hashValue] {
+                for edge in edges {
+                    relax(edge, distance)
                 }
             }
-            
-            if sortedNodesToVisit.isEmpty {
-                currentNode = nil
-                currentNodeHashValue = nil
-            } else {
-                currentNode = sortedNodesToVisit.removeAtIndex(0).0
-                currentNodeHashValue = currentNode!.hashValue
-            }
         }
         
-        if visited[toNode.hashValue] == nil {
-            return [E]()
-        } else {
-            var nodeAt = toNode
-            
-            while nodeAt != fromNode {
-                var edgeBackwards = prevEdge[nodeAt.hashValue]
-                arrayToReturn.append(edgeBackwards!)
-                nodeAt = edgeBackwards!.getSource()
-            }
-            
-            return arrayToReturn.reverse()
+        var prevNode = toNode
+        
+        // Construct path
+        while let edge = nodeInfo[prevNode.hashValue]!.incomingEdge {
+            arrayToReturn.append(edge)
+            prevNode = edge.getSource()
         }
+        
+        return arrayToReturn.reverse()
     }
 }
