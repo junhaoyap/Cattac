@@ -375,11 +375,11 @@
 			isa = PBXGroup;
 			children = (
 				BDA19ABE1AD05F8200B7E9D4 /* Doodads */,
+				BDA19AC31AD0893400B7E9D4 /* Items */,
 				342585401AACE196004A3CFD /* Cat.swift */,
-				BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */,
 				BDA19AB91AD0382900B7E9D4 /* StatModification.swift */,
+				BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */,
 				BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */,
-				342585441AACE22C004A3CFD /* Item.swift */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -465,6 +465,14 @@
 				342585461AACE252004A3CFD /* Doodad.swift */,
 			);
 			name = Doodads;
+			sourceTree = "<group>";
+		};
+		BDA19AC31AD0893400B7E9D4 /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				342585441AACE22C004A3CFD /* Item.swift */,
+			);
+			name = Items;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
