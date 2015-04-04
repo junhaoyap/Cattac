@@ -6,6 +6,8 @@ import UIKit
 import Foundation
 
 struct Constants {
+    static let defaultNumberOfMeows = 100
+    
     struct BasicLevel {
         static let numRows: Int = 10
         static let numColumns: Int = 10
