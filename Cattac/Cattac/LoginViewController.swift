@@ -13,6 +13,17 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ref.authUser("b@b.com", password: "bbb",
+            withCompletionBlock: {
+                error, authData in
+                if error != nil {
+                    // There was an error logging in to this account
+                } else {
+                    self.performSegueWithIdentifier("loginSegue", sender: nil)
+                    // We are now logged in
+                }
+        })
     }
     
     override func didReceiveMemoryWarning() {
