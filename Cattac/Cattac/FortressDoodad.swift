@@ -1,9 +1,9 @@
 
 import SpriteKit
 
-class LandMineDoodad: Doodad {
+class FortressDoodad: Doodad {
     override func effect(cat: Cat) {
-        cat.inflict(Constants.Doodad.landMineDamage)
+        
     }
     
     override func isVisible() -> Bool {
@@ -11,6 +11,6 @@ class LandMineDoodad: Doodad {
     }
     
     override func getSprite() -> SKNode {
-        return SKLabelNode(text: "M")
+        return SKLabelNode(text: "F")
     }
 }

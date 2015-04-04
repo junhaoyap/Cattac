@@ -15,7 +15,7 @@ class DoodadFactory {
     
     enum DoodadType: Int {
         // let LandMine forever be the last doodad so the count works. any better implementation?
-        case Trampoline, WatchTower, LandMine
+        case Trampoline, WatchTower, Fortress, LandMine
         static var count: Int {
             return DoodadType.LandMine.hashValue + 1
         }
@@ -31,6 +31,8 @@ class DoodadFactory {
             return TrampolineDoodad()
         case .LandMine:
             return LandMineDoodad()
+        case .Fortress:
+            return FortressDoodad()
         default:
             return nil
         }
