@@ -157,6 +157,9 @@ class GameScene: SKScene {
         if gameEngine.state == GameState.StartMovesExecution {
             gameEngine.nextState()
             movePlayer()
+        } else if gameEngine.state == GameState.StartActionsExecution {
+            gameEngine.nextState()
+            performActions()
         }
     }
     
@@ -177,5 +180,12 @@ class GameScene: SKScene {
                 self.gameEngine.nextState()
             }
         )
+    }
+    
+    private func performActions() {
+        if let action = gameEngine.currentPlayerAction {
+            print(action)
+        }
+        gameEngine.nextState()
     }
 }

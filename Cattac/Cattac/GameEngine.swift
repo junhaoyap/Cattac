@@ -5,8 +5,7 @@
 import Foundation
 
 enum GameState {
-    case Precalculation, PlayerAction, ServerUpdate,
-    StartMovesExecution, MovesExecution, ActionsExecution, PostExecution
+    case Precalculation, PlayerAction, ServerUpdate, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
 }
 
 class GameEngine {
@@ -53,6 +52,8 @@ class GameEngine {
             break
         case .MovesExecution:
             break
+        case .StartActionsExecution:
+            break
         case .ActionsExecution:
             nextState()
         case .PostExecution:
@@ -72,6 +73,8 @@ class GameEngine {
         case .StartMovesExecution:
             state = GameState.MovesExecution
         case .MovesExecution:
+            state = GameState.StartActionsExecution
+        case .StartActionsExecution:
             state = GameState.ActionsExecution
         case .ActionsExecution:
             state = GameState.PostExecution
