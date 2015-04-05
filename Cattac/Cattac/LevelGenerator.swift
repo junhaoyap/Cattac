@@ -47,7 +47,7 @@ class LevelGenerator {
             
             while !hasDoodadBeenAdded {
                 let row = Int(arc4random_uniform(maxRow))
-                let cogl = Int(arc4random_uniform(maxCol))
+                let col = Int(arc4random_uniform(maxCol))
                 let location = GridIndex(row, col)
                 let doodad = doodadFactory.randomDoodad()
                 

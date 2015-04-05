@@ -44,6 +44,6 @@ class GameLevel {
     }
     
     func hasDoodad(atLocation gridIndex: GridIndex) -> Bool {
-        return grid[gridIndex]!.hasDoodad()
+        return grid[gridIndex]!.tileHasDoodad()
     }
 }
