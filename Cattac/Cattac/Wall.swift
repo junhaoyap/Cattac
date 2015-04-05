@@ -5,7 +5,7 @@ class Wall: Doodad {
     
     override init() {
         super.init()
-        setSprite(SKLabelNode(text: "W"))
+        setSprite(SKSpriteNode(imageNamed: "Rock.png"))
     }
     
     override func effect(cat: Cat) {
