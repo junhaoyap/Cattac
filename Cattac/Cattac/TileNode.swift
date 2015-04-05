@@ -19,7 +19,7 @@ class TileNode {
 
 extension TileNode: Printable {
     var description: String {
-        return "square:(\(column),\(row))"
+        return "square:(\(row),\(column))"
     }
 }
 
