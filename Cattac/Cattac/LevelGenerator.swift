@@ -43,11 +43,38 @@ class LevelGenerator {
         let maxRow = UInt32(level.numRows)
         
         for i in 0...level.numDoodads {
-            let row = Int(arc4random_uniform(maxRow))
-            let col = Int(arc4random_uniform(maxCol))
-            let location = GridIndex(row, col)
-            let doodad = doodadFactory.randomDoodad()
-            level.addDoodad(doodad, atLocation: location)
+            var hasDoodadBeenAdded = false
+            
+            while !hasDoodadBeenAdded {
+                let row = Int(arc4random_uniform(maxRow))
+                let col = Int(arc4random_uniform(maxCol))
+                let location = GridIndex(row, col)
+                let doodad = doodadFactory.randomDoodad()
+                
+                if !level.hasDoodad(atLocation: location) {
+                    level.addDoodad(doodad, atLocation: location)
+                    
+                    hasDoodadBeenAdded = true
+                }
+            }
+        }
+        
+        for i in 0...level.numWalls {
+            var hasWallBeenAdded = false
+            
+            while !hasWallBeenAdded {
+                let row = Int(arc4random_uniform(maxRow))
+                let col = Int(arc4random_uniform(maxCol))
+                let location = GridIndex(row, col)
+                let doodad = doodadFactory.generateWall()
+                
+                if !level.hasDoodad(atLocation: location) {
+                    let tileNode = level.addDoodad(doodad, atLocation:location)
+                    level.graph.removeNode((Node(tileNode)))
+                    
+                    hasWallBeenAdded = true
+                }
+            }
         }
     }
 }

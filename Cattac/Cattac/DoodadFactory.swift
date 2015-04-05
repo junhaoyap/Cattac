@@ -38,6 +38,10 @@ class DoodadFactory {
         }
     }
     
+    func generateWall() -> Doodad {
+        return Wall()
+    }
+    
     func randomDoodad() -> Doodad {
         return createDoodad(randomDoodadType())!
     }

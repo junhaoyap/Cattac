@@ -4,6 +4,7 @@ class GameLevel {
     let numColumns: Int
     let numRows: Int
     var numDoodads: Int = Constants.Level.defaultDoodads
+    var numWalls: Int = Constants.Level.defaultWalls
     
     var grid: Grid<TileNode>!
     var graph: Graph<TileNode>!
@@ -38,7 +39,13 @@ class GameLevel {
         return grid[row, column]
     }
     
-    func addDoodad(doodad: Doodad, atLocation gridIndex: GridIndex) {
-        grid[gridIndex]!.setDoodad(doodad)
+    func addDoodad(doodad: Doodad, atLocation gridIndex: GridIndex) -> TileNode {
+        var tileNode = grid[gridIndex]!
+        tileNode.setDoodad(doodad)
+        return tileNode
+    }
+    
+    func hasDoodad(atLocation gridIndex: GridIndex) -> Bool {
+        return grid[gridIndex]!.tileHasDoodad()
     }
 }

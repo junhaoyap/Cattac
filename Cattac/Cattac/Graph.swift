@@ -28,16 +28,16 @@ class Graph<T: Hashable> {
     typealias E = Edge<T>
     
     let isDirected: Bool
-    private var dictionaryOfNodes: Dictionary<Int, N>
-    private var dictionaryOfEdges: Dictionary<Int, E>
-    private var adjacencyList: Dictionary<Int, [E]>
+    private var dictionaryOfNodes: [Int:N]
+    private var dictionaryOfEdges: [Int:E]
+    private var adjacencyList: [Int:[Int:[E]]]
     
     //  Construct a directed or undirected graph.
     init(isDirected: Bool) {
         self.isDirected = isDirected
-        self.dictionaryOfNodes = Dictionary<Int, N>()
-        self.dictionaryOfEdges = Dictionary<Int, E>()
-        self.adjacencyList = Dictionary<Int, [E]>()
+        self.dictionaryOfNodes = [:]
+        self.dictionaryOfEdges = [:]
+        self.adjacencyList = [:]
         
         _checkRep()
     }
@@ -45,12 +45,10 @@ class Graph<T: Hashable> {
     func addNode(addedNode: N) {
         _checkRep()
         
-        if containsNode(addedNode) {
-            //  do nothing
-        } else {
-            self.dictionaryOfNodes[addedNode.hashValue] = addedNode
-            
-            self.adjacencyList[addedNode.hashValue] = [E]()
+        if !containsNode(addedNode) {
+            let addedNodeHash = addedNode.hashValue
+            dictionaryOfNodes[addedNodeHash] = addedNode
+            adjacencyList[addedNodeHash] = [:]
         }
         
         _checkRep()
@@ -59,27 +57,39 @@ class Graph<T: Hashable> {
     func removeNode(removedNode: N) {
         _checkRep()
         
-        if !containsNode(removedNode) {
-            //  do nothing
-        } else {
-            self.dictionaryOfNodes[removedNode.hashValue] = nil
+        if containsNode(removedNode) {
+            let removedNodeHash = removedNode.hashValue
             
-            if let edgeList = self.adjacencyList[removedNode.hashValue] {
-                for edge in edgeList {
-                    removeEdge(edge)
+            // Remove entry from dictionary of nodes
+            dictionaryOfNodes.removeValueForKey(removedNodeHash)
+            
+            if isDirected {
+                // Remove all edges that goes to the removed node
+                for (nodeKey, _) in dictionaryOfNodes {
+                    adjacencyList[nodeKey]!.removeValueForKey(removedNodeHash)
+                }
+            } else {
+                // Remove all undirected edges for the removed node
+                if let outgoingEdges = adjacencyList[removedNodeHash] {
+                    for (_, edges) in outgoingEdges {
+                        for edge in edges {
+                            removeEdge(edge)
+                        }
+                    }
                 }
             }
             
-            self.adjacencyList[removedNode.hashValue] = nil
+            // Remove adjacency list entry for the removed node
+            adjacencyList.removeValueForKey(removedNodeHash)
         }
-        
+    
         _checkRep()
     }
     
     func containsNode(targetNode: N) -> Bool {
         _checkRep()
         
-        if targetNode == self.dictionaryOfNodes[targetNode.hashValue] {
+        if targetNode == dictionaryOfNodes[targetNode.hashValue] {
             return true
         } else {
             return false
@@ -89,46 +99,39 @@ class Graph<T: Hashable> {
     func addEdge(addedEdge: E) {
         _checkRep()
         
-        if containsEdge(addedEdge) {
-            //  do nothing
-        } else {
-            if !containsNode(addedEdge.getSource()) {
-                addNode(addedEdge.getSource())
-            }
-            
-            if !containsNode(addedEdge.getDestination()) {
-                addNode(addedEdge.getDestination())
-            }
-            
-            self.dictionaryOfEdges[addedEdge.hashValue] = addedEdge
-            
-            if let addedEdgeList = self.adjacencyList[addedEdge.getSource().hashValue] {
-                self.adjacencyList[addedEdge.getSource().hashValue]!.append(addedEdge)
+        func addDirectedEdge(edge: E, sourceNodeHash: Int, destNodeHash: Int) {
+            if let sourceNodeEdges = adjacencyList[sourceNodeHash] {
+                if sourceNodeEdges[destNodeHash] == nil {
+                    adjacencyList[sourceNodeHash]![destNodeHash] = [edge]
+                } else {
+                    adjacencyList[sourceNodeHash]![destNodeHash]!.append(edge)
+                }
             } else {
-                var newEdgeListToUse = [E]()
-                
-                newEdgeListToUse.append(addedEdge)
-                self.adjacencyList[addedEdge.getSource().hashValue] = newEdgeListToUse
+                let edges = [destNodeHash:[edge]]
+                adjacencyList[sourceNodeHash] = edges
+            }
+        }
+        
+        if !containsEdge(addedEdge) {
+            let sourceNode = addedEdge.getSource()
+            let destNode = addedEdge.getDestination()
+            
+            let sourceNodeHash = sourceNode.hashValue
+            let destNodeHash = destNode.hashValue
+            
+            if !containsNode(sourceNode) {
+                addNode(sourceNode)
             }
             
+            if !containsNode(destNode) {
+                addNode(destNode)
+            }
+            
+            dictionaryOfEdges[addedEdge.hashValue] = addedEdge
+            addDirectedEdge(addedEdge, sourceNodeHash, destNodeHash)
             
             if !self.isDirected {
-                var reversedAddedEdge = addedEdge.reverse()
-                
-                if containsEdge(reversedAddedEdge) {
-                    //  do nothing
-                } else {
-                    dictionaryOfEdges[reversedAddedEdge.hashValue] = reversedAddedEdge
-                    
-                    if let reversedAddedEdgeList = self.adjacencyList[reversedAddedEdge.getSource().hashValue] {
-                        self.adjacencyList[reversedAddedEdge.getSource().hashValue]!.append(reversedAddedEdge)
-                    } else {
-                        var newEdgeListToUse = [E]()
-                        
-                        newEdgeListToUse.append(reversedAddedEdge)
-                        self.adjacencyList[reversedAddedEdge.getSource().hashValue] = newEdgeListToUse
-                    }
-                }
+                addDirectedEdge(addedEdge.reverse(), destNodeHash, sourceNodeHash)
             }
         }
         
@@ -138,59 +141,30 @@ class Graph<T: Hashable> {
     func removeEdge(removedEdge: E) {
         _checkRep()
         
-        if !containsEdge(removedEdge) {
-            //  do nothing
-        } else {
-            self.dictionaryOfEdges[removedEdge.hashValue] = nil
-            
-            var currentEdgeList1 = self.adjacencyList[removedEdge.getSource().hashValue]
-            
-            var indexToRemoveAt1 = -1
-            
-            if currentEdgeList1 != nil {
-                for (index, edge) in enumerate(currentEdgeList1!) {
-                    if edge == removedEdge {
-                        indexToRemoveAt1 = index
-                    }
-                }
-                
-                if indexToRemoveAt1 != -1 {
-                    currentEdgeList1!.removeAtIndex(indexToRemoveAt1)
-                }
-                
-                if currentEdgeList1!.isEmpty {
-                    self.adjacencyList[removedEdge.getSource().hashValue] = nil
+        func removeDirectedEdge(edge: E, sourceNodeHash: Int, destNodeHash: Int) {
+            if let edgesFromSourceNode = adjacencyList[sourceNodeHash] {
+                let edgesFromSourceNodeToDestNode = edgesFromSourceNode[destNodeHash]!
+                if edgesFromSourceNodeToDestNode.count > 1 {
+                    adjacencyList[sourceNodeHash]![destNodeHash] =
+                        edgesFromSourceNodeToDestNode.filter() { $0 != removedEdge }
                 } else {
-                    self.adjacencyList[removedEdge.getSource().hashValue] = currentEdgeList1
+                    adjacencyList[sourceNodeHash]!.removeValueForKey(destNodeHash)
                 }
             }
+        }
+        
+        if containsEdge(removedEdge) {
+            let sourceNode = removedEdge.getSource()
+            let destNode = removedEdge.getDestination()
+            
+            let sourceNodeHash = sourceNode.hashValue
+            let destNodeHash = destNode.hashValue
+            
+            dictionaryOfEdges.removeValueForKey(removedEdge.hashValue)
+            removeDirectedEdge(removedEdge, sourceNodeHash, destNodeHash)
             
             if !self.isDirected {
-                var reversedRemovedEdge = removedEdge.reverse()
-                
-                self.dictionaryOfEdges[reversedRemovedEdge.hashValue] = nil
-                
-                var currentEdgeList2 = self.adjacencyList[reversedRemovedEdge.getSource().hashValue]
-                
-                var indexToRemoveAt2 = -1
-                
-                if currentEdgeList2 != nil {
-                    for (index, edge) in enumerate(currentEdgeList2!) {
-                        if edge == removedEdge {
-                            indexToRemoveAt2 = index
-                        }
-                    }
-                    
-                    if indexToRemoveAt2 != -1 {
-                        currentEdgeList2!.removeAtIndex(indexToRemoveAt2)
-                    }
-                    
-                    if currentEdgeList2!.isEmpty {
-                        self.adjacencyList[reversedRemovedEdge.getSource().hashValue] = nil
-                    } else {
-                        self.adjacencyList[reversedRemovedEdge.getSource().hashValue] = currentEdgeList2
-                    }
-                }
+                removeDirectedEdge(removedEdge.reverse(), destNodeHash, sourceNodeHash)
             }
         }
         
@@ -210,33 +184,25 @@ class Graph<T: Hashable> {
     func edgesFromNode(fromNode: N, toNode: N) -> [E] {
         _checkRep()
         
-        var arrayToReturn: [E] = [E]()
-        
-        if let edgeList = self.adjacencyList[fromNode.hashValue] {
-            for edge in edgeList {
-                if edge.getDestination() == toNode {
-                    arrayToReturn.append(edge)
-                }
+        if let edgesFromSourceNode = adjacencyList[fromNode.hashValue] {
+            if let edgesFromSourceNodeToDestNode = edgesFromSourceNode[toNode.hashValue] {
+                return edgesFromSourceNodeToDestNode
             }
         }
         
-        return arrayToReturn
+        return []
     }
     
     func adjacentNodesFromNode(fromNode: N) -> [N] {
         _checkRep()
         
-        var dictionaryOfVisitableNodes: Dictionary<Int, N> = Dictionary<Int, N>()
+        var arrayToReturn = [N]()
         
-        if let edgeList = self.adjacencyList[fromNode.hashValue] {
-            for edge in edgeList {
-                if dictionaryOfVisitableNodes[edge.getDestination().hashValue] == nil {
-                    dictionaryOfVisitableNodes[edge.getDestination().hashValue] = edge.getDestination()
-                }
+        if let edgesFromSourceNode = adjacencyList[fromNode.hashValue] {
+            for key in edgesFromSourceNode.keys {
+                arrayToReturn.append(dictionaryOfNodes[key]!)
             }
         }
-        
-        var arrayToReturn: [N] = [N](dictionaryOfVisitableNodes.values)
         
         return arrayToReturn
     }
@@ -345,9 +311,11 @@ class Graph<T: Hashable> {
         // Dijkstra's algorithm
         while !queue.isEmpty {
             var (node, distance) = queue.removeLast()
-            if let edges = adjacencyList[node.hashValue] {
-                for edge in edges {
-                    relax(edge, distance)
+            if let edgesFromSourceNode = adjacencyList[node.hashValue] {
+                for (_, edges) in edgesFromSourceNode {
+                    for edge in edges {
+                        relax(edge, distance)
+                    }
                 }
             }
         }
@@ -365,29 +333,30 @@ class Graph<T: Hashable> {
     
     func getNodesInRange(fromNode: N, range: Int) -> [Int:N] {
         var nodes: [Int:N] = [:]
+        var neighbours: [N] = []
         
         if range == 0 {
             return nodes
         }
         
-        let neighbours = adjacencyList[fromNode.hashValue]!.map { edge -> N in
-            return edge.getDestination()
-        }
-        
-        // Add all neighbours
-        for node in neighbours {
-            nodes[node.hashValue] = node
+        if let edgesFromSourceNode = adjacencyList[fromNode.hashValue] {
+            for (destNodeHash, _) in edgesFromSourceNode {
+                let node = dictionaryOfNodes[destNodeHash]!
+                nodes[destNodeHash] = node
+                neighbours.append(node)
+            }
         }
         
         // Add neighbours of neighbours
         for node in neighbours {
             let nodeNeighbours = getNodesInRange(node, range: range - 1)
             for (hash, nodeNeighbour) in nodeNeighbours {
-                if nodes.indexForKey(hash) == nil {
+                if nodes[hash] == nil {
                     nodes[hash] = nodeNeighbour
                 }
             }
         }
+
         return nodes
     }
 }

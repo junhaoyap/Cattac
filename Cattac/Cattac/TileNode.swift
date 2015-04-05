@@ -15,6 +15,10 @@ class TileNode {
     func setDoodad(doodad: Doodad) {
         self.doodad = doodad
     }
+    
+    func tileHasDoodad() -> Bool {
+        return self.doodad != nil
+    }
 }
 
 extension TileNode: Printable {
