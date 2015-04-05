@@ -1,34 +1,15 @@
 import Foundation
 import SpriteKit
 
-enum NodeType: Int {
-    case Unknown = 0, Grass
-    var spriteName: String {
-        let spriteNames = [
-            "Grass.jpg"
-        ]
-        
-        return spriteNames[rawValue - 1]
-    }
-}
-
-extension NodeType: Printable {
-    var description: String {
-        return spriteName
-    }
-}
-
 class TileNode {
     var column: Int
     var row: Int
-    let nodeType: NodeType
     var sprite: SKSpriteNode?
     var doodad: Doodad?
     
-    init(column: Int, row: Int, nodeType: NodeType) {
+    init(row: Int, column: Int) {
         self.column = column
         self.row = row
-        self.nodeType = nodeType
     }
     
     func setDoodad(doodad: Doodad) {
@@ -38,7 +19,7 @@ class TileNode {
 
 extension TileNode: Printable {
     var description: String {
-        return "type:\(nodeType) square:(\(column),\(row))"
+        return "square:(\(column),\(row))"
     }
 }
 

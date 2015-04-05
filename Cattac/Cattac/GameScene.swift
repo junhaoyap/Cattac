@@ -118,7 +118,7 @@ class GameScene: SKScene, GameStateListener {
     private func addTiles() {
         for row in 0..<level.numRows {
             for column in 0..<level.numColumns {
-                if let tileNode = level.nodeAt(column, row: row) {
+                if let tileNode = level.nodeAt(row, column) {
                     drawTile(tileNode)
                 }
             }

@@ -8,7 +8,7 @@ class GameLevel {
     var grid: Grid<TileNode>!
     var graph: Graph<TileNode>!
     
-    init(columns: Int, rows: Int) {
+    init(rows: Int, columns: Int) {
         numColumns = columns
         numRows = rows
         grid = Grid<TileNode>(columns: numColumns, rows: numRows)
@@ -32,7 +32,7 @@ class GameLevel {
         }
     }
     
-    func nodeAt(column: Int, row: Int) -> TileNode? {
+    func nodeAt(row: Int, _ column: Int) -> TileNode? {
         assert(column >= 0 && column < numColumns)
         assert(row >= 0 && row < numRows)
         return grid[row, column]

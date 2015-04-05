@@ -6,6 +6,6 @@ import Foundation
 
 class BasicLevel: GameLevel {
     init() {
-        super.init(columns: Constants.Level.basicColumns, rows: Constants.Level.basicRows)
+        super.init(rows: Constants.Level.basicRows, columns: Constants.Level.basicColumns)
     }
 }
