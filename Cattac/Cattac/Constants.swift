@@ -14,6 +14,7 @@ struct Constants {
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2
+        static let fortressDefenceModification = 2
         static let trampolineMoveRangeModification = 1
         static let landMineDamage = 10
     }
@@ -23,21 +24,23 @@ struct Constants {
     static let catArray = [catName.nyanCat, catName.nalaCat, catName.grumpyCat, catName.pusheenCat]
     
     struct catAttributes {
-        // always hp, puiDmg then fartDmg
+        // always hp, defence, puiDmg then fartDmg
         
-        static let nyanCatAttributes = [500, 50, 25]
+        static let nyanCatAttributes = [500, 1, 50, 25]
         // nyan cat is the most balanced cat
         
-        static let nalaCatAttributes = [600, 45, 20]
+        static let nalaCatAttributes = [600, 1, 45, 20]
         // nala cat is thicker, but does less dmg
         
-        static let grumpyCatAttributes = [400, 55, 30]
+        static let grumpyCatAttributes = [400, 1, 55, 30]
         // grumpy cat is thinner, but does more dmg
         
-        static let pusheenCatAttributes = [500, 40, 30]
+        static let pusheenCatAttributes = [500, 1, 40, 30]
         // pusheen cat pui for less dmg, but does more fartdmg, otherwise balanced
         
         static let poopDmg = 15
+        static let moveRange = 2
+        static let fartRange = 2
     }
     
     struct catName {

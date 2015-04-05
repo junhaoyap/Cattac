@@ -2,6 +2,14 @@
     Doodad Factory, for creating Doodad objects
 */
 
+enum DoodadType: Int {
+    // let LandMine forever be the last doodad so the count works. any better implementation?
+    case Trampoline, WatchTower, Fortress, LandMine
+    static var count: Int {
+        return DoodadType.LandMine.hashValue + 1
+    }
+}
+
 private let _doodadFactorySharedInstance: DoodadFactory = DoodadFactory()
 
 class DoodadFactory {
@@ -11,14 +19,6 @@ class DoodadFactory {
     
     class var sharedInstance: DoodadFactory {
         return _doodadFactorySharedInstance
-    }
-    
-    enum DoodadType: Int {
-        // let LandMine forever be the last doodad so the count works. any better implementation?
-        case Trampoline, WatchTower, Fortress, LandMine
-        static var count: Int {
-            return DoodadType.LandMine.hashValue + 1
-        }
     }
     
     func createDoodad(doodadType: DoodadType) -> Doodad? {

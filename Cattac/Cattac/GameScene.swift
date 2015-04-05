@@ -4,7 +4,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, GameStateListener {
     
     let level: BasicLevel!
     let gameEngine: GameEngine!
@@ -14,6 +14,8 @@ class GameScene: SKScene {
     let gameLayer = SKNode()
     let tilesLayer = SKNode()
     let entityLayer = SKNode()
+    
+    var reachableNodeHighlights = [Int:SKNode]()
     
     private var previewNode: SKSpriteNode!
     
@@ -30,6 +32,7 @@ class GameScene: SKScene {
         
         level = basicLevel
         gameEngine = GameEngine(grid: level.grid, graph: level.graph)
+        gameEngine.gameStateListener = self
         
         // Initialize tileSize based on the number of columns
         tileSize = size.width / CGFloat(level.numColumns + 2)
@@ -188,5 +191,54 @@ class GameScene: SKScene {
             print(action)
         }
         gameEngine.nextState()
+    }
+    
+    func onStateUpdate(state: GameState) {
+        switch state {
+        case .Precalculation:
+            break
+        case .PlayerAction:
+            deleteRemovedDoodads()
+            highlightReachableNodes()
+            break
+        case .ServerUpdate:
+            removeHighlights()
+            break
+        case .StartMovesExecution:
+            break
+        case .MovesExecution:
+            break
+        case .StartActionsExecution:
+            break
+        case .ActionsExecution:
+            break
+        case .PostExecution:
+            break
+        }
+    }
+    
+    private func highlightReachableNodes() {
+        for node in gameEngine.reachableNodes.values {
+            let referenceNode = node.getLabel().sprite!
+            let highlightNode = SKShapeNode(rectOfSize: referenceNode.size)
+            highlightNode.fillColor = SKColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+            highlightNode.position = referenceNode.position
+            reachableNodeHighlights[highlightNode.hashValue] = highlightNode
+            tilesLayer.addChild(highlightNode)
+        }
+    }
+    
+    private func removeHighlights() {
+        tilesLayer.removeChildrenInArray([SKNode](reachableNodeHighlights.values))
+        reachableNodeHighlights.removeAll(keepCapacity: false)
+    }
+    
+    private func deleteRemovedDoodads() {
+        let removedSprites = gameEngine.removedDoodads.values.map {
+            (doodad) -> SKNode in
+            return doodad.getSprite()
+        }
+        entityLayer.removeChildrenInArray([SKNode](removedSprites))
+        gameEngine.removedDoodads.removeAll(keepCapacity: false)
     }
 }

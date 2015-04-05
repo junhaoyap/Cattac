@@ -8,9 +8,14 @@ enum GameState {
     case Precalculation, PlayerAction, ServerUpdate, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
 }
 
+protocol GameStateListener {
+    func onStateUpdate(state: GameState)
+}
+
 class GameEngine {
-    let catFactory = CatFactory()
+    let catFactory = CatFactory.sharedInstance
     var state: GameState = GameState.Precalculation
+    var gameStateListener: GameStateListener?
     var player: Cat!
     private var grid: Grid<TileNode>!
     private var graph: Graph<TileNode>!
@@ -18,6 +23,7 @@ class GameEngine {
     private var allPlayerMoveToPositions: [String:TileNode] = [:]
     private var allPlayerActions: [String:Action] = [:]
     var reachableNodes: [Int:Node<TileNode>] = [:]
+    var removedDoodads = [Int:Doodad]()
     private var events: [String:()->()] = [:]
     
     init(grid: Grid<TileNode>, graph: Graph<TileNode>) {
@@ -81,6 +87,10 @@ class GameEngine {
         case .PostExecution:
             state = GameState.Precalculation
         }
+        
+        if let listener = gameStateListener {
+            listener.onStateUpdate(state)
+        }
     }
     
     var currentPlayerNode: TileNode {
@@ -95,7 +105,13 @@ class GameEngine {
     func precalculate() {
         if let doodad = currentPlayerNode.doodad {
             doodad.effect(player)
+            
+            if doodad.isRemoved() {
+                currentPlayerNode.doodad = nil
+                removedDoodads[doodad.getSprite().hashValue] = doodad
+            }
         }
+        
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
         allPlayerActions = [:]
     }

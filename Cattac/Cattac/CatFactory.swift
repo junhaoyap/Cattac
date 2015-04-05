@@ -2,46 +2,42 @@
     Cat Factory, for creating Cat objects
 */
 
+private let _catFactorySharedInstance: CatFactory = CatFactory()
+
 class CatFactory {
+    
+    private init() {
+    }
+    
+    class var sharedInstance: CatFactory {
+        return _catFactorySharedInstance
+    }
     
     func createCat(nameOfCatToCreate: String) -> Cat? {
         var catToReturn: Cat?
+        var catAttributes: [Int]?
         
         switch nameOfCatToCreate {
         case Constants.catName.nyanCat:
-            let catAttributes = Constants.catAttributes.nyanCatAttributes
-            catToReturn = Cat(
-                catName: nameOfCatToCreate,
-                catHp: catAttributes[0],
-                catPuiDmg: catAttributes[1],
-                catFartDmg: catAttributes[2]
-            )
+            catAttributes = Constants.catAttributes.nyanCatAttributes
         case Constants.catName.nalaCat:
-            let catAttributes = Constants.catAttributes.nalaCatAttributes
-            catToReturn = Cat(
-                catName: nameOfCatToCreate,
-                catHp: catAttributes[0],
-                catPuiDmg: catAttributes[1],
-                catFartDmg: catAttributes[2]
-            )
+            catAttributes = Constants.catAttributes.nalaCatAttributes
         case Constants.catName.grumpyCat:
-            let catAttributes = Constants.catAttributes.grumpyCatAttributes
-            catToReturn = Cat(
-                catName: nameOfCatToCreate,
-                catHp: catAttributes[0],
-                catPuiDmg: catAttributes[1],
-                catFartDmg: catAttributes[2]
-            )
+            catAttributes = Constants.catAttributes.grumpyCatAttributes
         case Constants.catName.pusheenCat:
-            let catAttributes = Constants.catAttributes.pusheenCatAttributes
-            catToReturn = Cat(
-                catName: nameOfCatToCreate,
-                catHp: catAttributes[0],
-                catPuiDmg: catAttributes[1],
-                catFartDmg: catAttributes[2]
-            )
+            catAttributes = Constants.catAttributes.pusheenCatAttributes
         default:
             break
+        }
+        
+        if let attr = catAttributes {
+            catToReturn = Cat(
+                catName: nameOfCatToCreate,
+                catHp: attr[0],
+                catDef: attr[1],
+                catPuiDmg: attr[2],
+                catFartDmg: attr[3]
+            )
         }
 
         return catToReturn

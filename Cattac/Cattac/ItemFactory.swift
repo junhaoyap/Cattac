@@ -2,7 +2,16 @@
     ItemFactory, for creating Item objects
 */
 
+private let _itemFactorySharedInstance: ItemFactory = ItemFactory()
+
 class ItemFactory {
+    
+    private init() {
+    }
+    
+    class var sharedInstance: ItemFactory {
+        return _itemFactorySharedInstance
+    }
     
     func createItem(nameOfItemToCreate: String) -> Item? {
         var ItemToReturn: Item?
@@ -20,4 +29,5 @@ class ItemFactory {
         
         return ItemToReturn
     }
+    
 }

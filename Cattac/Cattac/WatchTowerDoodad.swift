@@ -2,17 +2,18 @@
 import SpriteKit
 
 class WatchTowerDoodad: Doodad {
-    let actionRangeModification = StatModification(Constants.Doodad.watchTowerActionRangeModification, life: 1)
+    let fartRangeModification = StatModification(Constants.Doodad.watchTowerActionRangeModification, life: 1)
+    
+    override init() {
+        super.init()
+        setSprite(SKLabelNode(text: "T"))
+    }
     
     override func effect(cat: Cat) {
-        cat.actionRangeMods += [actionRangeModification]
+        cat.fartRangeMods += [fartRangeModification]
     }
     
     override func isVisible() -> Bool {
         return true
-    }
-    
-    override func getSprite() -> SKNode {
-        return SKLabelNode(text: "T")
     }
 }
