@@ -7,6 +7,7 @@ import SpriteKit
 class Doodad: TileEntity {
     
     private var removed = false
+    private var sprite: SKNode = SKSpriteNode(imageNamed: "Nala.png")
     
     func effect(cat: Cat) {
         // inheriting doodads to implement effect, if any.
@@ -21,8 +22,11 @@ class Doodad: TileEntity {
     }
     
     func getSprite() -> SKNode {
-        // inheriting doodads to override.
-        return SKSpriteNode(imageNamed: "Nala.png")
+        return sprite
+    }
+    
+    func setSprite(sprite: SKNode) {
+        self.sprite = sprite
     }
     
     func isVisible() -> Bool {

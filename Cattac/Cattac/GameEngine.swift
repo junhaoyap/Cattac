@@ -13,7 +13,7 @@ protocol GameStateListener {
 }
 
 class GameEngine {
-    let catFactory = CatFactory()
+    let catFactory = CatFactory.sharedInstance
     var state: GameState = GameState.Precalculation
     var gameStateListener: GameStateListener?
     var player: Cat!

@@ -14,6 +14,7 @@ struct Constants {
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2
+        static let fortressDefenceModification = 2
         static let trampolineMoveRangeModification = 1
         static let landMineDamage = 10
     }
