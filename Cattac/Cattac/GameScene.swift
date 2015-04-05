@@ -103,6 +103,10 @@ class GameScene: SKScene, GameStateListener {
         gameEngine.nextState()
     }
     
+    override func update(currentTime: CFTimeInterval) {
+        gameEngine.gameLoop()
+    }
+    
     private func pointFor(row: Int, _ column: Int) -> CGPoint {
         return CGPoint(
             x: CGFloat(column) * tileSize + tileSize / 2,
@@ -155,17 +159,6 @@ class GameScene: SKScene, GameStateListener {
         entityNode.position = spriteNode.position
         entityLayer.addChild(entityNode)
     }
-   
-    override func update(currentTime: CFTimeInterval) {
-        gameEngine.gameLoop()
-        if gameEngine.state == GameState.StartMovesExecution {
-            gameEngine.nextState()
-            movePlayer()
-        } else if gameEngine.state == GameState.StartActionsExecution {
-            gameEngine.nextState()
-            performActions()
-        }
-    }
     
     private func movePlayer() {
         let path = gameEngine.pathTo(gameEngine.currentPlayerMoveToNode)
@@ -205,11 +198,13 @@ class GameScene: SKScene, GameStateListener {
             removeHighlights()
             break
         case .StartMovesExecution:
-            break
+            gameEngine.nextState()
+            movePlayer()
         case .MovesExecution:
             break
         case .StartActionsExecution:
-            break
+            gameEngine.nextState()
+            performActions()
         case .ActionsExecution:
             break
         case .PostExecution:
