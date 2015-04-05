@@ -188,7 +188,7 @@ class GameScene: SKScene, GameStateListener {
     
     private func performActions() {
         if let action = gameEngine.currentPlayerAction {
-            print(action)
+            println(action)
         }
         gameEngine.nextState()
     }

@@ -13,7 +13,7 @@ enum ActionType {
 }
 
 enum Direction: Int {
-    case All, Top, Right, Bottom, Left
+    case All = 0, Top, Right, Bottom, Left
     private var name: String {
         let names = [
             "all directions",
@@ -23,7 +23,7 @@ enum Direction: Int {
             "left direction"
         ]
         
-        return names[rawValue - 1]
+        return names[rawValue]
     }
 }
 
