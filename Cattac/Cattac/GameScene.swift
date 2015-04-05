@@ -59,6 +59,7 @@ class GameScene: SKScene, GameStateListener {
         
         previewNode = SKSpriteNode(imageNamed: "Nala.png")
         previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
+        previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
     }
