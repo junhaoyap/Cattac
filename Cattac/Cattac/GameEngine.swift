@@ -8,9 +8,14 @@ enum GameState {
     case Precalculation, PlayerAction, ServerUpdate, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
 }
 
+protocol GameStateListener {
+    func onStateUpdate(state: GameState)
+}
+
 class GameEngine {
     let catFactory = CatFactory()
     var state: GameState = GameState.Precalculation
+    var gameStateListener: GameStateListener?
     var player: Cat!
     private var grid: Grid<TileNode>!
     private var graph: Graph<TileNode>!
@@ -49,6 +54,7 @@ class GameEngine {
             // Goes to next state for now
             nextState()
         case .StartMovesExecution:
+            startMovesExecution()
             break
         case .MovesExecution:
             break
@@ -81,6 +87,10 @@ class GameEngine {
         case .PostExecution:
             state = GameState.Precalculation
         }
+        
+        if let listener = gameStateListener {
+            listener.onStateUpdate(state)
+        }
     }
     
     var currentPlayerNode: TileNode {
@@ -98,6 +108,10 @@ class GameEngine {
         }
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
         allPlayerActions = [:]
+    }
+    
+    func startMovesExecution() {
+        
     }
     
     func postExecute() {

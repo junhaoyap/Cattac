@@ -1,13 +1,4 @@
-//
-//  TileNode.swift
-//  Cattac
-//
-//  Created by Steven Khong on 27/3/15.
-//  Copyright (c) 2015 National University of Singapore (Department of Computer Science). All rights reserved.
-//
-
 import Foundation
-
 import SpriteKit
 
 enum NodeType: Int {
@@ -25,7 +16,6 @@ extension NodeType: Printable {
     var description: String {
         return spriteName
     }
-    
 }
 
 class TileNode {
@@ -50,7 +40,6 @@ extension TileNode: Printable {
     var description: String {
         return "type:\(nodeType) square:(\(column),\(row))"
     }
-    
 }
 
 extension TileNode: Hashable {
@@ -64,4 +53,3 @@ extension TileNode: Hashable {
 func ==(lhs: TileNode, rhs: TileNode) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
-

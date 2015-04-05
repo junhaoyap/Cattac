@@ -2,10 +2,10 @@
 import SpriteKit
 
 class WatchTowerDoodad: Doodad {
-    let actionRangeModification = StatModification(Constants.Doodad.watchTowerActionRangeModification, life: 1)
+    let fartRangeModification = StatModification(Constants.Doodad.watchTowerActionRangeModification, life: 1)
     
     override func effect(cat: Cat) {
-        cat.actionRangeMods += [actionRangeModification]
+        cat.fartRangeMods += [fartRangeModification]
     }
     
     override func isVisible() -> Bool {
