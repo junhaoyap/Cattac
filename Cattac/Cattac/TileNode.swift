@@ -4,12 +4,26 @@ import SpriteKit
 class TileNode {
     var column: Int
     var row: Int
-    var sprite: SKSpriteNode?
+    var sprite: SKSpriteNode
     var doodad: Doodad?
+    
+    private let grass = SKTexture(imageNamed: "Grass.png")
+    private let grassPreview = SKTexture(imageNamed: "GrassPreview.png")
     
     init(row: Int, column: Int) {
         self.column = column
         self.row = row
+        sprite = SKSpriteNode(texture: grass)
+        sprite.setScale(1.0)
+        sprite.zPosition = -1.0
+    }
+    
+    func highlight() {
+        sprite.texture = grassPreview
+    }
+    
+    func unhighlight() {
+        sprite.texture = grass
     }
     
     func setDoodad(doodad: Doodad) {

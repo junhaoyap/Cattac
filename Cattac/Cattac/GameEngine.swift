@@ -23,7 +23,7 @@ class GameEngine {
     private var allPlayerMoveToPositions: [String:TileNode] = [:]
     private var allPlayerActions: [String:Action] = [:]
     var reachableNodes: [Int:Node<TileNode>] = [:]
-    var removedDoodads = [Int:Doodad]()
+    var removedDoodads: [Int:Doodad] = [:]
     private var events: [String:()->()] = [:]
     
     init(grid: Grid<TileNode>, graph: Graph<TileNode>) {
@@ -93,15 +93,6 @@ class GameEngine {
         }
     }
     
-    var currentPlayerNode: TileNode {
-        get {
-            return allPlayerPositions[player.name]!
-        }
-        set {
-            allPlayerPositions[player.name] = newValue
-        }
-    }
-
     func precalculate() {
         if let doodad = currentPlayerNode.doodad {
             doodad.effect(player)
@@ -118,6 +109,15 @@ class GameEngine {
     
     func postExecute() {
         player.postExecute()
+    }
+    
+    var currentPlayerNode: TileNode {
+        get {
+            return allPlayerPositions[player.name]!
+        }
+        set {
+            allPlayerPositions[player.name] = newValue
+        }
     }
     
     var currentPlayerMoveToNode: TileNode {

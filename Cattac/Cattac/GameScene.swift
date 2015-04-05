@@ -16,8 +16,6 @@ class GameScene: SKScene, GameStateListener {
     private let tilesLayer = SKNode()
     private let entityLayer = SKNode()
     
-    private var reachableNodeHighlights = [Int:SKNode]()
-    
     private var previewNode: SKSpriteNode!
     
     required init?(coder aDecoder: NSCoder) {
@@ -127,7 +125,7 @@ class GameScene: SKScene, GameStateListener {
     }
     
     private func addPlayers() {
-        let spriteNode = level.grid[gameEngine.player.position]!.sprite!
+        let spriteNode = level.grid[gameEngine.player.position]!.sprite
         let playerNode = gameEngine.player.getSprite() as SKSpriteNode
         playerNode.size = spriteNode.size
         playerNode.position = spriteNode.position
@@ -135,8 +133,8 @@ class GameScene: SKScene, GameStateListener {
     }
 
     private func drawTile(tileNode: TileNode) {
-        let spriteNode = tileNode.sprite!
-        spriteNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
+        let spriteNode = tileNode.sprite
+        spriteNode.size = CGSize(width: tileSize, height: tileSize)
         spriteNode.position = pointFor(tileNode.row, tileNode.column)
         tilesLayer.addChild(spriteNode)
         
@@ -174,7 +172,7 @@ class GameScene: SKScene, GameStateListener {
 
         for edge in path {
             let destNode = edge.getDestination().getLabel()
-            let action = SKAction.moveTo(destNode.sprite!.position, duration: 0.25)
+            let action = SKAction.moveTo(destNode.sprite.position, duration: 0.25)
             pathSequence.append(action)
         }
         
@@ -220,18 +218,14 @@ class GameScene: SKScene, GameStateListener {
     
     private func highlightReachableNodes() {
         for node in gameEngine.reachableNodes.values {
-            let referenceNode = node.getLabel().sprite!
-            let highlightNode = SKShapeNode(rectOfSize: referenceNode.size)
-            highlightNode.fillColor = SKColor(red: 1, green: 1, blue: 1, alpha: 0.5)
-            highlightNode.position = referenceNode.position
-            reachableNodeHighlights[highlightNode.hashValue] = highlightNode
-            tilesLayer.addChild(highlightNode)
+            node.getLabel().highlight()
         }
     }
     
     private func removeHighlights() {
-        tilesLayer.removeChildrenInArray([SKNode](reachableNodeHighlights.values))
-        reachableNodeHighlights.removeAll(keepCapacity: false)
+        for node in gameEngine.reachableNodes.values {
+            node.getLabel().unhighlight()
+        }
     }
     
     private func deleteRemovedDoodads() {
@@ -240,6 +234,6 @@ class GameScene: SKScene, GameStateListener {
             return doodad.getSprite()
         }
         entityLayer.removeChildrenInArray([SKNode](removedSprites))
-        gameEngine.removedDoodads.removeAll(keepCapacity: false)
+        gameEngine.removedDoodads = [:]
     }
 }
