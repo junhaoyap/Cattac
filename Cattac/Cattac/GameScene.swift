@@ -155,12 +155,6 @@ class GameScene: SKScene, GameStateListener {
         entityNode.position = spriteNode.position
         entityLayer.addChild(entityNode)
     }
-    
-    func drawTileEffects(sprites: [SKNode]) {
-        for sprite in sprites {
-            tilesLayer.addChild(sprite)
-        }
-    }
    
     override func update(currentTime: CFTimeInterval) {
         gameEngine.gameLoop()
@@ -204,6 +198,7 @@ class GameScene: SKScene, GameStateListener {
         case .Precalculation:
             break
         case .PlayerAction:
+            deleteRemovedDoodads()
             highlightReachableNodes()
             break
         case .ServerUpdate:
@@ -236,5 +231,14 @@ class GameScene: SKScene, GameStateListener {
     private func removeHighlights() {
         tilesLayer.removeChildrenInArray([SKNode](reachableNodeHighlights.values))
         reachableNodeHighlights.removeAll(keepCapacity: false)
+    }
+    
+    private func deleteRemovedDoodads() {
+        let removedSprites = gameEngine.removedDoodads.values.map {
+            (doodad) -> SKNode in
+            return doodad.getSprite()
+        }
+        entityLayer.removeChildrenInArray([SKNode](removedSprites))
+        gameEngine.removedDoodads.removeAll(keepCapacity: false)
     }
 }

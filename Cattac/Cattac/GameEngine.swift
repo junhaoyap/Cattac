@@ -23,6 +23,7 @@ class GameEngine {
     private var allPlayerMoveToPositions: [String:TileNode] = [:]
     private var allPlayerActions: [String:Action] = [:]
     var reachableNodes: [Int:Node<TileNode>] = [:]
+    var removedDoodads = [Int:Doodad]()
     private var events: [String:()->()] = [:]
     
     init(grid: Grid<TileNode>, graph: Graph<TileNode>) {
@@ -104,7 +105,13 @@ class GameEngine {
     func precalculate() {
         if let doodad = currentPlayerNode.doodad {
             doodad.effect(player)
+            
+            if doodad.isRemoved() {
+                currentPlayerNode.doodad = nil
+                removedDoodads[doodad.getSprite().hashValue] = doodad
+            }
         }
+        
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
         allPlayerActions = [:]
     }
