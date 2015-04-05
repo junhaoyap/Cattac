@@ -6,16 +6,17 @@ import SpriteKit
 
 class GameScene: SKScene, GameStateListener {
     
-    let level: BasicLevel!
+    
     let gameEngine: GameEngine!
+    private let level: GameLevel!
     
-    let tileSize: CGFloat!
+    private let tileSize: CGFloat!
     
-    let gameLayer = SKNode()
-    let tilesLayer = SKNode()
-    let entityLayer = SKNode()
+    private let gameLayer = SKNode()
+    private let tilesLayer = SKNode()
+    private let entityLayer = SKNode()
     
-    var reachableNodeHighlights = [Int:SKNode]()
+    private var reachableNodeHighlights = [Int:SKNode]()
     
     private var previewNode: SKSpriteNode!
     
@@ -27,10 +28,10 @@ class GameScene: SKScene, GameStateListener {
         assertionFailure("Should not call this init, init with basic level please!")
     }
     
-    init(_ size: CGSize, _ basicLevel: BasicLevel) {
+    init(_ size: CGSize, _ level: GameLevel) {
         super.init(size: size)
         
-        level = basicLevel
+        self.level = level
         gameEngine = GameEngine(grid: level.grid, graph: level.graph)
         gameEngine.gameStateListener = self
         
