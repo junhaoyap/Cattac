@@ -54,7 +54,6 @@ class GameEngine {
             // Goes to next state for now
             nextState()
         case .StartMovesExecution:
-            startMovesExecution()
             break
         case .MovesExecution:
             break
@@ -108,10 +107,6 @@ class GameEngine {
         }
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
         allPlayerActions = [:]
-    }
-    
-    func startMovesExecution() {
-        
     }
     
     func postExecute() {
