@@ -19,14 +19,6 @@ class TileNode {
     func tileHasDoodad() -> Bool {
         return self.doodad != nil
     }
-    
-    func tileHasWall() -> Bool {
-        if let potentialWall = self.doodad {
-            return potentialWall is Wall
-        }
-        
-        return false
-    }
 }
 
 extension TileNode: Printable {

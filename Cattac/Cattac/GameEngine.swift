@@ -113,14 +113,6 @@ class GameEngine {
         }
         
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
-        
-        for key in reachableNodes.keys {
-            let node = reachableNodes[key]!
-            if node.getLabel().tileHasWall() {
-                reachableNodes.removeValueForKey(key)
-            }
-        }
-
         allPlayerActions = [:]
     }
     

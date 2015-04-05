@@ -39,8 +39,10 @@ class GameLevel {
         return grid[row, column]
     }
     
-    func addDoodad(doodad: Doodad, atLocation gridIndex: GridIndex) {
-        grid[gridIndex]!.setDoodad(doodad)
+    func addDoodad(doodad: Doodad, atLocation gridIndex: GridIndex) -> TileNode {
+        var tileNode = grid[gridIndex]!
+        tileNode.setDoodad(doodad)
+        return tileNode
     }
     
     func hasDoodad(atLocation gridIndex: GridIndex) -> Bool {

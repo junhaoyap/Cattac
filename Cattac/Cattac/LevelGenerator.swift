@@ -69,7 +69,8 @@ class LevelGenerator {
                 let doodad = doodadFactory.generateWall()
                 
                 if !level.hasDoodad(atLocation: location) {
-                    level.addDoodad(doodad, atLocation:location)
+                    let tileNode = level.addDoodad(doodad, atLocation:location)
+                    level.graph.removeNode((Node(tileNode)))
                     
                     hasWallBeenAdded = true
                 }
