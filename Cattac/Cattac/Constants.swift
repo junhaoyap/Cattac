@@ -9,7 +9,8 @@ struct Constants {
     struct Level {
         static let basicRows: Int = 10
         static let basicColumns: Int = 10
-        static let defaultDoodads: Int = 5
+        static let defaultDoodads: Int = 8
+        static let defaultWalls: Int = 10
     }
     
     struct Doodad {
