@@ -123,8 +123,8 @@ class LevelGenerator {
     }
     
     // use only after the level has been generated
-    func toDictionaryForFirebase() -> [Int: String] {
-        var theDictionary: [Int: String] = [:]
+    func toDictionaryForFirebase() -> [String: String] {
+        var theDictionary: [String: String] = [:]
         
         for i in 0...99 {
             let row: Int = i / 10
@@ -133,9 +133,9 @@ class LevelGenerator {
             let location = GridIndex(row, col)
             
             if levelToShare!.hasDoodad(atLocation: location) {
-                theDictionary[i] = levelToShare!.getDoodad(atLocation: location).getName()
+                theDictionary[String(i)] = levelToShare!.getDoodad(atLocation: location).getName()
             } else {
-                theDictionary[i] = ""
+                theDictionary[String(i)] = ""
                 // empty string signifies that the node is empty and should
                 // be read that way when read from firebase
             }
