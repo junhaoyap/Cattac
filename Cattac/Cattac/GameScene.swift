@@ -16,6 +16,12 @@ class GameScene: SKScene, GameStateListener {
     private let tilesLayer = SKNode()
     private let entityLayer = SKNode()
     
+    private let buttonLayer = SKNode()
+    
+    private var puiButton: SKNode!
+    private var fartButton: SKNode!
+    private var poopButton: SKNode!
+    
     private var previewNode: SKSpriteNode!
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,6 +59,30 @@ class GameScene: SKScene, GameStateListener {
         // adds entityLayer to the grid layer
         entityLayer.position = layerPosition
         gameLayer.addChild(entityLayer)
+        
+        buttonLayer.position = CGPoint(x: -220, y: layerPosition.y - 90)
+        gameLayer.addChild(buttonLayer)
+        
+        puiButton = SKActionButtonnNode(
+            defaultButtonImage: "PuiButton.png",
+            activeButtonImage: "PuiButtonPressed.png",
+            buttonAction: { self.gameEngine.trigger("puiButtonPressed") })
+        puiButton.position = CGPoint(x: 0, y: 0)
+        buttonLayer.addChild(puiButton)
+        
+        fartButton = SKActionButtonnNode(
+            defaultButtonImage: "FartButton.png",
+            activeButtonImage: "FartButtonPressed.png",
+            buttonAction: { self.gameEngine.trigger("fartButtonPressed") })
+        fartButton.position = CGPoint(x: 220, y: 0)
+        buttonLayer.addChild(fartButton)
+        
+        poopButton = SKActionButtonnNode(
+            defaultButtonImage: "PoopButton.png",
+            activeButtonImage: "PoopButtonPressed.png",
+            buttonAction: { self.gameEngine.trigger("poopButtonPressed") })
+        poopButton.position = CGPoint(x: 440, y: 0)
+        buttonLayer.addChild(poopButton)
         
         addTiles()
         addPlayers()

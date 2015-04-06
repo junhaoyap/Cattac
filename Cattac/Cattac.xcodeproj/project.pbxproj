@@ -60,6 +60,15 @@
 		763E71171AD1B78D00E90EF0 /* Grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71161AD1B78D00E90EF0 /* Grass.png */; };
 		763E71191AD1B87C00E90EF0 /* GrassPreview.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71181AD1B87C00E90EF0 /* GrassPreview.png */; };
 		763E711B1AD1C45000E90EF0 /* Rock.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E711A1AD1C45000E90EF0 /* Rock.png */; };
+		763E71201AD2E0EB00E90EF0 /* Direction.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E711E1AD2E0EB00E90EF0 /* Direction.png */; };
+		763E71211AD2E0EB00E90EF0 /* Pui.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E711F1AD2E0EB00E90EF0 /* Pui.png */; };
+		763E71231AD2EAB500E90EF0 /* PuiButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71221AD2EAB500E90EF0 /* PuiButton.png */; };
+		763E71261AD2ED0400E90EF0 /* FartButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71241AD2ED0400E90EF0 /* FartButton.png */; };
+		763E71271AD2ED0400E90EF0 /* PoopButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71251AD2ED0400E90EF0 /* PoopButton.png */; };
+		763E71291AD2F26500E90EF0 /* SKActionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */; };
+		763E712B1AD2F55700E90EF0 /* PoopButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E712A1AD2F55700E90EF0 /* PoopButtonPressed.png */; };
+		763E712E1AD2F6AE00E90EF0 /* FartButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E712C1AD2F6AE00E90EF0 /* FartButtonPressed.png */; };
+		763E712F1AD2F6AE00E90EF0 /* PuiButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E712D1AD2F6AE00E90EF0 /* PuiButtonPressed.png */; };
 		76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DD1ABFE6190056B5F5 /* Grumpy.png */; };
 		76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DE1ABFE6190056B5F5 /* Nala.png */; };
 		76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DF1ABFE6190056B5F5 /* Nyan.png */; };
@@ -140,6 +149,15 @@
 		763E71161AD1B78D00E90EF0 /* Grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grass.png; path = Images.xcassets/Grass.png; sourceTree = "<group>"; };
 		763E71181AD1B87C00E90EF0 /* GrassPreview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GrassPreview.png; path = Images.xcassets/GrassPreview.png; sourceTree = "<group>"; };
 		763E711A1AD1C45000E90EF0 /* Rock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rock.png; path = Images.xcassets/Rock.png; sourceTree = "<group>"; };
+		763E711E1AD2E0EB00E90EF0 /* Direction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Direction.png; path = Images.xcassets/Direction.png; sourceTree = "<group>"; };
+		763E711F1AD2E0EB00E90EF0 /* Pui.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pui.png; path = Images.xcassets/Pui.png; sourceTree = "<group>"; };
+		763E71221AD2EAB500E90EF0 /* PuiButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PuiButton.png; path = Images.xcassets/PuiButton.png; sourceTree = "<group>"; };
+		763E71241AD2ED0400E90EF0 /* FartButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FartButton.png; path = Images.xcassets/FartButton.png; sourceTree = "<group>"; };
+		763E71251AD2ED0400E90EF0 /* PoopButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PoopButton.png; path = Images.xcassets/PoopButton.png; sourceTree = "<group>"; };
+		763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKActionButtonNode.swift; sourceTree = "<group>"; };
+		763E712A1AD2F55700E90EF0 /* PoopButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PoopButtonPressed.png; path = Images.xcassets/PoopButtonPressed.png; sourceTree = "<group>"; };
+		763E712C1AD2F6AE00E90EF0 /* FartButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FartButtonPressed.png; path = Images.xcassets/FartButtonPressed.png; sourceTree = "<group>"; };
+		763E712D1AD2F6AE00E90EF0 /* PuiButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PuiButtonPressed.png; path = Images.xcassets/PuiButtonPressed.png; sourceTree = "<group>"; };
 		76FC46DD1ABFE6190056B5F5 /* Grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grumpy.png; path = Images.xcassets/Grumpy.png; sourceTree = "<group>"; };
 		76FC46DE1ABFE6190056B5F5 /* Nala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nala.png; path = Images.xcassets/Nala.png; sourceTree = "<group>"; };
 		76FC46DF1ABFE6190056B5F5 /* Nyan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nyan.png; path = Images.xcassets/Nyan.png; sourceTree = "<group>"; };
@@ -278,6 +296,7 @@
 			children = (
 				342584E41AACDB03004A3CFD /* GameScene.sks */,
 				342584E61AACDB03004A3CFD /* GameScene.swift */,
+				763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -440,6 +459,14 @@
 		3471CA6E1ACEB7E900B0E68D /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				763E712C1AD2F6AE00E90EF0 /* FartButtonPressed.png */,
+				763E712D1AD2F6AE00E90EF0 /* PuiButtonPressed.png */,
+				763E712A1AD2F55700E90EF0 /* PoopButtonPressed.png */,
+				763E71241AD2ED0400E90EF0 /* FartButton.png */,
+				763E71251AD2ED0400E90EF0 /* PoopButton.png */,
+				763E71221AD2EAB500E90EF0 /* PuiButton.png */,
+				763E711E1AD2E0EB00E90EF0 /* Direction.png */,
+				763E711F1AD2E0EB00E90EF0 /* Pui.png */,
 			);
 			name = Others;
 			sourceTree = "<group>";
@@ -568,12 +595,20 @@
 				76FC46E51ABFE6190056B5F5 /* Pusheen.png in Resources */,
 				342584F11AACDB03004A3CFD /* LaunchScreen.xib in Resources */,
 				76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */,
+				763E71261AD2ED0400E90EF0 /* FartButton.png in Resources */,
+				763E712F1AD2F6AE00E90EF0 /* PuiButtonPressed.png in Resources */,
 				342584EE1AACDB03004A3CFD /* Images.xcassets in Resources */,
+				763E71201AD2E0EB00E90EF0 /* Direction.png in Resources */,
+				763E71231AD2EAB500E90EF0 /* PuiButton.png in Resources */,
+				763E712B1AD2F55700E90EF0 /* PoopButtonPressed.png in Resources */,
 				763E71191AD1B87C00E90EF0 /* GrassPreview.png in Resources */,
 				763E71171AD1B78D00E90EF0 /* Grass.png in Resources */,
+				763E712E1AD2F6AE00E90EF0 /* FartButtonPressed.png in Resources */,
 				76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */,
+				763E71271AD2ED0400E90EF0 /* PoopButton.png in Resources */,
 				342584E51AACDB03004A3CFD /* GameScene.sks in Resources */,
 				342584EC1AACDB03004A3CFD /* Main.storyboard in Resources */,
+				763E71211AD2E0EB00E90EF0 /* Pui.png in Resources */,
 				76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -593,6 +628,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				342585391AACE0E6004A3CFD /* DoodadFactory.swift in Sources */,
+				763E71291AD2F26500E90EF0 /* SKActionButtonNode.swift in Sources */,
 				3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */,
 				BDA19AB81AD034BF00B7E9D4 /* LandMineDoodad.swift in Sources */,
 				3425854E1AACE291004A3CFD /* HardLevel.swift in Sources */,
