@@ -203,15 +203,18 @@
                                 <state key="normal" title="Easy">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <segue destination="Cqh-hj-ZZi" kind="show" id="Som-y9-Kan"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QRm-bx-zjZ" userLabel="mediumButton">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QRm-bx-zjZ" userLabel="mediumButton">
                                 <rect key="frame" x="269" y="240" width="209" height="85"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Medium">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SjK-bL-CeJ" userLabel="hardButton">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SjK-bL-CeJ" userLabel="hardButton">
                                 <rect key="frame" x="269" y="333" width="209" height="85"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Hard">
@@ -263,10 +266,13 @@
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="gameStartSegue" id="l2v-Ib-U9H"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7gh-2U-MnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1474" y="-397"/>
+            <point key="canvasLocation" x="1444" y="-1455"/>
         </scene>
         <!--Shop View Controller-->
         <scene sceneID="E34-XK-Ky6">
@@ -309,6 +315,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="DDe-gm-5Ky"/>
+        <segue reference="l2v-Ib-U9H"/>
         <segue reference="Ioc-6a-4bE"/>
     </inferredMetricsTieBreakers>
 </document>
