@@ -214,11 +214,55 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         
     }
     
+    private func animatePuiAction(action: PuiAction) {
+        let startNode = gameEngine.currentPlayerMoveToNode
+        let path = gameEngine.pathOfPui(startNode, direction: action.direction)
+        var pathSequence: [SKAction] = []
+        
+        for node in path {
+            let action = SKAction.moveTo(node.sprite.position, duration: 0.15)
+            pathSequence.append(action)
+        }
+        
+        let pui = SKSpriteNode(imageNamed: "Pui.png")
+        pui.size = CGSize(width: tileSize, height: tileSize)
+        pui.position = startNode.sprite.position
+        
+        switch action.direction {
+        case .Right:
+            pui.zRotation = CGFloat(3 * M_PI / 2.0)
+        case .Bottom:
+            pui.zRotation = CGFloat(M_PI)
+        case .Left:
+            pui.zRotation = CGFloat(M_PI/2.0)
+        default:
+            break
+        }
+        
+        entityLayer.addChild(pui)
+        pui.runAction(
+            SKAction.sequence(pathSequence),
+            completion: {
+                self.gameEngine.nextState()
+                pui.removeFromParent()
+            }
+        )
+    }
+    
     private func performActions() {
         if let action = gameEngine.currentPlayerAction {
             println(action)
+            switch action.actionType {
+            case .Pui:
+                animatePuiAction(action as PuiAction)
+            case .Fart:
+                break
+            case .Poop:
+                break
+            }
+        } else {
+            gameEngine.nextState()
         }
-        gameEngine.nextState()
     }
     
     func onStateUpdate(state: GameState) {

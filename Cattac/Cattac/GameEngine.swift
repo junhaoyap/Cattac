@@ -310,6 +310,24 @@ class GameEngine {
         return edges
     }
     
+    func pathOfPui(startNode: TileNode, direction: Direction) -> [TileNode] {
+        let offset = grid.neighboursOffset[direction.description]!
+        var path = [TileNode]()
+        var currentNode = startNode
+        while let nextNode = grid[currentNode.row + offset.row,
+            currentNode.column + offset.column] {
+                if let doodad = nextNode.doodad {
+                    if doodad.getName() == "wall" {
+                        path.append(nextNode)
+                        break
+                    }
+                }
+                path.append(nextNode)
+                currentNode = nextNode
+        }
+        return path
+    }
+    
     private func addPlayers() {
         let cat = catFactory.createCat(Constants.catName.nalaCat)!
         cat.position = GridIndex(0, 0)
