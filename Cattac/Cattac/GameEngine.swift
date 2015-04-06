@@ -14,9 +14,11 @@ protocol GameStateListener {
 
 class GameEngine {
     let catFactory = CatFactory.sharedInstance
+    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var state: GameState = GameState.Precalculation
     var gameStateListener: GameStateListener?
     var player: Cat!
+    var playerMoveNumber: Int = 1
     private var grid: Grid<TileNode>!
     private var graph: Graph<TileNode>!
     private var allPlayerPositions: [String:TileNode] = [:]
@@ -52,7 +54,7 @@ class GameEngine {
         case .PlayerAction:
             break
         case .ServerUpdate:
-            // Goes to next state for now
+            updateServer()
             nextState()
         case .StartMovesExecution:
             break
@@ -93,6 +95,119 @@ class GameEngine {
         }
     }
     
+    func gameInitialise() {
+        // check from firebase which player current player is
+        
+        // attach listener to the game movements
+        let player1MoveToWatchRef = ref
+            .childByAppendingPath("games")
+            .childByAppendingPath("game0")
+            .childByAppendingPath("player1")
+        
+        let player2MoveToWatchRef = ref
+            .childByAppendingPath("games")
+            .childByAppendingPath("game0")
+            .childByAppendingPath("player2")
+        
+        let player3MoveToWatchRef = ref
+            .childByAppendingPath("games")
+            .childByAppendingPath("game0")
+            .childByAppendingPath("player3")
+        
+        let player4MoveToWatchRef = ref
+            .childByAppendingPath("games")
+            .childByAppendingPath("game0")
+            .childByAppendingPath("player4")
+        
+        player1MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            
+            let move = snapshot.value.objectForKey(
+                String(self.playerMoveNumber - 1)
+            )
+            
+            // attach the movement to player 1
+            // and execute it in the execution phase
+        })
+        
+        player1MoveToWatchRef.observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+            
+            let move = snapshot.value.objectForKey(
+                String(self.playerMoveNumber - 1)
+            )
+            
+            // attach the movement to player 1
+            // and execute it in the execution phase
+        })
+        
+        player2MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            
+            let move = snapshot.value.objectForKey(
+                String(self.playerMoveNumber - 1)
+            )
+            
+            // attach the movement to player 2
+            // and execute it in the execution phase
+        })
+        
+        player2MoveToWatchRef.observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+            
+            let move = snapshot.value.objectForKey(
+                String(self.playerMoveNumber - 1)
+            )
+            
+            // attach the movement to player 2
+            // and execute it in the execution phase
+        })
+        
+        player3MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            
+            let move = snapshot.value.objectForKey(
+                String(self.playerMoveNumber - 1)
+            )
+            
+            // attach the movement to player 3
+            // and execute it in the execution phase
+        })
+        
+        player3MoveToWatchRef.observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+            
+            let move = snapshot.value.objectForKey(
+                String(self.playerMoveNumber - 1)
+            )
+            
+            // attach the movement to player 3
+            // and execute it in the execution phase
+        })
+        
+        player4MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            
+            let move = snapshot.value.objectForKey(
+                String(self.playerMoveNumber - 1)
+            )
+            
+            // attach the movement to player 4
+            // and execute it in the execution phase
+        })
+        
+        player4MoveToWatchRef.observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+            
+            let move = snapshot.value.objectForKey(
+                String(self.playerMoveNumber - 1)
+            )
+            
+            // attach the movement to player 4
+            // and execute it in the execution phase
+        })
+    }
+    
     func precalculate() {
         if let doodad = currentPlayerNode.doodad {
             doodad.effect(player)
@@ -105,6 +220,32 @@ class GameEngine {
         
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
         allPlayerActions = [:]
+    }
+    
+    func updateServer() {
+        let playerNumber = 1
+        // for now let it be 1, we will check which player the player is during
+        // a new phase, i.e. game initialisation
+        
+        let playerMoveToUpdateRef = ref
+            .childByAppendingPath("games")
+            .childByAppendingPath("game0")
+            .childByAppendingPath("player" + String(playerNumber) + "Movement")
+            .childByAppendingPath(String(playerMoveNumber))
+        
+        let theMovement = [
+            "player": playerNumber,
+            "from": "",
+            "to": "",
+            "attackType": "",
+            "attackFrom": "",
+            "attackTo": "",
+            "attackDmg": ""
+        ]
+        
+        playerMoveToUpdateRef.updateChildValues(theMovement)
+        
+        playerMoveNumber++
     }
     
     func postExecute() {
