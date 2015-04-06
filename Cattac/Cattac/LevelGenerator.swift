@@ -87,12 +87,47 @@ class LevelGenerator {
         }
     }
     
+    func createBasicGameFromDictionary(aDictionaryFromFirebase: [Int: String]) -> BasicLevel {
+        let level = BasicLevel()
+        
+        for row in 0..<level.numRows {
+            for column in 0..<level.numColumns {
+                let tileNode = TileNode(row: row, column: column)
+                level.grid[row, column] = tileNode
+            }
+        }
+        
+        level.constructGraph()
+        
+        for key in aDictionaryFromFirebase.keys {
+            let row: Int = key / 10
+            let col: Int = key % 10
+            
+            let location = GridIndex(row, col)
+            
+            if !(aDictionaryFromFirebase[key] == "") {
+                // if the string we get from firebase is not empty then it has
+                // a doodad
+                
+                let theDoodad = doodadFactory.createDoodad(aDictionaryFromFirebase[key]!)
+                
+                if theDoodad != nil {
+                    level.addDoodad(theDoodad!, atLocation: location)
+                } else {
+                    println("jialat fail")
+                }
+            }
+        }
+        
+        return level
+    }
+    
     // use only after the level has been generated
     func toDictionaryForFirebase() -> [Int: String] {
         var theDictionary: [Int: String] = [:]
         
         for i in 0...99 {
-            let row: Int = (i / 10)
+            let row: Int = i / 10
             let col: Int = i % 10
             
             let location = GridIndex(row, col)
