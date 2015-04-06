@@ -6,6 +6,7 @@ class LandMineDoodad: Doodad {
     override init() {
         super.init()
         setSprite(SKLabelNode(text: "M"))
+        setName(Constants.Doodad.landMineString)
     }
     
     override func effect(cat: Cat) {

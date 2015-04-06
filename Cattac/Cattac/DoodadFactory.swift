@@ -38,6 +38,23 @@ class DoodadFactory {
         }
     }
     
+    func createDoodad(doodadName: String) -> Doodad? {
+        switch doodadName {
+        case Constants.Doodad.wallString:
+            return Wall()
+        case Constants.Doodad.landMineString:
+            return LandMineDoodad()
+        case Constants.Doodad.fortressString:
+            return FortressDoodad()
+        case Constants.Doodad.trampolineString:
+            return TrampolineDoodad()
+        case Constants.Doodad.watchTowerString:
+            return WatchTowerDoodad()
+        default:
+            return nil
+        }
+    }
+    
     func generateWall() -> Doodad {
         return Wall()
     }

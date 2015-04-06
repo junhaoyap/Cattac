@@ -7,6 +7,7 @@ class WatchTowerDoodad: Doodad {
     override init() {
         super.init()
         setSprite(SKLabelNode(text: "T"))
+        setName(Constants.Doodad.watchTowerString)
     }
     
     override func effect(cat: Cat) {

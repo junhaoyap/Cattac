@@ -29,6 +29,12 @@ struct Constants {
         static let fortressDefenceModification = 2
         static let trampolineMoveRangeModification = 1
         static let landMineDamage = 10
+        
+        static let wallString = "wall"
+        static let landMineString = "landMine"
+        static let fortressString = "fortress"
+        static let trampolineString = "trampoline"
+        static let watchTowerString = "watchTower"
     }
     
     // for randomising which player get which cat, copy the array before playing with it, only for
