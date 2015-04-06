@@ -6,6 +6,7 @@ import SpriteKit
 
 class Doodad: TileEntity {
     
+    private var dictionaryName = ""
     private var removed = false
     private var sprite: SKNode = SKSpriteNode(imageNamed: "Nala.png")
     
@@ -32,5 +33,13 @@ class Doodad: TileEntity {
     func isVisible() -> Bool {
         // inheriting doodads to override.
         return true
+    }
+    
+    func getName() -> String {
+        return dictionaryName
+    }
+    
+    func setName(newName: String) {
+        dictionaryName = newName
     }
 }

@@ -10,6 +10,7 @@ private let _levelGeneratorSharedInstance: LevelGenerator = LevelGenerator()
 class LevelGenerator {
     
     let doodadFactory = DoodadFactory.sharedInstance
+    var levelToShare: GameLevel?
     
     private init() {
     }
@@ -32,12 +33,14 @@ class LevelGenerator {
         
         level.constructGraph()
         
-        generateDoodad(level)
+        generateDoodadAndWalls(level)
+        
+        levelToShare = level
         
         return level
     }
     
-    private func generateDoodad(level: GameLevel) {
+    private func generateDoodadAndWalls(level: GameLevel) {
         let maxCol = UInt32(level.numColumns)
         let maxRow = UInt32(level.numRows)
         
@@ -83,4 +86,28 @@ class LevelGenerator {
             }
         }
     }
+    
+    // use only after the level has been generated
+    func toDictionaryForFirebase() -> [Int: String] {
+        var theDictionary: [Int: String] = [:]
+        
+        for i in 0...99 {
+            let row: Int = (i / 10)
+            let col: Int = i % 10
+            
+            let location = GridIndex(row, col)
+            
+            if levelToShare!.hasDoodad(atLocation: location) {
+                theDictionary[i] = levelToShare!.getDoodad(atLocation: location).getName()
+            } else {
+                theDictionary[i] = ""
+                // empty string signifies that the node is empty and should
+                // be read that way when read from firebase
+            }
+        }
+        
+        return theDictionary
+    }
+    // later when we add in the lobby part and we want to try, 
+    // we should generate this and throw it into firebase
 }

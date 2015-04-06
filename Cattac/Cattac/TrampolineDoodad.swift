@@ -7,6 +7,7 @@ class TrampolineDoodad: Doodad {
     override init() {
         super.init()
         setSprite(SKLabelNode(text: "O"))
+        setName(Constants.Doodad.trampolineString)
     }
     
     override func effect(cat: Cat) {

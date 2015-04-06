@@ -7,6 +7,7 @@ class FortressDoodad: Doodad {
     override init() {
         super.init()
         setSprite(SKLabelNode(text: "F"))
+        setName(Constants.Doodad.fortressString)
     }
     
     override func effect(cat: Cat) {
