@@ -16,6 +16,9 @@ class GameScene: SKScene, GameStateListener {
     private let tilesLayer = SKNode()
     private let entityLayer = SKNode()
     
+    private var didNotChooseReachableNode = true
+    private var didFinishMoving = true
+    
     private var previewNode: SKSpriteNode!
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,6 +73,10 @@ class GameScene: SKScene, GameStateListener {
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
         
+        if !didFinishMoving {
+            return
+        }
+        
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
             
@@ -79,6 +86,9 @@ class GameScene: SKScene, GameStateListener {
                         gameEngine.currentPlayerMoveToNode = node
                         previewNode.position = pointFor(node.row, node.column)
                         previewNode.hidden = false
+                        didNotChooseReachableNode = false
+                    } else {
+                        didNotChooseReachableNode = true
                     }
                 }
             }
@@ -102,6 +112,11 @@ class GameScene: SKScene, GameStateListener {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        if didNotChooseReachableNode || !didFinishMoving {
+            return
+        }
+        
+        didNotChooseReachableNode = false
         previewNode.hidden = true
         gameEngine.nextState()
     }
@@ -173,11 +188,15 @@ class GameScene: SKScene, GameStateListener {
             pathSequence.append(action)
         }
         
+        self.didFinishMoving = false
+        
         gameEngine.player.getSprite().runAction(
             SKAction.sequence(pathSequence),
             completion: {
                 self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
                 self.gameEngine.nextState()
+                
+                self.didFinishMoving = true
             }
         )
     }
@@ -185,6 +204,13 @@ class GameScene: SKScene, GameStateListener {
     private func performActions() {
         if let action = gameEngine.currentPlayerAction {
             println(action)
+            
+            switch action.actionType {
+            case .Pui:
+                gameEngine.player.inflict(gameEngine.player.puiDmg)
+            default:
+                break
+            }
         }
         gameEngine.nextState()
     }
