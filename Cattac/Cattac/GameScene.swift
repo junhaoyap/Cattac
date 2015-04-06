@@ -256,9 +256,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             case .Pui:
                 animatePuiAction(action as PuiAction)
             case .Fart:
-                break
+                gameEngine.nextState()
             case .Poop:
-                break
+                gameEngine.nextState()
             }
         } else {
             gameEngine.nextState()

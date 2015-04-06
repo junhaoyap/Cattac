@@ -68,7 +68,7 @@ class GameEngine {
         case .StartActionsExecution:
             break
         case .ActionsExecution:
-            nextState()
+            break
         case .PostExecution:
             postExecute()
             nextState()
