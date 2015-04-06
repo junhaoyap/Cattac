@@ -111,7 +111,12 @@ class LevelGenerator {
                 let theDoodad = doodadFactory.createDoodad(aDictionaryFromFirebase[key]!)
                 
                 if theDoodad != nil {
-                    level.addDoodad(theDoodad!, atLocation: location)
+                    if theDoodad!.getName() == "wall" {
+                        let tileNode = level.addDoodad(theDoodad!, atLocation:location)
+                        level.graph.removeNode((Node(tileNode)))
+                    } else {
+                        level.addDoodad(theDoodad!, atLocation: location)
+                    }
                 } else {
                     println("jialat fail")
                 }

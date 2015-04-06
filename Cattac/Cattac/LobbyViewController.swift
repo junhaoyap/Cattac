@@ -152,6 +152,22 @@ class LobbyViewController: UIViewController {
                 ]
                 
                 gameRef.updateChildValues(gameToWrite)
+                
+                let gameToWatchRef = ref.childByAppendingPath("gameHelper").childByAppendingPath("gameShouldStart")
+                
+                let gameToChangeToRef = ref.childByAppendingPath("gameHelper")
+                
+                gameToWatchRef.observeSingleEventOfType(.Value, withBlock: {
+                    snapshot in
+                    
+                    let number = snapshot.value as? Int
+                    
+                    if number == 0 {
+                        gameToChangeToRef.updateChildValues(["gameShouldStart": 1])
+                    } else {
+                        gameToChangeToRef.updateChildValues(["gameShouldStart": 0])
+                    }
+                })
             }
         }
         
@@ -167,6 +183,8 @@ class LobbyViewController: UIViewController {
     }
     
     func waitForGameStart() {
+        let gameToWatchRef = ref.childByAppendingPath("gameHelper")
+        
         let gameToReceiveRef = ref.childByAppendingPath("games")
             .childByAppendingPath("game0")
             .childByAppendingPath("generatedGame")
@@ -174,24 +192,30 @@ class LobbyViewController: UIViewController {
         // for now let's assume we only have 1 game ongoing at any one point, alpha
         // testing code :)
         
-        gameToReceiveRef.observeSingleEventOfType(.ChildChanged, withBlock: {
+        gameToWatchRef.observeSingleEventOfType(.ChildChanged, withBlock: {
             snapshot in
             
-            var dictionaryToBuildFrom: [Int: String] = [:]
+            println("this happened")
             
-            for i in 0...99 {
-                let doodadValue = snapshot.value[String(i)] as? String
+            gameToReceiveRef.observeSingleEventOfType(.Value, withBlock: {
+                otherSnapshot in
                 
-                println(doodadValue)
+                var dictionaryToBuildFrom: [Int: String] = [:]
                 
-                dictionaryToBuildFrom[i] = doodadValue
-            }
-            
-            self.levelToBuildFrom = self.levelGenerator.createBasicGameFromDictionary(
-                dictionaryToBuildFrom
-            )
-            
-            self.performSegueWithIdentifier("waitGameStartSegue", sender: nil)
+                var counter = 0
+                
+                for each in otherSnapshot.children.allObjects as [FDataSnapshot] {
+                    let doodadValue = each.value as? String
+                    
+                    dictionaryToBuildFrom[counter++] = doodadValue
+                }
+                
+                self.levelToBuildFrom = self.levelGenerator.createBasicGameFromDictionary(
+                    dictionaryToBuildFrom
+                )
+                
+                self.performSegueWithIdentifier("waitGameStartSegue", sender: nil)
+            })
         })
     }
     
