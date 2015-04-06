@@ -99,8 +99,6 @@ class GameScene: SKScene, GameStateListener {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        previewNode.hidden = true
-        gameEngine.nextState()
     }
     
     override func update(currentTime: CFTimeInterval) {

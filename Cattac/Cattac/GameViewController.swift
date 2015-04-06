@@ -54,6 +54,7 @@ class GameViewController: UIViewController {
             userInfo: nil,
             repeats: true
         )
+        timerLabel.text = "5"
         
         skView.presentScene(scene)
     }
@@ -89,7 +90,8 @@ class GameViewController: UIViewController {
             // This is where the time for choosing something is over
             // we should move on to the next thing to do?
             
-            timerLabel.text = String(25)
+            timerLabel.text = String(5)
+            scene.gameEngine.nextState()
         } else {
             timerLabel.text = String(currentTime! - 1)
         }
