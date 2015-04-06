@@ -251,10 +251,10 @@
             </objects>
             <point key="canvasLocation" x="500" y="-397"/>
         </scene>
-        <!--View Controller-->
+        <!--Lobby View Controller-->
         <scene sceneID="pEg-Mj-e8z">
             <objects>
-                <viewController id="Cqh-hj-ZZi" sceneMemberID="viewController">
+                <viewController id="Cqh-hj-ZZi" customClass="LobbyViewController" customModule="Cattac" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WUL-iw-d81"/>
                         <viewControllerLayoutGuide type="bottom" id="dKd-sm-A9t"/>
@@ -262,12 +262,31 @@
                     <view key="view" contentMode="scaleToFill" id="gbp-Sp-DTY">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Lobby" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QxQ-Yq-Eat" userLabel="lobbyTitle">
+                                <rect key="frame" x="309" y="20" width="151" height="138"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4B7-et-bxR" userLabel="backButton">
+                                <rect key="frame" x="16" y="20" width="74" height="45"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="BkA-v6-0HU" kind="show" id="xpq-qD-ra0"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
                         <segue destination="BV1-FR-VrT" kind="show" identifier="gameStartSegue" id="l2v-Ib-U9H"/>
+                        <segue destination="BkA-v6-0HU" kind="show" identifier="backFromLobbySegue" id="Dj2-4M-bzx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7gh-2U-MnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -314,8 +333,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="DDe-gm-5Ky"/>
-        <segue reference="l2v-Ib-U9H"/>
+        <segue reference="xpq-qD-ra0"/>
         <segue reference="Ioc-6a-4bE"/>
+        <segue reference="l2v-Ib-U9H"/>
     </inferredMetricsTieBreakers>
 </document>

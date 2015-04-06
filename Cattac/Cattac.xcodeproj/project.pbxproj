@@ -266,12 +266,12 @@
 		342585061AACDB82004A3CFD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				342584E81AACDB03004A3CFD /* GameViewController.swift */,
+				3471CA651ACEA01500B0E68D /* LoginViewController.swift */,
 				342585521AACE392004A3CFD /* MenuViewController.swift */,
 				342585541AACE406004A3CFD /* ShopViewController.swift */,
-				3471CA651ACEA01500B0E68D /* LoginViewController.swift */,
 				3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */,
 				34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */,
+				342584E81AACDB03004A3CFD /* GameViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
