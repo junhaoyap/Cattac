@@ -71,7 +71,7 @@ extension Direction: Printable {
     }
 }
 
-class Action {
+class Action: Equatable {
     private var _actionType: ActionType!
     private var _direction: Direction!
     private var _range: Int!
@@ -101,10 +101,20 @@ class Action {
     }
 }
 
+func ==(lhs: Action, rhs: Action) -> Bool {
+    return lhs.actionType == rhs.actionType
+        && lhs.direction == rhs.direction
+        && lhs.range == rhs.range
+        && lhs.targetNode == rhs.targetNode
+}
+
 class PuiAction: Action {
+    var availableDirections: [Direction]!
+    
     init(direction: Direction) {
         super.init(actionType: ActionType.Pui)
         self._direction = direction
+        self.availableDirections = []
     }
 }
 

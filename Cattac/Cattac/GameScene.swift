@@ -4,7 +4,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene, GameStateListener {
+class GameScene: SKScene, GameStateListener, ActionListener {
     
     
     let gameEngine: GameEngine!
@@ -18,11 +18,12 @@ class GameScene: SKScene, GameStateListener {
     
     private let buttonLayer = SKNode()
     
-    private var puiButton: SKNode!
-    private var fartButton: SKNode!
-    private var poopButton: SKNode!
+    private var puiButton: SKActionButtonNode!
+    private var fartButton: SKActionButtonNode!
+    private var poopButton: SKActionButtonNode!
     
     private var previewNode: SKSpriteNode!
+    private var previewDirectionNodes: SKNode!
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -38,6 +39,7 @@ class GameScene: SKScene, GameStateListener {
         self.level = level
         gameEngine = GameEngine(grid: level.grid, graph: level.graph)
         gameEngine.gameStateListener = self
+        gameEngine.actionListener = self
         
         // Initialize tileSize based on the number of columns
         tileSize = size.width / CGFloat(level.numColumns + 2)
@@ -63,21 +65,21 @@ class GameScene: SKScene, GameStateListener {
         buttonLayer.position = CGPoint(x: -220, y: layerPosition.y - 90)
         gameLayer.addChild(buttonLayer)
         
-        puiButton = SKActionButtonnNode(
+        puiButton = SKActionButtonNode(
             defaultButtonImage: "PuiButton.png",
             activeButtonImage: "PuiButtonPressed.png",
             buttonAction: { self.gameEngine.trigger("puiButtonPressed") })
         puiButton.position = CGPoint(x: 0, y: 0)
         buttonLayer.addChild(puiButton)
         
-        fartButton = SKActionButtonnNode(
+        fartButton = SKActionButtonNode(
             defaultButtonImage: "FartButton.png",
             activeButtonImage: "FartButtonPressed.png",
             buttonAction: { self.gameEngine.trigger("fartButtonPressed") })
         fartButton.position = CGPoint(x: 220, y: 0)
         buttonLayer.addChild(fartButton)
         
-        poopButton = SKActionButtonnNode(
+        poopButton = SKActionButtonNode(
             defaultButtonImage: "PoopButton.png",
             activeButtonImage: "PoopButtonPressed.png",
             buttonAction: { self.gameEngine.trigger("poopButtonPressed") })
@@ -228,6 +230,7 @@ class GameScene: SKScene, GameStateListener {
             highlightReachableNodes()
             break
         case .ServerUpdate:
+            clearDirectionArrows()
             removeHighlights()
             break
         case .StartMovesExecution:
@@ -243,6 +246,43 @@ class GameScene: SKScene, GameStateListener {
             break
         case .PostExecution:
             break
+        }
+    }
+    
+    func onActionUpdate(action: Action?) {
+        clearDirectionArrows()
+        if let action = action {
+            switch action.actionType {
+            case .Pui:
+                drawDirectionArrows(action as PuiAction)
+            case .Fart:
+                break
+            case .Poop:
+                break
+            }
+        }
+    }
+    
+    private func drawDirectionArrows(action: PuiAction) {
+        var directionSprite = SKDirectionButtonNode(
+            defaultButtonImage: "Direction.png",
+            activeButtonImage: "DirectionSelected.png",
+            size: CGSize(width: 50, height: 50),
+            centerSize: puiButton.calculateAccumulatedFrame().size,
+            hoverAction: {(direction) -> Void in
+                self.gameEngine.currentPlayerAction!.direction = direction
+            },
+            availableDirection: action.availableDirections,
+            selected: action.direction
+        )
+        
+        puiButton.addChild(directionSprite)
+        previewDirectionNodes = directionSprite
+    }
+    
+    private func clearDirectionArrows() {
+        if previewDirectionNodes != nil {
+            previewDirectionNodes.removeFromParent()
         }
     }
     

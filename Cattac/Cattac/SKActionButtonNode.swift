@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class SKActionButtonnNode: SKNode {
+class SKActionButtonNode: SKNode {
     var defaultButton: SKSpriteNode!
     var activeButton: SKSpriteNode!
     var action: () -> Void
