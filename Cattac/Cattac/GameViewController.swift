@@ -27,6 +27,9 @@ class GameViewController: UIViewController {
     var scene: GameScene!
     let levelGenerator = LevelGenerator.sharedInstance
     
+    @IBOutlet weak var playerOneImage: UIImageView!
+    @IBOutlet weak var playerOneHp: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,7 +43,7 @@ class GameViewController: UIViewController {
         
         let level = levelGenerator.generateBasic()
         
-        scene = GameScene(skView.bounds.size, level)
+        scene = GameScene(skView.bounds.size, level, self)
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
