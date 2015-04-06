@@ -69,6 +69,12 @@ class LoginViewController: UIViewController {
                             if (error != nil) {
                                 // do nothing, so many errors just make the user click the login button again
                             } else {
+                                let meowsRef = self.ref.childByAppendingPath("usersMeow").childByAppendingPath(self.ref.authData.uid)
+                                
+                                var defaultUserMeow = ["numberOfMeows" : Constants.defaultNumberOfMeows]
+                                
+                                meowsRef.setValue(defaultUserMeow)
+                                
                                 self.performSegueWithIdentifier("loginSegue", sender: nil)
                             }
                         }
