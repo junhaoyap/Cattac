@@ -22,8 +22,9 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
-    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    @IBOutlet weak var timerLabel: UILabel!
     
+    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var scene: GameScene!
     let levelGenerator = LevelGenerator.sharedInstance
     
@@ -44,6 +45,15 @@ class GameViewController: UIViewController {
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
+        
+        /* Start timer */
+        NSTimer.scheduledTimerWithTimeInterval(
+            1,
+            target: self,
+            selector: Selector("updateTime"),
+            userInfo: nil,
+            repeats: true
+        )
         
         skView.presentScene(scene)
     }
@@ -70,5 +80,18 @@ class GameViewController: UIViewController {
     
     @IBAction func poopButtonPressed(sender: AnyObject) {
         scene.gameEngine.trigger("poopButtonPressed")
+    }
+    
+    func updateTime() {
+        var currentTime = timerLabel.text!.toInt()
+        
+        if currentTime == 0 {
+            // This is where the time for choosing something is over
+            // we should move on to the next thing to do?
+            
+            timerLabel.text = String(25)
+        } else {
+            timerLabel.text = String(currentTime! - 1)
+        }
     }
 }
