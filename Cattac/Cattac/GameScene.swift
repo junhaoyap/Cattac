@@ -168,14 +168,18 @@ class GameScene: SKScene, GameStateListener {
             pathSequence.append(action)
         }
         
-        gameEngine.player.getSprite().runAction(
-            SKAction.sequence(pathSequence),
-            completion: {
-                self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
-            }
-        )
+        if pathSequence.count > 0 {
+            gameEngine.player.getSprite().runAction(
+                SKAction.sequence(pathSequence),
+                completion: {
+                    self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
+                    self.gameEngine.nextState()
+                }
+            )
+        } else {
+            gameEngine.nextState()
+        }
         
-        gameEngine.nextState()
     }
     
     private func performActions() {
@@ -198,6 +202,7 @@ class GameScene: SKScene, GameStateListener {
             break
         case .StartMovesExecution:
             gameEngine.nextState()
+            previewNode.hidden = true
             movePlayer()
         case .MovesExecution:
             break
