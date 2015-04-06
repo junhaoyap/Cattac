@@ -21,6 +21,9 @@ struct Constants {
         // magic numbers for now
     }
     
+    // default number of meows, standalone for now
+    static let defaultNumberOfMeows: Int = 100
+    
     struct Doodad {
         static let watchTowerActionRangeModification = 2
         static let fortressDefenceModification = 2
