@@ -8,8 +8,34 @@
 
 import Foundation
 
-enum ActionType {
-    case Pui, Fart, Poop
+enum ActionType: Int {
+    case Pui = 0, Fart, Poop
+    
+    private var name: String {
+        let names = [
+            "pui",
+            "fart",
+            "poop"
+        ]
+        
+        return names[rawValue]
+    }
+}
+
+extension ActionType: Printable {
+    var description: String {
+        return name
+    }
+    
+    static func create(name: String) -> ActionType? {
+        let types = [
+            "pui": ActionType.Pui,
+            "fart": ActionType.Fart,
+            "poop": ActionType.Poop
+        ]
+        
+        return types[name]
+    }
 }
 
 enum Direction: Int {
@@ -30,6 +56,18 @@ enum Direction: Int {
 extension Direction: Printable {
     var description: String {
         return name
+    }
+    
+    static func create(name: String) -> Direction? {
+        let types = [
+            "all directions": Direction.All,
+            "top direction": Direction.Top,
+            "right direction": Direction.Right,
+            "bottom direction": Direction.Bottom,
+            "left direction": Direction.Left
+        ]
+        
+        return types[name]
     }
 }
 
@@ -64,10 +102,6 @@ class Action {
 }
 
 class PuiAction: Action {
-    init() {
-        super.init(actionType: ActionType.Pui)
-    }
-    
     init(direction: Direction) {
         super.init(actionType: ActionType.Pui)
         self._direction = direction
