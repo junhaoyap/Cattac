@@ -195,8 +195,6 @@ class LobbyViewController: UIViewController {
         gameToWatchRef.observeSingleEventOfType(.ChildChanged, withBlock: {
             snapshot in
             
-            println("this happened")
-            
             gameToReceiveRef.observeSingleEventOfType(.Value, withBlock: {
                 otherSnapshot in
                 
