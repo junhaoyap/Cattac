@@ -34,7 +34,7 @@ class GameEngine {
         addPlayers()
         
         self.on("puiButtonPressed") {
-            self.currentPlayerAction = PuiAction()
+            self.currentPlayerAction = PuiAction(direction: .Top)
         }
         
         self.on("fartButtonPressed") {
