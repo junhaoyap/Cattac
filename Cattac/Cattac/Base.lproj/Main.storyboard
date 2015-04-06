@@ -7,7 +7,7 @@
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Cattac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="gameViewController" id="BV1-FR-VrT" customClass="GameViewController" customModule="Cattac" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="maK-i9-Uhn"/>
                         <viewControllerLayoutGuide type="bottom" id="khH-OB-KpY"/>
@@ -287,6 +287,7 @@
                     <connections>
                         <segue destination="BV1-FR-VrT" kind="show" identifier="gameStartSegue" id="l2v-Ib-U9H"/>
                         <segue destination="BkA-v6-0HU" kind="show" identifier="backFromLobbySegue" id="Dj2-4M-bzx"/>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="waitGameStartSegue" id="YXU-hP-zIn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7gh-2U-MnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -335,6 +336,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="xpq-qD-ra0"/>
         <segue reference="Ioc-6a-4bE"/>
-        <segue reference="l2v-Ib-U9H"/>
+        <segue reference="YXU-hP-zIn"/>
     </inferredMetricsTieBreakers>
 </document>

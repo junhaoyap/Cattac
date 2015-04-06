@@ -58,7 +58,6 @@ class LevelGenerator {
                         continue
                 }
                 
-                
                 level.addDoodad(doodad, atLocation: location)
                 
                 hasDoodadBeenAdded = true

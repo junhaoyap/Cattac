@@ -7,6 +7,7 @@ import UIKit
 class LobbyViewController: UIViewController {
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     let levelGenerator = LevelGenerator.sharedInstance
+    var levelToBuildFrom: GameLevel!
     
     // TODO check if the player who is joining the game has already joined,
     // if not he can join as multiplayer players from the same game and
@@ -139,7 +140,7 @@ class LobbyViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "gameStartSegue" {
-            if let destinationVC = segue.destinationViewController as? GameViewController{
+            if let destinationVC = segue.destinationViewController as? GameViewController {
                 destinationVC.level = levelGenerator.generateBasic()
                 
                 let gameRef = ref
@@ -151,6 +152,12 @@ class LobbyViewController: UIViewController {
                 ]
                 
                 gameRef.updateChildValues(gameToWrite)
+            }
+        }
+        
+        if segue.identifier == "waitGameStartSegue" {
+            if let destinationVC = segue.destinationViewController as? GameViewController {
+                destinationVC.level = levelToBuildFrom
             }
         }
     }
@@ -167,14 +174,24 @@ class LobbyViewController: UIViewController {
         // for now let's assume we only have 1 game ongoing at any one point, alpha
         // testing code :)
         
-        gameToReceiveRef.observeEventType(.ChildChanged, withBlock: {
+        gameToReceiveRef.observeSingleEventOfType(.ChildChanged, withBlock: {
             snapshot in
             
-            println("I feel that the game started but is currently unable to do anything")
+            var dictionaryToBuildFrom: [Int: String] = [:]
             
-            // the game is stored in snapshot.value
+            for i in 0...99 {
+                let doodadValue = snapshot.value[String(i)] as? String
+                
+                println(doodadValue)
+                
+                dictionaryToBuildFrom[i] = doodadValue
+            }
             
-            // receive it and segue to the game while passing the object to the game view controller
+            self.levelToBuildFrom = self.levelGenerator.createBasicGameFromDictionary(
+                dictionaryToBuildFrom
+            )
+            
+            self.performSegueWithIdentifier("waitGameStartSegue", sender: nil)
         })
     }
     
