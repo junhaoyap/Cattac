@@ -133,6 +133,15 @@ class GameScene: SKScene, GameStateListener {
         playerNode.size = spriteNode.size
         playerNode.position = spriteNode.position
         entityLayer.addChild(playerNode)
+        
+        for key in gameEngine.getAllPlayers().keys {
+            let theCat = gameEngine.getAllPlayers()[key]!
+            let spriteNodeCat = level.grid[theCat.position]!.sprite
+            let playerNodeCat = theCat.getSprite() as SKSpriteNode
+            playerNodeCat.size = spriteNodeCat.size
+            playerNodeCat.position = spriteNodeCat.position
+            entityLayer.addChild(playerNodeCat)
+        }
     }
 
     private func drawTile(tileNode: TileNode) {

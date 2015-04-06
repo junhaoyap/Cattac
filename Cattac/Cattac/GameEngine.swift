@@ -21,6 +21,7 @@ class GameEngine {
     var playerMoveNumber: Int = 1
     private var grid: Grid<TileNode>!
     private var graph: Graph<TileNode>!
+    private var allPlayer: [String:Cat] = [:]
     private var allPlayerPositions: [String:TileNode] = [:]
     private var allPlayerMoveToPositions: [String:TileNode] = [:]
     private var allPlayerActions: [String:Action] = [:]
@@ -297,11 +298,30 @@ class GameEngine {
         return edges
     }
     
+    func getAllPlayers() -> [String:Cat] {
+        return allPlayer
+    }
+    
     private func addPlayers() {
         let cat = catFactory.createCat(Constants.catName.nalaCat)!
         cat.position = GridIndex(0, 0)
         allPlayerPositions[cat.name] = grid[cat.position]
         player = cat
         currentPlayerMoveToNode = currentPlayerNode
+        
+        let cat2 = catFactory.createCat(Constants.catName.grumpyCat)!
+        cat2.position = GridIndex(9, 0)
+        allPlayer[cat2.name] = cat2
+        allPlayerPositions[cat2.name] = grid[cat2.position]
+        
+        let cat3 = catFactory.createCat(Constants.catName.nyanCat)!
+        cat3.position = GridIndex(9, 9)
+        allPlayer[cat3.name] = cat3
+        allPlayerPositions[cat3.name] = grid[cat3.position]
+        
+        let cat4 = catFactory.createCat(Constants.catName.pusheenCat)!
+        cat4.position = GridIndex(0, 9)
+        allPlayer[cat4.name] = cat4
+        allPlayerPositions[cat4.name] = grid[cat4.position]
     }
 }
