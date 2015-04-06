@@ -11,6 +11,14 @@ struct Constants {
         static let basicColumns: Int = 10
         static let defaultDoodads: Int = 8
         static let defaultWalls: Int = 10
+        
+        static let invalidDoodadWallLocation: [GridIndex] = [
+            GridIndex(0, 0),
+            GridIndex(0, 9),
+            GridIndex(9, 0),
+            GridIndex(9, 9)
+        ]
+        // magic numbers for now
     }
     
     struct Doodad {

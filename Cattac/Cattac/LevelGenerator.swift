@@ -50,11 +50,15 @@ class LevelGenerator {
                 let location = GridIndex(row, col)
                 let doodad = doodadFactory.randomDoodad()
                 
-                if !level.hasDoodad(atLocation: location) {
-                    level.addDoodad(doodad, atLocation: location)
-                    
-                    hasDoodadBeenAdded = true
+                if contains(Constants.Level.invalidDoodadWallLocation, location) ||
+                    level.hasDoodad(atLocation: location) {
+                        continue
                 }
+                
+                
+                level.addDoodad(doodad, atLocation: location)
+                
+                hasDoodadBeenAdded = true
             }
         }
         
@@ -67,12 +71,15 @@ class LevelGenerator {
                 let location = GridIndex(row, col)
                 let doodad = doodadFactory.generateWall()
                 
-                if !level.hasDoodad(atLocation: location) {
-                    let tileNode = level.addDoodad(doodad, atLocation:location)
-                    level.graph.removeNode((Node(tileNode)))
-                    
-                    hasWallBeenAdded = true
+                if contains(Constants.Level.invalidDoodadWallLocation, location) ||
+                    level.hasDoodad(atLocation: location) {
+                        continue
                 }
+                
+                let tileNode = level.addDoodad(doodad, atLocation:location)
+                level.graph.removeNode((Node(tileNode)))
+                
+                hasWallBeenAdded = true
             }
         }
     }
