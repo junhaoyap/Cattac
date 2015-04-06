@@ -6,8 +6,8 @@ import SpriteKit
 
 class GameScene: SKScene, GameStateListener {
     
-    
     let gameEngine: GameEngine!
+    let gameViewController: GameViewController!
     private let level: GameLevel!
     
     private let tileSize: CGFloat!
@@ -26,7 +26,7 @@ class GameScene: SKScene, GameStateListener {
         assertionFailure("Should not call this init, init with basic level please!")
     }
     
-    init(_ size: CGSize, _ level: GameLevel) {
+    init(_ size: CGSize, _ level: GameLevel, _ viewController: GameViewController) {
         super.init(size: size)
         
         self.level = level
@@ -62,6 +62,9 @@ class GameScene: SKScene, GameStateListener {
         previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
+        
+        // Attach VC
+        gameViewController = viewController
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -191,6 +194,7 @@ class GameScene: SKScene, GameStateListener {
         case .Precalculation:
             break
         case .PlayerAction:
+            updatePlayerHealth()
             deleteRemovedDoodads()
             highlightReachableNodes()
             break
@@ -222,6 +226,12 @@ class GameScene: SKScene, GameStateListener {
         for node in gameEngine.reachableNodes.values {
             node.getLabel().unhighlight()
         }
+    }
+    
+    private func updatePlayerHealth() {
+        let playerOneHp = gameEngine.player.hp
+        
+        gameViewController.playerOneHp.text = String(playerOneHp)
     }
     
     private func deleteRemovedDoodads() {
