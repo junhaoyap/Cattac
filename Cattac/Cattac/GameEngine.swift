@@ -34,7 +34,7 @@ class GameEngine {
         addPlayers()
         
         self.on("puiButtonPressed") {
-            self.currentPlayerAction = PuiAction(direction: .Top)
+            self.setReachableDirection()
         }
         
         self.on("fartButtonPressed") {
@@ -303,5 +303,19 @@ class GameEngine {
         allPlayerPositions[cat.name] = grid[cat.position]
         player = cat
         currentPlayerMoveToNode = currentPlayerNode
+    }
+    
+    private func setReachableDirection() {
+        let originNode = self.currentPlayerMoveToNode
+        for (direction, offset) in grid.neighboursOffset {
+            if let targetNode = grid[originNode.row + offset.row,
+                originNode.column + offset.column] {
+                    let edges = graph.edgesFromNode(Node(originNode), toNode: Node(targetNode))
+                    if edges.count > 0 {
+                        currentPlayerAction = PuiAction(direction: Direction.create(direction)!)
+                        break
+                    }
+            }
+        }
     }
 }
