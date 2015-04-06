@@ -172,9 +172,10 @@ class GameScene: SKScene, GameStateListener {
             SKAction.sequence(pathSequence),
             completion: {
                 self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
-                self.gameEngine.nextState()
             }
         )
+        
+        gameEngine.nextState()
     }
     
     private func performActions() {

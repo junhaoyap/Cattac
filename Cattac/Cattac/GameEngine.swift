@@ -218,6 +218,7 @@ class GameEngine {
             }
         }
         
+        currentPlayerMoveToNode = currentPlayerNode
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
         allPlayerActions = [:]
     }
