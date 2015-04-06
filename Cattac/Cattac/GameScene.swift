@@ -6,8 +6,8 @@ import SpriteKit
 
 class GameScene: SKScene, GameStateListener {
     
-    
     let gameEngine: GameEngine!
+    let gameViewController: GameViewController!
     private let level: GameLevel!
     
     private let tileSize: CGFloat!
@@ -15,6 +15,9 @@ class GameScene: SKScene, GameStateListener {
     private let gameLayer = SKNode()
     private let tilesLayer = SKNode()
     private let entityLayer = SKNode()
+    
+    private var didNotChooseReachableNode = true
+    private var didFinishMoving = true
     
     private var previewNode: SKSpriteNode!
     
@@ -26,7 +29,7 @@ class GameScene: SKScene, GameStateListener {
         assertionFailure("Should not call this init, init with basic level please!")
     }
     
-    init(_ size: CGSize, _ level: GameLevel) {
+    init(_ size: CGSize, _ level: GameLevel, _ viewController: GameViewController) {
         super.init(size: size)
         
         self.level = level
@@ -62,10 +65,17 @@ class GameScene: SKScene, GameStateListener {
         previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
+        
+        // Attach VC
+        gameViewController = viewController
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
+        
+        if !didFinishMoving {
+            return
+        }
         
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
@@ -76,6 +86,9 @@ class GameScene: SKScene, GameStateListener {
                         gameEngine.currentPlayerMoveToNode = node
                         previewNode.position = pointFor(node.row, node.column)
                         previewNode.hidden = false
+                        didNotChooseReachableNode = false
+                    } else {
+                        didNotChooseReachableNode = true
                     }
                 }
             }
@@ -99,6 +112,11 @@ class GameScene: SKScene, GameStateListener {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        if didNotChooseReachableNode || !didFinishMoving {
+            return
+        }
+        
+        didNotChooseReachableNode = false
         previewNode.hidden = true
         gameEngine.nextState()
     }
@@ -170,11 +188,15 @@ class GameScene: SKScene, GameStateListener {
             pathSequence.append(action)
         }
         
+        self.didFinishMoving = false
+        
         gameEngine.player.getSprite().runAction(
             SKAction.sequence(pathSequence),
             completion: {
                 self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
                 self.gameEngine.nextState()
+                
+                self.didFinishMoving = true
             }
         )
     }
@@ -182,6 +204,13 @@ class GameScene: SKScene, GameStateListener {
     private func performActions() {
         if let action = gameEngine.currentPlayerAction {
             println(action)
+            
+            switch action.actionType {
+            case .Pui:
+                gameEngine.player.inflict(gameEngine.player.puiDmg)
+            default:
+                break
+            }
         }
         gameEngine.nextState()
     }
@@ -191,6 +220,7 @@ class GameScene: SKScene, GameStateListener {
         case .Precalculation:
             break
         case .PlayerAction:
+            updatePlayerHealth()
             deleteRemovedDoodads()
             highlightReachableNodes()
             break
@@ -222,6 +252,12 @@ class GameScene: SKScene, GameStateListener {
         for node in gameEngine.reachableNodes.values {
             node.getLabel().unhighlight()
         }
+    }
+    
+    private func updatePlayerHealth() {
+        let playerOneHp = gameEngine.player.hp
+        
+        gameViewController.playerOneHp.text = String(playerOneHp)
     }
     
     private func deleteRemovedDoodads() {
