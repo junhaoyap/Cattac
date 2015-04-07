@@ -17,22 +17,21 @@ protocol ActionListener {
 }
 
 class GameEngine {
+    private let catFactory = CatFactory.sharedInstance
+    private let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    private var grid: Grid!
+    private var playersPendingPaths: [String:[TileNode]] = [:]
+    private var events: [String:()->()] = [:]
+    private var movementWatchers: [Int: Firebase] = [:]
     var playerNumber = 1
-    let catFactory = CatFactory.sharedInstance
-    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var state: GameState = GameState.Precalculation
     var gameStateListener: GameStateListener?
     var actionListener: ActionListener?
     var currentPlayer: Cat!
     var playerMoveNumber: Int = 1
     var players: [String:Cat] = [:]
-    private var grid: Grid!
-    private var playersPendingPaths: [String:[TileNode]] = [:]
     var reachableNodes: [Int:TileNode] = [:]
     var removedDoodads: [Int:Doodad] = [:]
-    private var events: [String:()->()] = [:]
-    private var movementWatchers: [Int: Firebase] = [:]
-    var playerMovesCount = 0
     
     init(grid: Grid, playerNumber: Int) {
         self.grid = grid
@@ -42,7 +41,7 @@ class GameEngine {
         registerMovementWatcherExcept(playerNumber)
         
         self.on("puiButtonPressed") {
-            self.setAvailableDirections()
+            self.setAvailablePuiDirections()
             self.notifyAction()
         }
         
@@ -115,9 +114,7 @@ class GameEngine {
             state = GameState.Precalculation
         }
         
-        if let listener = gameStateListener {
-            listener.onStateUpdate(state)
-        }
+        gameStateListener?.onStateUpdate(state)
     }
     
     func precalculate() {
@@ -283,7 +280,6 @@ class GameEngine {
                 let moveToRow = snapshot.value.objectForKey("toRow") as? Int
                 let moveToCol = snapshot.value.objectForKey("toCol") as? Int
                 
-                println("Received movement: \(i)")
                 if fromRow == nil || fromCol == nil || moveToRow == nil || moveToCol == nil {
                     //ignore for now, shall be addressed together with turn sync issue
                     return
@@ -296,7 +292,7 @@ class GameEngine {
         }
     }
     
-    private func setAvailableDirections() {
+    private func setAvailablePuiDirections() {
         let availableDirections = grid.getAvailableDirections(currentPlayer.destNode)
         var action = PuiAction(direction: availableDirections.first!)
         action.availableDirections = availableDirections
