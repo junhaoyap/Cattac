@@ -131,7 +131,9 @@ class Graph<T: Hashable> {
             addDirectedEdge(addedEdge, sourceNodeHash, destNodeHash)
             
             if !self.isDirected {
-                addDirectedEdge(addedEdge.reverse(), destNodeHash, sourceNodeHash)
+                let reversedEdge = addedEdge.reverse()
+                dictionaryOfEdges[reversedEdge.hashValue] = reversedEdge
+                addDirectedEdge(reversedEdge, destNodeHash, sourceNodeHash)
             }
         }
         
@@ -164,7 +166,9 @@ class Graph<T: Hashable> {
             removeDirectedEdge(removedEdge, sourceNodeHash, destNodeHash)
             
             if !self.isDirected {
-                removeDirectedEdge(removedEdge.reverse(), destNodeHash, sourceNodeHash)
+                let reversedEdge = removedEdge.reverse()
+                dictionaryOfEdges.removeValueForKey(reversedEdge.hashValue)
+                removeDirectedEdge(reversedEdge, destNodeHash, sourceNodeHash)
             }
         }
         
@@ -319,13 +323,16 @@ class Graph<T: Hashable> {
                 }
             }
         }
-        
-        var prevNode = toNode
-        
-        // Construct path
-        while let edge = nodeInfo[prevNode.hashValue]!.incomingEdge {
-            arrayToReturn.append(edge)
-            prevNode = edge.getSource()
+
+        // Adds the edges only if a path to toNode is found
+        if nodeInfo[toNode.hashValue] != nil {
+            var prevNode = toNode
+            
+            // Construct path
+            while let edge = nodeInfo[prevNode.hashValue]!.incomingEdge {
+                arrayToReturn.append(edge)
+                prevNode = edge.getSource()
+            }
         }
         
         return arrayToReturn.reverse()
