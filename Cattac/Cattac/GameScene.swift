@@ -32,14 +32,13 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         assertionFailure("Should not call this init, init with basic level please!")
     }
     
-    init(_ size: CGSize, _ level: GameLevel, _ playerNumber: Int) {
+    init(_ size: CGSize, _ level: GameLevel, _ aPlayerNumber: Int) {
         super.init(size: size)
         
         self.level = level
-        gameEngine = GameEngine(grid: level.grid, graph: level.graph)
+        gameEngine = GameEngine(grid: level.grid, graph: level.graph, playerNumber: aPlayerNumber)
         gameEngine.gameStateListener = self
         gameEngine.actionListener = self
-        gameEngine.playerNumber = playerNumber
         
         // Initialize tileSize based on the number of columns
         tileSize = size.width / CGFloat(level.numColumns + 2)
@@ -52,7 +51,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         // position of the general grid layer
         let layerPosition = CGPoint(
             x: -tileSize * CGFloat(level.numColumns) / 2,
-            y: -tileSize * CGFloat(level.numRows) / 2)
+            y: -tileSize * CGFloat(level.numRows) / 2
+        )
 
         // adds tilesLayer to the grid layer
         tilesLayer.position = layerPosition
@@ -89,13 +89,23 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         addTiles()
         addPlayers()
         
-        previewNode = SKSpriteNode(imageNamed: "Nala.png")
+        switch aPlayerNumber {
+        case 1:
+            previewNode = SKSpriteNode(imageNamed: "Nala.png")
+        case 2:
+            previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
+        case 3:
+            previewNode = SKSpriteNode(imageNamed: "Nyan.png")
+        case 4:
+            previewNode = SKSpriteNode(imageNamed: "Pusheen.png")
+        default:
+            break
+        }
+        
         previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
         previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
-        
-        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -162,12 +172,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func addPlayers() {
-        let spriteNode = level.grid[gameEngine.player.position]!.sprite
-        let playerNode = gameEngine.player.getSprite() as SKSpriteNode
-        playerNode.size = spriteNode.size
-        playerNode.position = spriteNode.position
-        entityLayer.addChild(playerNode)
-        
         for key in gameEngine.getAllPlayers().keys {
             let theCat = gameEngine.getAllPlayers()[key]!
             let spriteNodeCat = level.grid[theCat.position]!.sprite
@@ -202,27 +206,30 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func movePlayer() {
-        let path = gameEngine.pathTo(gameEngine.currentPlayerMoveToNode)
-        var pathSequence: [SKAction] = []
-
-        for edge in path {
-            let destNode = edge.getDestination().getLabel()
-            let action = SKAction.moveTo(destNode.sprite.position, duration: 0.25)
-            pathSequence.append(action)
+        for key in gameEngine.getAllPlayersMoveToPositions().keys {
+            let thisPlayerNode = gameEngine.getAllPlayersMoveToPositions()[key]
+            let path = gameEngine.pathTo(thisPlayerNode!)
+            var pathSequence: [SKAction] = []
+            
+            for edge in path {
+                let destNode = edge.getDestination().getLabel()
+                let action = SKAction.moveTo(destNode.sprite.position, duration: 0.25)
+                pathSequence.append(action)
+            }
+            
+            if pathSequence.count > 0 {
+                let cat: Cat = gameEngine.allPlayer[key]!
+                cat.getSprite().runAction(
+                    SKAction.sequence(pathSequence),
+                    completion: {
+                        self.gameEngine.allPlayerPositions[key] = thisPlayerNode!
+                        self.gameEngine.nextState()
+                    }
+                )
+            } else {
+                gameEngine.nextState()
+            }
         }
-        
-        if pathSequence.count > 0 {
-            gameEngine.player.getSprite().runAction(
-                SKAction.sequence(pathSequence),
-                completion: {
-                    self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
-                    self.gameEngine.nextState()
-                }
-            )
-        } else {
-            gameEngine.nextState()
-        }
-        
     }
     
     private func animatePuiAction(action: PuiAction) {

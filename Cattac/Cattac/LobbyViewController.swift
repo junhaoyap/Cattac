@@ -8,6 +8,7 @@ class LobbyViewController: UIViewController {
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     let levelGenerator = LevelGenerator.sharedInstance
     var levelToBuildFrom: GameLevel!
+    var playerNumber: Int!
     
     // TODO check if the player who is joining the game has already joined,
     // if not he can join as multiplayer players from the same game and
@@ -83,6 +84,7 @@ class LobbyViewController: UIViewController {
                 let setGameNewLastActive = thisLobbyRef.childByAppendingPath("lastActive")
                 setGameNewLastActive.setValue(nowDateFormat)
                 
+                self.playerNumber = 1
                 self.waitForGameStart()
             } else if hasGameStarted == 0 {
                 // join in as the next player
@@ -102,6 +104,7 @@ class LobbyViewController: UIViewController {
                     
                     didJoinLobby = true
                     
+                    self.playerNumber = 4
                     self.initiateGameStart()
                 case 2:
                     let toWriteTo = thisLobbyRef.childByAppendingPath("player3")
@@ -112,6 +115,7 @@ class LobbyViewController: UIViewController {
                     
                     didJoinLobby = true
                     
+                    self.playerNumber = 3
                     self.waitForGameStart()
                 case 1:
                     let toWriteTo = thisLobbyRef.childByAppendingPath("player2")
@@ -122,6 +126,7 @@ class LobbyViewController: UIViewController {
                     
                     didJoinLobby = true
                     
+                    self.playerNumber = 2
                     self.waitForGameStart()
                 default:
                     println("HOLY MOLLY, LESS EPIC LOBBY ERROR")
@@ -142,6 +147,7 @@ class LobbyViewController: UIViewController {
         if segue.identifier == "gameStartSegue" {
             if let destinationVC = segue.destinationViewController as? GameViewController {
                 destinationVC.level = levelGenerator.generateBasic()
+                destinationVC.playerNumber = self.playerNumber
                 
                 let gameRef = ref
                     .childByAppendingPath("games")
@@ -174,6 +180,7 @@ class LobbyViewController: UIViewController {
         if segue.identifier == "waitGameStartSegue" {
             if let destinationVC = segue.destinationViewController as? GameViewController {
                 destinationVC.level = levelToBuildFrom
+                destinationVC.playerNumber = self.playerNumber
             }
         }
     }

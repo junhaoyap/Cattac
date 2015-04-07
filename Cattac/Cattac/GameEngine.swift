@@ -27,9 +27,9 @@ class GameEngine {
     var playerMoveNumber: Int = 1
     private var grid: Grid<TileNode>!
     private var graph: Graph<TileNode>!
-    private var allPlayer: [String:Cat] = [:]
-    private var allPlayerPositions: [String:TileNode] = [:]
-    private var allPlayerMoveToPositions: [String:TileNode] = [:]
+    var allPlayer: [String:Cat] = [:]
+    var allPlayerPositions: [String:TileNode] = [:]
+    var allPlayerMoveToPositions: [String:TileNode] = [:]
     private var allPlayerActions: [String:Action] = [:]
     var reachableNodes: [Int:Node<TileNode>] = [:]
     var removedDoodads: [Int:Doodad] = [:]
@@ -57,9 +57,10 @@ class GameEngine {
         .childByAppendingPath("game0")
         .childByAppendingPath("player4Movement")
     
-    init(grid: Grid<TileNode>, graph: Graph<TileNode>) {
+    init(grid: Grid<TileNode>, graph: Graph<TileNode>, playerNumber: Int) {
         self.grid = grid
         self.graph = graph
+        self.playerNumber = playerNumber
         addPlayers()
         
         self.on("puiButtonPressed") {
@@ -175,14 +176,18 @@ class GameEngine {
                 
                 let moveFromRow = snapshot.value.objectForKey("fromRow") as? Int
                 let moveFromCol = snapshot.value.objectForKey("fromCol") as? Int
+                let moveToRow = snapshot.value.objectForKey("toRow") as? Int
+                let moveToCol = snapshot.value.objectForKey("toCol") as? Int
                 
                 println("player 1:")
                 println(moveFromRow)
                 println(moveFromCol)
+                println(moveToRow)
+                println(moveToCol)
                 
                 self.playerMovesCount++
-                // attach the movement to player 1
-                // and execute it in the execution phase
+                
+                self.allPlayerMoveToPositions[Constants.catName.nalaCat] = self.grid[GridIndex(moveToRow!, moveToCol!)]
             })
             
             player2MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
@@ -190,13 +195,18 @@ class GameEngine {
                 
                 let moveFromRow = snapshot.value.objectForKey("fromRow") as? Int
                 let moveFromCol = snapshot.value.objectForKey("fromCol") as? Int
+                let moveToRow = snapshot.value.objectForKey("toRow") as? Int
+                let moveToCol = snapshot.value.objectForKey("toCol") as? Int
                 
                 println("player 2:")
                 println(moveFromRow)
                 println(moveFromCol)
+                println(moveToRow)
+                println(moveToCol)
                 
-                // attach the movement to player 2
-                // and execute it in the execution phase
+                self.playerMovesCount++
+                
+                self.allPlayerMoveToPositions[Constants.catName.grumpyCat] = self.grid[GridIndex(moveToRow!, moveToCol!)]
             })
             
             player3MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
@@ -204,13 +214,18 @@ class GameEngine {
                 
                 let moveFromRow = snapshot.value.objectForKey("fromRow") as? Int
                 let moveFromCol = snapshot.value.objectForKey("fromCol") as? Int
+                let moveToRow = snapshot.value.objectForKey("toRow") as? Int
+                let moveToCol = snapshot.value.objectForKey("toCol") as? Int
                 
                 println("player 3:")
                 println(moveFromRow)
                 println(moveFromCol)
+                println(moveToRow)
+                println(moveToCol)
                 
-                // attach the movement to player 3
-                // and execute it in the execution phase
+                self.playerMovesCount++
+                
+                self.allPlayerMoveToPositions[Constants.catName.nyanCat] = self.grid[GridIndex(moveToRow!, moveToCol!)]
             })
             
             player4MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
@@ -218,13 +233,18 @@ class GameEngine {
                 
                 let moveFromRow = snapshot.value.objectForKey("fromRow") as? Int
                 let moveFromCol = snapshot.value.objectForKey("fromCol") as? Int
+                let moveToRow = snapshot.value.objectForKey("toRow") as? Int
+                let moveToCol = snapshot.value.objectForKey("toCol") as? Int
                 
                 println("player 4:")
                 println(moveFromRow)
                 println(moveFromCol)
+                println(moveToRow)
+                println(moveToCol)
                 
-                // attach the movement to player 4
-                // and execute it in the execution phase
+                self.playerMovesCount++
+                
+                self.allPlayerMoveToPositions[Constants.catName.pusheenCat] = self.grid[GridIndex(moveToRow!, moveToCol!)]
             })
             
             playerMoveToUpdateRef.updateChildValues(theMovement)
@@ -235,7 +255,7 @@ class GameEngine {
         }
         
         while true {
-            if playerMovesCount != 1 {
+            if playerMovesCount != 2 {
                 break
             } else {
                 playerMovesCount = 0
@@ -304,6 +324,14 @@ class GameEngine {
         return allPlayer
     }
     
+    func getAllPlayersPositions() -> [String:TileNode] {
+        return allPlayerPositions
+    }
+    
+    func getAllPlayersMoveToPositions() -> [String:TileNode] {
+        return allPlayerMoveToPositions
+    }
+    
     func pathOfPui(startNode: TileNode, direction: Direction) -> [TileNode] {
         let offset = grid.neighboursOffset[direction.description]!
         var path = [TileNode]()
@@ -323,26 +351,46 @@ class GameEngine {
     }
     
     private func addPlayers() {
-        let cat = catFactory.createCat(Constants.catName.nalaCat)!
-        cat.position = GridIndex(0, 0)
-        allPlayerPositions[cat.name] = grid[cat.position]
-        player = cat
-        currentPlayerMoveToNode = currentPlayerNode
+        let cat1 = catFactory.createCat(Constants.catName.nalaCat)!
+        cat1.position = GridIndex(0, 0)
+        allPlayer[cat1.name] = cat1
+        allPlayerPositions[cat1.name] = grid[cat1.position]
+        allPlayerMoveToPositions[cat1.name] = grid[cat1.position]
         
         let cat2 = catFactory.createCat(Constants.catName.grumpyCat)!
         cat2.position = GridIndex(9, 0)
         allPlayer[cat2.name] = cat2
         allPlayerPositions[cat2.name] = grid[cat2.position]
+        allPlayerMoveToPositions[cat1.name] = grid[cat2.position]
         
         let cat3 = catFactory.createCat(Constants.catName.nyanCat)!
         cat3.position = GridIndex(9, 9)
         allPlayer[cat3.name] = cat3
         allPlayerPositions[cat3.name] = grid[cat3.position]
+        allPlayerMoveToPositions[cat1.name] = grid[cat3.position]
         
         let cat4 = catFactory.createCat(Constants.catName.pusheenCat)!
         cat4.position = GridIndex(0, 9)
         allPlayer[cat4.name] = cat4
         allPlayerPositions[cat4.name] = grid[cat4.position]
+        allPlayerMoveToPositions[cat1.name] = grid[cat4.position]
+        
+        switch playerNumber {
+        case 1:
+            player = cat1
+            currentPlayerMoveToNode = currentPlayerNode
+        case 2:
+            player = cat2
+            currentPlayerMoveToNode = currentPlayerNode
+        case 3:
+            player = cat3
+            currentPlayerMoveToNode = currentPlayerNode
+        case 4:
+            player = cat4
+            currentPlayerMoveToNode = currentPlayerNode
+        default:
+            break
+        }
     }
     
     private func setAvailableDirections() {

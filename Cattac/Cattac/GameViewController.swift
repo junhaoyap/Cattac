@@ -27,7 +27,7 @@ class GameViewController: UIViewController {
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var scene: GameScene!
     var level: GameLevel!
-    var playerNumber: Int!
+    var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
     
     override func viewDidLoad() {
@@ -41,7 +41,8 @@ class GameViewController: UIViewController {
         /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
         
-        scene = GameScene(skView.bounds.size, level)
+        scene = GameScene(skView.bounds.size, level, playerNumber)
+        println(playerNumber)
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
