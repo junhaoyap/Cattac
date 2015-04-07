@@ -18,19 +18,45 @@ protocol ActionListener {
 
 class GameEngine {
     private let catFactory = CatFactory.sharedInstance
+    
+    /// Firebase reference. To be wrapped in upcoming Server Protocol.
     private let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    
     private var grid: Grid!
+    
+    /// Dictionary of calculated player paths at the end of ServerUpdate. Cleared at Precalculation.
     private var playersPendingPaths: [String:[TileNode]] = [:]
+    
+    /// Dictionary of event trigger closures.
     private var events: [String:()->()] = [:]
+    
+    /// Dictionary of Firebase references watching a data value.
     private var movementWatchers: [Int: Firebase] = [:]
+    
+    /// Player index (we should change to player-id instead).
     var playerNumber = 1
+    
     var state: GameState = GameState.Precalculation
+    
+    /// GameState listener, listens for update on state change.
     var gameStateListener: GameStateListener?
+    
+    /// Action listener, listens for action change on currentPlayer.
     var actionListener: ActionListener?
+    
+    /// The local player
     var currentPlayer: Cat!
-    var playerMoveNumber: Int = 1
+    
+    /// currentPlayer's movement index, for backend use.
+    var currentPlayerMoveNumber: Int = 1
+    
+    /// Dictionary of all players in game.
     var players: [String:Cat] = [:]
+    
+    /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
+    
+    /// Dictionary of removed doodads pending removal on UI
     var removedDoodads: [Int:Doodad] = [:]
     
     init(grid: Grid, playerNumber: Int) {
@@ -141,7 +167,7 @@ class GameEngine {
             .childByAppendingPath("games")
             .childByAppendingPath("game0")
             .childByAppendingPath("player" + String(playerNumber) + "Movement")
-            .childByAppendingPath(String(playerMoveNumber))
+            .childByAppendingPath(String(currentPlayerMoveNumber))
         
         let currentPlayerMoveData = [
             "fromRow": currentPlayer.currNode.position.row,
@@ -176,16 +202,27 @@ class GameEngine {
         currentPlayer.postExecute()
     }
     
-    func executePlayerMove(cat: Cat) -> [TileNode] {
-        let path = playersPendingPaths[cat.name]
+    /// Called by UI to notify game engine that movement is executed on UI
+    /// and player position can be updated
+    ///
+    /// :param: cat The player's move to execute
+    func executePlayerMove(player: Cat) -> [TileNode] {
+        let path = playersPendingPaths[player.name]
         if let lastNode = path?.last {
-            cat.currNode = lastNode
+            player.currNode = lastNode
             return path!
         } else {
             return []
         }
     }
     
+    /// Called by UI to notify game engine that action is executed on UI
+    /// and action effects can be effected (note that some effects does 
+    /// not occur directly in this method, but during a callback from UI
+    /// e.g. when collision detection is required to determine effects, 
+    /// or when pre-calculation of effects is not possible
+    ///
+    /// :param: cat The player's action to execute
     func executePlayerAction(cat: Cat) -> Action? {
         return cat.action
     }
