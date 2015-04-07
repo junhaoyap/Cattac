@@ -78,7 +78,7 @@ class Grid {
         }
     }
 
-    /// TileNode with the given offset from the base TileNode with the given
+    /// TileNode with the given offset from the base TileNode of the given
     /// row and column.
     ///
     /// :throws: KeyError exception if trying to set to an invalid grid index
@@ -167,7 +167,7 @@ class Grid {
         return path
     }
 
-    /// Get all the available directions of a given TileNode. Availabe
+    /// Get all the available directions of a given TileNode. Available
     /// directions being directions where another reachable TileNode exists.
     ///
     /// :param: fromNode The TileNode to be used to find available directions.
@@ -189,7 +189,7 @@ class Grid {
 }
 
 extension Grid: SequenceType {
-    /// Generator for Grid to allow it to be iterable
+    /// Generator for Grid to allow it to be iterable.
     ///
     /// :returns: A generator of TileNodes.
     func generate() -> GeneratorOf<TileNode> {
