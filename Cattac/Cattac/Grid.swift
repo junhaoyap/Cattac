@@ -9,11 +9,11 @@ class Grid {
     private var grid: [GridIndex:TileNode] = [:]
     private var graph: Graph<TileNode>
     
-    let neighboursOffset: [String:(row: Int, column: Int)] = [
-        "top direction": (1, 0),
-        "right direction": (0, 1),
-        "bottom direction": (-1, 0),
-        "left direction": (0, -1)
+    let neighboursOffset: [Direction:(row: Int, column: Int)] = [
+        .Top: (1, 0),
+        .Right: (0, 1),
+        .Bottom: (-1, 0),
+        .Left: (0, -1)
     ]
     
     init(rows: Int, columns: Int) {
@@ -111,7 +111,7 @@ class Grid {
             if let toNode = self[fromNode.row, fromNode.column, with: offset] {
                 let edges = graph.edgesFromNode(Node(fromNode), toNode: Node(toNode))
                 if edges.count > 0 {
-                    directions.append(Direction.create(dir)!)
+                    directions.append(dir)
                 }
             }
         }

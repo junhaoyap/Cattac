@@ -309,7 +309,7 @@ class GameEngine {
     }
     
     func pathOfPui(startNode: TileNode, direction: Direction) -> [TileNode] {
-        let offset = grid.neighboursOffset[direction.description]!
+        let offset = grid.neighboursOffset[direction]!
         var path = [TileNode]()
         var currentNode = startNode
         while let nextNode = grid[currentNode.row, currentNode.column, with: offset] {
