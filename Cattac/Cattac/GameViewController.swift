@@ -81,20 +81,6 @@ class GameViewController: UIViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBAction func puiButtonPressed(sender: AnyObject) {
-        scene.gameEngine.trigger("puiButtonPressed")
-    }
-    
-    
-    @IBAction func fartButtonPressed(sender: AnyObject) {
-        scene.gameEngine.trigger("fartButtonPressed")
-    }
-    
-    
-    @IBAction func poopButtonPressed(sender: AnyObject) {
-        scene.gameEngine.trigger("poopButtonPressed")
-    }
-    
     func updateTime() {
         var currentTime = timerLabel.text!.toInt()
         
