@@ -191,7 +191,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func movePlayer() {
-        let path = gameEngine.pathTo(gameEngine.currentPlayerMoveToNode)
+        let path = gameEngine.getPlayerPath(gameEngine.player)
         var pathSequence: [SKAction] = []
 
         for edge in path {
@@ -266,6 +266,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     func onStateUpdate(state: GameState) {
+        // we should restrict next-state calls in game engine
         switch state {
         case .Precalculation:
             break
@@ -278,11 +279,10 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             removeHighlights()
             break
         case .StartMovesExecution:
-            gameEngine.nextState()
             previewNode.hidden = true
-            movePlayer()
         case .MovesExecution:
-            break
+            movePlayer()
+            gameEngine.nextState()
         case .StartActionsExecution:
             gameEngine.nextState()
             performActions()

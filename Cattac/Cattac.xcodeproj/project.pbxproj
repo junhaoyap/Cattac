@@ -85,6 +85,7 @@
 		BDA19ABA1AD0382900B7E9D4 /* StatModification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB91AD0382900B7E9D4 /* StatModification.swift */; };
 		BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */; };
 		BDA19AC21AD0675100B7E9D4 /* FortressDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AC11AD0675100B7E9D4 /* FortressDoodad.swift */; };
+		BDA19AD01AD399CC00B7E9D4 /* WormholeDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19ACF1AD399CC00B7E9D4 /* WormholeDoodad.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,6 +176,7 @@
 		BDA19AB91AD0382900B7E9D4 /* StatModification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatModification.swift; sourceTree = "<group>"; };
 		BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchTowerDoodad.swift; sourceTree = "<group>"; };
 		BDA19AC11AD0675100B7E9D4 /* FortressDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FortressDoodad.swift; sourceTree = "<group>"; };
+		BDA19ACF1AD399CC00B7E9D4 /* WormholeDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WormholeDoodad.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -500,6 +502,7 @@
 			isa = PBXGroup;
 			children = (
 				34A356351AD1896000299049 /* Wall.swift */,
+				BDA19ACF1AD399CC00B7E9D4 /* WormholeDoodad.swift */,
 				BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */,
 				BDA19AC11AD0675100B7E9D4 /* FortressDoodad.swift */,
 				BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */,
@@ -640,6 +643,7 @@
 				BDA19AB81AD034BF00B7E9D4 /* LandMineDoodad.swift in Sources */,
 				3425854E1AACE291004A3CFD /* HardLevel.swift in Sources */,
 				342584E71AACDB03004A3CFD /* GameScene.swift in Sources */,
+				BDA19AD01AD399CC00B7E9D4 /* WormholeDoodad.swift in Sources */,
 				761BB59E1AD04348007C31C1 /* Action.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
 				BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */,

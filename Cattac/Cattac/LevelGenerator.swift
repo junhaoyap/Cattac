@@ -40,50 +40,45 @@ class LevelGenerator {
         return level
     }
     
-    private func generateDoodadAndWalls(level: GameLevel) {
+    private func getValidDoodadLocation(level: GameLevel) -> GridIndex {
         let maxCol = UInt32(level.numColumns)
         let maxRow = UInt32(level.numRows)
         
+        var row = Int(arc4random_uniform(maxRow))
+        var col = Int(arc4random_uniform(maxCol))
+        
+        var location = GridIndex(row, col)
+        
+        while contains(Constants.Level.invalidDoodadWallLocation, location) ||
+            level.hasDoodad(atLocation: location) {
+            
+            row = Int(arc4random_uniform(maxRow))
+            col = Int(arc4random_uniform(maxCol))
+            location = GridIndex(row, col)
+        }
+        return location
+    }
+    
+    private func generateDoodadAndWalls(level: GameLevel) {
+        
         for i in 0...level.numDoodads {
             var hasDoodadBeenAdded = false
+            let doodad = doodadFactory.randomDoodad()
+            let location = getValidDoodadLocation(level)
+            level.addDoodad(doodad, atLocation: location)
             
-            while !hasDoodadBeenAdded {
-                let row = Int(arc4random_uniform(maxRow))
-                let col = Int(arc4random_uniform(maxCol))
-                let location = GridIndex(row, col)
-                let doodad = doodadFactory.randomDoodad()
-                
-                if contains(Constants.Level.invalidDoodadWallLocation, location) ||
-                    level.hasDoodad(atLocation: location) {
-                        continue
-                }
-                
-                
-                level.addDoodad(doodad, atLocation: location)
-                
-                hasDoodadBeenAdded = true
+            if doodad is WormholeDoodad {
+                let destDoodad = doodadFactory.createDoodad(.Wormhole)!
+                let destLocation = getValidDoodadLocation(level)
+                level.addDoodad(destDoodad, atLocation: destLocation)
             }
         }
         
         for i in 0...level.numWalls {
-            var hasWallBeenAdded = false
-            
-            while !hasWallBeenAdded {
-                let row = Int(arc4random_uniform(maxRow))
-                let col = Int(arc4random_uniform(maxCol))
-                let location = GridIndex(row, col)
-                let doodad = doodadFactory.generateWall()
-                
-                if contains(Constants.Level.invalidDoodadWallLocation, location) ||
-                    level.hasDoodad(atLocation: location) {
-                        continue
-                }
-                
-                let tileNode = level.addDoodad(doodad, atLocation:location)
-                level.graph.removeNode((Node(tileNode)))
-                
-                hasWallBeenAdded = true
-            }
+            let doodad = doodadFactory.generateWall()
+            let location = getValidDoodadLocation(level)
+            let tileNode = level.addDoodad(doodad, atLocation: location)
+            level.graph.removeNode((Node(tileNode)))
         }
     }
     

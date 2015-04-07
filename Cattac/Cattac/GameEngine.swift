@@ -28,6 +28,7 @@ class GameEngine {
     private var graph: Graph<TileNode>!
     private var allPlayerPositions: [String:TileNode] = [:]
     private var allPlayerMoveToPositions: [String:TileNode] = [:]
+    private var allPlayerPaths: [String:[Edge<TileNode>]] = [:]
     private var allPlayerActions: [String:Action] = [:]
     var reachableNodes: [Int:Node<TileNode>] = [:]
     var removedDoodads: [Int:Doodad] = [:]
@@ -62,7 +63,8 @@ class GameEngine {
             updateServer()
             nextState()
         case .StartMovesExecution:
-            break
+            calculateMovementPaths()
+            nextState()
         case .MovesExecution:
             break
         case .StartActionsExecution:
@@ -254,6 +256,14 @@ class GameEngine {
         playerMoveNumber++
     }
     
+    func calculateMovementPaths() {
+        if let doodad = allPlayerMoveToPositions[player.name]!.doodad {
+            if doodad is WormholeDoodad {
+                
+            }
+        }
+    }
+    
     func postExecute() {
         player.postExecute()
     }
@@ -291,6 +301,10 @@ class GameEngine {
             }
             allPlayerActions[player.name] = newValue
         }
+    }
+    
+    func getPlayerPath(cat: Cat) -> [Edge<TileNode>] {
+        return allPlayerPaths[cat.name]!
     }
     
     func trigger(event: String) {

@@ -35,6 +35,7 @@ struct Constants {
         static let fortressString = "fortress"
         static let trampolineString = "trampoline"
         static let watchTowerString = "watchTower"
+        static let wormholeString = "wormhole"
     }
     
     // for randomising which player get which cat, copy the array before playing with it, only for
