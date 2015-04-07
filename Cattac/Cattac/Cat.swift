@@ -12,11 +12,14 @@ class Cat: TileEntity {
     private let baseFartRange: Int
     
     var name: String!
-    var position: GridIndex = GridIndex(0,0)
+    var currNode: TileNode!
+    var destNode: TileNode!
     var hp: Int
     var puiDmg: Int!
     var fartDmg: Int!
     var poopDmg: Int!
+    
+    var action: Action?
     
     var defenceMods = [StatModification]()
     var dmgMods = [StatModification]()

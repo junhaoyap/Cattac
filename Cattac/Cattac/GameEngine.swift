@@ -22,31 +22,32 @@ class GameEngine {
     var state: GameState = GameState.Precalculation
     var gameStateListener: GameStateListener?
     var actionListener: ActionListener?
-    var player: Cat!
+    var currentPlayer: Cat!
     var playerMoveNumber: Int = 1
+    var players: [String:Cat] = [:]
     private var grid: Grid!
-    private var allPlayerPositions: [String:TileNode] = [:]
-    private var allPlayerMoveToPositions: [String:TileNode] = [:]
-    private var allPlayerPaths: [String:[TileNode]] = [:]
-    private var allPlayerActions: [String:Action] = [:]
+    private var playersPendingPaths: [String:[TileNode]] = [:]
     var reachableNodes: [Int:TileNode] = [:]
     var removedDoodads: [Int:Doodad] = [:]
     private var events: [String:()->()] = [:]
     
     init(grid: Grid) {
         self.grid = grid
-        addPlayers()
+        let player = catFactory.createCat(Constants.catName.nalaCat)!
+        player.currNode = grid[0, 0]
+        setCurrentPlayer(player)
         
         self.on("puiButtonPressed") {
             self.setAvailableDirections()
         }
         
         self.on("fartButtonPressed") {
-            self.currentPlayerAction = FartAction(range: 2)
+            self.currentPlayer.action = FartAction(range: 2)
         }
         
         self.on("poopButtonPressed") {
-            self.currentPlayerAction = PoopAction(targetNode: self.currentPlayerMoveToNode)
+            let targetNode = self.currentPlayer.currNode
+            self.currentPlayer.action = PoopAction(targetNode: targetNode)
         }
     }
     
@@ -214,18 +215,21 @@ class GameEngine {
     }
     
     func precalculate() {
-        if let doodad = currentPlayerNode.doodad {
-            doodad.effect(player)
-            
-            if doodad.isRemoved() {
-                currentPlayerNode.doodad = nil
-                removedDoodads[doodad.getSprite().hashValue] = doodad
+        for player in players.values {
+            let tileNode = player.currNode
+            if let doodad = tileNode.doodad {
+                doodad.effect(player)
+                
+                if doodad.isRemoved() {
+                    tileNode.doodad = nil
+                    removedDoodads[doodad.getSprite().hashValue] = doodad
+                }
             }
+            player.destNode = player.currNode
+            player.action = nil
         }
         
-        currentPlayerMoveToNode = currentPlayerNode
-        reachableNodes = grid.getNodesInRange(currentPlayerNode, range: player.moveRange)
-        allPlayerActions = [:]
+        reachableNodes = grid.getNodesInRange(currentPlayer.currNode, range: currentPlayer.moveRange)
     }
     
     func updateServer() {
@@ -255,8 +259,8 @@ class GameEngine {
     }
     
     func calculateMovementPaths() {
-        var playerAtNode = allPlayerPositions[player.name]!
-        var playerMoveToNode = allPlayerMoveToPositions[player.name]!
+        var playerAtNode = currentPlayer.currNode
+        var playerMoveToNode = currentPlayer.destNode
         var path = grid.shortestPathFromNode(playerAtNode, toNode: playerMoveToNode)
         
         if let doodad = playerMoveToNode.doodad {
@@ -265,54 +269,23 @@ class GameEngine {
                 path += [destNode]
             }
         }
-        allPlayerPaths[player.name] = path
+        playersPendingPaths[currentPlayer.name] = path
     }
     
     func postExecute() {
-        player.postExecute()
-    }
-    
-    var currentPlayerNode: TileNode {
-        get {
-            return allPlayerPositions[player.name]!
-        }
-        set {
-            allPlayerPositions[player.name] = newValue
-        }
-    }
-    
-    var currentPlayerMoveToNode: TileNode {
-        get {
-            return allPlayerMoveToPositions[player.name]!
-        }
-        set {
-            if allPlayerMoveToPositions[player.name] != newValue {
-                currentPlayerAction = nil
-            }
-            allPlayerMoveToPositions[player.name] = newValue
-        }
-    }
-    
-    var currentPlayerAction: Action? {
-        get {
-            return allPlayerActions[player.name]?
-        }
-        set {
-            if allPlayerActions[player.name] != newValue {
-                if let listener = actionListener {
-                    listener.onActionUpdate(newValue)
-                }
-            }
-            allPlayerActions[player.name] = newValue
-        }
+        currentPlayer.postExecute()
     }
     
     func executePlayerMove(cat: Cat) -> [TileNode] {
-        let path = allPlayerPaths[cat.name]!
+        let path = playersPendingPaths[cat.name]!
         if let lastNode = path.last {
-            currentPlayerNode = lastNode
+            cat.currNode = lastNode
         }
         return path
+    }
+    
+    func executePlayerAction(cat: Cat) -> Action? {
+        return cat.action
     }
     
     func trigger(event: String) {
@@ -329,7 +302,7 @@ class GameEngine {
         let offset = grid.neighboursOffset[direction]!
         var path = [TileNode]()
         var currentNode = startNode
-        while let nextNode = grid[currentNode.row, currentNode.column, with: offset] {
+        while let nextNode = grid[currentNode.position, with: offset] {
             if let doodad = nextNode.doodad {
                 if doodad.getName() == "wall" {
                     path.append(nextNode)
@@ -342,18 +315,21 @@ class GameEngine {
         return path
     }
     
-    private func addPlayers() {
-        let cat = catFactory.createCat(Constants.catName.nalaCat)!
-        cat.position = GridIndex(0, 0)
-        allPlayerPositions[cat.name] = grid[cat.position]
-        player = cat
-        currentPlayerMoveToNode = currentPlayerNode
+    func setCurrentPlayer(player: Cat) {
+        players[player.name] = player
+        currentPlayer = player
+        player.destNode = player.currNode
+    }
+    
+    func addPlayer(player: Cat) {
+        players[player.name] = player
+        player.destNode = player.currNode
     }
     
     private func setAvailableDirections() {
-        let availableDirections = grid.getAvailableDirections(currentPlayerMoveToNode)
+        let availableDirections = grid.getAvailableDirections(currentPlayer.destNode)
         var action = PuiAction(direction: availableDirections.first!)
         action.availableDirections = availableDirections
-        currentPlayerAction = action
+        currentPlayer.action = action
     }
 }
