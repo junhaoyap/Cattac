@@ -64,7 +64,15 @@ class DoodadFactory {
     }
     
     func randomDoodad() -> Doodad {
-        return createDoodad(randomDoodadType())!
+        return randomDoodad([])
+    }
+    
+    func randomDoodad(excludeDoodads: [DoodadType]) -> Doodad {
+        var type = randomDoodadType()
+        while contains(excludeDoodads, type) {
+            type = randomDoodadType()
+        }
+        return createDoodad(type)!
     }
     
     func randomDoodadType() -> DoodadType {

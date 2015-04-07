@@ -60,14 +60,19 @@ class LevelGenerator {
     }
     
     private func generateDoodadAndWalls(level: GameLevel) {
+        var wormholeCount = 0
+        var excludedDoodads = [DoodadType]()
         
         for i in 0...level.numDoodads {
             var hasDoodadBeenAdded = false
-            let doodad = doodadFactory.randomDoodad()
+            let doodad = doodadFactory.randomDoodad(excludedDoodads)
             let location = getValidDoodadLocation(level)
             let tileNode = level.addDoodad(doodad, atLocation: location)
             
             if doodad is WormholeDoodad {
+                if ++wormholeCount >= Constants.Doodad.maxWormhole {
+                    excludedDoodads += [.Wormhole]
+                }
                 let destDoodad = doodadFactory.createDoodad(.Wormhole)! as WormholeDoodad
                 let destLocation = getValidDoodadLocation(level)
                 let destTileNode = level.addDoodad(destDoodad, atLocation: destLocation)

@@ -36,6 +36,8 @@ struct Constants {
         static let trampolineString = "trampoline"
         static let watchTowerString = "watchTower"
         static let wormholeString = "wormhole"
+        
+        static let maxWormhole = 1
     }
     
     // for randomising which player get which cat, copy the array before playing with it, only for
@@ -67,13 +69,6 @@ struct Constants {
         static let nalaCat = "nalaCat"
         static let grumpyCat = "grumpyCat"
         static let pusheenCat = "pusheenCat"
-    }
-    
-    struct doodadName {
-        static let watchTower = "watchTower"
-        static let trampoline = "trampoline"
-        static let fortress = "fortress"
-        static let wormhole = "wormhole"
     }
     
     struct itemName {
