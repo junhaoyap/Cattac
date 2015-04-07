@@ -69,7 +69,6 @@ class GameEngine {
             nextState()
             break
         case .StartMovesExecution:
-            postUpdate()
             nextState()
             break
         case .MovesExecution:
@@ -84,6 +83,12 @@ class GameEngine {
         case .PostExecution:
             postExecute()
             nextState()
+        }
+    }
+    
+    func end() {
+        for ref in movementWatchers.values {
+            ref.removeAllObservers()
         }
     }
     
@@ -110,13 +115,6 @@ class GameEngine {
         if let listener = gameStateListener {
             listener.onStateUpdate(state)
         }
-    }
-    
-    func postUpdate() {
-        // let it observe forever until an end to game is implemented
-        //for ref in movementWatchers.values {
-        //    ref.removeAllObservers()
-        //}
     }
     
     func precalculate() {

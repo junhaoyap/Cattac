@@ -70,6 +70,11 @@ class GameViewController: UIViewController {
         return true
     }
     
+    @IBAction func backButtonPressed(sender: AnyObject) {
+        (self.view as SKView).presentScene(nil)
+        // confirm exit game
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     @IBAction func puiButtonPressed(sender: AnyObject) {
         scene.gameEngine.trigger("puiButtonPressed")
