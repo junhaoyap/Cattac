@@ -6,7 +6,7 @@ class WormholeDoodad: Doodad {
     
     override init() {
         super.init()
-        setSprite(SKSpriteNode(imageNamed: "X"))
+        setSprite(SKLabelNode(text: "X"))
         setName(Constants.Doodad.wormholeString)
     }
     
