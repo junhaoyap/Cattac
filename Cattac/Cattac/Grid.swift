@@ -9,10 +9,10 @@ struct Grid<T> {
     private var grid: [GridIndex:T] = [:]
     
     let neighboursOffset: [String:(row: Int, column: Int)] = [
-        "top": (-1, 0),
-        "right": (0, 1),
-        "bottom": (1, 0),
-        "left": (0, -1)
+        "top direction": (1, 0),
+        "right direction": (0, 1),
+        "bottom direction": (-1, 0),
+        "left direction": (0, -1)
     ]
     
     init(columns: Int, rows: Int) {

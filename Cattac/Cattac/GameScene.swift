@@ -4,7 +4,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene, GameStateListener {
+class GameScene: SKScene, GameStateListener, ActionListener {
     
     
     let gameEngine: GameEngine!
@@ -16,7 +16,14 @@ class GameScene: SKScene, GameStateListener {
     private let tilesLayer = SKNode()
     private let entityLayer = SKNode()
     
+    private let buttonLayer = SKNode()
+    
+    private var puiButton: SKActionButtonNode!
+    private var fartButton: SKActionButtonNode!
+    private var poopButton: SKActionButtonNode!
+    
     private var previewNode: SKSpriteNode!
+    private var previewDirectionNodes: SKNode!
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -32,6 +39,7 @@ class GameScene: SKScene, GameStateListener {
         self.level = level
         gameEngine = GameEngine(grid: level.grid, graph: level.graph)
         gameEngine.gameStateListener = self
+        gameEngine.actionListener = self
         
         // Initialize tileSize based on the number of columns
         tileSize = size.width / CGFloat(level.numColumns + 2)
@@ -53,6 +61,30 @@ class GameScene: SKScene, GameStateListener {
         // adds entityLayer to the grid layer
         entityLayer.position = layerPosition
         gameLayer.addChild(entityLayer)
+        
+        buttonLayer.position = CGPoint(x: -220, y: layerPosition.y - 90)
+        gameLayer.addChild(buttonLayer)
+        
+        puiButton = SKActionButtonNode(
+            defaultButtonImage: "PuiButton.png",
+            activeButtonImage: "PuiButtonPressed.png",
+            buttonAction: { self.gameEngine.trigger("puiButtonPressed") })
+        puiButton.position = CGPoint(x: 0, y: 0)
+        buttonLayer.addChild(puiButton)
+        
+        fartButton = SKActionButtonNode(
+            defaultButtonImage: "FartButton.png",
+            activeButtonImage: "FartButtonPressed.png",
+            buttonAction: { self.gameEngine.trigger("fartButtonPressed") })
+        fartButton.position = CGPoint(x: 220, y: 0)
+        buttonLayer.addChild(fartButton)
+        
+        poopButton = SKActionButtonNode(
+            defaultButtonImage: "PoopButton.png",
+            activeButtonImage: "PoopButtonPressed.png",
+            buttonAction: { self.gameEngine.trigger("poopButtonPressed") })
+        poopButton.position = CGPoint(x: 440, y: 0)
+        buttonLayer.addChild(poopButton)
         
         addTiles()
         addPlayers()
@@ -182,11 +214,55 @@ class GameScene: SKScene, GameStateListener {
         
     }
     
+    private func animatePuiAction(action: PuiAction) {
+        let startNode = gameEngine.currentPlayerMoveToNode
+        let path = gameEngine.pathOfPui(startNode, direction: action.direction)
+        var pathSequence: [SKAction] = []
+        
+        for node in path {
+            let action = SKAction.moveTo(node.sprite.position, duration: 0.15)
+            pathSequence.append(action)
+        }
+        
+        let pui = SKSpriteNode(imageNamed: "Pui.png")
+        pui.size = CGSize(width: tileSize, height: tileSize)
+        pui.position = startNode.sprite.position
+        
+        switch action.direction {
+        case .Right:
+            pui.zRotation = CGFloat(3 * M_PI / 2.0)
+        case .Bottom:
+            pui.zRotation = CGFloat(M_PI)
+        case .Left:
+            pui.zRotation = CGFloat(M_PI/2.0)
+        default:
+            break
+        }
+        
+        entityLayer.addChild(pui)
+        pui.runAction(
+            SKAction.sequence(pathSequence),
+            completion: {
+                self.gameEngine.nextState()
+                pui.removeFromParent()
+            }
+        )
+    }
+    
     private func performActions() {
         if let action = gameEngine.currentPlayerAction {
             println(action)
+            switch action.actionType {
+            case .Pui:
+                animatePuiAction(action as PuiAction)
+            case .Fart:
+                gameEngine.nextState()
+            case .Poop:
+                gameEngine.nextState()
+            }
+        } else {
+            gameEngine.nextState()
         }
-        gameEngine.nextState()
     }
     
     func onStateUpdate(state: GameState) {
@@ -198,6 +274,7 @@ class GameScene: SKScene, GameStateListener {
             highlightReachableNodes()
             break
         case .ServerUpdate:
+            clearDirectionArrows()
             removeHighlights()
             break
         case .StartMovesExecution:
@@ -213,6 +290,43 @@ class GameScene: SKScene, GameStateListener {
             break
         case .PostExecution:
             break
+        }
+    }
+    
+    func onActionUpdate(action: Action?) {
+        clearDirectionArrows()
+        if let action = action {
+            switch action.actionType {
+            case .Pui:
+                drawDirectionArrows(action as PuiAction)
+            case .Fart:
+                break
+            case .Poop:
+                break
+            }
+        }
+    }
+    
+    private func drawDirectionArrows(action: PuiAction) {
+        var directionSprite = SKDirectionButtonNode(
+            defaultButtonImage: "Direction.png",
+            activeButtonImage: "DirectionSelected.png",
+            size: CGSize(width: 50, height: 50),
+            centerSize: puiButton.calculateAccumulatedFrame().size,
+            hoverAction: {(direction) -> Void in
+                self.gameEngine.currentPlayerAction!.direction = direction
+            },
+            availableDirection: action.availableDirections,
+            selected: action.direction
+        )
+        
+        puiButton.addChild(directionSprite)
+        previewDirectionNodes = directionSprite
+    }
+    
+    private func clearDirectionArrows() {
+        if previewDirectionNodes != nil {
+            previewDirectionNodes.removeFromParent()
         }
     }
     
