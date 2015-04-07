@@ -27,6 +27,7 @@ class GameViewController: UIViewController {
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var scene: GameScene!
     var level: GameLevel!
+    var playerNumber: Int!
     let levelGenerator = LevelGenerator.sharedInstance
     
     override func viewDidLoad() {
@@ -54,7 +55,7 @@ class GameViewController: UIViewController {
             repeats: true
         )
         
-        timerLabel.text = "5"
+        timerLabel.text = "10"
         
         skView.presentScene(scene)
     }
@@ -90,7 +91,7 @@ class GameViewController: UIViewController {
             // This is where the time for choosing something is over
             // we should move on to the next thing to do?
             
-            timerLabel.text = String(5)
+            timerLabel.text = "10"
             scene.gameEngine.nextState()
         } else {
             timerLabel.text = String(currentTime! - 1)

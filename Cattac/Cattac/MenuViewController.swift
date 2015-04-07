@@ -24,12 +24,10 @@ class MenuViewController: UIViewController {
                 
                 meowsRef.setValue(defaultUserMeow)
             } else {
-                println("I has meows:")
-                println(myNumberOfMeows)
+//                println("I has meows:")
+//                println(myNumberOfMeows)
             }
         })
-        
-        let gameRef = self.ref.childByAppendingPath("games").childByAppendingPath("game0").childByAppendingPath("generatedGame")
     }
     
     override func didReceiveMemoryWarning() {

@@ -6,7 +6,6 @@ import SpriteKit
 
 class GameScene: SKScene, GameStateListener, ActionListener {
     
-    
     let gameEngine: GameEngine!
     private let level: GameLevel!
     
@@ -33,13 +32,14 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         assertionFailure("Should not call this init, init with basic level please!")
     }
     
-    init(_ size: CGSize, _ level: GameLevel) {
+    init(_ size: CGSize, _ level: GameLevel, _ playerNumber: Int) {
         super.init(size: size)
         
         self.level = level
         gameEngine = GameEngine(grid: level.grid, graph: level.graph)
         gameEngine.gameStateListener = self
         gameEngine.actionListener = self
+        gameEngine.playerNumber = playerNumber
         
         // Initialize tileSize based on the number of columns
         tileSize = size.width / CGFloat(level.numColumns + 2)
@@ -94,6 +94,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
+        
+        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {

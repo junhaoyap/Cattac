@@ -17,6 +17,7 @@ protocol ActionListener {
 }
 
 class GameEngine {
+    var playerNumber = 1
     let catFactory = CatFactory.sharedInstance
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var state: GameState = GameState.Precalculation
@@ -33,6 +34,28 @@ class GameEngine {
     var reachableNodes: [Int:Node<TileNode>] = [:]
     var removedDoodads: [Int:Doodad] = [:]
     private var events: [String:()->()] = [:]
+    var shouldUpdateServer = false
+    var playerMovesCount = 0
+    
+    let player1MoveToWatchRef = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+        .childByAppendingPath("games")
+        .childByAppendingPath("game0")
+        .childByAppendingPath("player1Movement")
+    
+    let player2MoveToWatchRef = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+        .childByAppendingPath("games")
+        .childByAppendingPath("game0")
+        .childByAppendingPath("player2Movement")
+    
+    let player3MoveToWatchRef = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+        .childByAppendingPath("games")
+        .childByAppendingPath("game0")
+        .childByAppendingPath("player3Movement")
+    
+    let player4MoveToWatchRef = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+        .childByAppendingPath("games")
+        .childByAppendingPath("game0")
+        .childByAppendingPath("player4Movement")
     
     init(grid: Grid<TileNode>, graph: Graph<TileNode>) {
         self.grid = grid
@@ -61,8 +84,9 @@ class GameEngine {
             break
         case .ServerUpdate:
             updateServer()
-            nextState()
+            break
         case .StartMovesExecution:
+            postUpdate()
             break
         case .MovesExecution:
             break
@@ -81,6 +105,7 @@ class GameEngine {
         case .Precalculation:
             state = GameState.PlayerAction
         case .PlayerAction:
+            shouldUpdateServer = true
             state = GameState.ServerUpdate
         case .ServerUpdate:
             state = GameState.StartMovesExecution
@@ -101,117 +126,11 @@ class GameEngine {
         }
     }
     
-    func gameInitialise() {
-        // check from firebase which player current player is
-        
-        // attach listener to the game movements
-        let player1MoveToWatchRef = ref
-            .childByAppendingPath("games")
-            .childByAppendingPath("game0")
-            .childByAppendingPath("player1")
-        
-        let player2MoveToWatchRef = ref
-            .childByAppendingPath("games")
-            .childByAppendingPath("game0")
-            .childByAppendingPath("player2")
-        
-        let player3MoveToWatchRef = ref
-            .childByAppendingPath("games")
-            .childByAppendingPath("game0")
-            .childByAppendingPath("player3")
-        
-        let player4MoveToWatchRef = ref
-            .childByAppendingPath("games")
-            .childByAppendingPath("game0")
-            .childByAppendingPath("player4")
-        
-        player1MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
-            snapshot in
-            
-            let move = snapshot.value.objectForKey(
-                String(self.playerMoveNumber - 1)
-            )
-            
-            // attach the movement to player 1
-            // and execute it in the execution phase
-        })
-        
-        player1MoveToWatchRef.observeEventType(.ChildChanged, withBlock: {
-            snapshot in
-            
-            let move = snapshot.value.objectForKey(
-                String(self.playerMoveNumber - 1)
-            )
-            
-            // attach the movement to player 1
-            // and execute it in the execution phase
-        })
-        
-        player2MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
-            snapshot in
-            
-            let move = snapshot.value.objectForKey(
-                String(self.playerMoveNumber - 1)
-            )
-            
-            // attach the movement to player 2
-            // and execute it in the execution phase
-        })
-        
-        player2MoveToWatchRef.observeEventType(.ChildChanged, withBlock: {
-            snapshot in
-            
-            let move = snapshot.value.objectForKey(
-                String(self.playerMoveNumber - 1)
-            )
-            
-            // attach the movement to player 2
-            // and execute it in the execution phase
-        })
-        
-        player3MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
-            snapshot in
-            
-            let move = snapshot.value.objectForKey(
-                String(self.playerMoveNumber - 1)
-            )
-            
-            // attach the movement to player 3
-            // and execute it in the execution phase
-        })
-        
-        player3MoveToWatchRef.observeEventType(.ChildChanged, withBlock: {
-            snapshot in
-            
-            let move = snapshot.value.objectForKey(
-                String(self.playerMoveNumber - 1)
-            )
-            
-            // attach the movement to player 3
-            // and execute it in the execution phase
-        })
-        
-        player4MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
-            snapshot in
-            
-            let move = snapshot.value.objectForKey(
-                String(self.playerMoveNumber - 1)
-            )
-            
-            // attach the movement to player 4
-            // and execute it in the execution phase
-        })
-        
-        player4MoveToWatchRef.observeEventType(.ChildChanged, withBlock: {
-            snapshot in
-            
-            let move = snapshot.value.objectForKey(
-                String(self.playerMoveNumber - 1)
-            )
-            
-            // attach the movement to player 4
-            // and execute it in the execution phase
-        })
+    func postUpdate() {
+        player1MoveToWatchRef.removeAllObservers()
+        player2MoveToWatchRef.removeAllObservers()
+        player3MoveToWatchRef.removeAllObservers()
+        player4MoveToWatchRef.removeAllObservers()
     }
     
     func precalculate() {
@@ -228,35 +147,101 @@ class GameEngine {
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
         allPlayerActions = [:]
         
-        for player in allPlayer {
-            println(player.1.hp)
-        }
+//        for player in allPlayer {
+//            println(player.1.hp)
+//        }
     }
     
     func updateServer() {
-        let playerNumber = 1
-        // for now let it be 1, we will check which player the player is during
-        // a new phase, i.e. game initialisation
+        if shouldUpdateServer {
+            let playerMoveToUpdateRef = ref
+                .childByAppendingPath("games")
+                .childByAppendingPath("game0")
+                .childByAppendingPath("player" + String(playerNumber) + "Movement")
+                .childByAppendingPath(String(playerMoveNumber))
+            
+            let theMovement = [
+                "fromRow": currentPlayerNode.row,
+                "fromCol": currentPlayerNode.column,
+                "toRow": currentPlayerMoveToNode.row,
+                "toCol": currentPlayerMoveToNode.column,
+                "attackType": "",
+                "attackDir": "",
+                "attackDmg": ""
+            ]
+            
+            player1MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
+                snapshot in
+                
+                let moveFromRow = snapshot.value.objectForKey("fromRow") as? Int
+                let moveFromCol = snapshot.value.objectForKey("fromCol") as? Int
+                
+                println("player 1:")
+                println(moveFromRow)
+                println(moveFromCol)
+                
+                self.playerMovesCount++
+                // attach the movement to player 1
+                // and execute it in the execution phase
+            })
+            
+            player2MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
+                snapshot in
+                
+                let moveFromRow = snapshot.value.objectForKey("fromRow") as? Int
+                let moveFromCol = snapshot.value.objectForKey("fromCol") as? Int
+                
+                println("player 2:")
+                println(moveFromRow)
+                println(moveFromCol)
+                
+                // attach the movement to player 2
+                // and execute it in the execution phase
+            })
+            
+            player3MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
+                snapshot in
+                
+                let moveFromRow = snapshot.value.objectForKey("fromRow") as? Int
+                let moveFromCol = snapshot.value.objectForKey("fromCol") as? Int
+                
+                println("player 3:")
+                println(moveFromRow)
+                println(moveFromCol)
+                
+                // attach the movement to player 3
+                // and execute it in the execution phase
+            })
+            
+            player4MoveToWatchRef.observeEventType(.ChildAdded, withBlock: {
+                snapshot in
+                
+                let moveFromRow = snapshot.value.objectForKey("fromRow") as? Int
+                let moveFromCol = snapshot.value.objectForKey("fromCol") as? Int
+                
+                println("player 4:")
+                println(moveFromRow)
+                println(moveFromCol)
+                
+                // attach the movement to player 4
+                // and execute it in the execution phase
+            })
+            
+            playerMoveToUpdateRef.updateChildValues(theMovement)
+            
+            shouldUpdateServer = false
+            
+            playerMoveNumber++
+        }
         
-        let playerMoveToUpdateRef = ref
-            .childByAppendingPath("games")
-            .childByAppendingPath("game0")
-            .childByAppendingPath("player" + String(playerNumber) + "Movement")
-            .childByAppendingPath(String(playerMoveNumber))
-        
-        let theMovement = [
-            "player": playerNumber,
-            "from": "",
-            "to": "",
-            "attackType": "",
-            "attackFrom": "",
-            "attackTo": "",
-            "attackDmg": ""
-        ]
-        
-        playerMoveToUpdateRef.updateChildValues(theMovement)
-        
-        playerMoveNumber++
+        while true {
+            if playerMovesCount != 1 {
+                break
+            } else {
+                playerMovesCount = 0
+                nextState()
+            }
+        }
     }
     
     func postExecute() {
