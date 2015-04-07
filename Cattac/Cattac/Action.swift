@@ -38,39 +38,6 @@ extension ActionType: Printable {
     }
 }
 
-enum Direction: Int {
-    case All = 0, Top, Right, Bottom, Left
-    private var name: String {
-        let names = [
-            "all directions",
-            "top direction",
-            "right direction",
-            "bottom direction",
-            "left direction"
-        ]
-        
-        return names[rawValue]
-    }
-}
-
-extension Direction: Printable {
-    var description: String {
-        return name
-    }
-    
-    static func create(name: String) -> Direction? {
-        let types = [
-            "all directions": Direction.All,
-            "top direction": Direction.Top,
-            "right direction": Direction.Right,
-            "bottom direction": Direction.Bottom,
-            "left direction": Direction.Left
-        ]
-        
-        return types[name]
-    }
-}
-
 class Action: Equatable {
     private var _actionType: ActionType!
     private var _direction: Direction!

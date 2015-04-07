@@ -1,23 +1,21 @@
-/*
-    `Edge` represents an edge in a graph. An `Edge` is associated with
-    a source Node, a destination Node and a non-negative cost (or weight).
-    This means that `Edge` is a directed edge from the source to
-    the destination.
-
-    The representation invariants:
-    - The weight is non-negative
-
-    Similar to `Node`, `Edge` is a generic type with a type parameter
-    `T` that is the type of a node's label.
-*/
-
+/// `Edge` represents an edge in a graph. An `Edge` is associated with
+/// a source Node, a destination Node and a non-negative cost (or weight).
+/// This means that `Edge` is a directed edge from the source to
+/// the destination.
+///
+/// The representation invariants:
+///
+/// - The weight is non-negative
+///
+/// Similar to `Node`, `Edge` is a generic type with a type parameter
+/// `T` that is the type of a node's label
 struct Edge<T: Hashable> {
     typealias N = Node<T>
     
     private var source: N
     private var destination: N
     private var weight = 1.0
-    
+
     init(source: N, destination: N) {
         self.source = source
         self.destination = destination
@@ -83,5 +81,7 @@ extension Edge: Hashable {
 
 //  Return true if `lhs` edge is equal to `rhs` edge.
 func ==<Label>(lhs: Edge<Label>, rhs: Edge<Label>) -> Bool {
-    return lhs.source == rhs.source && lhs.destination == rhs.destination && lhs.weight == rhs.weight
+    return lhs.source == rhs.source
+        && lhs.destination == rhs.destination
+        && lhs.weight == rhs.weight
 }

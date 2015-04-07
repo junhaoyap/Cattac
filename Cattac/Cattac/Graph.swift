@@ -1,59 +1,76 @@
-/*
-    `Graph` represents a graph (unsurprisingly!) More specifically, `Graph`
-    should be able to represent the following graph types with corresponding
-    constraints:
-    - Undirected graph
-    + An undirected edge is represented by 2 directed edges
-    - Directed graph
-    - Simple graph
-    - Multigraph
-    + Edges from the same source to the same destination should have
-    different cost
-    - Unweighted graph
-    + Edges' weights are to set to 1.0
-    - Weighted graph
-
-    Hence, the representation invariants for every Graph g:
-    - g is either directed or undirected
-    - All nodes in g must have unique labels
-    - Multiple edges from the same source to the same destination must
-    not have the same weight
-
-    Finally, just like `Node` and `Edge`, `Graph` is a generic type with a type
-    parameter `T` that defines the type of the nodes' labels.
-*/
-
+/// `Graph` represents a graph (unsurprisingly!) More specifically, `Graph`
+/// should be able to represent the following graph types with corresponding
+/// constraints:
+///
+/// - Undirected graph
+/// - An undirected edge is represented by 2 directed edges
+/// - Directed graph
+/// - Simple graph
+/// - Multigraph
+/// - Edges from the same source to the same destination should have different 
+///   cost
+/// - Unweighted graph
+/// - Edges' weights are to set to 1.0
+/// - Weighted graph
+///
+/// Hence, the representation invariants for every Graph g:
+///
+/// - g is either directed or undirected
+/// - All nodes in g must have unique labels
+/// - Multiple edges from the same source to the same destination must not have 
+///   the same weight
+///
+/// Finally, just like `Node` and `Edge`, `Graph` is a generic type with a type
+/// parameter `T` that defines the type of the nodes' labels.
+///
 class Graph<T: Hashable> {
     typealias N = Node<T>
     typealias E = Edge<T>
-    
+
+    /// Whether the graph is a directed or undirected graph.
     let isDirected: Bool
+
+    /// A dictionary of all the nodes in the graph for fast retrieval of nodes.
     private var dictionaryOfNodes: [Int:N]
+
+    /// A dictionary of all the edges in the graph for fast retrieval of edges.
     private var dictionaryOfEdges: [Int:E]
-    private var adjacencyList: [Int:[Int:[E]]]
+
+    /// Graph is represented using this matrix, each entry in this matrix will
+    /// contain an array of different edges (i.e. different weights since they
+    /// have the same source and destination node)
+    private var matrix: [Int:[Int:[E]]]
     
-    //  Construct a directed or undirected graph.
+    /// Constructs a directed or undirected graph.
+    ///
+    /// :param: isDirected Whether to construct a directed or undirected graph.
     init(isDirected: Bool) {
         self.isDirected = isDirected
         self.dictionaryOfNodes = [:]
         self.dictionaryOfEdges = [:]
-        self.adjacencyList = [:]
+        self.matrix = [:]
         
         _checkRep()
     }
-    
+
+    /// Adds a node into the graph.
+    ///
+    /// :param: addedNode The node to be added.
     func addNode(addedNode: N) {
         _checkRep()
         
         if !containsNode(addedNode) {
             let addedNodeHash = addedNode.hashValue
             dictionaryOfNodes[addedNodeHash] = addedNode
-            adjacencyList[addedNodeHash] = [:]
+            matrix[addedNodeHash] = [:]
         }
         
         _checkRep()
     }
-    
+
+    /// Removes a node from the graph and all its incoming and outgoing edges.
+    ///
+    /// :param: removedNode The node to be removed.
     func removeNode(removedNode: N) {
         _checkRep()
         
@@ -66,11 +83,11 @@ class Graph<T: Hashable> {
             if isDirected {
                 // Remove all edges that goes to the removed node
                 for (nodeKey, _) in dictionaryOfNodes {
-                    adjacencyList[nodeKey]!.removeValueForKey(removedNodeHash)
+                    matrix[nodeKey]!.removeValueForKey(removedNodeHash)
                 }
             } else {
                 // Remove all undirected edges for the removed node
-                if let outgoingEdges = adjacencyList[removedNodeHash] {
+                if let outgoingEdges = matrix[removedNodeHash] {
                     for (_, edges) in outgoingEdges {
                         for edge in edges {
                             removeEdge(edge)
@@ -80,12 +97,16 @@ class Graph<T: Hashable> {
             }
             
             // Remove adjacency list entry for the removed node
-            adjacencyList.removeValueForKey(removedNodeHash)
+            matrix.removeValueForKey(removedNodeHash)
         }
     
         _checkRep()
     }
-    
+
+    /// Checks whether the node exists in the graph.
+    ///
+    /// :param: targetNode The node to check.
+    /// :returns: true if it exists, false if it doesn't.
     func containsNode(targetNode: N) -> Bool {
         _checkRep()
         
@@ -95,20 +116,25 @@ class Graph<T: Hashable> {
             return false
         }
     }
-    
+
+    /// Adds an edge into the graph. Creates the source and destination nodes
+    /// if they do not exist.
+    ///
+    /// :param: addedEdge The edge to be added.
     func addEdge(addedEdge: E) {
         _checkRep()
-        
+
+        /// Adds a directed edge into the graph.
         func addDirectedEdge(edge: E, sourceNodeHash: Int, destNodeHash: Int) {
-            if let sourceNodeEdges = adjacencyList[sourceNodeHash] {
+            if let sourceNodeEdges = matrix[sourceNodeHash] {
                 if sourceNodeEdges[destNodeHash] == nil {
-                    adjacencyList[sourceNodeHash]![destNodeHash] = [edge]
+                    matrix[sourceNodeHash]![destNodeHash] = [edge]
                 } else {
-                    adjacencyList[sourceNodeHash]![destNodeHash]!.append(edge)
+                    matrix[sourceNodeHash]![destNodeHash]!.append(edge)
                 }
             } else {
                 let edges = [destNodeHash:[edge]]
-                adjacencyList[sourceNodeHash] = edges
+                matrix[sourceNodeHash] = edges
             }
         }
         
@@ -131,24 +157,33 @@ class Graph<T: Hashable> {
             addDirectedEdge(addedEdge, sourceNodeHash, destNodeHash)
             
             if !self.isDirected {
-                addDirectedEdge(addedEdge.reverse(), destNodeHash, sourceNodeHash)
+                let reversedEdge = addedEdge.reverse()
+                dictionaryOfEdges[reversedEdge.hashValue] = reversedEdge
+                addDirectedEdge(reversedEdge, destNodeHash, sourceNodeHash)
             }
         }
         
         _checkRep()
     }
-    
+
+    /// Removes an edge from the graph.
+    ///
+    /// :param: removedEdge The edge to be removed.
     func removeEdge(removedEdge: E) {
         _checkRep()
-        
-        func removeDirectedEdge(edge: E, sourceNodeHash: Int, destNodeHash: Int) {
-            if let edgesFromSourceNode = adjacencyList[sourceNodeHash] {
-                let edgesFromSourceNodeToDestNode = edgesFromSourceNode[destNodeHash]!
+
+        /// Removes an directed edge from the graph.
+        func removeDirectedEdge(edge: E, source: Int, dest: Int) {
+            if let edgesFromSourceNode = matrix[source] {
+                let edgesFromSourceNodeToDestNode = edgesFromSourceNode[dest]!
+
                 if edgesFromSourceNodeToDestNode.count > 1 {
-                    adjacencyList[sourceNodeHash]![destNodeHash] =
-                        edgesFromSourceNodeToDestNode.filter() { $0 != removedEdge }
+                    matrix[source]![dest] =
+                        edgesFromSourceNodeToDestNode.filter() {
+                            $0 != removedEdge
+                        }
                 } else {
-                    adjacencyList[sourceNodeHash]!.removeValueForKey(destNodeHash)
+                    matrix[source]!.removeValueForKey(dest)
                 }
             }
         }
@@ -164,13 +199,19 @@ class Graph<T: Hashable> {
             removeDirectedEdge(removedEdge, sourceNodeHash, destNodeHash)
             
             if !self.isDirected {
-                removeDirectedEdge(removedEdge.reverse(), destNodeHash, sourceNodeHash)
+                let reversedEdge = removedEdge.reverse()
+                dictionaryOfEdges.removeValueForKey(reversedEdge.hashValue)
+                removeDirectedEdge(reversedEdge, destNodeHash, sourceNodeHash)
             }
         }
         
         _checkRep()
     }
-    
+
+    /// Checks whether the edge exists in the graph.
+    ///
+    /// :param: targetEdge The edge to check.
+    /// :returns: true if it exists, false if it doesn't.
     func containsEdge(targetEdge: E) -> Bool {
         _checkRep()
         
@@ -180,25 +221,37 @@ class Graph<T: Hashable> {
             return false
         }
     }
-    
+
+    /// Retrieves all edges that points from the fromNode to toNode.
+    ///
+    /// :param: fromNode The source node of the edges.
+    /// :param: toNode The destination node of the edges.
+    /// :returns: An array of edges, empty if none found.
     func edgesFromNode(fromNode: N, toNode: N) -> [E] {
         _checkRep()
-        
-        if let edgesFromSourceNode = adjacencyList[fromNode.hashValue] {
-            if let edgesFromSourceNodeToDestNode = edgesFromSourceNode[toNode.hashValue] {
-                return edgesFromSourceNodeToDestNode
+
+        // Retrieve from matrix.
+        if let edgesFromSourceNode = matrix[fromNode.hashValue] {
+            if let edgesFromSourceNodeToDestNode =
+                edgesFromSourceNode[toNode.hashValue] {
+                    return edgesFromSourceNodeToDestNode
             }
         }
         
         return []
     }
-    
+
+    /// Retrieves all neighbours of the given node.
+    ///
+    /// :param: fromNode The node to grab neighbours from.
+    /// :returns: An array of nodes, empty if none found.
     func adjacentNodesFromNode(fromNode: N) -> [N] {
         _checkRep()
         
         var arrayToReturn = [N]()
-        
-        if let edgesFromSourceNode = adjacencyList[fromNode.hashValue] {
+
+        // Retrieve from matrix.
+        if let edgesFromSourceNode = matrix[fromNode.hashValue] {
             for key in edgesFromSourceNode.keys {
                 arrayToReturn.append(dictionaryOfNodes[key]!)
             }
@@ -206,22 +259,28 @@ class Graph<T: Hashable> {
         
         return arrayToReturn
     }
-    
+
+    /// An array of all the nodes in the graph.
     var nodes: [N] {
         return [N](self.dictionaryOfNodes.values)
     }
-    
+
+    /// An array of all the edges in the graph.
     var edges: [E] {
         return [E](self.dictionaryOfEdges.values)
     }
-    
+
+    /// Disabled to improve performance.
     private func _checkRep() {
-        // disabling checks to reduce latency
-        // assert(isDirected == true || isDirected == false, "A graph has to be either directed or undirected")
-        //
-        // assert(isLabelAllUnique() == true, "A graph G must have unique labels")
-        //
-        // assert(isEdgesAllUnique() == true, "If there are multiples edges from the same source to the same destination, then they cannot be of the same weight")
+//         assert(isDirected == true || isDirected == false,
+//            "A graph has to be either directed or undirected")
+//        
+//         assert(isLabelAllUnique() == true,
+//            "A graph G must have unique labels")
+//        
+//         assert(isEdgesAllUnique() == true,
+//            "If there are multiples edges from the same source to the same " +
+//            "destination, then they cannot be of the same weight")
     }
     
     func isLabelAllUnique() -> Bool {
@@ -230,10 +289,11 @@ class Graph<T: Hashable> {
         for var index = 0; index < numberOfNodes; index++ {
             var labelToCheck = nodes[index]
             
-            for var innerIndex = index + 1; innerIndex < numberOfNodes; innerIndex++ {
-                if labelToCheck == nodes[innerIndex] {
-                    return false
-                }
+            for var innerIndex = index + 1; innerIndex < numberOfNodes;
+                innerIndex++ {
+                    if labelToCheck == nodes[innerIndex] {
+                        return false
+                    }
             }
         }
         
@@ -246,16 +306,23 @@ class Graph<T: Hashable> {
         for var index = 0; index < numberOfEdges; index++ {
             var edgeToCheck = edges[index]
             
-            for var innerIndex = index + 1; innerIndex < numberOfEdges; innerIndex++ {
-                if edgeToCheck == edges[innerIndex] {
-                    return false
-                }
+            for var innerIndex = index + 1; innerIndex < numberOfEdges;
+                innerIndex++ {
+                    if edgeToCheck == edges[innerIndex] {
+                        return false
+                    }
             }
         }
         
         return true
     }
-    
+
+    /// Find the shortest path from fromNode to toNode.
+    ///
+    /// :param: fromNode The starting node for the path.
+    /// :param: toNode The ending node for the path.
+    /// :returns: An array of edges that forms the shortest path, empty if path
+    ///           not found.
     func shortestPathFromNode(fromNode: N, toNode: N) -> [E] {
         _checkRep()
         
@@ -311,7 +378,7 @@ class Graph<T: Hashable> {
         // Dijkstra's algorithm
         while !queue.isEmpty {
             var (node, distance) = queue.removeLast()
-            if let edgesFromSourceNode = adjacencyList[node.hashValue] {
+            if let edgesFromSourceNode = matrix[node.hashValue] {
                 for (_, edges) in edgesFromSourceNode {
                     for edge in edges {
                         relax(edge, distance)
@@ -319,44 +386,18 @@ class Graph<T: Hashable> {
                 }
             }
         }
-        
-        var prevNode = toNode
-        
-        // Construct path
-        while let edge = nodeInfo[prevNode.hashValue]!.incomingEdge {
-            arrayToReturn.append(edge)
-            prevNode = edge.getSource()
+
+        // Adds the edges only if a path to toNode is found
+        if nodeInfo[toNode.hashValue] != nil {
+            var prevNode = toNode
+            
+            // Construct path
+            while let edge = nodeInfo[prevNode.hashValue]!.incomingEdge {
+                arrayToReturn.append(edge)
+                prevNode = edge.getSource()
+            }
         }
         
         return arrayToReturn.reverse()
-    }
-    
-    func getNodesInRange(fromNode: N, range: Int) -> [Int:N] {
-        var nodes: [Int:N] = [:]
-        var neighbours: [N] = []
-        
-        if range == 0 {
-            return nodes
-        }
-        
-        if let edgesFromSourceNode = adjacencyList[fromNode.hashValue] {
-            for (destNodeHash, _) in edgesFromSourceNode {
-                let node = dictionaryOfNodes[destNodeHash]!
-                nodes[destNodeHash] = node
-                neighbours.append(node)
-            }
-        }
-        
-        // Add neighbours of neighbours
-        for node in neighbours {
-            let nodeNeighbours = getNodesInRange(node, range: range - 1)
-            for (hash, nodeNeighbour) in nodeNeighbours {
-                if nodes[hash] == nil {
-                    nodes[hash] = nodeNeighbour
-                }
-            }
-        }
-
-        return nodes
     }
 }

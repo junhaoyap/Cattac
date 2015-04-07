@@ -24,19 +24,17 @@ class GameEngine {
     var actionListener: ActionListener?
     var player: Cat!
     var playerMoveNumber: Int = 1
-    private var grid: Grid<TileNode>!
-    private var graph: Graph<TileNode>!
+    private var grid: Grid!
     private var allPlayerPositions: [String:TileNode] = [:]
     private var allPlayerMoveToPositions: [String:TileNode] = [:]
-    private var allPlayerPaths: [String:[Edge<TileNode>]] = [:]
+    private var allPlayerPaths: [String:[TileNode]] = [:]
     private var allPlayerActions: [String:Action] = [:]
-    var reachableNodes: [Int:Node<TileNode>] = [:]
+    var reachableNodes: [Int:TileNode] = [:]
     var removedDoodads: [Int:Doodad] = [:]
     private var events: [String:()->()] = [:]
     
-    init(grid: Grid<TileNode>, graph: Graph<TileNode>) {
+    init(grid: Grid) {
         self.grid = grid
-        self.graph = graph
         addPlayers()
         
         self.on("puiButtonPressed") {
@@ -226,7 +224,7 @@ class GameEngine {
         }
         
         currentPlayerMoveToNode = currentPlayerNode
-        reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
+        reachableNodes = grid.getNodesInRange(currentPlayerNode, range: player.moveRange)
         allPlayerActions = [:]
     }
     
@@ -259,12 +257,12 @@ class GameEngine {
     func calculateMovementPaths() {
         var playerAtNode = allPlayerPositions[player.name]!
         var playerMoveToNode = allPlayerMoveToPositions[player.name]!
-        var path = graph.shortestPathFromNode(Node(playerAtNode), toNode: Node(playerMoveToNode))
+        var path = grid.shortestPathFromNode(playerAtNode, toNode: playerMoveToNode)
         
         if let doodad = playerMoveToNode.doodad {
             if doodad is WormholeDoodad {
                 let destNode = (doodad as WormholeDoodad).getDestinationNode()
-                path += [Edge<TileNode>(source: Node(playerMoveToNode), destination: Node(destNode))]
+                path += [destNode]
             }
         }
         allPlayerPaths[player.name] = path
@@ -309,10 +307,10 @@ class GameEngine {
         }
     }
     
-    func executePlayerMove(cat: Cat) -> [Edge<TileNode>] {
+    func executePlayerMove(cat: Cat) -> [TileNode] {
         let path = allPlayerPaths[cat.name]!
         if let lastNode = path.last {
-            currentPlayerNode = lastNode.getDestination().getLabel()
+            currentPlayerNode = lastNode
         }
         return path
     }
@@ -328,19 +326,18 @@ class GameEngine {
     }
     
     func pathOfPui(startNode: TileNode, direction: Direction) -> [TileNode] {
-        let offset = grid.neighboursOffset[direction.description]!
+        let offset = grid.neighboursOffset[direction]!
         var path = [TileNode]()
         var currentNode = startNode
-        while let nextNode = grid[currentNode.row + offset.row,
-            currentNode.column + offset.column] {
-                if let doodad = nextNode.doodad {
-                    if doodad.getName() == "wall" {
-                        path.append(nextNode)
-                        break
-                    }
+        while let nextNode = grid[currentNode.row, currentNode.column, with: offset] {
+            if let doodad = nextNode.doodad {
+                if doodad.getName() == "wall" {
+                    path.append(nextNode)
+                    break
                 }
-                path.append(nextNode)
-                currentNode = nextNode
+            }
+            path.append(nextNode)
+            currentNode = nextNode
         }
         return path
     }
@@ -354,25 +351,9 @@ class GameEngine {
     }
     
     private func setAvailableDirections() {
-        let originNode = self.currentPlayerMoveToNode
-        var directionIsSet = false
-        var action: PuiAction!
-        for (direction, offset) in grid.neighboursOffset {
-            if let targetNode = grid[originNode.row + offset.row,
-                originNode.column + offset.column] {
-                    let edges = graph.edgesFromNode(Node(originNode), toNode: Node(targetNode))
-                    if edges.count > 0 {
-                        let dir = Direction.create(direction)!
-                        if !directionIsSet {
-                            action = PuiAction(direction: dir)
-                            directionIsSet = true
-                        }
-                        action.availableDirections.append(dir)
-                    }
-            }
-        }
-        if action != nil {
-            currentPlayerAction = action
-        }
+        let availableDirections = grid.getAvailableDirections(currentPlayerMoveToNode)
+        var action = PuiAction(direction: availableDirections.first!)
+        action.availableDirections = availableDirections
+        currentPlayerAction = action
     }
 }
