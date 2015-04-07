@@ -16,7 +16,7 @@ class Grid {
         "left direction": (0, -1)
     ]
     
-    init(columns: Int, rows: Int) {
+    init(rows: Int, columns: Int) {
         self.columns = columns
         self.rows = rows
         self.graph = Graph<TileNode>(isDirected: true)

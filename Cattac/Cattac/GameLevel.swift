@@ -11,7 +11,7 @@ class GameLevel {
     init(rows: Int, columns: Int) {
         numColumns = columns
         numRows = rows
-        grid = Grid(columns: numColumns, rows: numRows)
+        grid = Grid(rows: numRows, columns: numColumns)
     }
     
     func nodeAt(row: Int, _ column: Int) -> TileNode? {
