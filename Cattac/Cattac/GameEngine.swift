@@ -43,15 +43,18 @@ class GameEngine {
         
         self.on("puiButtonPressed") {
             self.setAvailableDirections()
+            self.notifyAction()
         }
         
         self.on("fartButtonPressed") {
             self.currentPlayer.action = FartAction(range: 2)
+            self.notifyAction()
         }
         
         self.on("poopButtonPressed") {
             let targetNode = self.currentPlayer.currNode
             self.currentPlayer.action = PoopAction(targetNode: targetNode)
+            self.notifyAction()
         }
     }
     
@@ -298,5 +301,11 @@ class GameEngine {
         var action = PuiAction(direction: availableDirections.first!)
         action.availableDirections = availableDirections
         currentPlayer.action = action
+    }
+    
+    private func notifyAction() {
+        if let action = currentPlayer.action {
+            actionListener?.onActionUpdate(action)
+        }
     }
 }
