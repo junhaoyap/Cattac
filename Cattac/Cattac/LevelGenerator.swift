@@ -65,12 +65,14 @@ class LevelGenerator {
             var hasDoodadBeenAdded = false
             let doodad = doodadFactory.randomDoodad()
             let location = getValidDoodadLocation(level)
-            level.addDoodad(doodad, atLocation: location)
+            let tileNode = level.addDoodad(doodad, atLocation: location)
             
             if doodad is WormholeDoodad {
-                let destDoodad = doodadFactory.createDoodad(.Wormhole)!
+                let destDoodad = doodadFactory.createDoodad(.Wormhole)! as WormholeDoodad
                 let destLocation = getValidDoodadLocation(level)
-                level.addDoodad(destDoodad, atLocation: destLocation)
+                let destTileNode = level.addDoodad(destDoodad, atLocation: destLocation)
+                (doodad as WormholeDoodad).setDestination(destTileNode)
+                destDoodad.setDestination(tileNode)
             }
         }
         

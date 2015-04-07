@@ -191,7 +191,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func movePlayer() {
-        let path = gameEngine.getPlayerPath(gameEngine.player)
+        let path = gameEngine.executePlayerMove(gameEngine.player)
         var pathSequence: [SKAction] = []
 
         for edge in path {
@@ -204,7 +204,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             gameEngine.player.getSprite().runAction(
                 SKAction.sequence(pathSequence),
                 completion: {
-                    self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
                     self.gameEngine.nextState()
                 }
             )
@@ -282,7 +281,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             previewNode.hidden = true
         case .MovesExecution:
             movePlayer()
-            gameEngine.nextState()
         case .StartActionsExecution:
             gameEngine.nextState()
             performActions()

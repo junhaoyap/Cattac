@@ -257,11 +257,17 @@ class GameEngine {
     }
     
     func calculateMovementPaths() {
-        if let doodad = allPlayerMoveToPositions[player.name]!.doodad {
+        var playerAtNode = allPlayerPositions[player.name]!
+        var playerMoveToNode = allPlayerMoveToPositions[player.name]!
+        var path = graph.shortestPathFromNode(Node(playerAtNode), toNode: Node(playerMoveToNode))
+        
+        if let doodad = playerMoveToNode.doodad {
             if doodad is WormholeDoodad {
-                
+                let destNode = (doodad as WormholeDoodad).getDestinationNode()
+                path += [Edge<TileNode>(source: Node(playerMoveToNode), destination: Node(destNode))]
             }
         }
+        allPlayerPaths[player.name] = path
     }
     
     func postExecute() {
@@ -303,8 +309,12 @@ class GameEngine {
         }
     }
     
-    func getPlayerPath(cat: Cat) -> [Edge<TileNode>] {
-        return allPlayerPaths[cat.name]!
+    func executePlayerMove(cat: Cat) -> [Edge<TileNode>] {
+        let path = allPlayerPaths[cat.name]!
+        if let lastNode = path.last {
+            currentPlayerNode = lastNode.getDestination().getLabel()
+        }
+        return path
     }
     
     func trigger(event: String) {
@@ -315,13 +325,6 @@ class GameEngine {
     
     func on(event: String, _ lambda: ()->()) {
         events[event] = lambda
-    }
-    
-    func pathTo(node: TileNode) -> [Edge<TileNode>] {
-        let fromNode = allPlayerPositions[player.name]!
-        let edges = graph.shortestPathFromNode(Node(fromNode), toNode: Node(node))
-        currentPlayerNode = node
-        return edges
     }
     
     func pathOfPui(startNode: TileNode, direction: Direction) -> [TileNode] {

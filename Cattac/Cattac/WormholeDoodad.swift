@@ -2,7 +2,7 @@
 import SpriteKit
 
 class WormholeDoodad: Doodad {
-    private var destinationDoodad: WormholeDoodad!
+    private var destinationTileNode: TileNode!
     
     override init() {
         super.init()
@@ -10,9 +10,12 @@ class WormholeDoodad: Doodad {
         setName(Constants.Doodad.wormholeString)
     }
     
-    func setDestination(dest: WormholeDoodad) {
-        destinationDoodad = dest
-        dest.destinationDoodad = self
+    func setDestination(dest: TileNode) {
+        destinationTileNode = dest
+    }
+    
+    func getDestinationNode() -> TileNode {
+        return destinationTileNode
     }
     
     override func effect(cat: Cat) {
