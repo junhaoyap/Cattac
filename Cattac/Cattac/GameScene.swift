@@ -37,7 +37,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         super.init(size: size)
         
         self.level = level
-        gameEngine = GameEngine(grid: level.grid, graph: level.graph)
+        gameEngine = GameEngine(grid: level.grid)
         gameEngine.gameStateListener = self
         gameEngine.actionListener = self
         
@@ -194,9 +194,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         let path = gameEngine.pathTo(gameEngine.currentPlayerMoveToNode)
         var pathSequence: [SKAction] = []
 
-        for edge in path {
-            let destNode = edge.getDestination().getLabel()
-            let action = SKAction.moveTo(destNode.sprite.position, duration: 0.25)
+        for node in path {
+            let action = SKAction.moveTo(node.sprite.position, duration: 0.25)
             pathSequence.append(action)
         }
         
@@ -332,13 +331,13 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     
     private func highlightReachableNodes() {
         for node in gameEngine.reachableNodes.values {
-            node.getLabel().highlight()
+            node.highlight()
         }
     }
     
     private func removeHighlights() {
         for node in gameEngine.reachableNodes.values {
-            node.getLabel().unhighlight()
+            node.unhighlight()
         }
     }
     

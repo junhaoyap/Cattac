@@ -31,7 +31,7 @@ class LevelGenerator {
             }
         }
         
-        level.constructGraph()
+        level.grid.constructGraph()
         
         generateDoodadAndWalls(level)
         
@@ -80,7 +80,7 @@ class LevelGenerator {
                 }
                 
                 let tileNode = level.addDoodad(doodad, atLocation:location)
-                level.graph.removeNode((Node(tileNode)))
+                level.grid.removeNodeFromGraph(tileNode)
                 
                 hasWallBeenAdded = true
             }
@@ -97,7 +97,7 @@ class LevelGenerator {
             }
         }
         
-        level.constructGraph()
+        level.grid.constructGraph()
         
         for key in aDictionaryFromFirebase.keys {
             let row: Int = key / 10

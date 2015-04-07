@@ -3,10 +3,11 @@
     and column as reference.
 */
 
-struct Grid<T> {
+class Grid {
     let columns: Int
     let rows: Int
-    private var grid: [GridIndex:T] = [:]
+    private var grid: [GridIndex:TileNode] = [:]
+    private var graph: Graph<TileNode>
     
     let neighboursOffset: [String:(row: Int, column: Int)] = [
         "top direction": (1, 0),
@@ -18,9 +19,10 @@ struct Grid<T> {
     init(columns: Int, rows: Int) {
         self.columns = columns
         self.rows = rows
+        self.graph = Graph<TileNode>(isDirected: true)
     }
     
-    subscript(gridIndex: GridIndex) -> T? {
+    subscript(gridIndex: GridIndex) -> TileNode? {
         get {
             return grid[gridIndex]
         }
@@ -29,7 +31,7 @@ struct Grid<T> {
         }
     }
     
-    subscript(row: Int, column: Int) -> T? {
+    subscript(row: Int, column: Int) -> TileNode? {
         get {
             if row >= rows || column >= columns || row < 0 || column < 0 {
                 return nil
@@ -43,14 +45,87 @@ struct Grid<T> {
             grid[GridIndex(row, column)] = newValue
         }
     }
+    
+    subscript(row: Int, column: Int, with offset: (row: Int, column: Int)) -> TileNode? {
+        return self[row + offset.row, column + offset.column]
+    }
+    
+    func constructGraph() {
+        // Add all the nodes to the graph first
+        for node in self {
+            graph.addNode(Node(node))
+        }
+        
+        // Adds the edges by finding the neighbours of each node
+        for sourceNode in self {
+            for (direction, offset) in neighboursOffset {
+                if let destNode = self[sourceNode.row, sourceNode.column, with: offset] {
+                        graph.addEdge(Edge(source: Node(sourceNode), destination: Node(destNode)))
+                }
+            }
+        }
+    }
+    
+    func removeNodeFromGraph(removedNode: TileNode) {
+        graph.removeNode(Node(removedNode))
+    }
+    
+    func getNodesInRange(fromNode: TileNode, range: Int) -> [Int:TileNode] {
+        var nodes: [Int:TileNode] = [:]
+        var neighbours: [TileNode] = []
+        
+        if range == 0 {
+            return nodes
+        }
+        
+        for node in graph.adjacentNodesFromNode(Node(fromNode)) {
+            nodes[node.hashValue] = node.getLabel()
+            neighbours.append(node.getLabel())
+        }
+        
+        // Add neighbours of neighbours
+        for node in neighbours {
+            let nodeNeighbours = getNodesInRange(node, range: range - 1)
+            for (hash, nodeNeighbour) in nodeNeighbours {
+                if nodes[hash] == nil {
+                    nodes[hash] = nodeNeighbour
+                }
+            }
+        }
+        
+        return nodes
+    }
+    
+    func shortestPathFromNode(fromNode: TileNode, toNode: TileNode) -> [TileNode] {
+        var path = [TileNode]()
+        for edge in graph.shortestPathFromNode(Node(fromNode), toNode: Node(toNode)) {
+            path.append(edge.getDestination().getLabel())
+        }
+        return path
+    }
+    
+    func getAvailableDirections(fromNode: TileNode) -> [Direction] {
+        var directions = [Direction]()
+        
+        for (dir, offset) in neighboursOffset {
+            if let toNode = self[fromNode.row, fromNode.column, with: offset] {
+                let edges = graph.edgesFromNode(Node(fromNode), toNode: Node(toNode))
+                if edges.count > 0 {
+                    directions.append(Direction.create(dir)!)
+                }
+            }
+        }
+        
+        return directions
+    }
 }
 
 extension Grid: SequenceType {
-    func generate() -> GeneratorOf<T> {
+    func generate() -> GeneratorOf<TileNode> {
         var nextRow = 0
         var nextColumn = 0
         
-        return GeneratorOf<T> {
+        return GeneratorOf<TileNode> {
             if nextRow == self.rows && nextColumn == self.columns {
                 return nil
             } else if nextColumn == self.columns {
