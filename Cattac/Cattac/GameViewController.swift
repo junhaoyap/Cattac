@@ -26,6 +26,8 @@ class GameViewController: UIViewController {
     
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var scene: GameScene!
+    var level: GameLevel!
+    var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
     
     override func viewDidLoad() {
@@ -39,9 +41,8 @@ class GameViewController: UIViewController {
         /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
         
-        let level = levelGenerator.generateBasic()
-        
-        scene = GameScene(skView.bounds.size, level)
+        scene = GameScene(skView.bounds.size, level, playerNumber)
+        println(playerNumber)
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
@@ -54,7 +55,8 @@ class GameViewController: UIViewController {
             userInfo: nil,
             repeats: true
         )
-        timerLabel.text = "5"
+        
+        timerLabel.text = "10"
         
         skView.presentScene(scene)
     }
@@ -90,7 +92,7 @@ class GameViewController: UIViewController {
             // This is where the time for choosing something is over
             // we should move on to the next thing to do?
             
-            timerLabel.text = String(5)
+            timerLabel.text = "10"
             scene.gameEngine.nextState()
         } else {
             timerLabel.text = String(currentTime! - 1)

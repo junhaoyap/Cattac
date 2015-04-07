@@ -6,7 +6,6 @@ import SpriteKit
 
 class GameScene: SKScene, GameStateListener, ActionListener {
     
-    
     let gameEngine: GameEngine!
     private let level: GameLevel!
     
@@ -33,11 +32,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         assertionFailure("Should not call this init, init with basic level please!")
     }
     
-    init(_ size: CGSize, _ level: GameLevel) {
+    init(_ size: CGSize, _ level: GameLevel, _ currentPlayerNumber: Int) {
         super.init(size: size)
         
         self.level = level
-        gameEngine = GameEngine(grid: level.grid)
+        gameEngine = GameEngine(grid: level.grid, playerNumber: currentPlayerNumber)
         gameEngine.gameStateListener = self
         gameEngine.actionListener = self
         
@@ -52,7 +51,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         // position of the general grid layer
         let layerPosition = CGPoint(
             x: -tileSize * CGFloat(level.numColumns) / 2,
-            y: -tileSize * CGFloat(level.numRows) / 2)
+            y: -tileSize * CGFloat(level.numRows) / 2
+        )
 
         // adds tilesLayer to the grid layer
         tilesLayer.position = layerPosition
@@ -89,7 +89,19 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         addTiles()
         addPlayers()
         
-        previewNode = SKSpriteNode(imageNamed: "Nala.png")
+        switch currentPlayerNumber {
+        case 1:
+            previewNode = SKSpriteNode(imageNamed: "Nala.png")
+        case 2:
+            previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
+        case 3:
+            previewNode = SKSpriteNode(imageNamed: "Nyan.png")
+        case 4:
+            previewNode = SKSpriteNode(imageNamed: "Pusheen.png")
+        default:
+            break
+        }
+        
         previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
         previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
@@ -162,7 +174,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     private func addPlayers() {
         for player in gameEngine.players.values {
             let spriteNode = player.currNode.sprite
-            let playerNode = gameEngine.currentPlayer.getSprite() as SKSpriteNode
+            let playerNode = player.getSprite() as SKSpriteNode
             playerNode.size = spriteNode.size
             playerNode.position = spriteNode.position
             entityLayer.addChild(playerNode)
@@ -192,26 +204,20 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         entityLayer.addChild(entityNode)
     }
     
-    private func movePlayer() {
-        let path = gameEngine.executePlayerMove(gameEngine.currentPlayer)
-        var pathSequence: [SKAction] = []
-
-        for node in path {
-            let action = SKAction.moveTo(node.sprite.position, duration: 0.25)
-            pathSequence.append(action)
+    private func movePlayers() {
+        for player in gameEngine.players.values {
+            let path = gameEngine.executePlayerMove(player)
+            var pathSequence: [SKAction] = []
+            
+            for node in path {
+                let action = SKAction.moveTo(node.sprite.position, duration: 0.25)
+                pathSequence.append(action)
+            }
+            
+            if pathSequence.count > 0 {
+                player.getSprite().runAction(SKAction.sequence(pathSequence))
+            }
         }
-        
-        if pathSequence.count > 0 {
-            gameEngine.currentPlayer.getSprite().runAction(
-                SKAction.sequence(pathSequence),
-                completion: {
-                    self.gameEngine.nextState()
-                }
-            )
-        } else {
-            gameEngine.nextState()
-        }
-        
     }
     
     private func animatePuiAction(action: PuiAction) {
@@ -243,7 +249,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         pui.runAction(
             SKAction.sequence(pathSequence),
             completion: {
-                self.gameEngine.nextState()
                 pui.removeFromParent()
             }
         )
@@ -257,12 +262,10 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                 case .Pui:
                     animatePuiAction(action as PuiAction)
                 case .Fart:
-                    gameEngine.nextState()
+                    break
                 case .Poop:
-                    gameEngine.nextState()
+                    break
                 }
-            } else {
-                gameEngine.nextState()
             }
         }
     }
@@ -283,9 +286,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:
-            movePlayer()
+            movePlayers()
         case .StartActionsExecution:
-            gameEngine.nextState()
             performActions()
         case .ActionsExecution:
             break

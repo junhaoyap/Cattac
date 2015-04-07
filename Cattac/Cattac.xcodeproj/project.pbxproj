@@ -55,6 +55,7 @@
 		3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */; };
 		3471CA6A1ACEAB3800B0E68D /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA691ACEAB3800B0E68D /* Firebase.framework */; };
 		34A356361AD1896000299049 /* Wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A356351AD1896000299049 /* Wall.swift */; };
+		34B4B20B1AD29B8F00D06BD8 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */; };
 		34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA651ACEA01500B0E68D /* LoginViewController.swift */; };
 		761BB59E1AD04348007C31C1 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761BB59D1AD04348007C31C1 /* Action.swift */; };
 		763E71171AD1B78D00E90EF0 /* Grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71161AD1B78D00E90EF0 /* Grass.png */; };
@@ -150,6 +151,7 @@
 		3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDifficultyViewController.swift; sourceTree = "<group>"; };
 		3471CA691ACEAB3800B0E68D /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		34A356351AD1896000299049 /* Wall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wall.swift; sourceTree = "<group>"; };
+		34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
 		761BB59D1AD04348007C31C1 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		763E71161AD1B78D00E90EF0 /* Grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grass.png; path = Images.xcassets/Grass.png; sourceTree = "<group>"; };
 		763E71181AD1B87C00E90EF0 /* GrassPreview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GrassPreview.png; path = Images.xcassets/GrassPreview.png; sourceTree = "<group>"; };
@@ -292,11 +294,12 @@
 		342585061AACDB82004A3CFD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				342584E81AACDB03004A3CFD /* GameViewController.swift */,
+				3471CA651ACEA01500B0E68D /* LoginViewController.swift */,
 				342585521AACE392004A3CFD /* MenuViewController.swift */,
 				342585541AACE406004A3CFD /* ShopViewController.swift */,
-				3471CA651ACEA01500B0E68D /* LoginViewController.swift */,
 				3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */,
+				34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */,
+				342584E81AACDB03004A3CFD /* GameViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -683,6 +686,7 @@
 				76FC46EA1ABFEB4E0056B5F5 /* Grid.swift in Sources */,
 				342584E91AACDB03004A3CFD /* GameViewController.swift in Sources */,
 				342584E31AACDB03004A3CFD /* AppDelegate.swift in Sources */,
+				34B4B20B1AD29B8F00D06BD8 /* LobbyViewController.swift in Sources */,
 				342585531AACE392004A3CFD /* MenuViewController.swift in Sources */,
 				3425850F1AACDE4F004A3CFD /* Queue.swift in Sources */,
 				3425853C1AACE159004A3CFD /* Constants.swift in Sources */,

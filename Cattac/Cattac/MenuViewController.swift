@@ -24,7 +24,8 @@ class MenuViewController: UIViewController {
                 
                 meowsRef.setValue(defaultUserMeow)
             } else {
-                println(myNumberOfMeows)
+//                println("I has meows:")
+//                println(myNumberOfMeows)
             }
         })
     }
