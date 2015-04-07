@@ -37,38 +37,7 @@ class GameEngine {
     init(grid: Grid, playerNumber: Int) {
         self.grid = grid
         
-        let cat1 = catFactory.createCat(Constants.catName.nalaCat)!
-        cat1.currNode = grid[0, 0]
-        players[cat1.name] = cat1
-        addPlayer(cat1)
-        
-        let cat2 = catFactory.createCat(Constants.catName.grumpyCat)!
-        cat2.currNode = grid[grid.rows - 1, 0]
-        players[cat2.name] = cat2
-        addPlayer(cat2)
-        
-        let cat3 = catFactory.createCat(Constants.catName.nyanCat)!
-        cat3.currNode = grid[grid.rows - 1, grid.columns - 1]
-        players[cat3.name] = cat3
-        addPlayer(cat3)
-        
-        let cat4 = catFactory.createCat(Constants.catName.pusheenCat)!
-        cat4.currNode = grid[0, grid.columns - 1]
-        players[cat4.name] = cat4
-        addPlayer(cat4)
-        
-        switch playerNumber {
-        case 1:
-            setCurrentPlayer(cat1)
-        case 2:
-            setCurrentPlayer(cat2)
-        case 3:
-            setCurrentPlayer(cat3)
-        case 4:
-            setCurrentPlayer(cat4)
-        default:
-            break
-        }
+        createPlayers(playerNumber)
         
         registerMovementWatcherExcept(playerNumber)
         
@@ -83,35 +52,6 @@ class GameEngine {
         self.on("poopButtonPressed") {
             let targetNode = self.currentPlayer.currNode
             self.currentPlayer.action = PoopAction(targetNode: targetNode)
-        }
-    }
-    
-    private func registerMovementWatcherExcept(number: Int) {
-        for i in 1...4 {
-            if i == number {
-                continue
-            }
-            let playerMovementWatcherRef = ref.childByAppendingPath("games")
-                .childByAppendingPath("game0")
-                .childByAppendingPath("player\(i)Movement")
-            
-            playerMovementWatcherRef.observeEventType(.ChildAdded, withBlock: {
-                snapshot in
-                
-                let fromRow = snapshot.value.objectForKey("fromRow") as? Int
-                let fromCol = snapshot.value.objectForKey("fromCol") as? Int
-                let moveToRow = snapshot.value.objectForKey("toRow") as? Int
-                let moveToCol = snapshot.value.objectForKey("toCol") as? Int
-                
-                println("Received movement: \(i)")
-                if fromRow == nil || fromCol == nil || moveToRow == nil || moveToCol == nil {
-                    return
-                }
-                
-                let player = self.players[Constants.catArray[i]]!
-                player.currNode = self.grid[fromRow!, fromCol!]
-                player.destNode = self.grid[moveToRow!, moveToCol!]
-            })
         }
     }
     
@@ -167,8 +107,6 @@ class GameEngine {
             state = GameState.Precalculation
         }
         
-        println("State: \(state.hashValue)")
-        
         if let listener = gameStateListener {
             listener.onStateUpdate(state)
         }
@@ -176,9 +114,9 @@ class GameEngine {
     
     func postUpdate() {
         // let it observe forever until an end to game is implemented
-//        for ref in movementWatchers.values {
-//            ref.removeAllObservers()
-//        }
+        //for ref in movementWatchers.values {
+        //    ref.removeAllObservers()
+        //}
     }
     
     func precalculate() {
@@ -246,7 +184,6 @@ class GameEngine {
             cat.currNode = lastNode
         }
         return path
-        return []
     }
     
     func executePlayerAction(cat: Cat) -> Action? {
@@ -280,15 +217,80 @@ class GameEngine {
         return path
     }
     
-    func setCurrentPlayer(player: Cat) {
+    private func createPlayers(playerNumber: Int) {
+        let cat1 = catFactory.createCat(Constants.catName.nalaCat)!
+        cat1.currNode = grid[0, 0]
+        players[cat1.name] = cat1
+        addPlayer(cat1)
+        
+        let cat2 = catFactory.createCat(Constants.catName.grumpyCat)!
+        cat2.currNode = grid[grid.rows - 1, 0]
+        players[cat2.name] = cat2
+        addPlayer(cat2)
+        
+        let cat3 = catFactory.createCat(Constants.catName.nyanCat)!
+        cat3.currNode = grid[grid.rows - 1, grid.columns - 1]
+        players[cat3.name] = cat3
+        addPlayer(cat3)
+        
+        let cat4 = catFactory.createCat(Constants.catName.pusheenCat)!
+        cat4.currNode = grid[0, grid.columns - 1]
+        players[cat4.name] = cat4
+        addPlayer(cat4)
+        
+        switch playerNumber {
+        case 1:
+            setCurrentPlayer(cat1)
+        case 2:
+            setCurrentPlayer(cat2)
+        case 3:
+            setCurrentPlayer(cat3)
+        case 4:
+            setCurrentPlayer(cat4)
+        default:
+            break
+        }
+    }
+    
+    private func setCurrentPlayer(player: Cat) {
         players[player.name] = player
         currentPlayer = player
         player.destNode = player.currNode
     }
     
-    func addPlayer(player: Cat) {
+    private func addPlayer(player: Cat) {
         players[player.name] = player
         player.destNode = player.currNode
+    }
+    
+    private func registerMovementWatcherExcept(number: Int) {
+        for i in 1...4 {
+            if i == number {
+                continue
+            }
+            let playerMovementWatcherRef = ref.childByAppendingPath("games")
+                .childByAppendingPath("game0")
+                .childByAppendingPath("player\(i)Movement")
+            
+            playerMovementWatcherRef.observeEventType(.ChildAdded, withBlock: {
+                snapshot in
+                
+                let fromRow = snapshot.value.objectForKey("fromRow") as? Int
+                let fromCol = snapshot.value.objectForKey("fromCol") as? Int
+                let moveToRow = snapshot.value.objectForKey("toRow") as? Int
+                let moveToCol = snapshot.value.objectForKey("toCol") as? Int
+                
+                println("Received movement: \(i)")
+                if fromRow == nil || fromCol == nil || moveToRow == nil || moveToCol == nil {
+                    //ignore for now, shall be addressed together with turn sync issue
+                    return
+                }
+                
+                let player = self.players[Constants.catArray[i]]!
+                player.currNode = self.grid[fromRow!, fromCol!]
+                player.destNode = self.grid[moveToRow!, moveToCol!]
+            })
+        }
     }
     
     private func setAvailableDirections() {
