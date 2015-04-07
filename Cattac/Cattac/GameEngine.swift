@@ -177,11 +177,13 @@ class GameEngine {
     }
     
     func executePlayerMove(cat: Cat) -> [TileNode] {
-        let path = playersPendingPaths[cat.name]!
-        if let lastNode = path.last {
+        let path = playersPendingPaths[cat.name]
+        if let lastNode = path?.last {
             cat.currNode = lastNode
+            return path!
+        } else {
+            return []
         }
-        return path
     }
     
     func executePlayerAction(cat: Cat) -> Action? {
