@@ -255,7 +255,7 @@ class GameEngine {
         }
         
         while true {
-            if playerMovesCount != 2 {
+            if playerMovesCount != 4 {
                 break
             } else {
                 playerMovesCount = 0
