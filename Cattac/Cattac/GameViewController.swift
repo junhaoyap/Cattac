@@ -71,7 +71,12 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func backButtonPressed(sender: AnyObject) {
-        (self.view as SKView).presentScene(nil)
+        let skView = self.view as SKView
+        if let scene = skView.scene {
+            (skView.scene as GameScene).gameEngine.end()
+            skView.presentScene(nil)
+        }
+        
         // confirm exit game
         self.dismissViewControllerAnimated(true, completion: nil)
     }
