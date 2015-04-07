@@ -12,11 +12,16 @@ protocol GameStateListener {
     func onStateUpdate(state: GameState)
 }
 
+protocol ActionListener {
+    func onActionUpdate(action: Action?)
+}
+
 class GameEngine {
     let catFactory = CatFactory.sharedInstance
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var state: GameState = GameState.Precalculation
     var gameStateListener: GameStateListener?
+    var actionListener: ActionListener?
     var player: Cat!
     var playerMoveNumber: Int = 1
     private var grid: Grid<TileNode>!
@@ -35,7 +40,7 @@ class GameEngine {
         addPlayers()
         
         self.on("puiButtonPressed") {
-            self.currentPlayerAction = PuiAction(direction: .Top)
+            self.setAvailableDirections()
         }
         
         self.on("fartButtonPressed") {
@@ -64,7 +69,7 @@ class GameEngine {
         case .StartActionsExecution:
             break
         case .ActionsExecution:
-            nextState()
+            break
         case .PostExecution:
             postExecute()
             nextState()
@@ -222,6 +227,10 @@ class GameEngine {
         currentPlayerMoveToNode = currentPlayerNode
         reachableNodes = graph.getNodesInRange(Node(currentPlayerNode), range: player.moveRange)
         allPlayerActions = [:]
+        
+        for player in allPlayer {
+            println(player.1.hp)
+        }
     }
     
     func updateServer() {
@@ -268,6 +277,9 @@ class GameEngine {
             return allPlayerMoveToPositions[player.name]!
         }
         set {
+            if allPlayerMoveToPositions[player.name] != newValue {
+                currentPlayerAction = nil
+            }
             allPlayerMoveToPositions[player.name] = newValue
         }
     }
@@ -277,6 +289,11 @@ class GameEngine {
             return allPlayerActions[player.name]?
         }
         set {
+            if allPlayerActions[player.name] != newValue {
+                if let listener = actionListener {
+                    listener.onActionUpdate(newValue)
+                }
+            }
             allPlayerActions[player.name] = newValue
         }
     }
@@ -302,6 +319,24 @@ class GameEngine {
         return allPlayer
     }
     
+    func pathOfPui(startNode: TileNode, direction: Direction) -> [TileNode] {
+        let offset = grid.neighboursOffset[direction.description]!
+        var path = [TileNode]()
+        var currentNode = startNode
+        while let nextNode = grid[currentNode.row + offset.row,
+            currentNode.column + offset.column] {
+                if let doodad = nextNode.doodad {
+                    if doodad.getName() == "wall" {
+                        path.append(nextNode)
+                        break
+                    }
+                }
+                path.append(nextNode)
+                currentNode = nextNode
+        }
+        return path
+    }
+    
     private func addPlayers() {
         let cat = catFactory.createCat(Constants.catName.nalaCat)!
         cat.position = GridIndex(0, 0)
@@ -323,5 +358,28 @@ class GameEngine {
         cat4.position = GridIndex(0, 9)
         allPlayer[cat4.name] = cat4
         allPlayerPositions[cat4.name] = grid[cat4.position]
+    }
+    
+    private func setAvailableDirections() {
+        let originNode = self.currentPlayerMoveToNode
+        var directionIsSet = false
+        var action: PuiAction!
+        for (direction, offset) in grid.neighboursOffset {
+            if let targetNode = grid[originNode.row + offset.row,
+                originNode.column + offset.column] {
+                    let edges = graph.edgesFromNode(Node(originNode), toNode: Node(targetNode))
+                    if edges.count > 0 {
+                        let dir = Direction.create(direction)!
+                        if !directionIsSet {
+                            action = PuiAction(direction: dir)
+                            directionIsSet = true
+                        }
+                        action.availableDirections.append(dir)
+                    }
+            }
+        }
+        if action != nil {
+            currentPlayerAction = action
+        }
     }
 }
