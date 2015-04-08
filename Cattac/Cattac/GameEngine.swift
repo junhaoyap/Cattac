@@ -24,14 +24,13 @@ class GameEngine {
     
     private var grid: Grid!
     
-    /// Dictionary of calculated player paths at the end of ServerUpdate. Cleared at Precalculation.
-    private var playersPendingPaths: [String:[TileNode]] = [:]
-    
     /// Dictionary of event trigger closures.
     private var events: [String:()->()] = [:]
     
     /// Dictionary of Firebase references watching a data value.
     private var movementWatchers: [Int: Firebase] = [:]
+
+    var gameManager: GameManager = GameManager()
     
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
@@ -50,14 +49,8 @@ class GameEngine {
     /// currentPlayer's movement index, for backend use.
     var currentPlayerMoveNumber: Int = 1
     
-    /// Dictionary of all players in game.
-    var players: [String:Cat] = [:]
-    
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
-    
-    /// Dictionary of removed doodads pending removal on UI
-    var removedDoodads: [Int:Doodad] = [:]
     
     init(grid: Grid, playerNumber: Int) {
         self.grid = grid
@@ -72,19 +65,20 @@ class GameEngine {
         }
         
         self.on("fartButtonPressed") {
-            self.currentPlayer.action = FartAction(range: 2)
+            self.gameManager[actionOf: self.currentPlayer] = FartAction(range: 2)
             self.notifyAction()
         }
         
         self.on("poopButtonPressed") {
-            let targetNode = self.currentPlayer.currNode
-            self.currentPlayer.action = PoopAction(targetNode: targetNode)
+            let targetNode = self.gameManager[positionOf: self.currentPlayer]!
+            self.gameManager[actionOf: self.currentPlayer] = PoopAction(targetNode: targetNode)
             self.notifyAction()
         }
     }
     
     func gameLoop() {
-        //TODO check scene ready or scene notify ready before nextstate(), currently ignores scene readiness
+        // TODO check scene ready or scene notify ready before nextstate(),
+        // currently ignores scene readiness
         switch state {
         case .Precalculation:
             precalculate()
@@ -95,19 +89,14 @@ class GameEngine {
             updateServer()
             calculateMovementPaths()
             nextState()
-            break
         case .StartMovesExecution:
             nextState()
-            break
         case .MovesExecution:
             nextState()
-            break
         case .StartActionsExecution:
             nextState()
-            break
         case .ActionsExecution:
             nextState()
-            break
         case .PostExecution:
             postExecute()
             nextState()
@@ -144,21 +133,12 @@ class GameEngine {
     }
     
     func precalculate() {
-        for player in players.values {
-            let tileNode = player.currNode
-            if let doodad = tileNode.doodad {
-                doodad.effect(player)
-                
-                if doodad.isRemoved() {
-                    tileNode.doodad = nil
-                    removedDoodads[doodad.getSprite().hashValue] = doodad
-                }
-            }
-            player.destNode = player.currNode
-            player.action = nil
-        }
+        gameManager.precalculate()
         
-        reachableNodes = grid.getNodesInRange(currentPlayer.currNode, range: currentPlayer.moveRange)
+        reachableNodes = grid.getNodesInRange(
+            gameManager[positionOf: currentPlayer]!,
+            range: currentPlayer.moveRange
+        )
     }
     
     func updateServer() {
@@ -168,12 +148,15 @@ class GameEngine {
             .childByAppendingPath("game0")
             .childByAppendingPath("player" + String(playerNumber) + "Movement")
             .childByAppendingPath(String(currentPlayerMoveNumber))
+
+        let currentPlayerTileNode = gameManager[positionOf: currentPlayer]!
+        let currentPlayerMoveToTileNode = gameManager[moveToPositionOf: currentPlayer]!
         
         let currentPlayerMoveData = [
-            "fromRow": currentPlayer.currNode.position.row,
-            "fromCol": currentPlayer.currNode.position.col,
-            "toRow": currentPlayer.destNode.position.row,
-            "toCol": currentPlayer.destNode.position.col,
+            "fromRow": currentPlayerTileNode.position.row,
+            "fromCol": currentPlayerTileNode.position.col,
+            "toRow": currentPlayerMoveToTileNode.position.row,
+            "toCol": currentPlayerMoveToTileNode.position.col,
             "attackType": "",
             "attackDir": "",
             "attackDmg": ""
@@ -181,12 +164,17 @@ class GameEngine {
         
         playerMoveUpdateRef.updateChildValues(currentPlayerMoveData)
     }
+
+    func setCurrentPlayerMoveToPosition(node: TileNode) {
+        gameManager[moveToPositionOf: currentPlayer] = node
+    }
     
     func calculateMovementPaths() {
-        for player in players.values {
-            var playerAtNode = player.currNode
-            var playerMoveToNode = player.destNode
-            var path = grid.shortestPathFromNode(playerAtNode, toNode: playerMoveToNode)
+        for player in gameManager.players.values {
+            var playerAtNode = gameManager[positionOf: player]!
+            var playerMoveToNode = gameManager[moveToPositionOf: player]!
+            var path = grid.shortestPathFromNode(playerAtNode,
+                toNode: playerMoveToNode)
             
             if let doodad = playerMoveToNode.doodad {
                 if doodad is WormholeDoodad {
@@ -194,11 +182,12 @@ class GameEngine {
                     path += [destNode]
                 }
             }
-            playersPendingPaths[player.name] = path
+            gameManager[movementPathOf: player] = path
         }
     }
     
     func postExecute() {
+        gameManager.advanceTurn()
         currentPlayer.postExecute()
     }
     
@@ -207,9 +196,8 @@ class GameEngine {
     ///
     /// :param: cat The player's move to execute
     func executePlayerMove(player: Cat) -> [TileNode] {
-        let path = playersPendingPaths[player.name]
-        if let lastNode = path?.last {
-            player.currNode = lastNode
+        let path = gameManager[movementPathOf: player]
+        if path != nil {
             return path!
         } else {
             return []
@@ -223,8 +211,8 @@ class GameEngine {
     /// or when pre-calculation of effects is not possible
     ///
     /// :param: cat The player's action to execute
-    func executePlayerAction(cat: Cat) -> Action? {
-        return cat.action
+    func executePlayerAction(player: Cat) -> Action? {
+        return gameManager[actionOf: player]
     }
     
     func trigger(event: String) {
@@ -256,48 +244,33 @@ class GameEngine {
     
     private func createPlayers(playerNumber: Int) {
         let cat1 = catFactory.createCat(Constants.catName.nalaCat)!
-        cat1.currNode = grid[0, 0]
-        players[cat1.name] = cat1
-        addPlayer(cat1)
+        gameManager.registerPlayer(cat1)
+        gameManager[positionOf: cat1] = grid[0, 0]
         
         let cat2 = catFactory.createCat(Constants.catName.grumpyCat)!
-        cat2.currNode = grid[grid.rows - 1, 0]
-        players[cat2.name] = cat2
-        addPlayer(cat2)
+        gameManager.registerPlayer(cat2)
+        gameManager[positionOf: cat2] = grid[grid.rows - 1, 0]
         
         let cat3 = catFactory.createCat(Constants.catName.nyanCat)!
-        cat3.currNode = grid[grid.rows - 1, grid.columns - 1]
-        players[cat3.name] = cat3
-        addPlayer(cat3)
+        gameManager.registerPlayer(cat3)
+        gameManager[positionOf: cat3] = grid[grid.rows - 1, grid.columns - 1]
         
         let cat4 = catFactory.createCat(Constants.catName.pusheenCat)!
-        cat4.currNode = grid[0, grid.columns - 1]
-        players[cat4.name] = cat4
-        addPlayer(cat4)
+        gameManager.registerPlayer(cat4)
+        gameManager[positionOf: cat4] = grid[0, grid.columns - 1]
         
         switch playerNumber {
         case 1:
-            setCurrentPlayer(cat1)
+            currentPlayer = cat1
         case 2:
-            setCurrentPlayer(cat2)
+            currentPlayer = cat2
         case 3:
-            setCurrentPlayer(cat3)
+            currentPlayer = cat3
         case 4:
-            setCurrentPlayer(cat4)
+            currentPlayer = cat4
         default:
             break
         }
-    }
-    
-    private func setCurrentPlayer(player: Cat) {
-        players[player.name] = player
-        currentPlayer = player
-        player.destNode = player.currNode
-    }
-    
-    private func addPlayer(player: Cat) {
-        players[player.name] = player
-        player.destNode = player.currNode
     }
     
     private func registerMovementWatcherExcept(number: Int) {
@@ -308,7 +281,7 @@ class GameEngine {
             let playerMovementWatcherRef = ref.childByAppendingPath("games")
                 .childByAppendingPath("game0")
                 .childByAppendingPath("player\(i)Movement")
-            
+
             playerMovementWatcherRef.observeEventType(.ChildAdded, withBlock: {
                 snapshot in
                 
@@ -322,22 +295,24 @@ class GameEngine {
                     return
                 }
                 
-                let player = self.players[Constants.catArray[i]]!
-                player.currNode = self.grid[fromRow!, fromCol!]
-                player.destNode = self.grid[moveToRow!, moveToCol!]
+                let player = self.gameManager[Constants.catArray[i]]!
+                self.gameManager[positionOf: player] = self.grid[fromRow!, fromCol!]
+                self.gameManager[moveToPositionOf: player] = self.grid[moveToRow!, moveToCol!]
+                println("player \(i) moving to \(moveToRow!),\(moveToCol!)")
             })
         }
     }
     
     private func setAvailablePuiDirections() {
-        let availableDirections = grid.getAvailableDirections(currentPlayer.destNode)
+        let targetNode = gameManager[moveToPositionOf: currentPlayer]!
+        let availableDirections = grid.getAvailableDirections(targetNode)
         var action = PuiAction(direction: availableDirections.first!)
         action.availableDirections = availableDirections
-        currentPlayer.action = action
+        gameManager[actionOf: currentPlayer] = action
     }
     
     private func notifyAction() {
-        if let action = currentPlayer.action {
+        if let action = gameManager[actionOf: currentPlayer] {
             actionListener?.onActionUpdate(action)
         }
     }

@@ -117,7 +117,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             if let node = nodeForLocation(location) {
                 if gameEngine.state == GameState.PlayerAction {
                     if gameEngine.reachableNodes[Node(node).hashValue] != nil {
-                        gameEngine.currentPlayer.destNode = node
+                        gameEngine.setCurrentPlayerMoveToPosition(node)
                         previewNode.position = pointFor(node.position)
                         previewNode.hidden = false
                     }
@@ -133,7 +133,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             if let node = nodeForLocation(location) {
                 if gameEngine.state == GameState.PlayerAction {
                     if gameEngine.reachableNodes[Node(node).hashValue] != nil {
-                        gameEngine.currentPlayer.destNode = node
+                        gameEngine.setCurrentPlayerMoveToPosition(node)
                         previewNode.position = pointFor(node.position)
                         previewNode.hidden = false
                     }
@@ -172,8 +172,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func addPlayers() {
-        for player in gameEngine.players.values {
-            let spriteNode = player.currNode.sprite
+        for player in gameEngine.gameManager.players.values {
+            let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
             let playerNode = player.getSprite() as SKSpriteNode
             playerNode.size = spriteNode.size
             playerNode.position = spriteNode.position
@@ -205,7 +205,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func movePlayers() {
-        for player in gameEngine.players.values {
+        for player in gameEngine.gameManager.players.values {
             let path = gameEngine.executePlayerMove(player)
             var pathSequence: [SKAction] = []
             
@@ -221,7 +221,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func animatePuiAction(action: PuiAction) {
-        let startNode = gameEngine.currentPlayer.destNode
+        let startNode = gameEngine.gameManager[moveToPositionOf: gameEngine.currentPlayer]!
         let path = gameEngine.pathOfPui(startNode, direction: action.direction)
         var pathSequence: [SKAction] = []
         
@@ -255,7 +255,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func performActions() {
-        for player in gameEngine.players.values {
+        for player in gameEngine.gameManager.players.values {
             if let action = gameEngine.executePlayerAction(player) {
                 println(action)
                 switch action.actionType {
@@ -317,7 +317,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             size: CGSize(width: 50, height: 50),
             centerSize: puiButton.calculateAccumulatedFrame().size,
             hoverAction: {(direction) -> Void in
-                self.gameEngine.currentPlayer.action!.direction = direction
+                self.gameEngine.gameManager[actionOf: self.gameEngine.currentPlayer]!.direction = direction
             },
             availableDirection: action.availableDirections,
             selected: action.direction
@@ -346,11 +346,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func deleteRemovedDoodads() {
-        let removedSprites = gameEngine.removedDoodads.values.map {
+        let removedSprites = gameEngine.gameManager.doodadsToRemove.values.map {
             (doodad) -> SKNode in
             return doodad.getSprite()
         }
         entityLayer.removeChildrenInArray([SKNode](removedSprites))
-        gameEngine.removedDoodads = [:]
+        gameEngine.gameManager.doodadsToRemove = [:]
     }
 }
