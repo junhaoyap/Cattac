@@ -30,7 +30,7 @@ class GameEngine {
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
-    var state: GameState = .Initialization
+    var state: GameState = .Precalculation
     
     /// GameState listener, listens for update on state change.
     var gameStateListener: GameStateListener?
@@ -67,8 +67,6 @@ class GameEngine {
             currentPlayer: currentPlayer)
 
         registerEvents()
-
-        nextState()
     }
 
     /// Register all the events for the game engine.
@@ -114,8 +112,6 @@ class GameEngine {
     
     func gameLoop() {
         switch state {
-        case .Initialization:
-            break
         case .Precalculation:
             precalculate()
             nextState()
@@ -156,8 +152,6 @@ class GameEngine {
     
     private func nextState() {
         switch state {
-        case .Initialization:
-            state = .Precalculation
         case .Precalculation:
             state = .PlayerAction
         case .PlayerAction:
