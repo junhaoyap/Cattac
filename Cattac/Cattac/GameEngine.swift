@@ -5,7 +5,7 @@
 import Foundation
 
 enum GameState {
-    case Precalculation, PlayerAction, ServerUpdate, WaitForAll, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
+    case Precalculation, PlayerAction, ServerUpdate, WaitForAll, AICalculation, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
 }
 
 protocol GameStateListener {
@@ -53,14 +53,18 @@ class GameEngine {
     var reachableNodes: [Int:TileNode] = [:]
     
     var actionStateOver = false
+
+    var multiplayer: Bool
     
     var otherPlayersMoved = 0
     
-    init(grid: Grid, playerNumber: Int) {
+    init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
         println("init GameEngine as playerNumber \(playerNumber)")
         self.playerNumber = playerNumber
         
         self.grid = grid
+
+        self.multiplayer = multiplayer
         
         createPlayers(playerNumber)
         
@@ -105,6 +109,9 @@ class GameEngine {
             nextState()
         case .WaitForAll:
             break
+        case .AICalculation:
+            // do AI stuff
+            break
         case .StartMovesExecution:
             calculateMovementPaths()
             nextState()
@@ -133,10 +140,16 @@ class GameEngine {
         case .Precalculation:
             state = GameState.PlayerAction
         case .PlayerAction:
-            state = GameState.ServerUpdate
+            if multiplayer {
+                state = GameState.ServerUpdate
+            } else {
+                state = GameState.AICalculation
+            }
         case .ServerUpdate:
             state = GameState.WaitForAll
         case .WaitForAll:
+            state = GameState.StartMovesExecution
+        case .AICalculation:
             state = GameState.StartMovesExecution
         case .StartMovesExecution:
             state = GameState.MovesExecution

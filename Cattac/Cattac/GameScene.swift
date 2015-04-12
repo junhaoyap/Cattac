@@ -56,12 +56,12 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     /// :param: size The size of the view.
     /// :param: level The game level that is selected.
     /// :param: currentPlayerNumber The index/id for the current player.
-    init(_ size: CGSize, _ level: GameLevel, _ currentPlayerNumber: Int) {
+    init(_ size: CGSize, _ level: GameLevel, _ currentPlayerNumber: Int, _ multiplayer: Bool) {
         super.init(size: size)
         
         self.level = level
-        gameEngine =
-            GameEngine(grid: level.grid, playerNumber: currentPlayerNumber)
+        gameEngine = GameEngine(grid: level.grid,
+            playerNumber: currentPlayerNumber, multiplayer: multiplayer)
         gameEngine.gameStateListener = self
         gameEngine.actionListener = self
 
@@ -338,6 +338,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             removeHighlights()
             break
         case .WaitForAll:
+            break
+        case .AICalculation:
             break
         case .StartMovesExecution:
             previewNode.hidden = true

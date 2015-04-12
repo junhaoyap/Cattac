@@ -29,6 +29,7 @@ class GameViewController: UIViewController {
     var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
     var justReachedZero: Bool = true
+    var multiplayer: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +42,7 @@ class GameViewController: UIViewController {
         /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
         
-        scene = GameScene(skView.bounds.size, level, playerNumber)
+        scene = GameScene(skView.bounds.size, level, playerNumber, multiplayer)
         println(playerNumber)
         
         /* Set the scale mode to scale to fit the window */
