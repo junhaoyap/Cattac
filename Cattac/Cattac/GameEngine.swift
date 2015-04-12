@@ -105,8 +105,9 @@ class GameEngine {
             updateServer()
             nextState()
         case .WaitForAll:
-            calculateMovementPaths()
+            break
         case .StartMovesExecution:
+            calculateMovementPaths()
             nextState()
         case .MovesExecution:
             // This state waits for the movement ended event that is triggered
