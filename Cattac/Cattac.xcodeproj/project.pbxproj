@@ -323,7 +323,6 @@
 				342584E61AACDB03004A3CFD /* GameScene.swift */,
 				763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */,
 				763E71321AD2FFB200E90EF0 /* SKDirectionButtonNode.swift */,
-				763D97B71ADA7CDB0064B73C /* SceneUtils.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -512,6 +511,7 @@
 			isa = PBXGroup;
 			children = (
 				34BA89CA1ADA7CC500413C1B /* StringUtils.swift */,
+				763D97B71ADA7CDB0064B73C /* SceneUtils.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
