@@ -24,7 +24,6 @@ extension SKNode {
 class GameViewController: UIViewController {
     @IBOutlet weak var timerLabel: UILabel!
     
-    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var scene: GameScene!
     var level: GameLevel!
     var playerNumber: Int = 1
@@ -89,7 +88,7 @@ class GameViewController: UIViewController {
             // we should move on to the next thing to do?
             
             timerLabel.text = "10"
-            scene.gameEngine.nextState()
+            scene.gameEngine.nextState()    // danger, next state called regardless of current state.
         } else {
             timerLabel.text = String(currentTime! - 1)
         }

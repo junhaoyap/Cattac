@@ -53,6 +53,9 @@ class GameEngine {
     var reachableNodes: [Int:TileNode] = [:]
     
     init(grid: Grid, playerNumber: Int) {
+        println("init GameEngine as playerNumber \(playerNumber)")
+        self.playerNumber = playerNumber
+        
         self.grid = grid
         
         createPlayers(playerNumber)
@@ -147,7 +150,7 @@ class GameEngine {
             .childByAppendingPath("games")
             .childByAppendingPath("game0")
             .childByAppendingPath("player\(playerNumber)Movement")
-            .childByAppendingPath("\(currentPlayerMoveNumber)")
+            .childByAppendingPath("\(currentPlayerMoveNumber++)")
 
         let currentPlayerTileNode = gameManager[positionOf: currentPlayer]!
         let currentPlayerMoveToTileNode = gameManager[moveToPositionOf: currentPlayer]!
@@ -248,11 +251,11 @@ class GameEngine {
         gameManager.registerPlayer(cat1)
         gameManager[positionOf: cat1] = grid[0, 0]
         
-        let cat2 = catFactory.createCat(Constants.catName.grumpyCat)!
+        let cat2 = catFactory.createCat(Constants.catName.nyanCat)!
         gameManager.registerPlayer(cat2)
         gameManager[positionOf: cat2] = grid[grid.rows - 1, 0]
         
-        let cat3 = catFactory.createCat(Constants.catName.nyanCat)!
+        let cat3 = catFactory.createCat(Constants.catName.grumpyCat)!
         gameManager.registerPlayer(cat3)
         gameManager[positionOf: cat3] = grid[grid.rows - 1, grid.columns - 1]
         
@@ -296,10 +299,10 @@ class GameEngine {
                     return
                 }
                 
-                let player = self.gameManager[Constants.catArray[i]]!
+                let player = self.gameManager[Constants.catArray[i - 1]]!
                 self.gameManager[positionOf: player] = self.grid[fromRow!, fromCol!]
                 self.gameManager[moveToPositionOf: player] = self.grid[moveToRow!, moveToCol!]
-                println("player \(i) moving to \(moveToRow!),\(moveToCol!)")
+                println("\(player.name)[\(i)] moving to \(moveToRow!),\(moveToCol!)")
             })
         }
     }

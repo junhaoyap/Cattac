@@ -153,6 +153,7 @@ class LobbyViewController: UIViewController {
                 let gameRef = ref
                     .childByAppendingPath("games")
                     .childByAppendingPath("game0")
+                gameRef.removeValue()
                 
                 let gameToWrite = [
                     "generatedGame": levelGenerator.toDictionaryForFirebase()
