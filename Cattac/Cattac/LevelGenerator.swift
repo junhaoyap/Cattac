@@ -40,50 +40,53 @@ class LevelGenerator {
         return level
     }
     
-    private func generateDoodadAndWalls(level: GameLevel) {
+    private func getValidDoodadLocation(level: GameLevel) -> GridIndex {
         let maxCol = UInt32(level.numColumns)
         let maxRow = UInt32(level.numRows)
         
+        var row = Int(arc4random_uniform(maxRow))
+        var col = Int(arc4random_uniform(maxCol))
+        
+        var location = GridIndex(row, col)
+        
+        while contains(Constants.Level.invalidDoodadWallLocation, location) ||
+            level.hasDoodad(atLocation: location) {
+            
+            row = Int(arc4random_uniform(maxRow))
+            col = Int(arc4random_uniform(maxCol))
+            location = GridIndex(row, col)
+        }
+        return location
+    }
+    
+    private func generateDoodadAndWalls(level: GameLevel) {
+        var wormholeCount = 0
+        var excludedDoodads = [DoodadType]()
+        
         for i in 0...level.numDoodads {
             var hasDoodadBeenAdded = false
+            let doodad = doodadFactory.randomDoodad(excludedDoodads)
+            let location = getValidDoodadLocation(level)
+            let tileNode = level.addDoodad(doodad, atLocation: location)
             
-            while !hasDoodadBeenAdded {
-                let row = Int(arc4random_uniform(maxRow))
-                let col = Int(arc4random_uniform(maxCol))
-                let location = GridIndex(row, col)
-                let doodad = doodadFactory.randomDoodad()
-                
-                if contains(Constants.Level.invalidDoodadWallLocation, location) ||
-                    level.hasDoodad(atLocation: location) {
-                        continue
+            if doodad is WormholeDoodad {
+                if ++wormholeCount >= Constants.Doodad.maxWormhole {
+                    excludedDoodads += [.Wormhole]
                 }
                 
-                
-                level.addDoodad(doodad, atLocation: location)
-                
-                hasDoodadBeenAdded = true
+                let destDoodad = doodadFactory.createDoodad(.Wormhole)! as WormholeDoodad
+                let destLocation = getValidDoodadLocation(level)
+                let destTileNode = level.addDoodad(destDoodad, atLocation: destLocation)
+                (doodad as WormholeDoodad).setDestination(destTileNode)
+                destDoodad.setDestination(tileNode)
             }
         }
         
         for i in 0...level.numWalls {
-            var hasWallBeenAdded = false
-            
-            while !hasWallBeenAdded {
-                let row = Int(arc4random_uniform(maxRow))
-                let col = Int(arc4random_uniform(maxCol))
-                let location = GridIndex(row, col)
-                let doodad = doodadFactory.generateWall()
-                
-                if contains(Constants.Level.invalidDoodadWallLocation, location) ||
-                    level.hasDoodad(atLocation: location) {
-                        continue
-                }
-                
-                let tileNode = level.addDoodad(doodad, atLocation:location)
-                level.grid.removeNodeFromGraph(tileNode)
-                
-                hasWallBeenAdded = true
-            }
+            let doodad = doodadFactory.generateWall()
+            let location = getValidDoodadLocation(level)
+            let tileNode = level.addDoodad(doodad, atLocation: location)
+            level.grid.removeNodeFromGraph(tileNode)
         }
     }
     
@@ -112,7 +115,12 @@ class LevelGenerator {
                 let theDoodad = doodadFactory.createDoodad(aDictionaryFromFirebase[key]!)
                 
                 if theDoodad != nil {
-                    level.addDoodad(theDoodad!, atLocation: location)
+                    if theDoodad!.getName() == "wall" {
+                        let tileNode = level.addDoodad(theDoodad!, atLocation:location)
+                        level.grid.removeNodeFromGraph(tileNode)
+                    } else {
+                        level.addDoodad(theDoodad!, atLocation: location)
+                    }
                 } else {
                     println("jialat fail")
                 }
@@ -123,8 +131,8 @@ class LevelGenerator {
     }
     
     // use only after the level has been generated
-    func toDictionaryForFirebase() -> [Int: String] {
-        var theDictionary: [Int: String] = [:]
+    func toDictionaryForFirebase() -> [String: String] {
+        var theDictionary: [String: String] = [:]
         
         for i in 0...99 {
             let row: Int = i / 10
@@ -133,9 +141,9 @@ class LevelGenerator {
             let location = GridIndex(row, col)
             
             if levelToShare!.hasDoodad(atLocation: location) {
-                theDictionary[i] = levelToShare!.getDoodad(atLocation: location).getName()
+                theDictionary[String(i)] = levelToShare!.getDoodad(atLocation: location).getName()
             } else {
-                theDictionary[i] = ""
+                theDictionary[String(i)] = ""
                 // empty string signifies that the node is empty and should
                 // be read that way when read from firebase
             }

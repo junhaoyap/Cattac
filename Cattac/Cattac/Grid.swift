@@ -83,13 +83,12 @@ class Grid {
     ///
     /// :throws: KeyError exception if trying to set to an invalid grid index
     ///
-    /// :param: row The row index of the base TileNode
-    /// :param: column The column index of the base TileNode
+    /// :param: gridIndex The grid index of the base TileNode
     /// :param: offset The offset from the base TileNode
     /// :returns: The TileNode with the given row and column or nil if it does not exist
-    subscript(row: Int, column: Int, with offset: (row: Int, column: Int))
+    subscript(gridIndex: GridIndex, with offset: (row: Int, column: Int))
         -> TileNode? {
-            return self[row + offset.row, column + offset.column]
+            return self[gridIndex.row + offset.row, gridIndex.col + offset.column]
     }
     
     /// Constructs the inner graph data structure of the grid so as to utilise
@@ -104,7 +103,7 @@ class Grid {
         for sourceNode in self {
             for (direction, offset) in neighboursOffset {
                 if let destNode =
-                    self[sourceNode.row, sourceNode.column, with: offset] {
+                    self[sourceNode.position, with: offset] {
                         graph.addEdge(Edge(source: Node(sourceNode),
                             destination: Node(destNode)))
                 }
@@ -176,7 +175,7 @@ class Grid {
         var directions = [Direction]()
         
         for (dir, offset) in neighboursOffset {
-            if let toNode = self[fromNode.row, fromNode.column, with: offset] {
+            if let toNode = self[fromNode.position, with: offset] {
                 let edges = graph.edgesFromNode(Node(fromNode), toNode: Node(toNode))
                 if edges.count > 0 {
                     directions.append(dir)

@@ -6,7 +6,6 @@ import SpriteKit
 
 class GameScene: SKScene, GameStateListener, ActionListener {
     
-    
     let gameEngine: GameEngine!
     private let level: GameLevel!
     
@@ -33,11 +32,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         assertionFailure("Should not call this init, init with basic level please!")
     }
     
-    init(_ size: CGSize, _ level: GameLevel) {
+    init(_ size: CGSize, _ level: GameLevel, _ currentPlayerNumber: Int) {
         super.init(size: size)
         
         self.level = level
-        gameEngine = GameEngine(grid: level.grid)
+        gameEngine = GameEngine(grid: level.grid, playerNumber: currentPlayerNumber)
         gameEngine.gameStateListener = self
         gameEngine.actionListener = self
         
@@ -52,7 +51,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         // position of the general grid layer
         let layerPosition = CGPoint(
             x: -tileSize * CGFloat(level.numColumns) / 2,
-            y: -tileSize * CGFloat(level.numRows) / 2)
+            y: -tileSize * CGFloat(level.numRows) / 2
+        )
 
         // adds tilesLayer to the grid layer
         tilesLayer.position = layerPosition
@@ -89,7 +89,19 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         addTiles()
         addPlayers()
         
-        previewNode = SKSpriteNode(imageNamed: "Nala.png")
+        switch currentPlayerNumber {
+        case 1:
+            previewNode = SKSpriteNode(imageNamed: "Nala.png")
+        case 2:
+            previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
+        case 3:
+            previewNode = SKSpriteNode(imageNamed: "Nyan.png")
+        case 4:
+            previewNode = SKSpriteNode(imageNamed: "Pusheen.png")
+        default:
+            break
+        }
+        
         previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
         previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
@@ -105,8 +117,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             if let node = nodeForLocation(location) {
                 if gameEngine.state == GameState.PlayerAction {
                     if gameEngine.reachableNodes[Node(node).hashValue] != nil {
-                        gameEngine.currentPlayerMoveToNode = node
-                        previewNode.position = pointFor(node.row, node.column)
+                        gameEngine.setCurrentPlayerMoveToPosition(node)
+                        previewNode.position = pointFor(node.position)
                         previewNode.hidden = false
                     }
                 }
@@ -121,8 +133,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             if let node = nodeForLocation(location) {
                 if gameEngine.state == GameState.PlayerAction {
                     if gameEngine.reachableNodes[Node(node).hashValue] != nil {
-                        gameEngine.currentPlayerMoveToNode = node
-                        previewNode.position = pointFor(node.row, node.column)
+                        gameEngine.setCurrentPlayerMoveToPosition(node)
+                        previewNode.position = pointFor(node.position)
                         previewNode.hidden = false
                     }
                 }
@@ -137,15 +149,15 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         gameEngine.gameLoop()
     }
     
-    private func pointFor(row: Int, _ column: Int) -> CGPoint {
+    private func pointFor(gridIndex: GridIndex) -> CGPoint {
         return CGPoint(
-            x: CGFloat(column) * tileSize + tileSize / 2,
-            y: CGFloat(row) * tileSize + tileSize / 2)
+            x: CGFloat(gridIndex.col) * tileSize + tileSize / 2,
+            y: CGFloat(gridIndex.row) * tileSize + tileSize / 2)
     }
     
     private func nodeForLocation(location: CGPoint) -> TileNode? {
-        let col = Int((location.x + 5 * tileSize) / tileSize) // rushed code
-        let row = Int((location.y + 5 * tileSize) / tileSize) // rushed code
+        let col = Int((location.x + 5 * tileSize) / tileSize)
+        let row = Int((location.y + 5 * tileSize) / tileSize)
         return level.grid[row, col]
     }
     
@@ -160,17 +172,19 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func addPlayers() {
-        let spriteNode = level.grid[gameEngine.player.position]!.sprite
-        let playerNode = gameEngine.player.getSprite() as SKSpriteNode
-        playerNode.size = spriteNode.size
-        playerNode.position = spriteNode.position
-        entityLayer.addChild(playerNode)
+        for player in gameEngine.gameManager.players.values {
+            let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
+            let playerNode = player.getSprite() as SKSpriteNode
+            playerNode.size = spriteNode.size
+            playerNode.position = spriteNode.position
+            entityLayer.addChild(playerNode)
+        }
     }
 
     private func drawTile(tileNode: TileNode) {
         let spriteNode = tileNode.sprite
         spriteNode.size = CGSize(width: tileSize, height: tileSize)
-        spriteNode.position = pointFor(tileNode.row, tileNode.column)
+        spriteNode.position = pointFor(tileNode.position)
         tilesLayer.addChild(spriteNode)
         
         if let doodad = tileNode.doodad {
@@ -190,31 +204,24 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         entityLayer.addChild(entityNode)
     }
     
-    private func movePlayer() {
-        let path = gameEngine.pathTo(gameEngine.currentPlayerMoveToNode)
-        var pathSequence: [SKAction] = []
-
-        for node in path {
-            let action = SKAction.moveTo(node.sprite.position, duration: 0.25)
-            pathSequence.append(action)
+    private func movePlayers() {
+        for player in gameEngine.gameManager.players.values {
+            let path = gameEngine.executePlayerMove(player)
+            var pathSequence: [SKAction] = []
+            
+            for node in path {
+                let action = SKAction.moveTo(node.sprite.position, duration: 0.25)
+                pathSequence.append(action)
+            }
+            
+            if pathSequence.count > 0 {
+                player.getSprite().runAction(SKAction.sequence(pathSequence))
+            }
         }
-        
-        if pathSequence.count > 0 {
-            gameEngine.player.getSprite().runAction(
-                SKAction.sequence(pathSequence),
-                completion: {
-                    self.gameEngine.currentPlayerNode = self.gameEngine.currentPlayerMoveToNode
-                    self.gameEngine.nextState()
-                }
-            )
-        } else {
-            gameEngine.nextState()
-        }
-        
     }
     
     private func animatePuiAction(action: PuiAction) {
-        let startNode = gameEngine.currentPlayerMoveToNode
+        let startNode = gameEngine.gameManager[moveToPositionOf: gameEngine.currentPlayer]!
         let path = gameEngine.pathOfPui(startNode, direction: action.direction)
         var pathSequence: [SKAction] = []
         
@@ -242,29 +249,29 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         pui.runAction(
             SKAction.sequence(pathSequence),
             completion: {
-                self.gameEngine.nextState()
                 pui.removeFromParent()
             }
         )
     }
     
     private func performActions() {
-        if let action = gameEngine.currentPlayerAction {
-            println(action)
-            switch action.actionType {
-            case .Pui:
-                animatePuiAction(action as PuiAction)
-            case .Fart:
-                gameEngine.nextState()
-            case .Poop:
-                gameEngine.nextState()
+        for player in gameEngine.gameManager.players.values {
+            if let action = gameEngine.executePlayerAction(player) {
+                println(action)
+                switch action.actionType {
+                case .Pui:
+                    animatePuiAction(action as PuiAction)
+                case .Fart:
+                    break
+                case .Poop:
+                    break
+                }
             }
-        } else {
-            gameEngine.nextState()
         }
     }
     
     func onStateUpdate(state: GameState) {
+        // we should restrict next-state calls in game engine
         switch state {
         case .Precalculation:
             break
@@ -277,13 +284,10 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             removeHighlights()
             break
         case .StartMovesExecution:
-            gameEngine.nextState()
             previewNode.hidden = true
-            movePlayer()
         case .MovesExecution:
-            break
+            movePlayers()
         case .StartActionsExecution:
-            gameEngine.nextState()
             performActions()
         case .ActionsExecution:
             break
@@ -313,7 +317,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             size: CGSize(width: 50, height: 50),
             centerSize: puiButton.calculateAccumulatedFrame().size,
             hoverAction: {(direction) -> Void in
-                self.gameEngine.currentPlayerAction!.direction = direction
+                self.gameEngine.gameManager[actionOf: self.gameEngine.currentPlayer]!.direction = direction
             },
             availableDirection: action.availableDirections,
             selected: action.direction
@@ -342,11 +346,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func deleteRemovedDoodads() {
-        let removedSprites = gameEngine.removedDoodads.values.map {
+        let removedSprites = gameEngine.gameManager.doodadsToRemove.values.map {
             (doodad) -> SKNode in
             return doodad.getSprite()
         }
         entityLayer.removeChildrenInArray([SKNode](removedSprites))
-        gameEngine.removedDoodads = [:]
+        gameEngine.gameManager.doodadsToRemove = [:]
     }
 }

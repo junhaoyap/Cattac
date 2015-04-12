@@ -6,6 +6,7 @@ import UIKit
 
 class GameDifficultyViewController: UIViewController {
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    let levelGenerator = LevelGenerator.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,5 +18,23 @@ class GameDifficultyViewController: UIViewController {
     
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "bypassSegue" {
+            if let destinationVC = segue.destinationViewController as? GameViewController{
+                destinationVC.level = levelGenerator.generateBasic()
+                
+                let gameRef = ref
+                    .childByAppendingPath("games")
+                    .childByAppendingPath("game0")
+                
+                let gameToWrite = [
+                    "generatedGame": levelGenerator.toDictionaryForFirebase()
+                ]
+                
+                gameRef.updateChildValues(gameToWrite)
+            }
+        }
     }
 }

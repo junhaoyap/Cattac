@@ -2,8 +2,7 @@ import Foundation
 import SpriteKit
 
 class TileNode {
-    var column: Int
-    var row: Int
+    var position: GridIndex
     var sprite: SKSpriteNode
     var doodad: Doodad?
     
@@ -11,8 +10,7 @@ class TileNode {
     private let grassPreview = SKTexture(imageNamed: "GrassPreview.png")
     
     init(row: Int, column: Int) {
-        self.column = column
-        self.row = row
+        position = GridIndex(row, column)
         sprite = SKSpriteNode(texture: grass)
         sprite.setScale(1.0)
         sprite.zPosition = -1.0
@@ -37,14 +35,14 @@ class TileNode {
 
 extension TileNode: Printable {
     var description: String {
-        return "square:(\(row),\(column))"
+        return "square:(\(position.row),\(position.col))"
     }
 }
 
 extension TileNode: Hashable {
     var hashValue: Int {
         get {
-            return (UInt32(row) + UInt32(column) << 16).hashValue
+            return (UInt32(position.row) + UInt32(position.col) << 16).hashValue
         }
     }
 }

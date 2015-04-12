@@ -24,8 +24,9 @@ extension SKNode {
 class GameViewController: UIViewController {
     @IBOutlet weak var timerLabel: UILabel!
     
-    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     var scene: GameScene!
+    var level: GameLevel!
+    var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
     
     override func viewDidLoad() {
@@ -39,9 +40,8 @@ class GameViewController: UIViewController {
         /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
         
-        let level = levelGenerator.generateBasic()
-        
-        scene = GameScene(skView.bounds.size, level)
+        scene = GameScene(skView.bounds.size, level, playerNumber)
+        println(playerNumber)
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
@@ -54,7 +54,8 @@ class GameViewController: UIViewController {
             userInfo: nil,
             repeats: true
         )
-        timerLabel.text = "5"
+        
+        timerLabel.text = "10"
         
         skView.presentScene(scene)
     }
@@ -68,19 +69,15 @@ class GameViewController: UIViewController {
         return true
     }
     
-    
-    @IBAction func puiButtonPressed(sender: AnyObject) {
-        scene.gameEngine.trigger("puiButtonPressed")
-    }
-    
-    
-    @IBAction func fartButtonPressed(sender: AnyObject) {
-        scene.gameEngine.trigger("fartButtonPressed")
-    }
-    
-    
-    @IBAction func poopButtonPressed(sender: AnyObject) {
-        scene.gameEngine.trigger("poopButtonPressed")
+    @IBAction func backButtonPressed(sender: AnyObject) {
+        let skView = self.view as SKView
+        if let scene = skView.scene {
+            (skView.scene as GameScene).gameEngine.end()
+            skView.presentScene(nil)
+        }
+        
+        // confirm exit game
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func updateTime() {
@@ -90,8 +87,8 @@ class GameViewController: UIViewController {
             // This is where the time for choosing something is over
             // we should move on to the next thing to do?
             
-            timerLabel.text = String(5)
-            scene.gameEngine.nextState()
+            timerLabel.text = "10"
+            scene.gameEngine.nextState()    // danger, next state called regardless of current state.
         } else {
             timerLabel.text = String(currentTime! - 1)
         }
