@@ -93,9 +93,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case 1:
             previewNode = SKSpriteNode(imageNamed: "Nala.png")
         case 2:
-            previewNode = SKSpriteNode(imageNamed: "Nyan.png")
-        case 3:
             previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
+        case 3:
+            previewNode = SKSpriteNode(imageNamed: "Nyan.png")
         case 4:
             previewNode = SKSpriteNode(imageNamed: "Pusheen.png")
         default:
