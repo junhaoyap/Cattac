@@ -5,6 +5,7 @@ class GameManager {
     private var _playerActions: [String:Action]
     private var _players: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
+    private var _playerMovementAnimationCompleted: [String:Bool]
     private var _doodadsToRemove: [Int: Doodad]
 
     init() {
@@ -13,6 +14,7 @@ class GameManager {
         _playerActions = [:]
         _players = [:]
         _playerMovementPaths = [:]
+        _playerMovementAnimationCompleted = [:]
         _doodadsToRemove = [:]
     }
 
@@ -69,6 +71,16 @@ class GameManager {
         }
     }
 
+    var movementsCompleted: Bool {
+        var allCompleted = true
+        
+        for completed in _playerMovementAnimationCompleted.values {
+            allCompleted = allCompleted && completed
+        }
+
+        return allCompleted
+    }
+
     func registerPlayer(player: Cat) {
         _players[player.name] = player
     }
@@ -93,6 +105,12 @@ class GameManager {
                     _doodadsToRemove[doodad.getSprite().hashValue] = doodad
                 }
             }
+
+            _playerMovementAnimationCompleted[playerName] = false
         }
+    }
+
+    func completeMovementOf(player:Cat) {
+        _playerMovementAnimationCompleted[player.name] = true
     }
 }

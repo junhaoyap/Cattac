@@ -87,7 +87,9 @@ class GameEngine {
         }
         
         self.on("movementAnimationEnded") {
-            self.nextState()
+            if self.gameManager.movementsCompleted {
+                self.nextState()
+            }
         }
     }
     
