@@ -187,7 +187,10 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     private func movePlayers() {
-        for player in gameEngine.gameManager.players.values {
+        let players = gameEngine.gameManager.players
+        var playerMoved = [String:Bool]()
+
+        for (playerName, player) in players {
             let path = gameEngine.executePlayerMove(player)
             var pathSequence: [SKAction] = []
             
@@ -197,7 +200,21 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             }
             
             if pathSequence.count > 0 {
-                player.getSprite().runAction(SKAction.sequence(pathSequence))
+                playerMoved[playerName] = false
+                player.getSprite().runAction(
+                    SKAction.sequence(pathSequence),
+                    completion: {
+                        playerMoved[playerName] = true
+
+                        var animationEnded = true
+                        for ended in playerMoved.values {
+                            animationEnded = animationEnded && ended
+                        }
+                        if animationEnded {
+                            self.gameEngine.trigger("movementAnimationEnded")
+                        }
+                    }
+                )
             }
         }
     }

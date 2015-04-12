@@ -77,6 +77,10 @@ class GameEngine {
             self.gameManager[actionOf: self.currentPlayer] = PoopAction(targetNode: targetNode)
             self.notifyAction()
         }
+
+        self.on("movementAnimationEnded") {
+            self.nextState()
+        }
     }
     
     func gameLoop() {
@@ -95,7 +99,7 @@ class GameEngine {
         case .StartMovesExecution:
             nextState()
         case .MovesExecution:
-            nextState()
+            break
         case .StartActionsExecution:
             nextState()
         case .ActionsExecution:
