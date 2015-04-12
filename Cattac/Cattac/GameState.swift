@@ -1,11 +1,21 @@
 // Enumeration of all the states of the game.
 enum GameState: Int {
-    case Precalculation = 0, PlayerAction, ServerUpdate, WaitForAll,
-    AICalculation, StartMovesExecution, MovesExecution, StartActionsExecution,
-    ActionsExecution, PostExecution
+    case
+    Initialization,
+    Precalculation,
+    PlayerAction,
+    ServerUpdate,
+    WaitForAll,
+    AICalculation,
+    StartMovesExecution,
+    MovesExecution,
+    StartActionsExecution,
+    ActionsExecution,
+    PostExecution
 
     private var name: String {
         let names = [
+            "Initialization",
             "Precalculation",
             "Player Action",
             "Server Update",

@@ -30,7 +30,7 @@ class GameEngine {
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
-    var state: GameState = GameState.Precalculation
+    var state: GameState = .Initialization
     
     /// GameState listener, listens for update on state change.
     var gameStateListener: GameStateListener?
@@ -67,6 +67,8 @@ class GameEngine {
             currentPlayer: currentPlayer)
 
         registerEvents()
+
+        nextState()
     }
 
     /// Register all the events for the game engine.
@@ -112,6 +114,8 @@ class GameEngine {
     
     func gameLoop() {
         switch state {
+        case .Initialization:
+            break
         case .Precalculation:
             precalculate()
             nextState()
@@ -152,30 +156,32 @@ class GameEngine {
     
     private func nextState() {
         switch state {
+        case .Initialization:
+            state = .Precalculation
         case .Precalculation:
-            state = GameState.PlayerAction
+            state = .PlayerAction
         case .PlayerAction:
             if multiplayer {
-                state = GameState.ServerUpdate
+                state = .ServerUpdate
             } else {
-                state = GameState.AICalculation
+                state = .AICalculation
             }
         case .ServerUpdate:
-            state = GameState.WaitForAll
+            state = .WaitForAll
         case .WaitForAll:
-            state = GameState.StartMovesExecution
+            state = .StartMovesExecution
         case .AICalculation:
-            state = GameState.StartMovesExecution
+            state = .StartMovesExecution
         case .StartMovesExecution:
-            state = GameState.MovesExecution
+            state = .MovesExecution
         case .MovesExecution:
-            state = GameState.StartActionsExecution
+            state = .StartActionsExecution
         case .StartActionsExecution:
-            state = GameState.ActionsExecution
+            state = .ActionsExecution
         case .ActionsExecution:
-            state = GameState.PostExecution
+            state = .PostExecution
         case .PostExecution:
-            state = GameState.Precalculation
+            state = .Precalculation
         }
         
         gameStateListener?.onStateUpdate(state)

@@ -358,8 +358,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     func onStateUpdate(state: GameState) {
         // we should restrict next-state calls in game engine
         switch state {
-        case .Precalculation:
-            break
         case .PlayerAction:
             deleteRemovedDoodads()
             highlightReachableNodes()
@@ -367,8 +365,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case .ServerUpdate:
             clearDirectionArrows()
             removeHighlights()
-        case .WaitForAll:
-            break
         case .AICalculation:
             clearDirectionArrows()
             removeHighlights()
@@ -376,11 +372,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             previewNode.hidden = true
         case .MovesExecution:
             movePlayers()
-        case .StartActionsExecution:
-            performActions()
         case .ActionsExecution:
-            break
-        case .PostExecution:
+            performActions()
+        default:
             break
         }
     }
