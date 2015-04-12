@@ -209,8 +209,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        /* Called when a touch begins */
-        
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
             
@@ -262,7 +260,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             var pathSequence: [SKAction] = []
             
             for node in path {
-                let action = SKAction.moveTo(node.sprite.position, duration: 0.25)
+                let action = SKAction.moveTo(node.sprite.position,
+                    duration: 0.25)
                 pathSequence.append(action)
             }
             
@@ -286,22 +285,27 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
     }
 
-    private func animatePuiAction(action: PuiAction) {
-        let startNode = gameEngine.gameManager[moveToPositionOf: gameEngine.currentPlayer]!
-        let path = gameEngine.pathOfPui(startNode, direction: action.direction)
+    /// Animates the pui action of the given player in the given direction.
+    ///
+    /// :param: player The cat that is performing the pui action.
+    /// :param: direction The direction to pui in.
+    private func animatePuiAction(player: Cat, direction: Direction) {
+        let startNode = gameEngine.gameManager[moveToPositionOf: player]!
+        let path = gameEngine.pathOfPui(startNode, direction: direction)
         var pathSequence: [SKAction] = []
-        
+
         for node in path {
             let action = SKAction.moveTo(node.sprite.position, duration: 0.15)
             pathSequence.append(action)
         }
-        
+
         let pui = SKSpriteNode(imageNamed: "Pui.png")
         pui.size = sceneUtils.tileSize
         pui.position = startNode.sprite.position
-        pui.zRotation = SceneUtils.zRotation(action.direction)
-        
+        pui.zRotation = SceneUtils.zRotation(direction)
+
         entityLayer.addChild(pui)
+
         pui.runAction(
             SKAction.sequence(pathSequence),
             completion: {
@@ -309,14 +313,16 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             }
         )
     }
-    
+
+    /// Performs the respective actions for each player.
     private func performActions() {
         for player in gameEngine.gameManager.players.values {
             if let action = gameEngine.executePlayerAction(player) {
                 println(action)
                 switch action.actionType {
                 case .Pui:
-                    animatePuiAction(action as PuiAction)
+                    let direction = (action as PuiAction).direction
+                    animatePuiAction(player, direction: direction)
                 case .Fart:
                     break
                 case .Poop:
@@ -325,7 +331,10 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             }
         }
     }
-    
+
+    /// Updates the scene whenever the game state updates.
+    ///
+    /// :param: state The update game state.
     func onStateUpdate(state: GameState) {
         // we should restrict next-state calls in game engine
         switch state {
@@ -351,7 +360,10 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             break
         }
     }
-    
+
+    /// Updates the scene based on the current action selected.
+    ///
+    /// :param: action The current selected action.
     func onActionUpdate(action: Action?) {
         clearDirectionArrows()
         if let action = action {
@@ -365,7 +377,10 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             }
         }
     }
-    
+
+    /// Draws the directional arrows for pui action button.
+    ///
+    /// :param: action The Pui Action object.
     private func drawDirectionArrows(action: PuiAction) {
         var directionSprite = SKDirectionButtonNode(
             defaultButtonImage: "Direction.png",
@@ -382,25 +397,29 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         puiButton.addChild(directionSprite)
         previewDirectionNodes = directionSprite
     }
-    
+
+    /// Clears the directional arrows for the pui action button.
     private func clearDirectionArrows() {
         if previewDirectionNodes != nil {
             previewDirectionNodes.removeFromParent()
         }
     }
-    
+
+    /// Highlights the reachable nodes for the current player.
     private func highlightReachableNodes() {
         for node in gameEngine.reachableNodes.values {
             node.highlight()
         }
     }
-    
+
+    /// Removes the highlighted nodes for the current player.
     private func removeHighlights() {
         for node in gameEngine.reachableNodes.values {
             node.unhighlight()
         }
     }
-    
+
+    /// Removes the doodads that are expended for the current turn.
     private func deleteRemovedDoodads() {
         let removedSprites = gameEngine.gameManager.doodadsToRemove.values.map {
             (doodad) -> SKNode in
