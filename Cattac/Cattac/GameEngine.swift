@@ -206,7 +206,11 @@ class GameEngine {
     }
 
     func setCurrentPlayerMoveToPosition(node: TileNode) {
-        gameManager[moveToPositionOf: currentPlayer] = node
+        if node != gameManager[moveToPositionOf: currentPlayer] {
+            gameManager[moveToPositionOf: currentPlayer] = node
+            gameManager[actionOf: currentPlayer] = nil
+            notifyAction()
+        }
     }
     
     func calculateMovementPaths() {
@@ -357,8 +361,6 @@ class GameEngine {
     }
     
     private func notifyAction() {
-        if let action = gameManager[actionOf: currentPlayer] {
-            actionListener?.onActionUpdate(action)
-        }
+        actionListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
     }
 }

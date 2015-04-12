@@ -38,7 +38,11 @@ class GameManager {
 
     subscript(actionOf player:Cat) -> Action? {
         set {
-            _playerActions[player.name] = newValue
+            if newValue == nil {
+                _playerActions.removeValueForKey(player.name)
+            } else {
+                _playerActions[player.name] = newValue
+            }
         }
         get {
             return _playerActions[player.name]
