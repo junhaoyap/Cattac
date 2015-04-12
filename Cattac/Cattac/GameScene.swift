@@ -270,6 +270,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                         self.gameEngine.trigger("movementAnimationEnded")
                     }
                 )
+            } else {
+                gameEngine.gameManager.completeMovementOf(player)
+                gameEngine.trigger("movementAnimationEnded")
             }
         }
     }
