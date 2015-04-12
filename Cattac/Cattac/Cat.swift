@@ -6,13 +6,12 @@ import Foundation
 import SpriteKit
 
 class Cat: TileEntity {
-    private let _sprite = SKSpriteNode(imageNamed: "Nala.png")
+    private var _sprite = SKSpriteNode(imageNamed: "Nala.png")
     private let baseDefence: Int
     private let baseMoveRange: Int
     private let baseFartRange: Int
     
     var name: String!
-    var position: GridIndex = GridIndex(0,0)
     var hp: Int
     var puiDmg: Int!
     var fartDmg: Int!
@@ -56,6 +55,19 @@ class Cat: TileEntity {
         poopDmg = Constants.catAttributes.poopDmg
         baseMoveRange = Constants.catAttributes.moveRange
         baseFartRange = Constants.catAttributes.fartRange
+        
+        switch catName {
+        case Constants.catName.nalaCat:
+            _sprite = SKSpriteNode(imageNamed: "Nala.png")
+        case Constants.catName.nyanCat:
+            _sprite = SKSpriteNode(imageNamed: "Grumpy.png")
+        case Constants.catName.grumpyCat:
+            _sprite = SKSpriteNode(imageNamed: "Nyan.png")
+        case Constants.catName.pusheenCat:
+            _sprite = SKSpriteNode(imageNamed: "Pusheen.png")
+        default:
+            break
+        }
     }
     
     func inflict(damage: Int) {
