@@ -316,6 +316,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             SKAction.sequence(pathSequence),
             completion: {
                 pui.removeFromParent()
+                self.notifyActionCompletionFor(player)
             }
         )
     }
@@ -330,12 +331,25 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                     let direction = (action as PuiAction).direction
                     animatePuiAction(player, direction: direction)
                 case .Fart:
-                    break
+                    notifyActionCompletionFor(player)
                 case .Poop:
-                    break
+                    notifyActionCompletionFor(player)
                 }
+            } else {
+                notifyActionCompletionFor(player)
             }
         }
+    }
+
+    /// Sets the completion flag of the player action in the game manager.
+    ///
+    /// Triggers the `actionAnimationEnded` event of the game engine so as to
+    /// advance to the next game state to post execution.
+    ///
+    /// :param: player The player that has completed its action animation.
+    private func notifyActionCompletionFor(player: Cat) {
+        gameManager.completeActionOf(player)
+        gameEngine.trigger("actionAnimationEnded")
     }
 
     /// Updates the scene whenever the game state updates.

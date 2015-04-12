@@ -6,6 +6,7 @@ class GameManager {
     private var _players: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
     private var _playerMovementAnimationCompleted: [String:Bool]
+    private var _playerActionAnimationCompleted: [String:Bool]
     private var _doodadsToRemove: [Int: Doodad]
 
     init() {
@@ -15,6 +16,7 @@ class GameManager {
         _players = [:]
         _playerMovementPaths = [:]
         _playerMovementAnimationCompleted = [:]
+        _playerActionAnimationCompleted = [:]
         _doodadsToRemove = [:]
     }
 
@@ -85,6 +87,16 @@ class GameManager {
         return allCompleted
     }
 
+    var actionsCompleted: Bool {
+        var allCompleted = true
+
+        for completed in _playerActionAnimationCompleted.values {
+            allCompleted = allCompleted && completed
+        }
+
+        return allCompleted
+    }
+
     func registerPlayer(player: Cat) {
         _players[player.name] = player
     }
@@ -111,10 +123,15 @@ class GameManager {
             }
 
             _playerMovementAnimationCompleted[playerName] = false
+            _playerActionAnimationCompleted[playerName] = false
         }
     }
 
-    func completeMovementOf(player:Cat) {
+    func completeMovementOf(player: Cat) {
         _playerMovementAnimationCompleted[player.name] = true
+    }
+
+    func completeActionOf(player: Cat) {
+        _playerActionAnimationCompleted[player.name] = true
     }
 }

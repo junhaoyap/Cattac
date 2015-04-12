@@ -109,6 +109,12 @@ class GameEngine {
                 self.nextState()
             }
         }
+
+        self.on("actionAnimationEnded") {
+            if self.gameManager.actionsCompleted {
+                self.nextState()
+            }
+        }
     }
     
     func gameLoop() {
@@ -136,7 +142,9 @@ class GameEngine {
         case .StartActionsExecution:
             nextState()
         case .ActionsExecution:
-            nextState()
+            // This state waits for the action ended event that is triggered
+            // from the scene.
+            break
         case .PostExecution:
             postExecute()
             nextState()
