@@ -85,13 +85,13 @@ class GameViewController: UIViewController {
         var currentTime = timerLabel.text!.toInt()
         
         if currentTime == 0 {
-            
             if justReachedZero {
                 scene.gameEngine.nextState() // Now only goes into next state when gameEngine is done executing
                 justReachedZero = false
+                scene.gameEngine.actionStateOver = false
             }
             
-            if scene.gameEngine.actionStateOver {
+            if getActionState() {
                 timerLabel.text = "10"
                 justReachedZero = true
             } else {
@@ -100,5 +100,9 @@ class GameViewController: UIViewController {
         } else {
             timerLabel.text = String(currentTime! - 1)
         }
+    }
+    
+    func getActionState() -> Bool {
+        return scene.gameEngine.actionStateOver
     }
 }

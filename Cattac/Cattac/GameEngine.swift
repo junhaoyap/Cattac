@@ -96,7 +96,6 @@ class GameEngine {
     func gameLoop() {
         switch state {
         case .Precalculation:
-            actionStateOver = false
             precalculate()
             nextState()
         case .PlayerAction:
