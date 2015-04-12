@@ -149,6 +149,7 @@ class LobbyViewController: UIViewController {
             if let destinationVC = segue.destinationViewController as? GameViewController {
                 destinationVC.level = levelGenerator.generateBasic()
                 destinationVC.playerNumber = self.playerNumber
+                destinationVC.multiplayer = true
                 
                 let gameRef = ref
                     .childByAppendingPath("games")
@@ -183,6 +184,7 @@ class LobbyViewController: UIViewController {
             if let destinationVC = segue.destinationViewController as? GameViewController {
                 destinationVC.level = levelToBuildFrom
                 destinationVC.playerNumber = self.playerNumber
+                destinationVC.multiplayer = true
             }
         }
     }

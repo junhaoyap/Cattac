@@ -7,6 +7,10 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     /// Game Engine that does all the logic for the scene.
     let gameEngine: GameEngine!
 
+    /// Game Manager that contains all the information for the current state of
+    /// the game.
+    let gameManager: GameManager!
+
     /// Current level for the game.
     private let level: GameLevel!
 
@@ -56,45 +60,49 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     /// :param: size The size of the view.
     /// :param: level The game level that is selected.
     /// :param: currentPlayerNumber The index/id for the current player.
-    init(_ size: CGSize, _ level: GameLevel, _ currentPlayerNumber: Int) {
-        super.init(size: size)
-        
-        self.level = level
-        gameEngine =
-            GameEngine(grid: level.grid, playerNumber: currentPlayerNumber)
-        gameEngine.gameStateListener = self
-        gameEngine.actionListener = self
+    /// :param: multiplayer Whether the game is multiplayer or single player.
+    init(size: CGSize, level: GameLevel, currentPlayerNumber: Int,
+        multiplayer: Bool) {
+            super.init(size: size)
+            
+            self.level = level
+            gameEngine = GameEngine(grid: level.grid,
+                playerNumber: currentPlayerNumber, multiplayer: multiplayer)
+            gameEngine.gameStateListener = self
+            gameEngine.actionListener = self
 
-        sceneUtils = SceneUtils(windowWidth: size.width,
-            numRows: level.numRows, numColumns: level.numColumns)
-        
-        // Sets the anchorpoint for the scene to be the center of the screen
-        anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
-        self.addChild(gameLayer)
-        
-        // position of the general game layer
-        let layerPosition = sceneUtils.getLayerPosition()
+            gameManager = gameEngine.gameManager
 
-        // adds tilesLayer to the game layer
-        tilesLayer.position = layerPosition
-        gameLayer.addChild(tilesLayer)
-        
-        // adds entityLayer to the game layer
-        entityLayer.position = layerPosition
-        gameLayer.addChild(entityLayer)
+            sceneUtils = SceneUtils(windowWidth: size.width,
+                numRows: level.numRows, numColumns: level.numColumns)
+            
+            // Sets the anchorpoint for the scene to be the center of the screen
+            anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            
+            self.addChild(gameLayer)
+            
+            // position of the general game layer
+            let layerPosition = sceneUtils.getLayerPosition()
 
-        // adds buttonLayer to the gameLayer
-        let buttonSpacing: CGFloat = 220
-        buttonLayer.position =
-            CGPoint(x: -buttonSpacing, y: layerPosition.y - 90)
-        gameLayer.addChild(buttonLayer)
+            // adds tilesLayer to the game layer
+            tilesLayer.position = layerPosition
+            gameLayer.addChild(tilesLayer)
+            
+            // adds entityLayer to the game layer
+            entityLayer.position = layerPosition
+            gameLayer.addChild(entityLayer)
 
-        /// Additional initialization
-        initializeButtons(buttonSpacing)
-        initializePlayerPreview(currentPlayerNumber)
-        addTiles()
-        addPlayers()
+            // adds buttonLayer to the gameLayer
+            let buttonSpacing: CGFloat = 220
+            buttonLayer.position =
+                CGPoint(x: -buttonSpacing, y: layerPosition.y - 90)
+            gameLayer.addChild(buttonLayer)
+
+            /// Additional initialization
+            initializeButtons(buttonSpacing)
+            initializePlayerPreview(currentPlayerNumber)
+            addTiles()
+            addPlayers()
     }
 
     /// Initializes the action buttons for the scene.
@@ -247,12 +255,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
 
     /// Moves all the players to their respective next positions.
     ///
-    /// Triggers the `movementAnimationEnded` event of the game engine so as to
-    /// advance to the next game state to animation the player actions.
+    /// Notifies the game manager and game engine of movement completion.
     private func movePlayers() {
-        let players = gameEngine.gameManager.players
-
-        for (playerName, player) in players {
+        for (playerName, player) in gameManager.players {
             let path = gameEngine.executePlayerMove(player)
             var pathSequence: [SKAction] = []
             
@@ -266,12 +271,24 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                 player.getSprite().runAction(
                     SKAction.sequence(pathSequence),
                     completion: {
-                        self.gameEngine.gameManager.completeMovementOf(player)
-                        self.gameEngine.trigger("movementAnimationEnded")
+                        self.notifyMovementCompletionFor(player)
                     }
                 )
+            } else {
+                notifyMovementCompletionFor(player)
             }
         }
+    }
+
+    /// Sets the completion flag of the player movement in the game manager.
+    ///
+    /// Triggers the `movementAnimationEnded` event of the game engine so as to
+    /// advance to the next game state to animation the player actions.
+    ///
+    /// :param: player The player that has completed its movement animation.
+    private func notifyMovementCompletionFor(player: Cat) {
+        gameManager.completeMovementOf(player)
+        gameEngine.trigger("movementAnimationEnded")
     }
 
     /// Animates the pui action of the given player in the given direction.
@@ -279,7 +296,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     /// :param: player The cat that is performing the pui action.
     /// :param: direction The direction to pui in.
     private func animatePuiAction(player: Cat, direction: Direction) {
-        let startNode = gameEngine.gameManager[moveToPositionOf: player]!
+        let startNode = gameManager[moveToPositionOf: player]!
         let path = gameEngine.pathOfPui(startNode, direction: direction)
         var pathSequence: [SKAction] = []
 
@@ -299,13 +316,14 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             SKAction.sequence(pathSequence),
             completion: {
                 pui.removeFromParent()
+                self.notifyActionCompletionFor(player)
             }
         )
     }
 
     /// Performs the respective actions for each player.
     private func performActions() {
-        for player in gameEngine.gameManager.players.values {
+        for player in gameManager.players.values {
             if let action = gameEngine.executePlayerAction(player) {
                 println(action)
                 switch action.actionType {
@@ -313,12 +331,25 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                     let direction = (action as PuiAction).direction
                     animatePuiAction(player, direction: direction)
                 case .Fart:
-                    break
+                    notifyActionCompletionFor(player)
                 case .Poop:
-                    break
+                    notifyActionCompletionFor(player)
                 }
+            } else {
+                notifyActionCompletionFor(player)
             }
         }
+    }
+
+    /// Sets the completion flag of the player action in the game manager.
+    ///
+    /// Triggers the `actionAnimationEnded` event of the game engine so as to
+    /// advance to the next game state to post execution.
+    ///
+    /// :param: player The player that has completed its action animation.
+    private func notifyActionCompletionFor(player: Cat) {
+        gameManager.completeActionOf(player)
+        gameEngine.trigger("actionAnimationEnded")
     }
 
     /// Updates the scene whenever the game state updates.
@@ -327,8 +358,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     func onStateUpdate(state: GameState) {
         // we should restrict next-state calls in game engine
         switch state {
-        case .Precalculation:
-            break
         case .PlayerAction:
             deleteRemovedDoodads()
             highlightReachableNodes()
@@ -336,18 +365,16 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case .ServerUpdate:
             clearDirectionArrows()
             removeHighlights()
-            break
-        case .WaitForAll:
-            break
+        case .AICalculation:
+            clearDirectionArrows()
+            removeHighlights()
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:
             movePlayers()
-        case .StartActionsExecution:
-            performActions()
         case .ActionsExecution:
-            break
-        case .PostExecution:
+            performActions()
+        default:
             break
         }
     }
@@ -379,7 +406,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             size: CGSize(width: 50, height: 50),
             centerSize: puiButton.calculateAccumulatedFrame().size,
             hoverAction: {(direction) in
-                self.gameEngine.gameManager[actionOf: self.gameEngine.currentPlayer]!.direction = direction
+                self.gameManager[actionOf:
+                    self.gameEngine.currentPlayer]!.direction = direction
             },
             availableDirection: action.availableDirections,
             selected: action.direction
@@ -412,11 +440,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
 
     /// Removes the doodads that are expended for the current turn.
     private func deleteRemovedDoodads() {
-        let removedSprites = gameEngine.gameManager.doodadsToRemove.values.map {
+        let removedSprites = gameManager.doodadsToRemove.values.map {
             (doodad) -> SKNode in
             return doodad.getSprite()
         }
         entityLayer.removeChildrenInArray([SKNode](removedSprites))
-        gameEngine.gameManager.doodadsToRemove = [:]
+        gameManager.doodadsToRemove = [:]
     }
 }

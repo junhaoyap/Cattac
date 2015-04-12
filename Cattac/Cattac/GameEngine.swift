@@ -1,12 +1,4 @@
-/*
-    Cattac's Game Engine
-*/
-
 import Foundation
-
-enum GameState {
-    case Precalculation, PlayerAction, ServerUpdate, WaitForAll, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
-}
 
 protocol GameStateListener {
     func onStateUpdate(state: GameState)
@@ -16,6 +8,7 @@ protocol ActionListener {
     func onActionUpdate(action: Action?)
 }
 
+/// Game engine that does all the logic computation for the game.
 class GameEngine {
     private let catFactory = CatFactory.sharedInstance
     
@@ -30,12 +23,14 @@ class GameEngine {
     /// Dictionary of Firebase references watching a data value.
     private var movementWatchers: [Int: Firebase] = [:]
 
+    private var gameAI: GameAI!
+
     var gameManager: GameManager = GameManager()
     
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
-    var state: GameState = GameState.Precalculation
+    var state: GameState = .Precalculation
     
     /// GameState listener, listens for update on state change.
     var gameStateListener: GameStateListener?
@@ -51,35 +46,51 @@ class GameEngine {
     
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
-    
-    var actionStateOver = false
+
+    var multiplayer: Bool
     
     var otherPlayersMoved = 0
     
-    init(grid: Grid, playerNumber: Int) {
+    init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
         println("init GameEngine as playerNumber \(playerNumber)")
         self.playerNumber = playerNumber
         
         self.grid = grid
+
+        self.multiplayer = multiplayer
         
         createPlayers(playerNumber)
         
         registerMovementWatcherExcept(playerNumber)
-        
+
+        self.gameAI = GameAI(grid: grid, gameManager: gameManager,
+            currentPlayer: currentPlayer)
+
+        registerEvents()
+    }
+
+    /// Register all the events for the game engine.
+    private func registerEvents() {
         self.on("puiButtonPressed") {
             self.setAvailablePuiDirections()
             self.notifyAction()
         }
         
         self.on("fartButtonPressed") {
-            self.gameManager[actionOf: self.currentPlayer] = FartAction(range: 2)
+            self.gameManager[actionOf: self.currentPlayer] =
+                FartAction(range: 2)
             self.notifyAction()
         }
         
         self.on("poopButtonPressed") {
             let targetNode = self.gameManager[positionOf: self.currentPlayer]!
-            self.gameManager[actionOf: self.currentPlayer] = PoopAction(targetNode: targetNode)
+            self.gameManager[actionOf: self.currentPlayer] =
+                PoopAction(targetNode: targetNode)
             self.notifyAction()
+        }
+
+        self.on("playerActionEnded") {
+            self.nextState()
         }
         
         self.on("allPlayersMoved") {
@@ -88,6 +99,12 @@ class GameEngine {
         
         self.on("movementAnimationEnded") {
             if self.gameManager.movementsCompleted {
+                self.nextState()
+            }
+        }
+
+        self.on("actionAnimationEnded") {
+            if self.gameManager.actionsCompleted {
                 self.nextState()
             }
         }
@@ -105,6 +122,9 @@ class GameEngine {
             nextState()
         case .WaitForAll:
             break
+        case .AICalculation:
+            gameAI.calculateTurn()
+            nextState()
         case .StartMovesExecution:
             calculateMovementPaths()
             nextState()
@@ -115,7 +135,9 @@ class GameEngine {
         case .StartActionsExecution:
             nextState()
         case .ActionsExecution:
-            nextState()
+            // This state waits for the action ended event that is triggered
+            // from the scene.
+            break
         case .PostExecution:
             postExecute()
             nextState()
@@ -128,32 +150,38 @@ class GameEngine {
         }
     }
     
-    func nextState() {
+    private func nextState() {
         switch state {
         case .Precalculation:
-            state = GameState.PlayerAction
+            state = .PlayerAction
         case .PlayerAction:
-            state = GameState.ServerUpdate
+            if multiplayer {
+                state = .ServerUpdate
+            } else {
+                state = .AICalculation
+            }
         case .ServerUpdate:
-            state = GameState.WaitForAll
+            state = .WaitForAll
         case .WaitForAll:
-            state = GameState.StartMovesExecution
+            state = .StartMovesExecution
+        case .AICalculation:
+            state = .StartMovesExecution
         case .StartMovesExecution:
-            state = GameState.MovesExecution
+            state = .MovesExecution
         case .MovesExecution:
-            state = GameState.StartActionsExecution
+            state = .StartActionsExecution
         case .StartActionsExecution:
-            state = GameState.ActionsExecution
+            state = .ActionsExecution
         case .ActionsExecution:
-            state = GameState.PostExecution
+            state = .PostExecution
         case .PostExecution:
-            state = GameState.Precalculation
+            state = .Precalculation
         }
         
         gameStateListener?.onStateUpdate(state)
     }
     
-    func precalculate() {
+    private func precalculate() {
         gameManager.precalculate()
         
         reachableNodes = grid.getNodesInRange(
@@ -162,7 +190,7 @@ class GameEngine {
         )
     }
     
-    func updateServer() {
+    private func updateServer() {
         let playerMoveUpdateRef = ref
             .childByAppendingPath("games")
             .childByAppendingPath("game0")
@@ -186,10 +214,14 @@ class GameEngine {
     }
 
     func setCurrentPlayerMoveToPosition(node: TileNode) {
-        gameManager[moveToPositionOf: currentPlayer] = node
+        if node != gameManager[moveToPositionOf: currentPlayer] {
+            gameManager[moveToPositionOf: currentPlayer] = node
+            gameManager[actionOf: currentPlayer] = nil
+            notifyAction()
+        }
     }
     
-    func calculateMovementPaths() {
+    private func calculateMovementPaths() {
         for player in gameManager.players.values {
             var playerAtNode = gameManager[positionOf: player]!
             var playerMoveToNode = gameManager[moveToPositionOf: player]!
@@ -207,10 +239,9 @@ class GameEngine {
         }
     }
     
-    func postExecute() {
+    private func postExecute() {
         gameManager.advanceTurn()
         currentPlayer.postExecute()
-        actionStateOver = true
     }
     
     /// Called by UI to notify game engine that movement is executed on UI
@@ -337,8 +368,6 @@ class GameEngine {
     }
     
     private func notifyAction() {
-        if let action = gameManager[actionOf: currentPlayer] {
-            actionListener?.onActionUpdate(action)
-        }
+        actionListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
     }
 }
