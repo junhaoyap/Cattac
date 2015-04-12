@@ -94,6 +94,7 @@ class GameEngine {
     func gameLoop() {
         switch state {
         case .Precalculation:
+            actionStateOver = false
             precalculate()
             nextState()
         case .PlayerAction:
@@ -160,8 +161,6 @@ class GameEngine {
     }
     
     func updateServer() {
-        actionStateOver = false
-        
         let playerMoveUpdateRef = ref
             .childByAppendingPath("games")
             .childByAppendingPath("game0")
