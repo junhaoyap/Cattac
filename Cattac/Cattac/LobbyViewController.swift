@@ -159,7 +159,7 @@ class LobbyViewController: UIViewController {
                     "generatedGame": levelGenerator.toDictionaryForFirebase()
                 ]
                 
-                gameRef.updateChildValues(gameToWrite)
+                gameRef.setValue(gameToWrite)
                 
                 let gameToWatchRef = ref.childByAppendingPath("gameHelper").childByAppendingPath("gameShouldStart")
                 
