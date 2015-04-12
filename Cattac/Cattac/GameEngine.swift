@@ -75,6 +75,11 @@ class GameEngine {
         self.gameAI = GameAI(grid: grid, gameManager: gameManager,
             currentPlayer: currentPlayer)
 
+        registerEvents()
+    }
+
+    /// Register all the events for the game engine.
+    private func registerEvents() {
         self.on("puiButtonPressed") {
             self.setAvailablePuiDirections()
             self.notifyAction()
