@@ -9,7 +9,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     let gameEngine: GameEngine!
     private let level: GameLevel!
     
-    private let tileSize: CGFloat!
+    private let sceneUtils: SceneUtils!
     
     private let gameLayer = SKNode()
     private let tilesLayer = SKNode()
@@ -39,9 +39,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         gameEngine = GameEngine(grid: level.grid, playerNumber: currentPlayerNumber)
         gameEngine.gameStateListener = self
         gameEngine.actionListener = self
-        
-        // Initialize tileSize based on the number of columns
-        tileSize = size.width / CGFloat(level.numColumns + 2)
+
+        sceneUtils = SceneUtils(windowWidth: size.width,
+            numRows: level.numRows, numColumns: level.numColumns)
         
         // Sets the anchorpoint for the scene to be the center of the screen
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -49,10 +49,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         self.addChild(gameLayer)
         
         // position of the general grid layer
-        let layerPosition = CGPoint(
-            x: -tileSize * CGFloat(level.numColumns) / 2,
-            y: -tileSize * CGFloat(level.numRows) / 2
-        )
+        let layerPosition = sceneUtils.getLayerPosition()
 
         // adds tilesLayer to the grid layer
         tilesLayer.position = layerPosition
@@ -102,7 +99,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             break
         }
         
-        previewNode.size = CGSize(width: tileSize - 1, height: tileSize - 1)
+        previewNode.size = sceneUtils.tileSize
         previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
@@ -114,14 +111,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
             
-            if let node = nodeForLocation(location) {
-                if gameEngine.state == GameState.PlayerAction {
-                    if gameEngine.reachableNodes[Node(node).hashValue] != nil {
-                        gameEngine.setCurrentPlayerMoveToPosition(node)
-                        previewNode.position = pointFor(node.position)
-                        previewNode.hidden = false
-                    }
-                }
+            if let node = sceneUtils.nodeForLocation(location,
+                grid: level.grid) {
+                    registerPlayerMovement(node)
             }
         }
     }
@@ -129,36 +121,26 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
-            
-            if let node = nodeForLocation(location) {
-                if gameEngine.state == GameState.PlayerAction {
-                    if gameEngine.reachableNodes[Node(node).hashValue] != nil {
-                        gameEngine.setCurrentPlayerMoveToPosition(node)
-                        previewNode.position = pointFor(node.position)
-                        previewNode.hidden = false
-                    }
-                }
+
+            if let node = sceneUtils.nodeForLocation(location,
+                grid: level.grid) {
+                    registerPlayerMovement(node)
+            }
+        }
+    }
+
+    private func registerPlayerMovement(node: TileNode) {
+        if gameEngine.state == GameState.PlayerAction {
+            if gameEngine.reachableNodes[Node(node).hashValue] != nil {
+                gameEngine.setCurrentPlayerMoveToPosition(node)
+                previewNode.position = sceneUtils.pointFor(node.position)
+                previewNode.hidden = false
             }
         }
     }
     
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    }
-    
     override func update(currentTime: CFTimeInterval) {
         gameEngine.gameLoop()
-    }
-    
-    private func pointFor(gridIndex: GridIndex) -> CGPoint {
-        return CGPoint(
-            x: CGFloat(gridIndex.col) * tileSize + tileSize / 2,
-            y: CGFloat(gridIndex.row) * tileSize + tileSize / 2)
-    }
-    
-    private func nodeForLocation(location: CGPoint) -> TileNode? {
-        let col = Int((location.x + 5 * tileSize) / tileSize)
-        let row = Int((location.y + 5 * tileSize) / tileSize)
-        return level.grid[row, col]
     }
     
     private func addTiles() {
@@ -183,8 +165,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
 
     private func drawTile(tileNode: TileNode) {
         let spriteNode = tileNode.sprite
-        spriteNode.size = CGSize(width: tileSize, height: tileSize)
-        spriteNode.position = pointFor(tileNode.position)
+        spriteNode.size = sceneUtils.tileSize
+        spriteNode.position = sceneUtils.pointFor(tileNode.position)
         tilesLayer.addChild(spriteNode)
         
         if let doodad = tileNode.doodad {
@@ -231,19 +213,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
         
         let pui = SKSpriteNode(imageNamed: "Pui.png")
-        pui.size = CGSize(width: tileSize, height: tileSize)
+        pui.size = sceneUtils.tileSize
         pui.position = startNode.sprite.position
-        
-        switch action.direction {
-        case .Right:
-            pui.zRotation = CGFloat(3 * M_PI / 2.0)
-        case .Bottom:
-            pui.zRotation = CGFloat(M_PI)
-        case .Left:
-            pui.zRotation = CGFloat(M_PI/2.0)
-        default:
-            break
-        }
+        pui.zRotation = SceneUtils.zRotation(action.direction)
         
         entityLayer.addChild(pui)
         pui.runAction(
