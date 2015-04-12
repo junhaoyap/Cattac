@@ -28,6 +28,7 @@ class GameViewController: UIViewController {
     var level: GameLevel!
     var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
+    var justReachedZero: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,13 +85,24 @@ class GameViewController: UIViewController {
         var currentTime = timerLabel.text!.toInt()
         
         if currentTime == 0 {
-            // This is where the time for choosing something is over
-            // we should move on to the next thing to do?
+            if justReachedZero {
+                scene.gameEngine.nextState() // Now only goes into next state when gameEngine is done executing
+                justReachedZero = false
+                scene.gameEngine.actionStateOver = false
+            }
             
-            timerLabel.text = "10"
-            scene.gameEngine.nextState()    // danger, next state called regardless of current state.
+            if getActionState() {
+                timerLabel.text = "10"
+                justReachedZero = true
+            } else {
+                // do nothing
+            }
         } else {
             timerLabel.text = String(currentTime! - 1)
         }
+    }
+    
+    func getActionState() -> Bool {
+        return scene.gameEngine.actionStateOver
     }
 }

@@ -5,7 +5,7 @@
 import Foundation
 
 enum GameState {
-    case Precalculation, PlayerAction, ServerUpdate, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
+    case Precalculation, PlayerAction, ServerUpdate, WaitForAll, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
 }
 
 protocol GameStateListener {
@@ -52,6 +52,10 @@ class GameEngine {
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
     
+    var actionStateOver = false
+    
+    var otherPlayersMoved = 0
+    
     init(grid: Grid, playerNumber: Int) {
         println("init GameEngine as playerNumber \(playerNumber)")
         self.playerNumber = playerNumber
@@ -77,9 +81,15 @@ class GameEngine {
             self.gameManager[actionOf: self.currentPlayer] = PoopAction(targetNode: targetNode)
             self.notifyAction()
         }
-
-        self.on("movementAnimationEnded") {
+        
+        self.on("allPlayersMoved") {
             self.nextState()
+        }
+        
+        self.on("movementAnimationEnded") {
+            if self.gameManager.movementsCompleted {
+                self.nextState()
+            }
         }
     }
     
@@ -92,9 +102,11 @@ class GameEngine {
             break
         case .ServerUpdate:
             updateServer()
-            calculateMovementPaths()
             nextState()
+        case .WaitForAll:
+            break
         case .StartMovesExecution:
+            calculateMovementPaths()
             nextState()
         case .MovesExecution:
             // This state waits for the movement ended event that is triggered
@@ -123,6 +135,8 @@ class GameEngine {
         case .PlayerAction:
             state = GameState.ServerUpdate
         case .ServerUpdate:
+            state = GameState.WaitForAll
+        case .WaitForAll:
             state = GameState.StartMovesExecution
         case .StartMovesExecution:
             state = GameState.MovesExecution
@@ -149,7 +163,6 @@ class GameEngine {
     }
     
     func updateServer() {
-        
         let playerMoveUpdateRef = ref
             .childByAppendingPath("games")
             .childByAppendingPath("game0")
@@ -197,6 +210,7 @@ class GameEngine {
     func postExecute() {
         gameManager.advanceTurn()
         currentPlayer.postExecute()
+        actionStateOver = true
     }
     
     /// Called by UI to notify game engine that movement is executed on UI
@@ -298,15 +312,18 @@ class GameEngine {
                 let moveToRow = snapshot.value.objectForKey("toRow") as? Int
                 let moveToCol = snapshot.value.objectForKey("toCol") as? Int
                 
-                if fromRow == nil || fromCol == nil || moveToRow == nil || moveToCol == nil {
-                    //ignore for now, shall be addressed together with turn sync issue
-                    return
-                }
-                
                 let player = self.gameManager[Constants.catArray[i - 1]]!
                 self.gameManager[positionOf: player] = self.grid[fromRow!, fromCol!]
                 self.gameManager[moveToPositionOf: player] = self.grid[moveToRow!, moveToCol!]
                 println("\(player.name)[\(i)] moving to \(moveToRow!),\(moveToCol!)")
+                
+                self.otherPlayersMoved++
+                println(self.otherPlayersMoved)
+                
+                if self.otherPlayersMoved == 3 {
+                    self.trigger("allPlayersMoved")
+                    self.otherPlayersMoved = 0
+                }
             })
         }
     }

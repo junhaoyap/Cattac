@@ -82,4 +82,6 @@ struct Constants {
         static let nukeDmg = 100
         static let rockDmg = 150
     }
+    
+    static let firebaseBaseUrl = "https://torrid-inferno-1934.firebaseio.com/"
 }

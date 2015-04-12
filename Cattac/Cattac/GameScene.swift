@@ -132,9 +132,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case 1:
             previewNode = SKSpriteNode(imageNamed: "Nala.png")
         case 2:
-            previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
-        case 3:
             previewNode = SKSpriteNode(imageNamed: "Nyan.png")
+        case 3:
+            previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
         case 4:
             previewNode = SKSpriteNode(imageNamed: "Pusheen.png")
         default:
@@ -251,7 +251,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     /// advance to the next game state to animation the player actions.
     private func movePlayers() {
         let players = gameEngine.gameManager.players
-        var playerMoved = [String:Bool]()
 
         for (playerName, player) in players {
             let path = gameEngine.executePlayerMove(player)
@@ -264,19 +263,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             }
             
             if pathSequence.count > 0 {
-                playerMoved[playerName] = false
                 player.getSprite().runAction(
                     SKAction.sequence(pathSequence),
                     completion: {
-                        playerMoved[playerName] = true
-
-                        var animationEnded = true
-                        for ended in playerMoved.values {
-                            animationEnded = animationEnded && ended
-                        }
-                        if animationEnded {
-                            self.gameEngine.trigger("movementAnimationEnded")
-                        }
+                        self.gameEngine.gameManager.completeMovementOf(player)
+                        self.gameEngine.trigger("movementAnimationEnded")
                     }
                 )
             }
@@ -345,6 +336,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case .ServerUpdate:
             clearDirectionArrows()
             removeHighlights()
+            break
+        case .WaitForAll:
             break
         case .StartMovesExecution:
             previewNode.hidden = true

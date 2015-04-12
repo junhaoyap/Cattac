@@ -60,9 +60,9 @@ class Cat: TileEntity {
         case Constants.catName.nalaCat:
             _sprite = SKSpriteNode(imageNamed: "Nala.png")
         case Constants.catName.nyanCat:
-            _sprite = SKSpriteNode(imageNamed: "Grumpy.png")
-        case Constants.catName.grumpyCat:
             _sprite = SKSpriteNode(imageNamed: "Nyan.png")
+        case Constants.catName.grumpyCat:
+            _sprite = SKSpriteNode(imageNamed: "Grumpy.png")
         case Constants.catName.pusheenCat:
             _sprite = SKSpriteNode(imageNamed: "Pusheen.png")
         default:

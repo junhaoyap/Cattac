@@ -5,24 +5,23 @@
 import UIKit
 
 class MenuViewController: UIViewController {
-    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    let connectionManager = ConnectionManager(urlProvided: Constants.firebaseBaseUrl)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let meowsRef = self.ref.childByAppendingPath("usersMeow").childByAppendingPath(self.ref.authData.uid)
-        
-        meowsRef.observeSingleEventOfType(.Value, withBlock: {
+        connectionManager.readOnce("usersMeow/" + connectionManager.getAuthId(), onComplete: {
             snapshot in
             
             let myNumberOfMeows: AnyObject! = snapshot.value["numberOfMeows"]
             
             if myNumberOfMeows == nil {
-                let meowsRef = self.ref.childByAppendingPath("usersMeow").childByAppendingPath(self.ref.authData.uid)
-                
-                var defaultUserMeow = ["numberOfMeows" : Constants.defaultNumberOfMeows]
-                
-                meowsRef.setValue(defaultUserMeow)
+                // TODO EXTRACT INTO CONNECTIONMANAGER
+//                let meowsRef = self.ref.childByAppendingPath("usersMeow").childByAppendingPath(self.ref.authData.uid)
+//                
+//                var defaultUserMeow = ["numberOfMeows" : Constants.defaultNumberOfMeows]
+//                
+//                meowsRef.setValue(defaultUserMeow)
             } else {
 //                println("I has meows:")
 //                println(myNumberOfMeows)
