@@ -42,7 +42,7 @@ struct Constants {
     
     // for randomising which player get which cat, copy the array before playing with it, only for
     // initial reference
-    static let catArray = [catName.nalaCat, catName.grumpyCat, catName.nyanCat, catName.pusheenCat]
+    static let catArray = [catName.nalaCat, catName.nyanCat, catName.grumpyCat, catName.pusheenCat]
     
     struct catAttributes {
         // always hp, defence, puiDmg then fartDmg
