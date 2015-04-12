@@ -28,8 +28,8 @@ class GameViewController: UIViewController {
     var level: GameLevel!
     var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
-    var justReachedZero: Bool = true
     var multiplayer: Bool = false
+    private var isPlayerTurn: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +42,8 @@ class GameViewController: UIViewController {
         /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
         
-        scene = GameScene(skView.bounds.size, level, playerNumber, multiplayer)
-        println(playerNumber)
+        scene = GameScene(size: skView.bounds.size, level: level,
+            currentPlayerNumber: playerNumber, multiplayer: multiplayer)
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
@@ -86,24 +86,15 @@ class GameViewController: UIViewController {
         var currentTime = timerLabel.text!.toInt()
         
         if currentTime == 0 {
-            if justReachedZero {
-                scene.gameEngine.nextState() // Now only goes into next state when gameEngine is done executing
-                justReachedZero = false
-                scene.gameEngine.actionStateOver = false
-            }
-            
-            if getActionState() {
+            if isPlayerTurn {
+                scene.gameEngine.trigger("playerActionEnded")
+                isPlayerTurn = false
+            } else if scene.gameEngine.state == .PlayerAction {
                 timerLabel.text = "10"
-                justReachedZero = true
-            } else {
-                // do nothing
+                isPlayerTurn = true
             }
         } else {
             timerLabel.text = String(currentTime! - 1)
         }
-    }
-    
-    func getActionState() -> Bool {
-        return scene.gameEngine.actionStateOver
     }
 }

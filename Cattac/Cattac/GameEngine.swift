@@ -53,8 +53,6 @@ class GameEngine {
     
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
-    
-    var actionStateOver = false
 
     var multiplayer: Bool
     
@@ -96,6 +94,10 @@ class GameEngine {
             self.gameManager[actionOf: self.currentPlayer] =
                 PoopAction(targetNode: targetNode)
             self.notifyAction()
+        }
+
+        self.on("playerActionEnded") {
+            self.nextState()
         }
         
         self.on("allPlayersMoved") {
@@ -147,7 +149,7 @@ class GameEngine {
         }
     }
     
-    func nextState() {
+    private func nextState() {
         switch state {
         case .Precalculation:
             state = GameState.PlayerAction
@@ -178,7 +180,7 @@ class GameEngine {
         gameStateListener?.onStateUpdate(state)
     }
     
-    func precalculate() {
+    private func precalculate() {
         gameManager.precalculate()
         
         reachableNodes = grid.getNodesInRange(
@@ -187,7 +189,7 @@ class GameEngine {
         )
     }
     
-    func updateServer() {
+    private func updateServer() {
         let playerMoveUpdateRef = ref
             .childByAppendingPath("games")
             .childByAppendingPath("game0")
@@ -218,7 +220,7 @@ class GameEngine {
         }
     }
     
-    func calculateMovementPaths() {
+    private func calculateMovementPaths() {
         for player in gameManager.players.values {
             var playerAtNode = gameManager[positionOf: player]!
             var playerMoveToNode = gameManager[moveToPositionOf: player]!
@@ -236,10 +238,9 @@ class GameEngine {
         }
     }
     
-    func postExecute() {
+    private func postExecute() {
         gameManager.advanceTurn()
         currentPlayer.postExecute()
-        actionStateOver = true
     }
     
     /// Called by UI to notify game engine that movement is executed on UI
