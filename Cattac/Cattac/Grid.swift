@@ -177,11 +177,18 @@ class Grid {
             var currentNode = fromNode
             for layer in 0..<range {
                 let currentPosition = currentNode.position
-                let currentRow = currentPosition.row
-                let currentCol = currentPosition.col
-                if let node = self[currentPosition, with: offset] {
-                    table[currentRow + offset.row]![currentCol + offset.column] = node
-                    currentNode = node
+                let row = currentPosition.row + offset.row
+                let col = currentPosition.col + offset.column
+                if let node = self[row, col] {
+                    if node.doodad == nil {
+                        table[row]![col] = node
+                        currentNode = node
+                    } else if node.doodad!.getName() != "wall" {
+                        table[row]![col] = node
+                        currentNode = node
+                    } else {
+                        break
+                    }
                 } else {
                     break
                 }
