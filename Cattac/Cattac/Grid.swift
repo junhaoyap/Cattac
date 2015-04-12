@@ -153,6 +153,111 @@ class Grid {
         return nodes
     }
 
+    func getNodesInRangeAllDirections(fromNode: TileNode, range: Int) -> [[Int:TileNode]] {
+        var nodes: [[Int:TileNode]] = []
+        let originRow = fromNode.position.row
+        let originCol = fromNode.position.col
+        var table: [Int:[Int:TileNode]] = [:]
+
+        if range == 0 {
+            return []
+        }
+
+        for _ in 0..<range {
+            nodes.append([:])
+        }
+
+        for row in (originRow - range)...(originRow + range) {
+            table[row] = [:]
+        }
+
+        table[originRow]![originCol] = fromNode
+
+        for (dir, offset) in neighboursOffset {
+            var currentNode = fromNode
+            for layer in 0..<range {
+                let currentPosition = currentNode.position
+                let currentRow = currentPosition.row
+                let currentCol = currentPosition.col
+                if let node = self[currentPosition, with: offset] {
+                    table[currentRow + offset.row]![currentCol + offset.column] = node
+                    currentNode = node
+                } else {
+                    break
+                }
+            }
+        }
+
+        func addNodesInQuadrant(rowOffsetRange: [Int], colOffsetRange: [Int],
+            checkOffset: (row: Int, col: Int)) {
+                for (i, rowOffset) in enumerate(rowOffsetRange) {
+                    let colOffset = colOffsetRange[i]
+                    let row = originRow + rowOffset
+                    let col = originCol + colOffset
+                    if row > originRow + range || row < originRow - range ||
+                        col > originCol + range || col < originCol - range {
+                            continue
+                    }
+                    if table[row + checkOffset.row]![col] != nil &&
+                        table[row]![col + checkOffset.col] != nil {
+                            if let node = self[row, col] {
+                                if node.doodad == nil {
+                                    table[row]![col] = node
+                                } else if node.doodad!.getName() != "wall" {
+                                    table[row]![col] = node
+                                }
+                            }
+                    }
+                }
+        }
+
+        for quadrant in 0..<4 {
+            switch quadrant {
+            case 0:
+                // top right quadrant
+                for layer in 1..<(2 * range) {
+                    addNodesInQuadrant(Array(1...layer), reverse(1...layer),
+                        (row: -1, col: -1))
+                }
+            case 1:
+                // top left quadrant
+                for layer in 1..<(2 * range) {
+                    addNodesInQuadrant(Array(1...layer), Array(-layer...(-1)),
+                        (row: -1, col: 1))
+                }
+            case 2:
+                // bottom left quadrant
+                for layer in 1..<(2 * range) {
+                    addNodesInQuadrant(reverse(-layer...(-1)), Array(-layer...(-1)),
+                        (row: 1, col: 1))
+                }
+            case 3:
+                // bottom right quadrant
+                for layer in 1..<(2 * range) {
+                    addNodesInQuadrant(reverse(-layer...(-1)), reverse(1...layer),
+                        (row: 1, col: -1))
+                }
+            default:
+                break
+            }
+        }
+
+        for (rowNumber, row) in table {
+            for colNumber in row.keys {
+                if rowNumber == originRow && colNumber == originCol {
+                    continue
+                } else if let node = table[rowNumber]![colNumber] {
+                    let rowDiff = abs(rowNumber - originRow)
+                    let colDiff = abs(colNumber - originCol)
+                    let layer = max(rowDiff, colDiff) - 1
+                    nodes[layer][node.hashValue] = node
+                }
+            }
+        }
+
+        return nodes
+    }
+
     /// Calculates the shortest path from one node to another.
     ///
     /// :param: fromNode The starting TileNode to be used to calculate the path.

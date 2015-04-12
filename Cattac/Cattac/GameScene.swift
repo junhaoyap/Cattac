@@ -321,6 +321,44 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         )
     }
 
+    private func animateFartAction(player: Cat) {
+        let startNode = gameManager[moveToPositionOf: player]!
+        let path = gameEngine.pathOfFart(startNode, range: player.fartRange)
+        let delay = 0.3
+
+        for (i, nodes) in enumerate(path) {
+            let timeInterval = Double(i) * delay
+            for node in nodes.values {
+                let wait = SKAction.waitForDuration(timeInterval)
+
+                let fadeIn = SKAction.fadeInWithDuration(0.5)
+                let rotateIn = SKAction.rotateToAngle(CGFloat(M_PI / 2), duration: 0.5)
+                let scaleUp = SKAction.scaleBy(1.0, duration: 0.5)
+
+                let fadeOut = SKAction.fadeOutWithDuration(0.5)
+                let rotateOut = SKAction.rotateToAngle(CGFloat(M_PI), duration: 0.5)
+                let scaleDown = SKAction.scaleBy(0.5, duration: 0.5)
+
+                let entryGroup = SKAction.group([fadeIn, rotateIn, scaleUp])
+                let exitGroup = SKAction.group([fadeOut, rotateOut, scaleDown])
+
+                let sequence = [wait, entryGroup, exitGroup]
+
+                let fart = SKSpriteNode(imageNamed: "Pui.png")
+                fart.size = sceneUtils.tileSize
+                fart.position = node.sprite.position
+
+                entityLayer.addChild(fart)
+
+                fart.runAction(SKAction.sequence(sequence), completion: {
+                    fart.removeFromParent()
+                })
+            }
+        }
+
+        notifyActionCompletionFor(player)
+    }
+
     /// Performs the respective actions for each player.
     private func performActions() {
         for player in gameManager.players.values {
@@ -331,7 +369,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                     let direction = (action as PuiAction).direction
                     animatePuiAction(player, direction: direction)
                 case .Fart:
-                    notifyActionCompletionFor(player)
+                    animateFartAction(player)
                 case .Poop:
                     notifyActionCompletionFor(player)
                 }
