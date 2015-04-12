@@ -38,6 +38,7 @@ class SKDirectionButtonNode: SKNode {
                 button = SKSpriteNode(texture: self.defaultTexture)
             }
             button.size = size
+            button.zRotation = SceneUtils.zRotation(direction)
             
             switch direction {
             case .Top:
@@ -48,21 +49,18 @@ class SKDirectionButtonNode: SKNode {
                 )
             case .Right:
                 right = button
-                button.zRotation = CGFloat(3 * M_PI / 2.0)
                 button.position = CGPoint(
                     x: CGFloat((centerSize.width + size.width) / 2.0),
                     y: 0
                 )
             case .Bottom:
                 bottom = button
-                button.zRotation = CGFloat(M_PI)
                 button.position = CGPoint(
                     x: 0,
                     y: -CGFloat((centerSize.height + size.height) / 2.0)
                 )
             case .Left:
                 left = button
-                button.zRotation = CGFloat(M_PI/2.0)
                 button.position = CGPoint(
                     x: -CGFloat((centerSize.width + size.width) / 2.0),
                     y: 0

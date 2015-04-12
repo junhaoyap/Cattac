@@ -77,11 +77,13 @@ class GameEngine {
             self.gameManager[actionOf: self.currentPlayer] = PoopAction(targetNode: targetNode)
             self.notifyAction()
         }
+
+        self.on("movementAnimationEnded") {
+            self.nextState()
+        }
     }
     
     func gameLoop() {
-        // TODO check scene ready or scene notify ready before nextstate(),
-        // currently ignores scene readiness
         switch state {
         case .Precalculation:
             precalculate()
@@ -95,7 +97,9 @@ class GameEngine {
         case .StartMovesExecution:
             nextState()
         case .MovesExecution:
-            nextState()
+            // This state waits for the movement ended event that is triggered
+            // from the scene.
+            break
         case .StartActionsExecution:
             nextState()
         case .ActionsExecution:
