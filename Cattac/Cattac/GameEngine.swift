@@ -1,12 +1,4 @@
-/*
-    Cattac's Game Engine
-*/
-
 import Foundation
-
-enum GameState {
-    case Precalculation, PlayerAction, ServerUpdate, WaitForAll, AICalculation, StartMovesExecution, MovesExecution, StartActionsExecution, ActionsExecution, PostExecution
-}
 
 protocol GameStateListener {
     func onStateUpdate(state: GameState)
@@ -16,6 +8,7 @@ protocol ActionListener {
     func onActionUpdate(action: Action?)
 }
 
+/// Game engine that does all the logic computation for the game.
 class GameEngine {
     private let catFactory = CatFactory.sharedInstance
     

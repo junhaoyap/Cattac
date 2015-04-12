@@ -79,6 +79,7 @@
 		7661CF4A1AD4336C0004B0FD /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF491AD4336C0004B0FD /* Direction.swift */; };
 		7661CF4C1AD560400004B0FD /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF4B1AD560400004B0FD /* GameManager.swift */; };
 		7689FC981ADAD41E0086613D /* GameAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7689FC971ADAD41E0086613D /* GameAI.swift */; };
+		76D0F60B1ADAF65700CB91B3 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0F60A1ADAF65700CB91B3 /* GameState.swift */; };
 		76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DD1ABFE6190056B5F5 /* Grumpy.png */; };
 		76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DE1ABFE6190056B5F5 /* Nala.png */; };
 		76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DF1ABFE6190056B5F5 /* Nyan.png */; };
@@ -179,6 +180,7 @@
 		7661CF491AD4336C0004B0FD /* Direction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		7661CF4B1AD560400004B0FD /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		7689FC971ADAD41E0086613D /* GameAI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
+		76D0F60A1ADAF65700CB91B3 /* GameState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		76FC46DD1ABFE6190056B5F5 /* Grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grumpy.png; path = Images.xcassets/Grumpy.png; sourceTree = "<group>"; };
 		76FC46DE1ABFE6190056B5F5 /* Nala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nala.png; path = Images.xcassets/Nala.png; sourceTree = "<group>"; };
 		76FC46DF1ABFE6190056B5F5 /* Nyan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nyan.png; path = Images.xcassets/Nyan.png; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 		342585121AACDE7B004A3CFD /* GameEngine */ = {
 			isa = PBXGroup;
 			children = (
+				76D0F60A1ADAF65700CB91B3 /* GameState.swift */,
 				342585331AACE097004A3CFD /* GameEngine.swift */,
 				7661CF4B1AD560400004B0FD /* GameManager.swift */,
 				7689FC971ADAD41E0086613D /* GameAI.swift */,
@@ -713,6 +716,7 @@
 				342585111AACDE61004A3CFD /* Stack.swift in Sources */,
 				3425851F1AACDF61004A3CFD /* Node.swift in Sources */,
 				BDA19AC21AD0675100B7E9D4 /* FortressDoodad.swift in Sources */,
+				76D0F60B1ADAF65700CB91B3 /* GameState.swift in Sources */,
 				342585231AACDF91004A3CFD /* Graph.swift in Sources */,
 				3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */,
 				342585191AACDEFF004A3CFD /* MusicPlayer.swift in Sources */,
