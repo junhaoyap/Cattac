@@ -339,11 +339,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case .ServerUpdate:
             clearDirectionArrows()
             removeHighlights()
-            break
         case .WaitForAll:
             break
         case .AICalculation:
-            break
+            clearDirectionArrows()
+            removeHighlights()
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:
