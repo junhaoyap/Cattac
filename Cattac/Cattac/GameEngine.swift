@@ -146,8 +146,8 @@ class GameEngine {
         let playerMoveUpdateRef = ref
             .childByAppendingPath("games")
             .childByAppendingPath("game0")
-            .childByAppendingPath("player" + String(playerNumber) + "Movement")
-            .childByAppendingPath(String(currentPlayerMoveNumber))
+            .childByAppendingPath("player\(playerNumber)Movement")
+            .childByAppendingPath("\(currentPlayerMoveNumber)")
 
         let currentPlayerTileNode = gameManager[positionOf: currentPlayer]!
         let currentPlayerMoveToTileNode = gameManager[moveToPositionOf: currentPlayer]!
@@ -179,6 +179,7 @@ class GameEngine {
             if let doodad = playerMoveToNode.doodad {
                 if doodad is WormholeDoodad {
                     let destNode = (doodad as WormholeDoodad).getDestinationNode()
+                    gameManager[moveToPositionOf: player]! = destNode
                     path += [destNode]
                 }
             }
