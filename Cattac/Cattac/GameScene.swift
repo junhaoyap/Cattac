@@ -1,9 +1,7 @@
-/*
-    Cattac's game scene
-*/
-
 import SpriteKit
 
+/// The spritekit scene for the game, in charge of drawing and animating all 
+/// entities of the game.
 class GameScene: SKScene, GameStateListener, ActionListener {
 
     /// Game Engine that does all the logic for the scene.
