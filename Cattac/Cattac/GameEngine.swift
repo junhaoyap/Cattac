@@ -30,6 +30,8 @@ class GameEngine {
     /// Dictionary of Firebase references watching a data value.
     private var movementWatchers: [Int: Firebase] = [:]
 
+    private var gameAI: GameAI!
+
     var gameManager: GameManager = GameManager()
     
     /// Player index (we should change to player-id instead).
@@ -69,20 +71,25 @@ class GameEngine {
         createPlayers(playerNumber)
         
         registerMovementWatcherExcept(playerNumber)
-        
+
+        self.gameAI = GameAI(grid: grid, gameManager: gameManager,
+            currentPlayer: currentPlayer)
+
         self.on("puiButtonPressed") {
             self.setAvailablePuiDirections()
             self.notifyAction()
         }
         
         self.on("fartButtonPressed") {
-            self.gameManager[actionOf: self.currentPlayer] = FartAction(range: 2)
+            self.gameManager[actionOf: self.currentPlayer] =
+                FartAction(range: 2)
             self.notifyAction()
         }
         
         self.on("poopButtonPressed") {
             let targetNode = self.gameManager[positionOf: self.currentPlayer]!
-            self.gameManager[actionOf: self.currentPlayer] = PoopAction(targetNode: targetNode)
+            self.gameManager[actionOf: self.currentPlayer] =
+                PoopAction(targetNode: targetNode)
             self.notifyAction()
         }
         
@@ -110,8 +117,8 @@ class GameEngine {
         case .WaitForAll:
             break
         case .AICalculation:
-            // do AI stuff
-            break
+            gameAI.calculateTurn()
+            nextState()
         case .StartMovesExecution:
             calculateMovementPaths()
             nextState()
