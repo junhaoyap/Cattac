@@ -117,6 +117,7 @@ class LobbyViewController: UIViewController {
                     didJoinLobby = true
                     
                     self.playerNumber = 3
+                    self.waitForGameStart()
                 case 1:
                     let toWriteTo = thisLobbyRef.childByAppendingPath("player2")
                     toWriteTo.setValue(playerToJoin)
@@ -127,6 +128,7 @@ class LobbyViewController: UIViewController {
                     didJoinLobby = true
                     
                     self.playerNumber = 2
+                    self.waitForGameStart()
                 default:
                     println("HOLY MOLLY, LESS EPIC LOBBY ERROR")
                 }
