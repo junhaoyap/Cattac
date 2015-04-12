@@ -84,8 +84,6 @@ class GameEngine {
     }
     
     func gameLoop() {
-        // TODO check scene ready or scene notify ready before nextstate(),
-        // currently ignores scene readiness
         switch state {
         case .Precalculation:
             precalculate()
@@ -99,6 +97,8 @@ class GameEngine {
         case .StartMovesExecution:
             nextState()
         case .MovesExecution:
+            // This state waits for the movement ended event that is triggered
+            // from the scene.
             break
         case .StartActionsExecution:
             nextState()

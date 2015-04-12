@@ -5,23 +5,44 @@
 import SpriteKit
 
 class GameScene: SKScene, GameStateListener, ActionListener {
-    
+
+    /// Game Engine that does all the logic for the scene.
     let gameEngine: GameEngine!
+
+    /// Current level for the game.
     private let level: GameLevel!
-    
+
+    /// Utilities for the scene.
     private let sceneUtils: SceneUtils!
-    
+
+    /// The game layer that encompases everything in the scene.
     private let gameLayer = SKNode()
+
+    /// The tiles layer that encompases the grid.
     private let tilesLayer = SKNode()
+
+    /// The entity layer that lays on top of the tiles layer and encompases all
+    /// the players and objects on the grid.
     private let entityLayer = SKNode()
-    
+
+    /// The button layer that consists of the main buttons for the actions.
     private let buttonLayer = SKNode()
-    
+
+    /// Button that sets the action of the player to Pui.
     private var puiButton: SKActionButtonNode!
+
+    /// Button that sets the action of the player to Fart.
     private var fartButton: SKActionButtonNode!
+
+    /// Button that sets the action of the player to Poop.
     private var poopButton: SKActionButtonNode!
-    
+
+    /// Preview of the next position of the current player when setting the
+    /// next tile to move to.
     private var previewNode: SKSpriteNode!
+
+    /// Preview of the directional buttons that appears when the pui action 
+    /// button is selected.
     private var previewDirectionNodes: SKNode!
     
     required init?(coder aDecoder: NSCoder) {
@@ -29,14 +50,20 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     }
     
     override init(size: CGSize) {
-        assertionFailure("Should not call this init, init with basic level please!")
+        assertionFailure("Should not call this init, init with game level!")
     }
-    
+
+    /// Initializes the game scene.
+    ///
+    /// :param: size The size of the view.
+    /// :param: level The game level that is selected.
+    /// :param: currentPlayerNumber The index/id for the current player.
     init(_ size: CGSize, _ level: GameLevel, _ currentPlayerNumber: Int) {
         super.init(size: size)
         
         self.level = level
-        gameEngine = GameEngine(grid: level.grid, playerNumber: currentPlayerNumber)
+        gameEngine =
+            GameEngine(grid: level.grid, playerNumber: currentPlayerNumber)
         gameEngine.gameStateListener = self
         gameEngine.actionListener = self
 
@@ -48,44 +75,61 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         
         self.addChild(gameLayer)
         
-        // position of the general grid layer
+        // position of the general game layer
         let layerPosition = sceneUtils.getLayerPosition()
 
-        // adds tilesLayer to the grid layer
+        // adds tilesLayer to the game layer
         tilesLayer.position = layerPosition
         gameLayer.addChild(tilesLayer)
         
-        // adds entityLayer to the grid layer
+        // adds entityLayer to the game layer
         entityLayer.position = layerPosition
         gameLayer.addChild(entityLayer)
-        
-        buttonLayer.position = CGPoint(x: -220, y: layerPosition.y - 90)
+
+        // adds buttonLayer to the gameLayer
+        let buttonSpacing: CGFloat = 220
+        buttonLayer.position =
+            CGPoint(x: -buttonSpacing, y: layerPosition.y - 90)
         gameLayer.addChild(buttonLayer)
-        
+
+        /// Additional initialization
+        initializeButtons(buttonSpacing)
+        initializePlayerPreview(currentPlayerNumber)
+        addTiles()
+        addPlayers()
+    }
+
+    /// Initializes the action buttons for the scene.
+    ///
+    /// :param: buttonSpacing The spacing between the center anchor of the 
+    ///                       buttons.
+    private func initializeButtons(buttonSpacing: CGFloat) {
         puiButton = SKActionButtonNode(
             defaultButtonImage: "PuiButton.png",
             activeButtonImage: "PuiButtonPressed.png",
             buttonAction: { self.gameEngine.trigger("puiButtonPressed") })
-        puiButton.position = CGPoint(x: 0, y: 0)
+        puiButton.position = CGPoint(x: 0 * buttonSpacing, y: 0)
         buttonLayer.addChild(puiButton)
-        
+
         fartButton = SKActionButtonNode(
             defaultButtonImage: "FartButton.png",
             activeButtonImage: "FartButtonPressed.png",
             buttonAction: { self.gameEngine.trigger("fartButtonPressed") })
-        fartButton.position = CGPoint(x: 220, y: 0)
+        fartButton.position = CGPoint(x: 1 * buttonSpacing, y: 0)
         buttonLayer.addChild(fartButton)
-        
+
         poopButton = SKActionButtonNode(
             defaultButtonImage: "PoopButton.png",
             activeButtonImage: "PoopButtonPressed.png",
             buttonAction: { self.gameEngine.trigger("poopButtonPressed") })
-        poopButton.position = CGPoint(x: 440, y: 0)
+        poopButton.position = CGPoint(x: 2 * buttonSpacing, y: 0)
         buttonLayer.addChild(poopButton)
-        
-        addTiles()
-        addPlayers()
-        
+    }
+
+    /// Initializes the preview node for the current player.
+    ///
+    /// :param: currentPlayerNumber The index/id of the currentPlayer.
+    private func initializePlayerPreview(currentPlayerNumber: Int) {
         switch currentPlayerNumber {
         case 1:
             previewNode = SKSpriteNode(imageNamed: "Nala.png")
@@ -98,11 +142,70 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         default:
             break
         }
-        
+
         previewNode.size = sceneUtils.tileSize
         previewNode.alpha = 0.5
         entityLayer.addChild(previewNode)
         previewNode.hidden = true
+    }
+
+    /// Adds the tiles to the grid based on the given level.
+    private func addTiles() {
+        for row in 0..<level.numRows {
+            for column in 0..<level.numColumns {
+                if let tileNode = level.nodeAt(row, column) {
+                    drawTile(tileNode)
+                }
+            }
+        }
+    }
+
+    /// Draws the tiles on the scene based on the `TileNode` given, including
+    /// the doodads.
+    ///
+    /// :param: tileNode The given `TileNode` to be drawn.
+    private func drawTile(tileNode: TileNode) {
+        let spriteNode = tileNode.sprite
+        spriteNode.size = sceneUtils.tileSize
+        spriteNode.position = sceneUtils.pointFor(tileNode.position)
+        tilesLayer.addChild(spriteNode)
+
+        if let doodad = tileNode.doodad {
+            self.drawTileEntity(spriteNode, doodad)
+        }
+    }
+
+    /// Draws the `TileEntity` on the `SKSpriteNode` of the `TileNode` that it
+    /// belongs to.
+    ///
+    /// :param: spriteNode The `SKSpriteNode` on which the parent `TileNode` is
+    ///                    drawn.
+    /// :param: tileEntity The given `TileEntity` to be drawn.
+    private func drawTileEntity(spriteNode: SKSpriteNode,
+        _ tileEntity: TileEntity) {
+            let entityNode = tileEntity.getSprite()
+
+            if entityNode is SKSpriteNode {
+                (entityNode as SKSpriteNode).size = spriteNode.size
+            }
+
+            if !tileEntity.isVisible() {
+                entityNode.alpha = 0.5
+            }
+
+            entityNode.position = spriteNode.position
+            entityLayer.addChild(entityNode)
+    }
+
+    /// Adds the player nodes to the grid.
+    private func addPlayers() {
+        for player in gameEngine.gameManager.players.values {
+            let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
+            let playerNode = player.getSprite() as SKSpriteNode
+            playerNode.size = spriteNode.size
+            playerNode.position = spriteNode.position
+            entityLayer.addChild(playerNode)
+        }
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -129,6 +232,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
     }
 
+    /// Sets the next position to move to for the current player.
+    ///
+    /// :param: node The `TileNode` that the player will be moving to.
     private func registerPlayerMovement(node: TileNode) {
         if gameEngine.state == GameState.PlayerAction {
             if gameEngine.reachableNodes[Node(node).hashValue] != nil {
@@ -142,50 +248,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     override func update(currentTime: CFTimeInterval) {
         gameEngine.gameLoop()
     }
-    
-    private func addTiles() {
-        for row in 0..<level.numRows {
-            for column in 0..<level.numColumns {
-                if let tileNode = level.nodeAt(row, column) {
-                    drawTile(tileNode)
-                }
-            }
-        }
-    }
-    
-    private func addPlayers() {
-        for player in gameEngine.gameManager.players.values {
-            let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
-            let playerNode = player.getSprite() as SKSpriteNode
-            playerNode.size = spriteNode.size
-            playerNode.position = spriteNode.position
-            entityLayer.addChild(playerNode)
-        }
-    }
 
-    private func drawTile(tileNode: TileNode) {
-        let spriteNode = tileNode.sprite
-        spriteNode.size = sceneUtils.tileSize
-        spriteNode.position = sceneUtils.pointFor(tileNode.position)
-        tilesLayer.addChild(spriteNode)
-        
-        if let doodad = tileNode.doodad {
-            self.drawTileEntity(spriteNode, doodad)
-        }
-    }
-    
-    private func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
-        let entityNode = tileEntity.getSprite()
-        if entityNode is SKSpriteNode {
-            (entityNode as SKSpriteNode).size = spriteNode.size
-        }
-        if !tileEntity.isVisible() {
-            entityNode.alpha = 0.5
-        }
-        entityNode.position = spriteNode.position
-        entityLayer.addChild(entityNode)
-    }
-    
+    /// Moves all the players to their respective next positions.
+    ///
+    /// Triggers the `movementAnimationEnded` event of the game engine so as to
+    /// advance to the next game state to animation the player actions.
     private func movePlayers() {
         let players = gameEngine.gameManager.players
         var playerMoved = [String:Bool]()
@@ -218,7 +285,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             }
         }
     }
-    
+
     private func animatePuiAction(action: PuiAction) {
         let startNode = gameEngine.gameManager[moveToPositionOf: gameEngine.currentPlayer]!
         let path = gameEngine.pathOfPui(startNode, direction: action.direction)
@@ -305,7 +372,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             activeButtonImage: "DirectionSelected.png",
             size: CGSize(width: 50, height: 50),
             centerSize: puiButton.calculateAccumulatedFrame().size,
-            hoverAction: {(direction) -> Void in
+            hoverAction: {(direction) in
                 self.gameEngine.gameManager[actionOf: self.gameEngine.currentPlayer]!.direction = direction
             },
             availableDirection: action.availableDirections,
