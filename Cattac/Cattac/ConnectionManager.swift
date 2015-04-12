@@ -41,15 +41,44 @@ class ConnectionManager {
         return uid
     }
     
-    func overwrite(childUrl: String, data: [String]) {
+    func overwrite(childUrl: String, data: [String: String]) {
+        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
+        var overwriteRef = baseFirebaseRef!
+        
+        for childString in splittedStringsToConstructRef {
+            overwriteRef = overwriteRef.childByAppendingPath(childString)
+        }
+        
+        overwriteRef.setValue(data)
     }
     
-    func update(childUrl: String, data: [String]) {
+    func update(childUrl: String, data: [String: String]) {
+        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
+        var updateRef = baseFirebaseRef!
+        
+        for childString in splittedStringsToConstructRef {
+            updateRef = updateRef.childByAppendingPath(childString)
+        }
+        
+        updateRef.updateChildValues(data)
     }
     
-    func watch(childUrl: String, withBlock: ()) {
+    func watchOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
         
+        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
+        
+        var changeRef = baseFirebaseRef!
+        
+        for childString in splittedStringsToConstructRef {
+            changeRef = changeRef.childByAppendingPath(childString)
+        }
+        
+        changeRef.observeSingleEventOfType(.ChildChanged, withBlock: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
     }
 }
