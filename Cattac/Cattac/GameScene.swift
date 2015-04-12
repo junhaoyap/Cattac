@@ -283,6 +283,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             clearDirectionArrows()
             removeHighlights()
             break
+        case .WaitForAll:
+            break
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:

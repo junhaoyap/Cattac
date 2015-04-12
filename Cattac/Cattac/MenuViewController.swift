@@ -16,14 +16,15 @@ class MenuViewController: UIViewController {
             let myNumberOfMeows: AnyObject! = snapshot.value["numberOfMeows"]
             
             if myNumberOfMeows == nil {
+                // TODO EXTRACT INTO CONNECTIONMANAGER
 //                let meowsRef = self.ref.childByAppendingPath("usersMeow").childByAppendingPath(self.ref.authData.uid)
 //                
 //                var defaultUserMeow = ["numberOfMeows" : Constants.defaultNumberOfMeows]
 //                
 //                meowsRef.setValue(defaultUserMeow)
             } else {
-                println("I has meows:")
-                println(myNumberOfMeows)
+//                println("I has meows:")
+//                println(myNumberOfMeows)
             }
         })
     }

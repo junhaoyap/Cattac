@@ -11,6 +11,8 @@ class LoginViewController: UIViewController {
     
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     
+    // TODO EXTRACT INTO CONNECTIONMANAGER
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
