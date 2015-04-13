@@ -250,6 +250,7 @@ class GameEngine {
                 toNode: playerMoveToNode)
             
             if let doodad = playerMoveToNode.doodad {
+                doodad.effect(player)
                 if doodad is WormholeDoodad {
                     let destNode = (doodad as WormholeDoodad).getDestinationNode()
                     gameManager[moveToPositionOf: player]! = destNode
