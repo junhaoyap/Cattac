@@ -135,7 +135,7 @@ class Cat: TileEntity {
     /// :param: mods StatModifications to be applied to base attribute value
     private func applyAttrMods(baseValue: Int, mods: [AttrModification]) -> Int {
         var value = baseValue
-        for mod in dmgMods {
+        for mod in mods {
             value += mod.modification
         }
         return value

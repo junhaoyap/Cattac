@@ -97,6 +97,10 @@ class FartAction: Action {
         self._range = range
         self._direction = Direction.All
     }
+    
+    func resetRange(range: Int) {
+    _range = range
+    }
 }
 
 extension FartAction: Printable {

@@ -78,7 +78,7 @@ class GameEngine {
         
         self.on("fartButtonPressed") {
             self.gameManager[actionOf: self.currentPlayer] =
-                FartAction(range: 2)
+                FartAction(range: self.currentPlayer.fartRange)
             self.notifyAction()
         }
         
@@ -133,6 +133,7 @@ class GameEngine {
             // from the scene.
             break
         case .StartActionsExecution:
+            calculationActions()
             nextState()
         case .ActionsExecution:
             // This state waits for the action ended event that is triggered
@@ -236,6 +237,21 @@ class GameEngine {
                 }
             }
             gameManager[movementPathOf: player] = path
+        }
+    }
+    
+    private func calculationActions() {
+        for player in gameManager.players.values {
+            if let action = gameManager[actionOf: player] {
+                switch action.actionType {
+                case .Pui:
+                    break
+                case .Fart:
+                    (action as FartAction).resetRange(player.fartRange)
+                case .Poop:
+                    break
+                }
+            }
         }
     }
     
