@@ -2,7 +2,7 @@
 import SpriteKit
 
 class WatchTowerDoodad: Doodad {
-    let fartRangeModification = StatModification(Constants.Doodad.watchTowerActionRangeModification, life: 1)
+    let fartRangeModification = AttrModification(Constants.Doodad.watchTowerActionRangeModification, life: 1)
     
     override init() {
         super.init()

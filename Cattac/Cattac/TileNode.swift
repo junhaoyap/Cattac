@@ -1,7 +1,9 @@
 import Foundation
 import SpriteKit
 
+/// A tile on the game grid.
 class TileNode {
+    
     var position: GridIndex
     var sprite: SKSpriteNode
     var doodad: Doodad?
@@ -16,10 +18,12 @@ class TileNode {
         sprite.zPosition = -1.0
     }
     
+    /// Highlights tile for indicating reachable tiles.
     func highlight() {
         sprite.texture = grassPreview
     }
     
+    /// Removes highlight on this tile.
     func unhighlight() {
         sprite.texture = grass
     }

@@ -2,7 +2,7 @@
 import SpriteKit
 
 class FortressDoodad: Doodad {
-    let defenceModification = StatModification(Constants.Doodad.fortressDefenceModification, life: 1)
+    let defenceModification = AttrModification(Constants.Doodad.fortressDefenceModification, life: 1)
     
     override init() {
         super.init()
