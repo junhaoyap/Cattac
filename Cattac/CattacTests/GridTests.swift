@@ -2,7 +2,7 @@ import XCTest
 
 class GridTests: XCTestCase {
 
-    func createGrid(modify: (Grid)->Grid) -> Grid {
+    func createGrid(modify: (Grid)->()) -> Grid {
         var grid = Grid(rows: 10, columns: 10)
 
         for row in 0..<10 {
@@ -19,8 +19,8 @@ class GridTests: XCTestCase {
         return grid
     }
 
-    func testShortestPathFromNodeWithoutObstruction() {
-        var grid = createGrid({ (grid) in return grid })
+    func testShortestPathFromNode() {
+        var grid = createGrid({ (grid) in () })
 
         let startNode = grid[0, 0]!
         let endNode = grid[9, 9]!
@@ -39,7 +39,6 @@ class GridTests: XCTestCase {
                     grid.removeNodeFromGraph(grid[row, column]!)
                 }
             }
-            return grid
         })
 
         let originNode = grid[0, 0]!
@@ -61,7 +60,6 @@ class GridTests: XCTestCase {
         let unreachable = (row: 9, col: 9)
         var grid = createGrid({ (grid) in
             grid.removeNodeFromGraph(grid[unreachable.row, unreachable.col]!)
-            return grid
         })
 
         let originNode = grid[0, 0]!
@@ -71,5 +69,413 @@ class GridTests: XCTestCase {
             toNode: unreachableNode)
 
          XCTAssertEqual(path.count, 0, "Shortest path is incorrect")
+    }
+
+    func testGetNodesInRangeCenter() {
+        var grid = createGrid({ (grid) in () })
+
+        let centerRow = 5
+        let centerCol = 5
+        let centerNode = grid[centerRow, centerCol]!
+        let range = 3
+
+        let nodes = grid.getNodesInRange(centerNode, range: range)
+
+        XCTAssertEqual(nodes.count, 25, "Incorrect number of nodes in range")
+
+        for node in nodes.values {
+            let row = node.position.row
+            let col = node.position.col
+
+            let rowDiff = abs(row - centerRow)
+            let colDiff = abs(col - centerCol)
+
+            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
+                "Tile(\(row),\(col)) should not be in range")
+        }
+    }
+
+    func testGetNodesInRangeCenterWithObstruction() {
+        var grid = createGrid({ (grid) in
+            grid.removeNodeFromGraph(grid[6, 5]!)
+            grid.removeNodeFromGraph(grid[4, 4]!)
+        })
+
+        let centerRow = 5
+        let centerCol = 5
+        let centerNode = grid[centerRow, centerCol]!
+        let range = 3
+
+        let nodes = grid.getNodesInRange(centerNode, range: range)
+
+        XCTAssertEqual(nodes.count, 21, "Incorrect number of nodes in range")
+
+        for node in nodes.values {
+            let row = node.position.row
+            let col = node.position.col
+
+            let rowDiff = abs(row - centerRow)
+            let colDiff = abs(col - centerCol)
+
+            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
+                "Tile(\(row),\(col)) should not be in range")
+        }
+    }
+
+    func testGetNodesInRangeSide() {
+        var grid = createGrid({ (grid) in () })
+
+        let sideRow = 0
+        let sideCol = 5
+        let sideNode = grid[sideRow, sideCol]!
+        let range = 3
+
+        let nodes = grid.getNodesInRange(sideNode, range: 3)
+
+        XCTAssertEqual(nodes.count, 16, "Incorrect number of nodes in range")
+
+        for node in nodes.values {
+            let row = node.position.row
+            let col = node.position.col
+
+            let rowDiff = abs(row - sideRow)
+            let colDiff = abs(col - sideCol)
+
+            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
+                "Tile(\(row),\(col)) should not be in range")
+        }
+    }
+
+    func testGetNodesInRangeSideWithObstruction() {
+        var grid = createGrid({ (grid) in
+            grid.removeNodeFromGraph(grid[0, 4]!)
+            grid.removeNodeFromGraph(grid[0, 6]!)
+        })
+
+        let sideRow = 0
+        let sideCol = 5
+        let sideNode = grid[sideRow, sideCol]!
+        let range = 3
+
+        let nodes = grid.getNodesInRange(sideNode, range: 3)
+
+        XCTAssertEqual(nodes.count, 10, "Incorrect number of nodes in range")
+
+        for node in nodes.values {
+            let row = node.position.row
+            let col = node.position.col
+
+            let rowDiff = abs(row - sideRow)
+            let colDiff = abs(col - sideCol)
+
+            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
+                "Tile(\(row),\(col)) should not be in range")
+        }
+    }
+
+    func testGetNodesInRangeCorner() {
+        var grid = createGrid({ (grid) in () })
+
+        let cornerRow = 0
+        let cornerCol = 0
+        let cornerNode = grid[cornerRow, cornerCol]!
+        let range = 3
+
+        let nodes = grid.getNodesInRange(cornerNode, range: 3)
+
+        XCTAssertEqual(nodes.count, 10, "Incorrect number of nodes in range")
+
+        for node in nodes.values {
+            let row = node.position.row
+            let col = node.position.col
+
+            let rowDiff = abs(row - cornerRow)
+            let colDiff = abs(col - cornerCol)
+
+            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
+                "Tile(\(row),\(col)) should not be in range")
+        }
+    }
+
+    func testGetNodesInRangeCornerWithObstruction() {
+        var grid = createGrid({ (grid) in
+            grid.removeNodeFromGraph(grid[0, 2]!)
+            grid.removeNodeFromGraph(grid[1, 2]!)
+        })
+
+        let cornerRow = 0
+        let cornerCol = 0
+        let cornerNode = grid[cornerRow, cornerCol]!
+        let range = 3
+
+        let nodes = grid.getNodesInRange(cornerNode, range: 3)
+
+        XCTAssertEqual(nodes.count, 7, "Incorrect number of nodes in range")
+
+        for node in nodes.values {
+            let row = node.position.row
+            let col = node.position.col
+
+            let rowDiff = abs(row - cornerRow)
+            let colDiff = abs(col - cornerCol)
+
+            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
+                "Tile(\(row),\(col)) should not be in range")
+        }
+    }
+
+    func testGetNodesInRangeAllDirectionsCenter() {
+        var grid = createGrid({ (grid) in () })
+
+        let centerRow = 5
+        let centerCol = 5
+        let centerNode = grid[centerRow, centerCol]!
+        let range = 2
+
+        let layers = grid.getNodesInRangeAllDirections(centerNode, range: range)
+
+        XCTAssertEqual(layers.count, range, "Incorrect range obtained")
+
+        var total = 0
+
+        for (i, layer) in enumerate(layers) {
+            total += layer.count
+            for node in layer.values {
+                let row = node.position.row
+                let col = node.position.col
+
+                let rowDiff = abs(row - centerRow)
+                let colDiff = abs(col - centerCol)
+
+                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
+                    "Tile(\(row),\(col)) should not be in range")
+            }
+        }
+
+        XCTAssertEqual(total, 24,
+            "Incorrect number of nodes in range for all direcitons")
+    }
+
+    func testGetNodesInRangeAllDirectionsCenterWithObstruction() {
+        var grid = createGrid({ (grid) in
+            grid[6, 5]!.setDoodad(Wall())
+            grid[4, 4]!.setDoodad(Wall())
+        })
+
+        let centerRow = 5
+        let centerCol = 5
+        let centerNode = grid[centerRow, centerCol]!
+        let range = 2
+
+        let layers = grid.getNodesInRangeAllDirections(centerNode, range: range)
+
+        XCTAssertEqual(layers.count, range, "Incorrect range obtained")
+
+        var total = 0
+
+        for (i, layer) in enumerate(layers) {
+            total += layer.count
+            for node in layer.values {
+                let row = node.position.row
+                let col = node.position.col
+
+                let rowDiff = abs(row - centerRow)
+                let colDiff = abs(col - centerCol)
+
+                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
+                    "Tile(\(row),\(col)) should not be in range")
+            }
+        }
+
+        XCTAssertEqual(total, 10,
+            "Incorrect number of nodes in range for all direcitons")
+    }
+
+    func testGetNodesInRangeAllDirectionsSide() {
+        var grid = createGrid({ (grid) in () })
+
+        let sideRow = 0
+        let sideCol = 5
+        let sideNode = grid[sideRow, sideCol]!
+        let range = 2
+
+        let layers = grid.getNodesInRangeAllDirections(sideNode, range: range)
+
+        XCTAssertEqual(layers.count, range, "Incorrect range obtained")
+
+        var total = 0
+
+        for (i, layer) in enumerate(layers) {
+            total += layer.count
+            for node in layer.values {
+                let row = node.position.row
+                let col = node.position.col
+
+                let rowDiff = abs(row - sideRow)
+                let colDiff = abs(col - sideCol)
+
+                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
+                    "Tile(\(row),\(col)) should not be in range")
+            }
+        }
+
+        XCTAssertEqual(total, 14,
+            "Incorrect number of nodes in range for all direcitons")
+    }
+
+    func testGetNodesInRangeAllDirectionsSideWithObstruction() {
+        var grid = createGrid({ (grid) in
+            grid[0, 4]!.setDoodad(Wall())
+            grid[0, 6]!.setDoodad(Wall())
+        })
+
+        let sideRow = 0
+        let sideCol = 5
+        let sideNode = grid[sideRow, sideCol]!
+        let range = 2
+
+        let layers = grid.getNodesInRangeAllDirections(sideNode, range: range)
+
+        XCTAssertEqual(layers.count, range, "Incorrect range obtained")
+
+        var total = 0
+
+        for (i, layer) in enumerate(layers) {
+            total += layer.count
+            for node in layer.values {
+                let row = node.position.row
+                let col = node.position.col
+
+                let rowDiff = abs(row - sideRow)
+                let colDiff = abs(col - sideCol)
+
+                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
+                    "Tile(\(row),\(col)) should not be in range")
+            }
+        }
+
+        XCTAssertEqual(total, 2,
+            "Incorrect number of nodes in range for all direcitons")
+    }
+
+    func testGetNodesInRangeAllDirectionsCorner() {
+        var grid = createGrid({ (grid) in () })
+
+        let cornerRow = 0
+        let cornerCol = 0
+        let cornerNode = grid[cornerRow, cornerCol]!
+        let range = 2
+
+        let layers = grid.getNodesInRangeAllDirections(cornerNode, range: range)
+
+        XCTAssertEqual(layers.count, range, "Incorrect range obtained")
+
+        var total = 0
+
+        for (i, layer) in enumerate(layers) {
+            total += layer.count
+            for node in layer.values {
+                let row = node.position.row
+                let col = node.position.col
+
+                let rowDiff = abs(row - cornerRow)
+                let colDiff = abs(col - cornerCol)
+
+                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
+                    "Tile(\(row),\(col)) should not be in range")
+            }
+        }
+
+        XCTAssertEqual(total, 8,
+            "Incorrect number of nodes in range for all direcitons")
+    }
+
+    func testGetNodesInRangeAllDirectionsCornerWithObstruction() {
+        var grid = createGrid({ (grid) in
+            grid[1, 1]!.setDoodad(Wall())
+        })
+
+        let cornerRow = 0
+        let cornerCol = 0
+        let cornerNode = grid[cornerRow, cornerCol]!
+        let range = 2
+
+        let layers = grid.getNodesInRangeAllDirections(cornerNode, range: range)
+
+        XCTAssertEqual(layers.count, range, "Incorrect range obtained")
+
+        var total = 0
+
+        for (i, layer) in enumerate(layers) {
+            total += layer.count
+            for node in layer.values {
+                let row = node.position.row
+                let col = node.position.col
+
+                let rowDiff = abs(row - cornerRow)
+                let colDiff = abs(col - cornerCol)
+
+                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
+                    "Tile(\(row),\(col)) should not be in range")
+            }
+        }
+
+        XCTAssertEqual(total, 4,
+            "Incorrect number of nodes in range for all direcitons")
+    }
+
+    func testGetAvailableDirectionsCenter() {
+        var grid = createGrid({ (grid) in () })
+
+        let directions = grid.getAvailableDirections(grid[5, 5]!)
+
+        XCTAssertEqual(directions.count, 4, "Incorrect number of directions")
+
+        for direction: Direction in [.Top, .Right, .Bottom, .Left] {
+            XCTAssertTrue(contains(directions, direction),
+                "\(direction.description) should be available")
+        }
+    }
+
+    func testGetAvailableDirectionsSide() {
+        var grid = createGrid({ (grid) in () })
+
+        let directions = grid.getAvailableDirections(grid[0, 5]!)
+
+        XCTAssertEqual(directions.count, 3, "Incorrect number of directions")
+
+        for direction: Direction in [.Top, .Right, .Left] {
+            XCTAssertTrue(contains(directions, direction),
+                "\(direction.description) should be available")
+        }
+    }
+
+    func testGetAvailableDirectionsCorner() {
+        var grid = createGrid({ (grid) in () })
+
+        let directions = grid.getAvailableDirections(grid[0, 0]!)
+
+        XCTAssertEqual(directions.count, 2, "Incorrect number of directions")
+
+        for direction: Direction in [.Top, .Right] {
+            XCTAssertTrue(contains(directions, direction),
+                "\(direction.description) should be available")
+        }
+    }
+
+    func testGetAvailableDirectionsWithObstruction() {
+        var grid = createGrid({ (grid) in
+            grid.removeNodeFromGraph(grid[4, 5]!)
+            grid.removeNodeFromGraph(grid[6, 5]!)
+        })
+
+        let directions = grid.getAvailableDirections(grid[5, 5]!)
+
+        XCTAssertEqual(directions.count, 2, "Incorrect number of directions")
+
+        for direction: Direction in [.Left, .Right] {
+            XCTAssertTrue(contains(directions, direction),
+                "\(direction.description) should be available")
+        }
     }
 }
