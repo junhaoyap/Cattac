@@ -52,13 +52,20 @@ class Cat: TileEntity {
         return applyAttrMods(basePoopDmg, mods: dmgMods)
     }
     
+    /// Constructs a cat with its base attributes
+    ///
+    /// :param: catName Name speicifying cat type
+    /// :param: catHp Base HP
+    /// :param: catDef Base defence
+    /// :param: catPuiDmg Base Pui damage
+    /// :param: catFartDmg Base Fart damage
     init(catName: String, catHp: Int, catDef: Int, catPuiDmg: Int, catFartDmg: Int) {
         name = catName
         hp = catHp
+        baseDefence = catDef
         basePuiDmg = catPuiDmg
         baseFartDmg = catFartDmg
         basePoopDmg = Constants.catAttributes.poopDmg
-        baseDefence = catDef
         baseMoveRange = Constants.catAttributes.moveRange
         baseFartRange = Constants.catAttributes.fartRange
         
