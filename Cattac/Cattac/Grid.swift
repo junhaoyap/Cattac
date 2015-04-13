@@ -124,6 +124,7 @@ class Grid {
     /// range from the given TileNode.
     ///
     /// :param: fromNode The center TileNode to calculate the range from.
+    /// :param: range The range from the center node.
     /// :returns: A Dictionary of TileNodes that are within range.
     func getNodesInRange(fromNode: TileNode, range: Int) -> [Int:TileNode] {
         var nodes: [Int:TileNode] = [:]
@@ -150,6 +151,114 @@ class Grid {
             }
         }
         
+        return nodes
+    }
+
+    /// Retrieves an array of dictionary of TileNodes that are reachable within
+    /// the given range in all directions from the given TileNode. Each item in 
+    /// the array represent the distance from the given TileNode.
+    ///
+    /// :param: fromNode The center TileNode to calculate the range from.
+    /// :param: range The range from the center node.
+    /// :returns: An array of dictionary of TileNodes that are within the range.
+    func getNodesInRangeAllDirections(fromNode: TileNode, range: Int) -> [[Int:TileNode]] {
+        var nodes: [[Int:TileNode]] = []
+        let originRow = fromNode.position.row
+        let originCol = fromNode.position.col
+        var table: [Int:[Int:TileNode]] = [:]
+
+        if range == 0 {
+            return []
+        }
+
+        for _ in 0..<range {
+            nodes.append([:])
+        }
+
+        for row in (originRow - range)...(originRow + range) {
+            table[row] = [:]
+        }
+
+        table[originRow]![originCol] = fromNode
+
+        for (dir, offset) in neighboursOffset {
+            var currentNode = fromNode
+            for layer in 0..<range {
+                let currentPosition = currentNode.position
+                let row = currentPosition.row + offset.row
+                let col = currentPosition.col + offset.column
+                if let node = self[row, col] {
+                    if node.doodad == nil {
+                        table[row]![col] = node
+                        currentNode = node
+                    } else if node.doodad!.getName() != "wall" {
+                        table[row]![col] = node
+                        currentNode = node
+                    } else {
+                        break
+                    }
+                } else {
+                    break
+                }
+            }
+        }
+
+        func addNodesInQuadrant(rowOffsetRange: [Int], colOffsetRange: [Int],
+            checkOffset: (row: Int, col: Int)) {
+                for rowOffset in rowOffsetRange {
+                    for colOffset in colOffsetRange {
+                        let row = originRow + rowOffset
+                        let col = originCol + colOffset
+                        if table[row + checkOffset.row]![col] != nil &&
+                            table[row]![col + checkOffset.col] != nil {
+                                if let node = self[row, col] {
+                                    if node.doodad == nil {
+                                        table[row]![col] = node
+                                    } else if node.doodad!.getName() != "wall" {
+                                        table[row]![col] = node
+                                    }
+                                }
+                        }
+                    }
+                }
+        }
+
+        for quadrant in 0..<4 {
+            switch quadrant {
+            case 0:
+                // top right quadrant
+                addNodesInQuadrant(Array(1...range), Array(1...range),
+                    (row: -1, col: -1))
+            case 1:
+                // top left quadrant
+                addNodesInQuadrant(Array(1...range), reverse(-range...(-1)),
+                    (row: -1, col: 1))
+            case 2:
+                // bottom left quadrant
+                addNodesInQuadrant(reverse(-range...(-1)), reverse(-range...(-1)),
+                    (row: 1, col: 1))
+            case 3:
+                // bottom right quadrant
+                addNodesInQuadrant(reverse(-range...(-1)), Array(1...range),
+                    (row: 1, col: -1))
+            default:
+                break
+            }
+        }
+
+        for (rowNumber, row) in table {
+            for colNumber in row.keys {
+                if rowNumber == originRow && colNumber == originCol {
+                    continue
+                } else if let node = table[rowNumber]![colNumber] {
+                    let rowDiff = abs(rowNumber - originRow)
+                    let colDiff = abs(colNumber - originCol)
+                    let layer = max(rowDiff, colDiff) - 1
+                    nodes[layer][node.hashValue] = node
+                }
+            }
+        }
+
         return nodes
     }
 

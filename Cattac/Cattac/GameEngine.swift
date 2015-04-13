@@ -294,6 +294,10 @@ class GameEngine {
         }
         return path
     }
+
+    func pathOfFart(startNode: TileNode, range: Int) -> [[Int:TileNode]] {
+        return grid.getNodesInRangeAllDirections(startNode, range: range)
+    }
     
     private func createPlayers(playerNumber: Int) {
         let cat1 = catFactory.createCat(Constants.catName.nalaCat)!

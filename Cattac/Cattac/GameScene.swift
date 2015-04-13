@@ -321,6 +321,47 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         )
     }
 
+    private func animateFartAction(player: Cat) {
+        let startNode = gameManager[moveToPositionOf: player]!
+        let path = gameEngine.pathOfFart(startNode, range: player.fartRange)
+        let delay = 0.25
+
+        for (i, nodes) in enumerate(path) {
+            let timeInterval = Double(i) * delay
+            for (j, node) in enumerate(nodes.values) {
+                let wait = SKAction.waitForDuration(timeInterval)
+
+                let fadeIn = SKAction.fadeInWithDuration(0.5)
+                let rotateIn = SKAction.rotateToAngle(CGFloat(M_PI / 4), duration: 0.5)
+                let scaleUp = SKAction.scaleBy(2.0, duration: 0.5)
+
+                let fadeOut = SKAction.fadeOutWithDuration(0.5)
+                let rotateOut = SKAction.rotateToAngle(CGFloat(M_PI / 2), duration: 0.5)
+                let scaleDown = SKAction.scaleBy(2.0, duration: 0.5)
+
+                let entryGroup = SKAction.group([fadeIn, rotateIn, scaleUp])
+                let exitGroup = SKAction.group([fadeOut, rotateOut, scaleDown])
+
+                let sequence = [wait, entryGroup, exitGroup]
+
+                let fart = SKSpriteNode(imageNamed: "Fart.png")
+                fart.size = CGSize(width: sceneUtils.tileSize.width / 4,
+                    height: sceneUtils.tileSize.height / 4)
+                fart.position = node.sprite.position
+                fart.alpha = 0
+
+                entityLayer.addChild(fart)
+
+                fart.runAction(SKAction.sequence(sequence), completion: {
+                    fart.removeFromParent()
+                    if i == path.count - 1 && j == nodes.count - 1 {
+                        self.notifyActionCompletionFor(player)
+                    }
+                })
+            }
+        }
+    }
+
     /// Performs the respective actions for each player.
     private func performActions() {
         for player in gameManager.players.values {
@@ -331,7 +372,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                     let direction = (action as PuiAction).direction
                     animatePuiAction(player, direction: direction)
                 case .Fart:
-                    notifyActionCompletionFor(player)
+                    animateFartAction(player)
                 case .Poop:
                     notifyActionCompletionFor(player)
                 }
