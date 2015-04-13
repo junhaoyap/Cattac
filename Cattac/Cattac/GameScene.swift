@@ -72,8 +72,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             
             backgroundImage.position = CGPointMake(self.size.width / 2, self.size.height / 2)
             backgroundImage.zPosition = -1
-            backgroundImage.size.width = 768 * 2
-            backgroundImage.size.height = 1024 * 2
             
             self.level = level
             gameEngine = GameEngine(grid: level.grid,
