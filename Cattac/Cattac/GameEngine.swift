@@ -376,6 +376,8 @@ class GameEngine {
                 }
                 println("\(player.name)[\(i)] \(playerActionType.description)")
                 
+                self.otherPlayersMoved++
+                
                 if self.otherPlayersMoved == 3 {
                     self.trigger("allPlayersMoved")
                     self.otherPlayersMoved = 0
