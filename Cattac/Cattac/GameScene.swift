@@ -64,15 +64,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     init(size: CGSize, level: GameLevel, currentPlayerNumber: Int,
         multiplayer: Bool) {
             super.init(size: size)
-            
-            // Set background
-            var backgroundImage = SKSpriteNode(imageNamed: "GameBackground.jpg")
-            
-            self.addChild(backgroundImage)
-            
-            backgroundImage.position = CGPointMake(self.size.width / 2, self.size.height / 2)
-            backgroundImage.zPosition = -1
-            
+
             self.level = level
             gameEngine = GameEngine(grid: level.grid,
                 playerNumber: currentPlayerNumber, multiplayer: multiplayer)
@@ -88,6 +80,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             anchorPoint = CGPoint(x: 0.5, y: 0.5)
             
             self.addChild(gameLayer)
+
+            setBackgroundImage("background.jpg")
             
             // position of the general game layer
             let layerPosition = sceneUtils.getLayerPosition()
@@ -111,6 +105,25 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             initializePlayerPreview(currentPlayerNumber)
             addTiles()
             addPlayers()
+    }
+
+    private func setBackgroundImage(name: String) {
+        let image = UIImage(named: name)!
+        let backgroundCGImage = image.CGImage
+        let textureSize = CGRectMake(0, 0, image.size.width, image.size.height)
+
+        UIGraphicsBeginImageContext(size)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextDrawTiledImage(context, textureSize, backgroundCGImage)
+        let tiledBackground = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        let backgroundTexture = SKTexture(CGImage: tiledBackground.CGImage)
+        let backgroundImage  = SKSpriteNode(texture: backgroundTexture)
+        backgroundImage.yScale = -1
+        backgroundImage.zPosition = -10
+
+        self.addChild(backgroundImage)
     }
 
     /// Initializes the action buttons for the scene.
