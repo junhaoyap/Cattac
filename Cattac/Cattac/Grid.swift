@@ -124,6 +124,7 @@ class Grid {
     /// range from the given TileNode.
     ///
     /// :param: fromNode The center TileNode to calculate the range from.
+    /// :param: range The range from the center node.
     /// :returns: A Dictionary of TileNodes that are within range.
     func getNodesInRange(fromNode: TileNode, range: Int) -> [Int:TileNode] {
         var nodes: [Int:TileNode] = [:]
@@ -153,6 +154,13 @@ class Grid {
         return nodes
     }
 
+    /// Retrieves an array of dictionary of TileNodes that are reachable within
+    /// the given range in all directions from the given TileNode. Each item in 
+    /// the array represent the distance from the given TileNode.
+    ///
+    /// :param: fromNode The center TileNode to calculate the range from.
+    /// :param: range The range from the center node.
+    /// :returns: An array of dictionary of TileNodes that are within the range.
     func getNodesInRangeAllDirections(fromNode: TileNode, range: Int) -> [[Int:TileNode]] {
         var nodes: [[Int:TileNode]] = []
         let originRow = fromNode.position.row
