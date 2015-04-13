@@ -10,11 +10,14 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginPassword: UITextField!
     
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    let musicPlayer = MusicPlayer.sharedInstance
     
     // TODO EXTRACT INTO CONNECTIONMANAGER
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        musicPlayer.playBackgroundMusic()
         
         ref.authUser("b@b.com", password: "bbb",
             withCompletionBlock: {
