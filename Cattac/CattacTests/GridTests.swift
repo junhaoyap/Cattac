@@ -55,6 +55,21 @@ class GridTests: XCTestCase {
         path = grid.shortestPathFromNode(originNode, toNode: bottomRightNode)
 
         XCTAssertEqual(path.count, 27, "Shortest path is incorrect")
+    }
 
+    func testShortestPathFromNodeToUnreachableNode() {
+        let unreachable = (row: 9, col: 9)
+        var grid = createGrid({ (grid) in
+            grid.removeNodeFromGraph(grid[unreachable.row, unreachable.col]!)
+            return grid
+        })
+
+        let originNode = grid[0, 0]!
+        let unreachableNode = grid[unreachable.row, unreachable.col]!
+
+        let path = grid.shortestPathFromNode(originNode,
+            toNode: unreachableNode)
+
+         XCTAssertEqual(path.count, 0, "Shortest path is incorrect")
     }
 }
