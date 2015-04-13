@@ -32,8 +32,8 @@ class GameEngine {
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
-    // The initial game state is to be set at precalculation
-    var state: GameState = .Precalculation
+    // The initial game state is to be set at Initialization
+    var state: GameState = .Initialization
     
     /// GameState listener, listens for update on state change.
     var gameStateListener: GameStateListener?
@@ -55,6 +55,8 @@ class GameEngine {
     
     /// The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
+    
+    var statesAdvanced: Int = 1
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
         println("init GameEngine as playerNumber \(playerNumber)")
@@ -116,7 +118,17 @@ class GameEngine {
     }
     
     func gameLoop() {
+        if statesAdvanced > 0 {
+            advanceState()
+        } else {
+            // no need to execute state methods if state unchanged
+            return
+        }
+        
         switch state {
+        case .Initialization:
+            // Game should never enter this state.
+            break
         case .Precalculation:
             precalculate()
             nextState()
@@ -157,7 +169,13 @@ class GameEngine {
     }
     
     private func nextState() {
+        statesAdvanced++
+    }
+    
+    private func advanceState() {
         switch state {
+        case .Initialization:
+            state = .Precalculation
         case .Precalculation:
             state = .PlayerAction
         case .PlayerAction:
@@ -185,6 +203,7 @@ class GameEngine {
         }
         
         gameStateListener?.onStateUpdate(state)
+        statesAdvanced--
     }
     
     private func precalculate() {
@@ -237,8 +256,6 @@ class GameEngine {
     func setCurrentPlayerMoveToPosition(node: TileNode) {
         if node != gameManager[moveToPositionOf: currentPlayer] {
             gameManager[moveToPositionOf: currentPlayer] = node
-            gameManager[actionOf: currentPlayer] = nil
-            notifyAction()
         }
     }
     
@@ -277,7 +294,6 @@ class GameEngine {
     }
     
     private func postExecute() {
-        
         gameManager.advanceTurn()
         currentPlayer.postExecute()
     }
@@ -304,7 +320,6 @@ class GameEngine {
     /// :param: cat The player's action to execute
     func executePlayerAction(player: Cat) -> Action? {
         let action = gameManager[actionOf: player]
-        
         if action != nil && action is PoopAction {
             let targetNode = action!.targetNode!
             targetNode.poop = Poop(player, player.poopDmg)

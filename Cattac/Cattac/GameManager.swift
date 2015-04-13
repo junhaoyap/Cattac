@@ -83,7 +83,7 @@ class GameManager {
         for completed in _playerMovementAnimationCompleted.values {
             allCompleted = allCompleted && completed
         }
-
+        
         return allCompleted
     }
 
@@ -102,13 +102,10 @@ class GameManager {
     }
 
     func advanceTurn() {
-        _playerPositions = _playerMoveToPositions
-        _playerActions = [:]
-        
         // might need to move all these calculations (with those
         // in precalculate) back to game engine, to call UI
         // animations when effect
-        for (playerName, tileNode) in _playerPositions {
+        for (playerName, tileNode) in _playerMoveToPositions {
             var player = _players[playerName]!
             
             if let poop = tileNode.poop {
@@ -116,6 +113,9 @@ class GameManager {
                 tileNode.poop = nil
             }
         }
+        
+        _playerPositions = _playerMoveToPositions
+        _playerActions = [:]
     }
 
     func precalculate() {
