@@ -204,18 +204,31 @@ class GameEngine {
 
         let currentPlayerTileNode = gameManager[positionOf: currentPlayer]!
         let currentPlayerMoveToTileNode = gameManager[moveToPositionOf: currentPlayer]!
-        let currentPlayerAction = gameManager[actionOf: currentPlayer]!
+        let currentPlayerAction = gameManager[actionOf: currentPlayer]
         
-        let currentPlayerMoveData = [
-            "fromRow": currentPlayerTileNode.position.row,
-            "fromCol": currentPlayerTileNode.position.col,
-            "toRow": currentPlayerMoveToTileNode.position.row,
-            "toCol": currentPlayerMoveToTileNode.position.col,
-            "attackType": currentPlayerAction.actionType.description,
-            "attackDir": currentPlayerAction.direction.description,
-            "attackDmg": currentPlayer.puiDmg,
-            "attackRange": currentPlayerAction.range
-        ]
+        var currentPlayerMoveData = [:]
+        
+        if currentPlayerAction == nil {
+            currentPlayerMoveData = [
+                "fromRow": currentPlayerTileNode.position.row,
+                "fromCol": currentPlayerTileNode.position.col,
+                "toRow": currentPlayerMoveToTileNode.position.row,
+                "toCol": currentPlayerMoveToTileNode.position.col,
+                "attackType": "",
+                "attackDir": "",
+                "attackRange": ""
+            ]
+        } else {
+            currentPlayerMoveData = [
+                "fromRow": currentPlayerTileNode.position.row,
+                "fromCol": currentPlayerTileNode.position.col,
+                "toRow": currentPlayerMoveToTileNode.position.row,
+                "toCol": currentPlayerMoveToTileNode.position.col,
+                "attackType": currentPlayerAction!.actionType.description,
+                "attackDir": currentPlayerAction!.direction.description,
+                "attackRange": currentPlayerAction!.range
+            ]
+        }
         
         playerMoveUpdateRef.updateChildValues(currentPlayerMoveData)
     }
