@@ -107,6 +107,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             addPlayers()
     }
 
+    /// Sets the game background image.
+    ///
+    /// :param: name The background image file.
     private func setBackgroundImage(name: String) {
         let image = UIImage(named: name)!
         let backgroundCGImage = image.CGImage
