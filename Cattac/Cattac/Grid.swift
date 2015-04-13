@@ -197,23 +197,20 @@ class Grid {
 
         func addNodesInQuadrant(rowOffsetRange: [Int], colOffsetRange: [Int],
             checkOffset: (row: Int, col: Int)) {
-                for (i, rowOffset) in enumerate(rowOffsetRange) {
-                    let colOffset = colOffsetRange[i]
-                    let row = originRow + rowOffset
-                    let col = originCol + colOffset
-                    if row > originRow + range || row < originRow - range ||
-                        col > originCol + range || col < originCol - range {
-                            continue
-                    }
-                    if table[row + checkOffset.row]![col] != nil &&
-                        table[row]![col + checkOffset.col] != nil {
-                            if let node = self[row, col] {
-                                if node.doodad == nil {
-                                    table[row]![col] = node
-                                } else if node.doodad!.getName() != "wall" {
-                                    table[row]![col] = node
+                for rowOffset in rowOffsetRange {
+                    for colOffset in colOffsetRange {
+                        let row = originRow + rowOffset
+                        let col = originCol + colOffset
+                        if table[row + checkOffset.row]![col] != nil &&
+                            table[row]![col + checkOffset.col] != nil {
+                                if let node = self[row, col] {
+                                    if node.doodad == nil {
+                                        table[row]![col] = node
+                                    } else if node.doodad!.getName() != "wall" {
+                                        table[row]![col] = node
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
         }
@@ -222,28 +219,20 @@ class Grid {
             switch quadrant {
             case 0:
                 // top right quadrant
-                for layer in 1..<(2 * range) {
-                    addNodesInQuadrant(Array(1...layer), reverse(1...layer),
-                        (row: -1, col: -1))
-                }
+                addNodesInQuadrant(Array(1...range), Array(1...range),
+                    (row: -1, col: -1))
             case 1:
                 // top left quadrant
-                for layer in 1..<(2 * range) {
-                    addNodesInQuadrant(Array(1...layer), Array(-layer...(-1)),
-                        (row: -1, col: 1))
-                }
+                addNodesInQuadrant(Array(1...range), reverse(-range...(-1)),
+                    (row: -1, col: 1))
             case 2:
                 // bottom left quadrant
-                for layer in 1..<(2 * range) {
-                    addNodesInQuadrant(reverse(-layer...(-1)), Array(-layer...(-1)),
-                        (row: 1, col: 1))
-                }
+                addNodesInQuadrant(reverse(-range...(-1)), reverse(-range...(-1)),
+                    (row: 1, col: 1))
             case 3:
                 // bottom right quadrant
-                for layer in 1..<(2 * range) {
-                    addNodesInQuadrant(reverse(-layer...(-1)), reverse(1...layer),
-                        (row: 1, col: -1))
-                }
+                addNodesInQuadrant(reverse(-range...(-1)), Array(1...range),
+                    (row: 1, col: -1))
             default:
                 break
             }
