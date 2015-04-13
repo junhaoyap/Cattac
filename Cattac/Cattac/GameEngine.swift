@@ -394,21 +394,21 @@ class GameEngine {
                 self.gameManager[moveToPositionOf: player] = self.grid[moveToRow!, moveToCol!]
                 println("\(player.name)[\(i)] moving to \(moveToRow!),\(moveToCol!)")
                 
-                let playerActionType = ActionType.create(attackType!)!
-                
-                switch playerActionType {
-                case .Pui:
-                    let puiDirection = Direction.create(attackDir!)!
-                    self.gameManager[actionOf: player] = PuiAction(direction: puiDirection)
-                case .Fart:
-                    let fartRange = attackRange!
-                    self.gameManager[actionOf: player] = FartAction(range: fartRange)
-                    break
-                case .Poop:
-                    // do something!
-                    break
+                if let playerActionType = ActionType.create(attackType!) {
+                    switch playerActionType {
+                    case .Pui:
+                        let puiDirection = Direction.create(attackDir!)!
+                        self.gameManager[actionOf: player] = PuiAction(direction: puiDirection)
+                    case .Fart:
+                        let fartRange = attackRange!
+                        self.gameManager[actionOf: player] = FartAction(range: fartRange)
+                        break
+                    case .Poop:
+                        // do something!
+                        break
+                    }
+                    println("\(player.name)[\(i)] \(playerActionType.description)")
                 }
-                println("\(player.name)[\(i)] \(playerActionType.description)")
                 
                 self.otherPlayersMoved++
                 
