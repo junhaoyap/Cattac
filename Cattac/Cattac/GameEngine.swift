@@ -350,13 +350,31 @@ class GameEngine {
                 let moveToRow = snapshot.value.objectForKey("toRow") as? Int
                 let moveToCol = snapshot.value.objectForKey("toCol") as? Int
                 
+                let attackType = snapshot.value.objectForKey("attackType") as? String
+                let attackDir = snapshot.value.objectForKey("attackDir") as? String
+                let attackDmg = snapshot.value.objectForKey("attackDmg") as? Int
+                let attackRange = snapshot.value.objectForKey("attackRange") as? Int
+                
                 let player = self.gameManager[Constants.catArray[i - 1]]!
+                
                 self.gameManager[positionOf: player] = self.grid[fromRow!, fromCol!]
                 self.gameManager[moveToPositionOf: player] = self.grid[moveToRow!, moveToCol!]
                 println("\(player.name)[\(i)] moving to \(moveToRow!),\(moveToCol!)")
                 
-                self.otherPlayersMoved++
-                println(self.otherPlayersMoved)
+                let playerActionType = ActionType.create(attackType!)!
+                
+                switch playerActionType {
+                case .Pui:
+                    let puiDirection = Direction.create(attackDir!)!
+                    self.gameManager[actionOf: player] = PuiAction(direction: puiDirection)
+                case .Fart:
+                    // do something!
+                    break
+                case .Poop:
+                    // do something!
+                    break
+                }
+                println("\(player.name)[\(i)] \(playerActionType.description)")
                 
                 if self.otherPlayersMoved == 3 {
                     self.trigger("allPlayersMoved")
