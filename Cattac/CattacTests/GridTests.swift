@@ -71,6 +71,20 @@ class GridTests: XCTestCase {
          XCTAssertEqual(path.count, 0, "Shortest path is incorrect")
     }
 
+    func checkNodeWithinRange(nodes: [Int:TileNode], range: Int,
+        fromNode: TileNode) {
+            for node in nodes.values {
+                let row = node.position.row
+                let col = node.position.col
+
+                let rowDiff = abs(row - fromNode.position.row)
+                let colDiff = abs(col - fromNode.position.col)
+
+                XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
+                    "Tile(\(row),\(col)) should not be in range")
+            }
+    }
+
     func testGetNodesInRangeCenter() {
         var grid = createGrid({ (grid) in () })
 
@@ -83,16 +97,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(nodes.count, 25, "Incorrect number of nodes in range")
 
-        for node in nodes.values {
-            let row = node.position.row
-            let col = node.position.col
-
-            let rowDiff = abs(row - centerRow)
-            let colDiff = abs(col - centerCol)
-
-            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
-                "Tile(\(row),\(col)) should not be in range")
-        }
+        checkNodeWithinRange(nodes, range: range, fromNode: centerNode)
     }
 
     func testGetNodesInRangeCenterWithObstruction() {
@@ -110,16 +115,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(nodes.count, 21, "Incorrect number of nodes in range")
 
-        for node in nodes.values {
-            let row = node.position.row
-            let col = node.position.col
-
-            let rowDiff = abs(row - centerRow)
-            let colDiff = abs(col - centerCol)
-
-            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
-                "Tile(\(row),\(col)) should not be in range")
-        }
+        checkNodeWithinRange(nodes, range: range, fromNode: centerNode)
     }
 
     func testGetNodesInRangeSide() {
@@ -134,16 +130,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(nodes.count, 16, "Incorrect number of nodes in range")
 
-        for node in nodes.values {
-            let row = node.position.row
-            let col = node.position.col
-
-            let rowDiff = abs(row - sideRow)
-            let colDiff = abs(col - sideCol)
-
-            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
-                "Tile(\(row),\(col)) should not be in range")
-        }
+        checkNodeWithinRange(nodes, range: range, fromNode: sideNode)
     }
 
     func testGetNodesInRangeSideWithObstruction() {
@@ -161,16 +148,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(nodes.count, 10, "Incorrect number of nodes in range")
 
-        for node in nodes.values {
-            let row = node.position.row
-            let col = node.position.col
-
-            let rowDiff = abs(row - sideRow)
-            let colDiff = abs(col - sideCol)
-
-            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
-                "Tile(\(row),\(col)) should not be in range")
-        }
+        checkNodeWithinRange(nodes, range: range, fromNode: sideNode)
     }
 
     func testGetNodesInRangeCorner() {
@@ -185,16 +163,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(nodes.count, 10, "Incorrect number of nodes in range")
 
-        for node in nodes.values {
-            let row = node.position.row
-            let col = node.position.col
-
-            let rowDiff = abs(row - cornerRow)
-            let colDiff = abs(col - cornerCol)
-
-            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
-                "Tile(\(row),\(col)) should not be in range")
-        }
+        checkNodeWithinRange(nodes, range: range, fromNode: cornerNode)
     }
 
     func testGetNodesInRangeCornerWithObstruction() {
@@ -212,16 +181,28 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(nodes.count, 7, "Incorrect number of nodes in range")
 
-        for node in nodes.values {
-            let row = node.position.row
-            let col = node.position.col
+        checkNodeWithinRange(nodes, range: range, fromNode: cornerNode)
+    }
 
-            let rowDiff = abs(row - cornerRow)
-            let colDiff = abs(col - cornerCol)
+    func checkNodesWithinRangeAllDirections(layers: [[Int:TileNode]],
+        range: Int, fromNode: TileNode) -> Int {
+            var total = 0
 
-            XCTAssertLessThanOrEqual(rowDiff + colDiff, range,
-                "Tile(\(row),\(col)) should not be in range")
-        }
+            for (i, layer) in enumerate(layers) {
+                total += layer.count
+                for node in layer.values {
+                    let row = node.position.row
+                    let col = node.position.col
+
+                    let rowDiff = abs(row - fromNode.position.row)
+                    let colDiff = abs(col - fromNode.position.col)
+
+                    XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
+                        "Tile(\(row),\(col)) should not be in range")
+                }
+            }
+
+            return total
     }
 
     func testGetNodesInRangeAllDirectionsCenter() {
@@ -236,21 +217,8 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = 0
-
-        for (i, layer) in enumerate(layers) {
-            total += layer.count
-            for node in layer.values {
-                let row = node.position.row
-                let col = node.position.col
-
-                let rowDiff = abs(row - centerRow)
-                let colDiff = abs(col - centerCol)
-
-                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
-                    "Tile(\(row),\(col)) should not be in range")
-            }
-        }
+        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+            fromNode: centerNode)
 
         XCTAssertEqual(total, 24,
             "Incorrect number of nodes in range for all direcitons")
@@ -271,21 +239,8 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = 0
-
-        for (i, layer) in enumerate(layers) {
-            total += layer.count
-            for node in layer.values {
-                let row = node.position.row
-                let col = node.position.col
-
-                let rowDiff = abs(row - centerRow)
-                let colDiff = abs(col - centerCol)
-
-                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
-                    "Tile(\(row),\(col)) should not be in range")
-            }
-        }
+        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+            fromNode: centerNode)
 
         XCTAssertEqual(total, 10,
             "Incorrect number of nodes in range for all direcitons")
@@ -303,21 +258,8 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = 0
-
-        for (i, layer) in enumerate(layers) {
-            total += layer.count
-            for node in layer.values {
-                let row = node.position.row
-                let col = node.position.col
-
-                let rowDiff = abs(row - sideRow)
-                let colDiff = abs(col - sideCol)
-
-                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
-                    "Tile(\(row),\(col)) should not be in range")
-            }
-        }
+        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+            fromNode: sideNode)
 
         XCTAssertEqual(total, 14,
             "Incorrect number of nodes in range for all direcitons")
@@ -338,21 +280,8 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = 0
-
-        for (i, layer) in enumerate(layers) {
-            total += layer.count
-            for node in layer.values {
-                let row = node.position.row
-                let col = node.position.col
-
-                let rowDiff = abs(row - sideRow)
-                let colDiff = abs(col - sideCol)
-
-                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
-                    "Tile(\(row),\(col)) should not be in range")
-            }
-        }
+        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+            fromNode: sideNode)
 
         XCTAssertEqual(total, 2,
             "Incorrect number of nodes in range for all direcitons")
@@ -370,21 +299,8 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = 0
-
-        for (i, layer) in enumerate(layers) {
-            total += layer.count
-            for node in layer.values {
-                let row = node.position.row
-                let col = node.position.col
-
-                let rowDiff = abs(row - cornerRow)
-                let colDiff = abs(col - cornerCol)
-
-                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
-                    "Tile(\(row),\(col)) should not be in range")
-            }
-        }
+        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+            fromNode: cornerNode)
 
         XCTAssertEqual(total, 8,
             "Incorrect number of nodes in range for all direcitons")
@@ -404,22 +320,8 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = 0
-
-        for (i, layer) in enumerate(layers) {
-            total += layer.count
-            for node in layer.values {
-                let row = node.position.row
-                let col = node.position.col
-
-                let rowDiff = abs(row - cornerRow)
-                let colDiff = abs(col - cornerCol)
-
-                XCTAssertLessThanOrEqual(max(rowDiff, colDiff), range,
-                    "Tile(\(row),\(col)) should not be in range")
-            }
-        }
-
+        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+            fromNode: cornerNode)
         XCTAssertEqual(total, 4,
             "Incorrect number of nodes in range for all direcitons")
     }
