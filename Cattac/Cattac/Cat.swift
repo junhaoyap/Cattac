@@ -17,10 +17,10 @@ class Cat: TileEntity {
     var name: String!
     var hp: Int
     
-    var defenceMods = [StatModification]()
-    var dmgMods = [StatModification]()
-    var moveRangeMods = [StatModification]()
-    var fartRangeMods = [StatModification]()
+    var defenceMods = [AttrModification]()
+    var dmgMods = [AttrModification]()
+    var moveRangeMods = [AttrModification]()
+    var fartRangeMods = [AttrModification]()
     
     /// Cat's defence attribute with modifications
     var defence: Int {
@@ -133,7 +133,7 @@ class Cat: TileEntity {
     ///
     /// :param: baseValue Base attribute of the cat
     /// :param: mods StatModifications to be applied to base attribute value
-    private func applyAttrMods(baseValue: Int, mods: [StatModification]) -> Int {
+    private func applyAttrMods(baseValue: Int, mods: [AttrModification]) -> Int {
         var value = baseValue
         for mod in dmgMods {
             value += mod.modification

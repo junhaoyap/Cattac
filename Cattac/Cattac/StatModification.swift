@@ -2,7 +2,7 @@
 /// Modification for cat attribute. Allows for 
 /// multiple modifications on a single attribute 
 /// that is decayed over a pre-defined turn.
-class StatModification {
+class AttrModification {
     
     /// Attribute modification amount.
     var modification: Int = 0
