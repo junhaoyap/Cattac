@@ -381,7 +381,8 @@ class GameEngine {
                     let puiDirection = Direction.create(attackDir!)!
                     self.gameManager[actionOf: player] = PuiAction(direction: puiDirection)
                 case .Fart:
-                    // do something!
+                    let fartRange = attackRange!
+                    self.gameManager[actionOf: player] = FartAction(range: fartRange)
                     break
                 case .Poop:
                     // do something!
