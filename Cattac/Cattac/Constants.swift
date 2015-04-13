@@ -19,6 +19,22 @@ struct Constants {
             GridIndex(9, 9)
         ]
         // magic numbers for now
+        
+        static let keyRows = "rows"
+        static let keyCols = "cols"
+        static let keyType = "type"
+        
+        static let keyEntities = "entities"
+        static let keyGridRow = "row"
+        static let keyGridCol = "col"
+        static let keyEntityName = "name"
+        static let keyWormholeDestNode = "destNode"
+        
+        static let keyPlayers = "players"
+        static let keyPlayer1 = "player1"
+        static let keyPlayer2 = "player2"
+        static let keyPlayer3 = "player3"
+        static let keyPlayer4 = "player4"
     }
     
     // default number of meows, standalone for now

@@ -4,6 +4,6 @@
 
 import Foundation
 
-struct HardLevel {
+class HardLevel: GameLevel {
     // nothing for now
 }

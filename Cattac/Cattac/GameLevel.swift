@@ -8,6 +8,16 @@ class GameLevel {
     
     var grid: Grid!
     
+    var levelType: String {
+        if self is BasicLevel {
+            return "basic"
+        } else if self is MediumLevel {
+            return "medium"
+        } else {
+            return "hard"
+        }
+    }
+    
     init(rows: Int, columns: Int) {
         numColumns = columns
         numRows = rows
@@ -32,5 +42,29 @@ class GameLevel {
     
     func getDoodad(atLocation gridIndex: GridIndex) -> Doodad {
         return grid[gridIndex]!.doodad!
+    }
+    
+    func compress() -> [String: AnyObject] {
+        var levelData:[String: AnyObject] = [:]
+        var entities: [[String: AnyObject]] = []
+        levelData[Constants.Level.keyRows] = numRows
+        levelData[Constants.Level.keyCols] = numColumns
+        levelData[Constants.Level.keyType] = levelType
+        levelData[Constants.Level.keyEntities] = entities
+        
+        for row in 0..<numRows {
+            for col in 0..<numColumns {
+                if let doodad = grid[row, col]!.doodad {
+                    let doodadData = [
+                        Constants.Level.keyEntityName: doodad.getName(),
+                        Constants.Level.keyGridRow: row,
+                        Constants.Level.keyGridCol: col
+                    ] as [String: AnyObject]
+                    entities += [doodadData]
+                }
+            }
+        }
+        
+        return levelData
     }
 }

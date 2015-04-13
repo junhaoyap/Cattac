@@ -4,6 +4,6 @@
 
 import Foundation
 
-class MediumLevel {
+class MediumLevel: GameLevel {
     // nothing for now
 }
