@@ -28,7 +28,7 @@ class GameEngine {
     private var gameAI: GameAI!
     
     /// States to advance, initialized at 1 to rollover PreStart state.
-    private var statesToAdvanced: Int = 1
+    private var statesToAdvance: Int = 1
 
     var gameManager: GameManager = GameManager()
     
@@ -120,7 +120,7 @@ class GameEngine {
     
     /// Called every update by gameScene (60 times per second)
     func gameLoop() {
-        if statesToAdvanced > 0 {
+        if statesToAdvance > 0 {
             advanceState()
         } else {
             // No need to execute state methods if state unchanged
@@ -174,7 +174,7 @@ class GameEngine {
     
     /// Trigger state advancement in game engine.
     private func nextState() {
-        statesToAdvanced++
+        statesToAdvance++
     }
     
     /// Effectively advances the state, GameState shall not be
@@ -210,7 +210,7 @@ class GameEngine {
         }
         
         gameStateListener?.onStateUpdate(state)
-        statesToAdvanced--
+        statesToAdvance--
     }
     
     private func precalculate() {
