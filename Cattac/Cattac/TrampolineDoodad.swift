@@ -2,7 +2,7 @@
 import SpriteKit
 
 class TrampolineDoodad: Doodad {
-    let rangeModification = StatModification(Constants.Doodad.trampolineMoveRangeModification, life: 1)
+    let rangeModification = AttrModification(Constants.Doodad.trampolineMoveRangeModification, life: 1)
     
     override init() {
         super.init()
