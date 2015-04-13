@@ -26,6 +26,9 @@ class GameEngine {
 
     // The AI engine that is used when multiplayer mode is not active
     private var gameAI: GameAI!
+    
+    /// States to advance, initialized at 1 to rollover PreStart state.
+    private var statesToAdvanced: Int = 1
 
     var gameManager: GameManager = GameManager()
     
@@ -33,7 +36,7 @@ class GameEngine {
     var playerNumber = 1
     
     // The initial game state is to be set at Initialization
-    var state: GameState = .Initialization
+    var state: GameState = .PreStart
     
     /// GameState listener, listens for update on state change.
     var gameStateListener: GameStateListener?
@@ -55,8 +58,6 @@ class GameEngine {
     
     /// The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
-    
-    var statesAdvanced: Int = 1
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
         println("init GameEngine as playerNumber \(playerNumber)")
@@ -117,17 +118,18 @@ class GameEngine {
         }
     }
     
+    /// Called every update by gameScene (60 times per second)
     func gameLoop() {
-        if statesAdvanced > 0 {
+        if statesToAdvanced > 0 {
             advanceState()
         } else {
-            // no need to execute state methods if state unchanged
+            // No need to execute state methods if state unchanged
             return
         }
         
         switch state {
-        case .Initialization:
-            // Game should never enter this state.
+        case .PreStart:
+            // Game should never enter this state, not even on first loop.
             break
         case .Precalculation:
             precalculate()
@@ -162,19 +164,24 @@ class GameEngine {
         }
     }
     
+    /// Releases all resources associated with this game, called
+    /// when game has ended.
     func end() {
         for ref in movementWatchers.values {
             ref.removeAllObservers()
         }
     }
     
+    /// Trigger state advancement in game engine.
     private func nextState() {
-        statesAdvanced++
+        statesToAdvanced++
     }
     
+    /// Effectively advances the state, GameState shall not be
+    /// altered out of this method.
     private func advanceState() {
         switch state {
-        case .Initialization:
+        case .PreStart:
             state = .Precalculation
         case .Precalculation:
             state = .PlayerAction
@@ -203,7 +210,7 @@ class GameEngine {
         }
         
         gameStateListener?.onStateUpdate(state)
-        statesAdvanced--
+        statesToAdvanced--
     }
     
     private func precalculate() {
@@ -259,6 +266,8 @@ class GameEngine {
         }
     }
     
+    /// Precalculate movement paths, not effected until executePlayerMove
+    /// is called.
     private func calculateMovementPaths() {
         for player in gameManager.players.values {
             var playerAtNode = gameManager[positionOf: player]!

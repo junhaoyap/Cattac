@@ -1,7 +1,7 @@
 // Enumeration of all the states of the game.
 enum GameState: Int {
     case
-    Initialization,
+    PreStart,
     Precalculation,
     PlayerAction,
     ServerUpdate,

@@ -21,6 +21,9 @@ class Poop {
         _sprite.alpha = 0.5
     }
     
+    /// Execute poop effects on given player
+    ///
+    /// :param: player Player to apply effect on
     func effect(player: Cat) {
         player.inflict(_damage)
         println("\(player.name) stumbled upon poop laid by \(pooper.name)")
