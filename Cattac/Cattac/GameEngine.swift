@@ -13,8 +13,9 @@ class GameEngine {
     private let catFactory = CatFactory.sharedInstance
     
     /// Firebase reference. To be wrapped in upcoming Server Protocol.
-    private let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    private let ref = Firebase(url: Constants.firebaseBaseUrl)
     
+    // The game grid
     private var grid: Grid!
     
     /// Dictionary of event trigger closures.
@@ -23,6 +24,7 @@ class GameEngine {
     /// Dictionary of Firebase references watching a data value.
     private var movementWatchers: [Int: Firebase] = [:]
 
+    // The AI engine that is used when multiplayer mode is not active
     private var gameAI: GameAI!
 
     var gameManager: GameManager = GameManager()
@@ -30,6 +32,7 @@ class GameEngine {
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
+    // The initial game state is to be set at precalculation
     var state: GameState = .Precalculation
     
     /// GameState listener, listens for update on state change.
@@ -47,8 +50,10 @@ class GameEngine {
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
 
+    // Whether the game is currently in multiplayer mode
     var multiplayer: Bool
     
+    // The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
@@ -199,15 +204,17 @@ class GameEngine {
 
         let currentPlayerTileNode = gameManager[positionOf: currentPlayer]!
         let currentPlayerMoveToTileNode = gameManager[moveToPositionOf: currentPlayer]!
+        let currentPlayerAction = gameManager[actionOf: currentPlayer]!
         
         let currentPlayerMoveData = [
             "fromRow": currentPlayerTileNode.position.row,
             "fromCol": currentPlayerTileNode.position.col,
             "toRow": currentPlayerMoveToTileNode.position.row,
             "toCol": currentPlayerMoveToTileNode.position.col,
-            "attackType": "",
-            "attackDir": "",
-            "attackDmg": ""
+            "attackType": currentPlayerAction.actionType.description,
+            "attackDir": currentPlayerAction.direction.description,
+            "attackDmg": currentPlayer.puiDmg,
+            "attackRange": currentPlayerAction.range
         ]
         
         playerMoveUpdateRef.updateChildValues(currentPlayerMoveData)
@@ -369,5 +376,9 @@ class GameEngine {
     
     private func notifyAction() {
         actionListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
+    }
+    
+    func releaseAllListeners() {
+        ref.removeAllObservers()
     }
 }
