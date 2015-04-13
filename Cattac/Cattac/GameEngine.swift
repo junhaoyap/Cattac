@@ -13,8 +13,9 @@ class GameEngine {
     private let catFactory = CatFactory.sharedInstance
     
     /// Firebase reference. To be wrapped in upcoming Server Protocol.
-    private let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    private let ref = Firebase(url: Constants.firebaseBaseUrl)
     
+    // The game grid
     private var grid: Grid!
     
     /// Dictionary of event trigger closures.
@@ -23,6 +24,7 @@ class GameEngine {
     /// Dictionary of Firebase references watching a data value.
     private var movementWatchers: [Int: Firebase] = [:]
 
+    // The AI engine that is used when multiplayer mode is not active
     private var gameAI: GameAI!
 
     var gameManager: GameManager = GameManager()
@@ -30,6 +32,7 @@ class GameEngine {
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
+    // The initial game state is to be set at precalculation
     var state: GameState = .Precalculation
     
     /// GameState listener, listens for update on state change.
@@ -47,8 +50,10 @@ class GameEngine {
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
 
+    // Whether the game is currently in multiplayer mode
     var multiplayer: Bool
     
+    // The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
@@ -199,16 +204,31 @@ class GameEngine {
 
         let currentPlayerTileNode = gameManager[positionOf: currentPlayer]!
         let currentPlayerMoveToTileNode = gameManager[moveToPositionOf: currentPlayer]!
+        let currentPlayerAction = gameManager[actionOf: currentPlayer]
         
-        let currentPlayerMoveData = [
-            "fromRow": currentPlayerTileNode.position.row,
-            "fromCol": currentPlayerTileNode.position.col,
-            "toRow": currentPlayerMoveToTileNode.position.row,
-            "toCol": currentPlayerMoveToTileNode.position.col,
-            "attackType": "",
-            "attackDir": "",
-            "attackDmg": ""
-        ]
+        var currentPlayerMoveData = [:]
+        
+        if currentPlayerAction == nil {
+            currentPlayerMoveData = [
+                "fromRow": currentPlayerTileNode.position.row,
+                "fromCol": currentPlayerTileNode.position.col,
+                "toRow": currentPlayerMoveToTileNode.position.row,
+                "toCol": currentPlayerMoveToTileNode.position.col,
+                "attackType": "",
+                "attackDir": "",
+                "attackRange": ""
+            ]
+        } else {
+            currentPlayerMoveData = [
+                "fromRow": currentPlayerTileNode.position.row,
+                "fromCol": currentPlayerTileNode.position.col,
+                "toRow": currentPlayerMoveToTileNode.position.row,
+                "toCol": currentPlayerMoveToTileNode.position.col,
+                "attackType": currentPlayerAction!.actionType.description,
+                "attackDir": currentPlayerAction!.direction.description,
+                "attackRange": currentPlayerAction!.range
+            ]
+        }
         
         playerMoveUpdateRef.updateChildValues(currentPlayerMoveData)
     }
@@ -347,13 +367,34 @@ class GameEngine {
                 let moveToRow = snapshot.value.objectForKey("toRow") as? Int
                 let moveToCol = snapshot.value.objectForKey("toCol") as? Int
                 
+                let attackType = snapshot.value.objectForKey("attackType") as? String
+                let attackDir = snapshot.value.objectForKey("attackDir") as? String
+                let attackDmg = snapshot.value.objectForKey("attackDmg") as? Int
+                let attackRange = snapshot.value.objectForKey("attackRange") as? Int
+                
                 let player = self.gameManager[Constants.catArray[i - 1]]!
+                
                 self.gameManager[positionOf: player] = self.grid[fromRow!, fromCol!]
                 self.gameManager[moveToPositionOf: player] = self.grid[moveToRow!, moveToCol!]
                 println("\(player.name)[\(i)] moving to \(moveToRow!),\(moveToCol!)")
                 
+                let playerActionType = ActionType.create(attackType!)!
+                
+                switch playerActionType {
+                case .Pui:
+                    let puiDirection = Direction.create(attackDir!)!
+                    self.gameManager[actionOf: player] = PuiAction(direction: puiDirection)
+                case .Fart:
+                    let fartRange = attackRange!
+                    self.gameManager[actionOf: player] = FartAction(range: fartRange)
+                    break
+                case .Poop:
+                    // do something!
+                    break
+                }
+                println("\(player.name)[\(i)] \(playerActionType.description)")
+                
                 self.otherPlayersMoved++
-                println(self.otherPlayersMoved)
                 
                 if self.otherPlayersMoved == 3 {
                     self.trigger("allPlayersMoved")
@@ -373,5 +414,9 @@ class GameEngine {
     
     private func notifyAction() {
         actionListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
+    }
+    
+    func releaseAllListeners() {
+        ref.removeAllObservers()
     }
 }

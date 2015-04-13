@@ -238,6 +238,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
     }
     
+    /// When player tries to perform movement actions
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
@@ -249,6 +250,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
     }
     
+    /// When player tries to change their movement actions
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
@@ -273,6 +275,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
     }
     
+    /// This is automatically called at every frame by the scene
     override func update(currentTime: CFTimeInterval) {
         gameEngine.gameLoop()
     }
