@@ -64,7 +64,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     init(size: CGSize, level: GameLevel, currentPlayerNumber: Int,
         multiplayer: Bool) {
             super.init(size: size)
-            
+
             self.level = level
             gameEngine = GameEngine(grid: level.grid,
                 playerNumber: currentPlayerNumber, multiplayer: multiplayer)
@@ -80,6 +80,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             anchorPoint = CGPoint(x: 0.5, y: 0.5)
             
             self.addChild(gameLayer)
+
+            setBackgroundImage("background.jpg")
             
             // position of the general game layer
             let layerPosition = sceneUtils.getLayerPosition()
@@ -103,6 +105,28 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             initializePlayerPreview(currentPlayerNumber)
             addTiles()
             addPlayers()
+    }
+
+    /// Sets the game background image.
+    ///
+    /// :param: name The background image file.
+    private func setBackgroundImage(name: String) {
+        let image = UIImage(named: name)!
+        let backgroundCGImage = image.CGImage
+        let textureSize = CGRectMake(0, 0, image.size.width, image.size.height)
+
+        UIGraphicsBeginImageContext(size)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextDrawTiledImage(context, textureSize, backgroundCGImage)
+        let tiledBackground = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        let backgroundTexture = SKTexture(CGImage: tiledBackground.CGImage)
+        let backgroundImage  = SKSpriteNode(texture: backgroundTexture)
+        backgroundImage.yScale = -1
+        backgroundImage.zPosition = -10
+
+        self.addChild(backgroundImage)
     }
 
     /// Initializes the action buttons for the scene.
@@ -214,6 +238,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
     }
     
+    /// When player tries to perform movement actions
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
@@ -225,6 +250,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
     }
     
+    /// When player tries to change their movement actions
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(gameLayer)
@@ -249,6 +275,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         }
     }
     
+    /// This is automatically called at every frame by the scene
     override func update(currentTime: CFTimeInterval) {
         gameEngine.gameLoop()
     }

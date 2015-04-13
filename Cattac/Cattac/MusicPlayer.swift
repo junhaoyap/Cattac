@@ -6,6 +6,24 @@
 import Foundation
 import AVFoundation
 
+private let _musicPlayer: MusicPlayer = MusicPlayer()
+
 class MusicPlayer {
-    // empty for now
+    var nyanBackgroundMusicPlayer: AVAudioPlayer!
+    
+    class var sharedInstance: MusicPlayer {
+        return _musicPlayer
+    }
+    
+    private init() {
+        let nyanBackgroundMusic = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("NyanBackgroundMusic", ofType: "mp3")!)
+        nyanBackgroundMusicPlayer = AVAudioPlayer(contentsOfURL: nyanBackgroundMusic, error: nil)
+        
+        nyanBackgroundMusicPlayer.numberOfLoops = -1
+        nyanBackgroundMusicPlayer.prepareToPlay()
+    }
+    
+    func playBackgroundMusic() {
+        nyanBackgroundMusicPlayer.play()
+    }
 }

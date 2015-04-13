@@ -78,7 +78,10 @@ class GameViewController: UIViewController {
             skView.presentScene(nil)
         }
         
-        // confirm exit game
+        // Release all game engine's listeners first
+        scene.gameEngine.releaseAllListeners()
+        
+        // TODO: confirm whether to exit game
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
