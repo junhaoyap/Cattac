@@ -82,6 +82,7 @@
 		7689FC981ADAD41E0086613D /* GameAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7689FC971ADAD41E0086613D /* GameAI.swift */; };
 		76D0F60B1ADAF65700CB91B3 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0F60A1ADAF65700CB91B3 /* GameState.swift */; };
 		76D0F60F1ADBA69100CB91B3 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60E1ADBA69100CB91B3 /* background.jpg */; };
+		76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60C1ADB261000CB91B3 /* Fart.png */; };
 		76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DD1ABFE6190056B5F5 /* Grumpy.png */; };
 		76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DE1ABFE6190056B5F5 /* Nala.png */; };
 		76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DF1ABFE6190056B5F5 /* Nyan.png */; };
@@ -185,6 +186,7 @@
 		7689FC971ADAD41E0086613D /* GameAI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
 		76D0F60A1ADAF65700CB91B3 /* GameState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		76D0F60E1ADBA69100CB91B3 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = background.jpg; path = Images.xcassets/background.jpg; sourceTree = "<group>"; };
+		76D0F60C1ADB261000CB91B3 /* Fart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Fart.png; path = Images.xcassets/Fart.png; sourceTree = "<group>"; };
 		76FC46DD1ABFE6190056B5F5 /* Grumpy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grumpy.png; path = Images.xcassets/Grumpy.png; sourceTree = "<group>"; };
 		76FC46DE1ABFE6190056B5F5 /* Nala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nala.png; path = Images.xcassets/Nala.png; sourceTree = "<group>"; };
 		76FC46DF1ABFE6190056B5F5 /* Nyan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nyan.png; path = Images.xcassets/Nyan.png; sourceTree = "<group>"; };
@@ -502,6 +504,7 @@
 		3471CA6E1ACEB7E900B0E68D /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				76D0F60C1ADB261000CB91B3 /* Fart.png */,
 				763E71301AD2FC6800E90EF0 /* DirectionSelected.png */,
 				763E712C1AD2F6AE00E90EF0 /* FartButtonPressed.png */,
 				763E712D1AD2F6AE00E90EF0 /* PuiButtonPressed.png */,
@@ -671,6 +674,7 @@
 				76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */,
 				763E71261AD2ED0400E90EF0 /* FartButton.png in Resources */,
 				763E712F1AD2F6AE00E90EF0 /* PuiButtonPressed.png in Resources */,
+				76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */,
 				342584EE1AACDB03004A3CFD /* Images.xcassets in Resources */,
 				763E71201AD2E0EB00E90EF0 /* Direction.png in Resources */,
 				763E71231AD2EAB500E90EF0 /* PuiButton.png in Resources */,
