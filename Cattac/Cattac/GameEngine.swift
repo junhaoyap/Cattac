@@ -50,10 +50,10 @@ class GameEngine {
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
 
-    // Whether the game is currently in multiplayer mode
+    /// Whether the game is currently in multiplayer mode
     var multiplayer: Bool
     
-    // The number of players that moved that the local player is listening to
+    /// The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
@@ -277,6 +277,7 @@ class GameEngine {
     }
     
     private func postExecute() {
+        
         gameManager.advanceTurn()
         currentPlayer.postExecute()
     }
@@ -302,7 +303,13 @@ class GameEngine {
     ///
     /// :param: cat The player's action to execute
     func executePlayerAction(player: Cat) -> Action? {
-        return gameManager[actionOf: player]
+        let action = gameManager[actionOf: player]
+        
+        if action != nil && action is PoopAction {
+            let targetNode = action!.targetNode!
+            targetNode.poop = Poop(player, player.poopDmg)
+        }
+        return action
     }
     
     func trigger(event: String) {

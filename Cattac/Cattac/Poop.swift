@@ -1,24 +1,29 @@
 
-class Poop: TileEntity {
+import SpriteKit
+
+class Poop {
     private let _pooper: Cat
     private let _damage: Int
-    private var _removed: Bool
+    private let _sprite: SKSpriteNode
     
     var pooper: Cat {
         return _pooper
     }
     
-    var removed: Bool {
-        return _removed
+    var sprite: SKSpriteNode {
+        return _sprite
     }
     
     init(_ pooper: Cat, _ damage: Int) {
         _pooper = pooper
         _damage = damage
+        _sprite = SKSpriteNode(imageNamed: "Poop.png")
+        _sprite.alpha = 0.5
     }
     
     func effect(player: Cat) {
         player.inflict(_damage)
-        _removed = true
+        println("\(player.name) stumbled upon poop laid by \(pooper.name)")
     }
+    
 }

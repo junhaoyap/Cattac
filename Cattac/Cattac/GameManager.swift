@@ -104,6 +104,18 @@ class GameManager {
     func advanceTurn() {
         _playerPositions = _playerMoveToPositions
         _playerActions = [:]
+        
+        // might need to move all these calculations (with those
+        // in precalculate) back to game engine, to call UI
+        // animations when effect
+        for (playerName, tileNode) in _playerPositions {
+            var player = _players[playerName]!
+            
+            if let poop = tileNode.poop {
+                poop.effect(player)
+                tileNode.poop = nil
+            }
+        }
     }
 
     func precalculate() {
