@@ -9,6 +9,10 @@ struct Constants {
     struct Level {
         static let basicRows: Int = 10
         static let basicColumns: Int = 10
+        static let mediumRows: Int = 13
+        static let mediumColumns: Int = 13
+        static let hardRows: Int = 8
+        static let hardColumns: Int = 8
         static let defaultDoodads: Int = 8
         static let defaultWalls: Int = 10
         
@@ -23,6 +27,10 @@ struct Constants {
         static let keyRows = "rows"
         static let keyCols = "cols"
         static let keyType = "type"
+        
+        static let valueTypeBasic = "basic"
+        static let valueTypeMedium = "medium"
+        static let valueTypeHard = "hard"
         
         static let keyEntities = "entities"
         static let keyGridRow = "row"

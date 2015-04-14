@@ -50,7 +50,6 @@ class GameLevel {
         levelData[Constants.Level.keyRows] = numRows
         levelData[Constants.Level.keyCols] = numColumns
         levelData[Constants.Level.keyType] = levelType
-        levelData[Constants.Level.keyEntities] = entities
         
         for row in 0..<numRows {
             for col in 0..<numColumns {
@@ -60,11 +59,15 @@ class GameLevel {
                         Constants.Level.keyGridRow: row,
                         Constants.Level.keyGridCol: col
                     ] as [String: AnyObject]
+                    
                     entities += [doodadData]
                 }
             }
         }
+        levelData[Constants.Level.keyEntities] = entities
         
         return levelData
+        // later when we add in the lobby part and we want to try,
+        // we should generate this and throw it into firebase
     }
 }

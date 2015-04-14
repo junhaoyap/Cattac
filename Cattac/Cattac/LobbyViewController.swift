@@ -128,7 +128,7 @@ class LobbyViewController: UIViewController {
                     didJoinLobby = true
                     
                     self.playerNumber = 2
-                    self.waitForGameStart()
+                    self.initiateGameStart()
                 default:
                     println("HOLY MOLLY, LESS EPIC LOBBY ERROR")
                 }
@@ -147,17 +147,18 @@ class LobbyViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "gameStartSegue" {
             if let destinationVC = segue.destinationViewController as? GameViewController {
-                destinationVC.level = levelGenerator.generateBasic()
+                let level = levelGenerator.generateBasic()
+                destinationVC.level = level
                 destinationVC.playerNumber = self.playerNumber
                 destinationVC.multiplayer = true
                 
                 let gameRef = ref
                     .childByAppendingPath("games")
-                    .childByAppendingPath("game0")
+                    .childByAppendingPath("game-test")
                 gameRef.removeValue()
                 
                 let gameToWrite = [
-                    "generatedGame": levelGenerator.toDictionaryForFirebase()
+                    "generatedGame": level.compress()
                 ]
                 
                 gameRef.setValue(gameToWrite)
@@ -197,31 +198,19 @@ class LobbyViewController: UIViewController {
         let gameToWatchRef = ref.childByAppendingPath("gameHelper")
         
         let gameToReceiveRef = ref.childByAppendingPath("games")
-            .childByAppendingPath("game0")
+            .childByAppendingPath("game-test")
             .childByAppendingPath("generatedGame")
         
         // for now let's assume we only have 1 game ongoing at any one point, alpha
         // testing code :)
         
         gameToWatchRef.observeSingleEventOfType(.ChildChanged, withBlock: {
-            snapshot in
+            gameHelperSnapshot in
             
             gameToReceiveRef.observeSingleEventOfType(.Value, withBlock: {
-                otherSnapshot in
+                gameSnapshot in
                 
-                var dictionaryToBuildFrom: [Int: String] = [:]
-                
-                var counter = 0
-                
-                for each in otherSnapshot.children.allObjects as [FDataSnapshot] {
-                    let doodadValue = each.value as? String
-                    
-                    dictionaryToBuildFrom[counter++] = doodadValue
-                }
-                
-                self.levelToBuildFrom = self.levelGenerator.createBasicGameFromDictionary(
-                    dictionaryToBuildFrom
-                )
+                self.levelToBuildFrom = self.levelGenerator.createGame(fromSnapshot: gameSnapshot)
                 
                 self.performSegueWithIdentifier("waitGameStartSegue", sender: nil)
             })

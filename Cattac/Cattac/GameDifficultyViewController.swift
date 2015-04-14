@@ -23,14 +23,15 @@ class GameDifficultyViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "bypassSegue" {
             if let destinationVC = segue.destinationViewController as? GameViewController{
-                destinationVC.level = levelGenerator.generateBasic()
+                let level = levelGenerator.generateBasic()
+                destinationVC.level = level
                 
                 let gameRef = ref
                     .childByAppendingPath("games")
                     .childByAppendingPath("game0")
                 
                 let gameToWrite = [
-                    "generatedGame": levelGenerator.toDictionaryForFirebase()
+                    "generatedGame": level
                 ]
                 
                 gameRef.updateChildValues(gameToWrite)

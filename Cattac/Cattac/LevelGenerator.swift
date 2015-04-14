@@ -10,7 +10,6 @@ private let _levelGeneratorSharedInstance: LevelGenerator = LevelGenerator()
 class LevelGenerator {
     
     let doodadFactory = DoodadFactory.sharedInstance
-    var levelToShare: GameLevel?
     
     private init() {
     }
@@ -19,11 +18,17 @@ class LevelGenerator {
         return _levelGeneratorSharedInstance
     }
     
-    //  func generate(LevelType, DoodadsMix, WhateverConfig) { ??? return profit }
-    
     func generateBasic() -> BasicLevel {
         let level = BasicLevel()
         
+        constructLevel(level)
+        
+        generateDoodadAndWalls(level)
+        
+        return level
+    }
+    
+    private func constructLevel(level: GameLevel) {
         for row in 0..<level.numRows {
             for column in 0..<level.numColumns {
                 let tileNode = TileNode(row: row, column: column)
@@ -32,12 +37,6 @@ class LevelGenerator {
         }
         
         level.grid.constructGraph()
-        
-        generateDoodadAndWalls(level)
-        
-        levelToShare = level
-        
-        return level
     }
     
     private func getValidDoodadLocation(level: GameLevel) -> GridIndex {
@@ -90,67 +89,33 @@ class LevelGenerator {
         }
     }
     
-    func createBasicGameFromDictionary(aDictionaryFromFirebase: [Int: String]) -> BasicLevel {
-        let level = BasicLevel()
+    func createGame(fromSnapshot data: FDataSnapshot) -> GameLevel {
+        var level: GameLevel!
+        let rows = data.value.objectForKey(Constants.Level.keyRows) as Int
+        let cols = data.value.objectForKey(Constants.Level.keyCols) as Int
+        let type = data.value.objectForKey(Constants.Level.keyType) as String
         
-        for row in 0..<level.numRows {
-            for column in 0..<level.numColumns {
-                let tileNode = TileNode(row: row, column: column)
-                level.grid[row, column] = tileNode
-            }
+        if type == Constants.Level.valueTypeBasic {
+            level = BasicLevel(rows: rows, columns: cols)
+        } else if type == Constants.Level.valueTypeMedium {
+            level = MediumLevel(rows: rows, columns: cols)
+        } else {
+            level = HardLevel(rows: rows, columns: cols)
         }
         
-        level.grid.constructGraph()
+        constructLevel(level)
         
-        for key in aDictionaryFromFirebase.keys {
-            let row: Int = key / 10
-            let col: Int = key % 10
+        let entitiesData = data.value.objectForKey(Constants.Level.keyEntities)! as [FDataSnapshot]
+        
+        for childSnapshot in [FDataSnapshot](entitiesData) {
+            let doodadName = childSnapshot.value.objectForKey(Constants.Level.keyEntityName)! as String
+            let doodadRow = childSnapshot.value.objectForKey(Constants.Level.keyGridRow)! as Int
+            let doodadCol = childSnapshot.value.objectForKey(Constants.Level.keyGridCol)! as Int
+            let doodad = doodadFactory.createDoodad(doodadName)!
             
-            let location = GridIndex(row, col)
-            
-            if !(aDictionaryFromFirebase[key] == "") {
-                // if the string we get from firebase is not empty then it has
-                // a doodad
-                
-                let theDoodad = doodadFactory.createDoodad(aDictionaryFromFirebase[key]!)
-                
-                if theDoodad != nil {
-                    if theDoodad!.getName() == "wall" {
-                        let tileNode = level.addDoodad(theDoodad!, atLocation:location)
-                        level.grid.removeNodeFromGraph(tileNode)
-                    } else {
-                        level.addDoodad(theDoodad!, atLocation: location)
-                    }
-                } else {
-                    println("jialat fail")
-                }
-            }
+            level.addDoodad(doodad, atLocation: GridIndex(doodadRow, doodadCol))
         }
         
         return level
     }
-    
-    // use only after the level has been generated
-    func toDictionaryForFirebase() -> [String: String] {
-        var theDictionary: [String: String] = [:]
-        
-        for i in 0...99 {
-            let row: Int = i / 10
-            let col: Int = i % 10
-            
-            let location = GridIndex(row, col)
-            
-            if levelToShare!.hasDoodad(atLocation: location) {
-                theDictionary[String(i)] = levelToShare!.getDoodad(atLocation: location).getName()
-            } else {
-                theDictionary[String(i)] = ""
-                // empty string signifies that the node is empty and should
-                // be read that way when read from firebase
-            }
-        }
-        
-        return theDictionary
-    }
-    // later when we add in the lobby part and we want to try, 
-    // we should generate this and throw it into firebase
 }
