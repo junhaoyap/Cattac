@@ -128,7 +128,7 @@ class LobbyViewController: UIViewController {
                     didJoinLobby = true
                     
                     self.playerNumber = 2
-                    self.initiateGameStart()
+                    self.waitForGameStart()
                 default:
                     println("HOLY MOLLY, LESS EPIC LOBBY ERROR")
                 }
