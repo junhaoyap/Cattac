@@ -38,10 +38,13 @@ class GameScene: SKScene, GameStateListener, ActionListener {
 
     /// Button that sets the action of the player to Poop.
     private var poopButton: SKActionButtonNode!
-
+    
     /// Preview of the next position of the current player when setting the
     /// next tile to move to.
     private var previewNode: SKSpriteNode!
+    
+    /// Preview of poop when used
+    private var poopPreviewNode: SKSpriteNode!
 
     /// Preview of the directional buttons that appears when the pui action 
     /// button is selected.
@@ -103,6 +106,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             /// Additional initialization
             initializeButtons(buttonSpacing)
             initializePlayerPreview(currentPlayerNumber)
+            initializePoopPreview()
             addTiles()
             addPlayers()
     }
@@ -175,8 +179,17 @@ class GameScene: SKScene, GameStateListener, ActionListener {
 
         previewNode.size = sceneUtils.tileSize
         previewNode.alpha = 0.5
-        entityLayer.addChild(previewNode)
         previewNode.hidden = true
+        entityLayer.addChild(previewNode)
+    }
+    
+    /// Initializes the preview node for the poop action.
+    private func initializePoopPreview() {
+        poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
+        poopPreviewNode.size = sceneUtils.tileSize
+        poopPreviewNode.alpha = 0.5
+        poopPreviewNode.hidden = true
+        entityLayer.addChild(poopPreviewNode)
     }
 
     /// Adds the tiles to the grid based on the given level.
@@ -441,6 +454,8 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case .MovesExecution:
             movePlayers()
         case .ActionsExecution:
+            // intuitively hide poop preview only after pooper moved away
+            hidePoop()
             performActions()
         default:
             break
@@ -456,10 +471,11 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             switch action.actionType {
             case .Pui:
                 drawDirectionArrows(action as PuiAction)
+                hidePoop()
             case .Fart:
-                break
+                hidePoop()
             case .Poop:
-                break
+                drawPoop(action as PoopAction)
             }
         }
     }
@@ -483,6 +499,20 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         
         puiButton.addChild(directionSprite)
         previewDirectionNodes = directionSprite
+    }
+    
+    /// Draws the preview poop on tile pooper is on.
+    ///
+    /// :param: action The PoopAction object.
+    private func drawPoop(action: PoopAction) {
+        let referenceSprite = action.targetNode!.sprite
+        poopPreviewNode.position = referenceSprite.position
+        poopPreviewNode.hidden = false
+    }
+    
+    /// Removes the poop preview from tile
+    private func hidePoop() {
+        poopPreviewNode.hidden = true
     }
 
     /// Clears the directional arrows for the pui action button.

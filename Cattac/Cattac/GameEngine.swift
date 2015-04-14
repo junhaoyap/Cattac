@@ -26,14 +26,17 @@ class GameEngine {
 
     // The AI engine that is used when multiplayer mode is not active
     private var gameAI: GameAI!
+    
+    /// States to advance, initialized at 1 to rollover PostExecution state.
+    private var statesToAdvance: Int = 1
 
     var gameManager: GameManager = GameManager()
     
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
-    // The initial game state is to be set at precalculation
-    var state: GameState = .Precalculation
+    // The initial game state is to be set at PostExecution
+    var state: GameState = .PostExecution
     
     /// GameState listener, listens for update on state change.
     var gameStateListener: GameStateListener?
@@ -50,10 +53,10 @@ class GameEngine {
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
 
-    // Whether the game is currently in multiplayer mode
+    /// Whether the game is currently in multiplayer mode
     var multiplayer: Bool
     
-    // The number of players that moved that the local player is listening to
+    /// The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
@@ -95,68 +98,85 @@ class GameEngine {
         }
 
         self.on("playerActionEnded") {
-            self.nextState()
+            self.triggerStateAdvance()
         }
         
         self.on("allPlayersMoved") {
-            self.nextState()
+            self.triggerStateAdvance()
         }
         
         self.on("movementAnimationEnded") {
             if self.gameManager.movementsCompleted {
-                self.nextState()
+                self.triggerStateAdvance()
             }
         }
 
         self.on("actionAnimationEnded") {
             if self.gameManager.actionsCompleted {
-                self.nextState()
+                self.triggerStateAdvance()
             }
         }
     }
     
+    /// Called every update by gameScene (60 times per second)
     func gameLoop() {
+        if statesToAdvance > 0 {
+            advanceState()
+        } else {
+            // No need to execute state methods if state unchanged
+            return
+        }
+        
         switch state {
         case .Precalculation:
             precalculate()
-            nextState()
+            triggerStateAdvance()
         case .PlayerAction:
             break
         case .ServerUpdate:
             updateServer()
-            nextState()
+            triggerStateAdvance()
         case .WaitForAll:
             break
         case .AICalculation:
             gameAI.calculateTurn()
-            nextState()
+            triggerStateAdvance()
         case .StartMovesExecution:
             calculateMovementPaths()
-            nextState()
+            triggerStateAdvance()
         case .MovesExecution:
             // This state waits for the movement ended event that is triggered
             // from the scene.
             break
         case .StartActionsExecution:
             calculationActions()
-            nextState()
+            triggerStateAdvance()
         case .ActionsExecution:
             // This state waits for the action ended event that is triggered
             // from the scene.
             break
         case .PostExecution:
             postExecute()
-            nextState()
+            triggerStateAdvance()
         }
     }
     
+    /// Releases all resources associated with this game, called
+    /// when game has ended.
     func end() {
         for ref in movementWatchers.values {
             ref.removeAllObservers()
         }
     }
     
-    private func nextState() {
+    /// Trigger state advancement in game engine.
+    private func triggerStateAdvance() {
+        statesToAdvance++
+    }
+    
+    /// Effectively advances the state, GameState shall not be
+    /// altered out of this method.
+    private func advanceState() {
         switch state {
         case .Precalculation:
             state = .PlayerAction
@@ -185,6 +205,7 @@ class GameEngine {
         }
         
         gameStateListener?.onStateUpdate(state)
+        statesToAdvance--
     }
     
     private func precalculate() {
@@ -237,11 +258,11 @@ class GameEngine {
     func setCurrentPlayerMoveToPosition(node: TileNode) {
         if node != gameManager[moveToPositionOf: currentPlayer] {
             gameManager[moveToPositionOf: currentPlayer] = node
-            gameManager[actionOf: currentPlayer] = nil
-            notifyAction()
         }
     }
     
+    /// Precalculate movement paths, not effected until executePlayerMove
+    /// is called.
     private func calculateMovementPaths() {
         for player in gameManager.players.values {
             var playerAtNode = gameManager[positionOf: player]!
@@ -250,6 +271,7 @@ class GameEngine {
                 toNode: playerMoveToNode)
             
             if let doodad = playerMoveToNode.doodad {
+                doodad.effect(player)
                 if doodad is WormholeDoodad {
                     let destNode = (doodad as WormholeDoodad).getDestinationNode()
                     gameManager[moveToPositionOf: player]! = destNode
@@ -301,7 +323,12 @@ class GameEngine {
     ///
     /// :param: cat The player's action to execute
     func executePlayerAction(player: Cat) -> Action? {
-        return gameManager[actionOf: player]
+        let action = gameManager[actionOf: player]
+        if action != nil && action is PoopAction {
+            let targetNode = action!.targetNode!
+            targetNode.poop = Poop(player, player.poopDmg)
+        }
+        return action
     }
     
     func trigger(event: String) {
