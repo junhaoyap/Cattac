@@ -5,10 +5,20 @@
 import UIKit
 
 class LobbyViewController: UIViewController {
-    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    private let ref = Firebase(url: Constants.Firebase.baseUrl)
+    //private var gameStartObserver
     let levelGenerator = LevelGenerator.sharedInstance
-    var levelToBuildFrom: GameLevel!
+    var level: GameLevel!
     var playerNumber: Int!
+    
+    var gameRef: Firebase {
+        return ref.childByAppendingPath(Constants.Firebase.nodeGames)
+            .childByAppendingPath(Constants.Firebase.nodeGame)
+    }
+    
+    var lobbyRef: Firebase {
+        return gameRef.childByAppendingPath(Constants.Firebase.nodeLobby)
+    }
     
     // TODO check if the player who is joining the game has already joined,
     // if not he can join as multiplayer players from the same game and
@@ -17,200 +27,96 @@ class LobbyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let lobbiesRef = self.ref.childByAppendingPath("lobbies")
-        
-        var lobbyId = 0
-        var didJoinLobby = false
-
-        let thisLobbyRef = lobbiesRef.childByAppendingPath("lobby" + String(lobbyId))
-        
-        thisLobbyRef.observeSingleEventOfType(.Value, withBlock: {
+        joinLobby()
+    }
+    
+    func joinLobby() {
+        lobbyRef.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
             
-            let hasGameStarted = snapshot.value["hasGameStarted"] as? Int
-            let lastActiveTime = snapshot.value["lastActive"] as? String
-            let player1 = snapshot.value["player1"] as? String
-            let player2 = snapshot.value["player2"] as? String
-            let player3 = snapshot.value["player3"] as? String
-            let player4 = snapshot.value["player4"] as? String
+            let lastActiveTimeString = snapshot.value["lastActive"] as? String
+            let lastActiveTime = lastActiveTimeString == nil ?
+                nil : DateUtils.dateFormatter.dateFromString(lastActiveTimeString!)
             
-            var numberOfPlayers = 0
+            let currentTime = DateUtils.dateFormatter.stringFromDate(NSDate())
             
-            let players = [player1!, player2!, player3!, player4!]
-            
-            for player in players {
-                if !player.isEmpty {
-                    numberOfPlayers++
-                }
-            }
-            
-            var dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "MM-dd-yyyy HH:mm"
-            let lastActiveDateFormat = dateFormatter.dateFromString(lastActiveTime!)
-            let now = NSDate()
-            let nowDateFormat = dateFormatter.stringFromDate(now)
-            
-            let calendar = NSCalendar.currentCalendar()
-            let comps = NSDateComponents()
-            comps.minute = 1
-            
-            let oneMinuteFromLastActive = calendar.dateByAddingComponents(comps, toDate: lastActiveDateFormat!, options: NSCalendarOptions.allZeros)
-            
-            if didJoinLobby == true {
-                // do not want to do anything anymore
-            } else if hasGameStarted == 1 || self.isAfter(oneMinuteFromLastActive!, dateTwo: now) {
-                // join in as the first player and empty all the players and set hasGameStarted == 0
-                
-                let newPlayer1 = self.ref.authData.uid
-                let newPlayer2 = ""
-                let newPlayer3 = ""
-                let newPlayer4 = ""
-                
-                let toWriteTo1 = thisLobbyRef.childByAppendingPath("player1")
-                let toWriteTo2 = thisLobbyRef.childByAppendingPath("player2")
-                let toWriteTo3 = thisLobbyRef.childByAppendingPath("player3")
-                let toWriteTo4 = thisLobbyRef.childByAppendingPath("player4")
-                
-                toWriteTo1.setValue(newPlayer1)
-                toWriteTo2.setValue(newPlayer2)
-                toWriteTo3.setValue(newPlayer3)
-                toWriteTo4.setValue(newPlayer4)
-                
-                let setGameNotStartedRef = thisLobbyRef.childByAppendingPath("hasGameStarted")
-                setGameNotStartedRef.setValue(0)
-                
-                didJoinLobby = true
-                
-                let setGameNewLastActive = thisLobbyRef.childByAppendingPath("lastActive")
-                setGameNewLastActive.setValue(nowDateFormat)
-                
+            if lastActiveTime == nil || DateUtils.isMinutesBeforeNow(lastActiveTime!, minutes: 1) {
+                self.lobbyRef.setValue([
+                    "lastActive": currentTime,
+                    Constants.Firebase.nodePlayers: [
+                        self.ref.authData.uid, "", "", ""
+                    ]
+                ])
                 self.playerNumber = 1
                 self.waitForGameStart()
-            } else if hasGameStarted == 0 {
-                // join in as the next player
-                
-                let playerToJoin = self.ref.authData.uid
-                
-                println(numberOfPlayers)
-                switch numberOfPlayers {
-                case 3:
-                    let toWriteTo = thisLobbyRef.childByAppendingPath("player4")
-                    toWriteTo.setValue(playerToJoin)
-                    
-                    let setGameStartedRef = thisLobbyRef.childByAppendingPath("hasGameStarted")
-                    setGameStartedRef.setValue(1)
-                    
-                    let setGameNewLastActive = thisLobbyRef.childByAppendingPath("lastActive")
-                    setGameNewLastActive.setValue(nowDateFormat)
-                    
-                    didJoinLobby = true
-                    
-                    self.playerNumber = 4
-                    self.initiateGameStart()
-                case 2:
-                    let toWriteTo = thisLobbyRef.childByAppendingPath("player3")
-                    toWriteTo.setValue(playerToJoin)
-                    
-                    let setGameNewLastActive = thisLobbyRef.childByAppendingPath("lastActive")
-                    setGameNewLastActive.setValue(nowDateFormat)
-                    
-                    didJoinLobby = true
-                    
-                    self.playerNumber = 3
-                    self.waitForGameStart()
-                case 1:
-                    let toWriteTo = thisLobbyRef.childByAppendingPath("player2")
-                    toWriteTo.setValue(playerToJoin)
-                    
-                    let setGameNewLastActive = thisLobbyRef.childByAppendingPath("lastActive")
-                    setGameNewLastActive.setValue(nowDateFormat)
-                    
-                    didJoinLobby = true
-                    
-                    self.playerNumber = 2
-                    self.initiateGameStart()
-                default:
-                    println("HOLY MOLLY, LESS EPIC LOBBY ERROR")
-                }
             } else {
-                // should never get here but if it does we'll know now that there's
-                // a very epic error going on
-                println("HOLY MOLLY, EPIC LOBBY ERROR")
+                var numberOfPlayers = 1
+                let players = snapshot.value.objectForKey(Constants.Firebase.nodePlayers)! as [String]
+                for player in players {
+                    if !player.isEmpty {
+                        numberOfPlayers++
+                    }
+                }
+                self.playerNumber = numberOfPlayers
+                
+                let playerRef = self.lobbyRef.childByAppendingPath(Constants.Firebase.nodePlayers)
+                    .childByAppendingPath("\(numberOfPlayers - 1)")
+                playerRef.setValue(self.ref.authData.uid)
+                
+                self.lobbyRef.updateChildValues(["lastActive": currentTime])
+                
+                if numberOfPlayers == 2 {
+                    self.initiateGameStart()
+                } else {
+                    self.waitForGameStart()
+                }
             }
         })
-        
-        if didJoinLobby == false {
-            self.performSegueWithIdentifier("backFromLobbySegue", sender: nil)
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "gameStartSegue" {
             if let destinationVC = segue.destinationViewController as? GameViewController {
-                let level = levelGenerator.generateBasic()
                 destinationVC.level = level
-                destinationVC.playerNumber = self.playerNumber
+                destinationVC.playerNumber = playerNumber
                 destinationVC.multiplayer = true
-                
-                let gameRef = ref
-                    .childByAppendingPath("games")
-                    .childByAppendingPath("game-test")
-                gameRef.removeValue()
-                
-                let gameToWrite = [
-                    "generatedGame": level.compress()
-                ]
-                
-                gameRef.setValue(gameToWrite)
-                
-                let gameToWatchRef = ref.childByAppendingPath("gameHelper-test").childByAppendingPath("gameShouldStart")
-                
-                let gameToChangeToRef = ref.childByAppendingPath("gameHelper-test")
-                
-                gameToWatchRef.observeSingleEventOfType(.Value, withBlock: {
-                    snapshot in
-                    
-                    let number = snapshot.value as? Int
-                    
-                    if number == 0 {
-                        gameToChangeToRef.updateChildValues(["gameShouldStart": 1])
-                    } else {
-                        gameToChangeToRef.updateChildValues(["gameShouldStart": 0])
-                    }
-                })
             }
         }
         
         if segue.identifier == "waitGameStartSegue" {
             if let destinationVC = segue.destinationViewController as? GameViewController {
-                destinationVC.level = levelToBuildFrom
-                destinationVC.playerNumber = self.playerNumber
+                destinationVC.level = level
+                destinationVC.playerNumber = playerNumber
                 destinationVC.multiplayer = true
             }
         }
     }
     
     func initiateGameStart() {
+        level = levelGenerator.generateBasic()
+        gameRef.updateChildValues([
+            "hasGameStarted": 1,
+            Constants.Firebase.nodeGameLevel: level.compress(),
+            Constants.Firebase.nodePlayers: [
+                Constants.Firebase.nodePlayerMovements,
+                Constants.Firebase.nodePlayerMovements,
+                Constants.Firebase.nodePlayerMovements,
+                Constants.Firebase.nodePlayerMovements
+            ]
+        ])
+        
         self.performSegueWithIdentifier("gameStartSegue", sender: nil)
     }
     
     func waitForGameStart() {
-        let gameToWatchRef = ref.childByAppendingPath("gameHelper-test")
+        let gameLevelRef = gameRef.childByAppendingPath(Constants.Firebase.nodeGameLevel)
         
-        let gameToReceiveRef = ref.childByAppendingPath("games")
-            .childByAppendingPath("game-test")
-            .childByAppendingPath("generatedGame")
-        
-        // for now let's assume we only have 1 game ongoing at any one point, alpha
-        // testing code :)
-        
-        gameToWatchRef.observeSingleEventOfType(.ChildChanged, withBlock: {
-            gameHelperSnapshot in
-            
-            gameToReceiveRef.observeSingleEventOfType(.Value, withBlock: {
+        gameLevelRef.observeSingleEventOfType(.ChildChanged, withBlock: {
+            snapshot in
+            gameLevelRef.observeSingleEventOfType(.Value, withBlock: {
                 gameSnapshot in
                 
-                self.levelToBuildFrom = self.levelGenerator.createGame(fromSnapshot: gameSnapshot)
+                self.level = self.levelGenerator.createGame(fromSnapshot: gameSnapshot)
                 
                 self.performSegueWithIdentifier("waitGameStartSegue", sender: nil)
             })

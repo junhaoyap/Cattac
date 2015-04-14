@@ -13,7 +13,7 @@ class GameEngine {
     private let catFactory = CatFactory.sharedInstance
     
     /// Firebase reference. To be wrapped in upcoming Server Protocol.
-    private let ref = Firebase(url: Constants.firebaseBaseUrl)
+    private let ref = Firebase(url: Constants.Firebase.baseUrl)
     
     // The game grid
     private var grid: Grid!
@@ -219,9 +219,11 @@ class GameEngine {
     
     private func updateServer() {
         let playerMoveUpdateRef = ref
-            .childByAppendingPath("games")
-            .childByAppendingPath("game0")
-            .childByAppendingPath("player\(playerNumber)Movement")
+            .childByAppendingPath(Constants.Firebase.nodeGames)
+            .childByAppendingPath(Constants.Firebase.nodeGame)
+            .childByAppendingPath(Constants.Firebase.nodePlayers)
+            .childByAppendingPath("\(playerNumber - 1)")
+            .childByAppendingPath(Constants.Firebase.nodePlayerMovements)
             .childByAppendingPath("\(currentPlayerMoveNumber++)")
 
         let currentPlayerTileNode = gameManager[positionOf: currentPlayer]!
@@ -347,7 +349,7 @@ class GameEngine {
         var currentNode = startNode
         while let nextNode = grid[currentNode.position, with: offset] {
             if let doodad = nextNode.doodad {
-                if doodad.getName() == "wall" {
+                if doodad.getName() == Constants.Doodad.wallString {
                     path.append(nextNode)
                     break
                 }
@@ -398,22 +400,32 @@ class GameEngine {
             if i == number {
                 continue
             }
-            let playerMovementWatcherRef = ref.childByAppendingPath("games")
-                .childByAppendingPath("game0")
-                .childByAppendingPath("player\(i)Movement")
+            let playerMovementWatcherRef = ref.childByAppendingPath(Constants.Firebase.nodeGames)
+                .childByAppendingPath(Constants.Firebase.nodeGame)
+                .childByAppendingPath(Constants.Firebase.nodePlayers)
+                .childByAppendingPath("\(i - 1)")
+                .childByAppendingPath(Constants.Firebase.nodePlayerMovements)
 
             playerMovementWatcherRef.observeEventType(.ChildAdded, withBlock: {
                 snapshot in
                 
-                let fromRow = snapshot.value.objectForKey("fromRow") as? Int
-                let fromCol = snapshot.value.objectForKey("fromCol") as? Int
-                let moveToRow = snapshot.value.objectForKey("toRow") as? Int
-                let moveToCol = snapshot.value.objectForKey("toCol") as? Int
+                let fromRow = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMovementFromRow) as? Int
+                let fromCol = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMovementFromCol) as? Int
+                let moveToRow = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMovementToRow) as? Int
+                let moveToCol = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMovementToCol) as? Int
                 
-                let attackType = snapshot.value.objectForKey("attackType") as? String
-                let attackDir = snapshot.value.objectForKey("attackDir") as? String
-                let attackDmg = snapshot.value.objectForKey("attackDmg") as? Int
-                let attackRange = snapshot.value.objectForKey("attackRange") as? Int
+                let attackType = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMovementAttackType) as? String
+                let attackDir = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMovementAttrDir) as? String
+                let attackDmg = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMovementAttackDmg) as? Int
+                let attackRange = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMovementAttackRange) as? Int
                 
                 let player = self.gameManager[Constants.catArray[i - 1]]!
                 

@@ -107,5 +107,24 @@ struct Constants {
         static let rockDmg = 150
     }
     
-    static let firebaseBaseUrl = "https://torrid-inferno-1934.firebaseio.com/"
+    struct Firebase {
+        static let baseUrl = "https://torrid-inferno-1934.firebaseio.com/"
+        static let nodeGames = "games"
+        static let nodeUsers = "users"
+        
+        static let nodeGame = "game"
+        static let nodeGameLevel = "gameLevel"
+        static let nodeLobby = "lobby"
+        static let nodePlayers = "players"
+        static let nodePlayerMovements = "movements"
+        
+        static let keyMovementAttrDir = "attackDir"
+        static let keyMovementAttackDmg = "attackDmg"
+        static let keyMovementAttackRange = "attackRange"
+        static let keyMovementAttackType = "attackType"
+        static let keyMovementFromRow = "fromRow"
+        static let keyMovementFromCol = "fromCol"
+        static let keyMovementToRow = "toRow"
+        static let keyMovementToCol = "toCol"
+    }
 }

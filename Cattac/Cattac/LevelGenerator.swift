@@ -91,9 +91,9 @@ class LevelGenerator {
     
     func createGame(fromSnapshot data: FDataSnapshot) -> GameLevel {
         var level: GameLevel!
-        let rows = data.value.objectForKey(Constants.Level.keyRows) as Int
-        let cols = data.value.objectForKey(Constants.Level.keyCols) as Int
-        let type = data.value.objectForKey(Constants.Level.keyType) as String
+        let rows = data.value.objectForKey(Constants.Level.keyRows)! as Int
+        let cols = data.value.objectForKey(Constants.Level.keyCols)! as Int
+        let type = data.value.objectForKey(Constants.Level.keyType)! as String
         
         if type == Constants.Level.valueTypeBasic {
             level = BasicLevel(rows: rows, columns: cols)
@@ -126,6 +126,8 @@ class LevelGenerator {
                 
                 (doodad as WormholeDoodad).setDestination(destTileNode)
                 (destDoodad as WormholeDoodad).setDestination(tileNode)
+            } else if doodad is Wall {
+                level.grid.removeNodeFromGraph(tileNode)
             }
         }
         
