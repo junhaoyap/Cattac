@@ -35,8 +35,8 @@ class GameEngine {
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
-    // The initial game state is to be set at Initialization
-    var state: GameState = .PreStart
+    // The initial game state is to be set at PostExecute
+    var state: GameState = .PostExecution
     
     /// GameState listener, listens for update on state change.
     var gameStateListener: GameStateListener?
@@ -128,9 +128,6 @@ class GameEngine {
         }
         
         switch state {
-        case .PreStart:
-            // Game should never enter this state, not even on first loop.
-            break
         case .Precalculation:
             precalculate()
             nextState()
@@ -181,8 +178,6 @@ class GameEngine {
     /// altered out of this method.
     private func advanceState() {
         switch state {
-        case .PreStart:
-            state = .Precalculation
         case .Precalculation:
             state = .PlayerAction
         case .PlayerAction:
