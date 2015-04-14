@@ -54,11 +54,19 @@ class GameLevel {
         for row in 0..<numRows {
             for col in 0..<numColumns {
                 if let doodad = grid[row, col]!.doodad {
-                    let doodadData = [
-                        Constants.Level.keyEntityName: doodad.getName(),
-                        Constants.Level.keyGridRow: row,
-                        Constants.Level.keyGridCol: col
-                    ] as [String: AnyObject]
+                    var doodadData: [String: AnyObject] = [:]
+                    
+                    doodadData[Constants.Level.keyEntityName] = doodad.getName()
+                    doodadData[Constants.Level.keyGridRow] = row
+                    doodadData[Constants.Level.keyGridCol] = col
+                    
+                    if doodad is WormholeDoodad {
+                        let destTileNode = (doodad as WormholeDoodad).getDestinationNode()
+                        doodadData[Constants.Level.keyWormholeDestNode] = [
+                            Constants.Level.keyGridRow: destTileNode.position.row,
+                            Constants.Level.keyGridCol: destTileNode.position.col
+                        ] as [String: AnyObject]
+                    }
                     
                     entities += [doodadData]
                 }
@@ -67,7 +75,5 @@ class GameLevel {
         levelData[Constants.Level.keyEntities] = entities
         
         return levelData
-        // later when we add in the lobby part and we want to try,
-        // we should generate this and throw it into firebase
     }
 }

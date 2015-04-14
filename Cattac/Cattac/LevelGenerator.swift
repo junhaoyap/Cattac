@@ -113,7 +113,20 @@ class LevelGenerator {
             let doodadCol = entityData[Constants.Level.keyGridCol]! as Int
             let doodad = doodadFactory.createDoodad(doodadName)!
             
-            level.addDoodad(doodad, atLocation: GridIndex(doodadRow, doodadCol))
+            let tileNode = level.addDoodad(doodad, atLocation: GridIndex(doodadRow, doodadCol))
+            
+            if doodad is WormholeDoodad {
+                let destDoodadData = entityData[Constants.Level.keyWormholeDestNode]! as [String: AnyObject]
+                let destDoodadRow = destDoodadData[Constants.Level.keyGridRow]! as Int
+                let destDoodadCol = destDoodadData[Constants.Level.keyGridRow]! as Int
+                let destDoodad = doodadFactory.createDoodad(Constants.Doodad.wormholeString)!
+                
+                let destTileNode = level.addDoodad(destDoodad,
+                    atLocation: GridIndex(destDoodadRow, destDoodadCol))
+                
+                (doodad as WormholeDoodad).setDestination(destTileNode)
+                (destDoodad as WormholeDoodad).setDestination(tileNode)
+            }
         }
         
         return level

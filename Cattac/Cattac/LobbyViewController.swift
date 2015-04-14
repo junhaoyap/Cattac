@@ -128,7 +128,7 @@ class LobbyViewController: UIViewController {
                     didJoinLobby = true
                     
                     self.playerNumber = 2
-                    self.waitForGameStart()
+                    self.initiateGameStart()
                 default:
                     println("HOLY MOLLY, LESS EPIC LOBBY ERROR")
                 }
@@ -163,9 +163,9 @@ class LobbyViewController: UIViewController {
                 
                 gameRef.setValue(gameToWrite)
                 
-                let gameToWatchRef = ref.childByAppendingPath("gameHelper").childByAppendingPath("gameShouldStart")
+                let gameToWatchRef = ref.childByAppendingPath("gameHelper-test").childByAppendingPath("gameShouldStart")
                 
-                let gameToChangeToRef = ref.childByAppendingPath("gameHelper")
+                let gameToChangeToRef = ref.childByAppendingPath("gameHelper-test")
                 
                 gameToWatchRef.observeSingleEventOfType(.Value, withBlock: {
                     snapshot in
@@ -195,7 +195,7 @@ class LobbyViewController: UIViewController {
     }
     
     func waitForGameStart() {
-        let gameToWatchRef = ref.childByAppendingPath("gameHelper")
+        let gameToWatchRef = ref.childByAppendingPath("gameHelper-test")
         
         let gameToReceiveRef = ref.childByAppendingPath("games")
             .childByAppendingPath("game-test")
