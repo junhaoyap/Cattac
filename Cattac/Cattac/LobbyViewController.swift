@@ -65,7 +65,7 @@ class LobbyViewController: UIViewController {
                 
                 self.lobbyRef.updateChildValues(["lastActive": currentTime])
                 
-                if numberOfPlayers == 2 {
+                if numberOfPlayers == 4 {
                     self.initiateGameStart()
                 } else {
                     self.waitForGameStart()
