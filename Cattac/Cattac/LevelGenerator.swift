@@ -105,12 +105,12 @@ class LevelGenerator {
         
         constructLevel(level)
         
-        let entitiesData = data.value.objectForKey(Constants.Level.keyEntities)! as [FDataSnapshot]
+        let entitiesData = data.value.objectForKey(Constants.Level.keyEntities) as [[String: AnyObject]]
         
-        for childSnapshot in [FDataSnapshot](entitiesData) {
-            let doodadName = childSnapshot.value.objectForKey(Constants.Level.keyEntityName)! as String
-            let doodadRow = childSnapshot.value.objectForKey(Constants.Level.keyGridRow)! as Int
-            let doodadCol = childSnapshot.value.objectForKey(Constants.Level.keyGridCol)! as Int
+        for entityData in entitiesData {
+            let doodadName = entityData[Constants.Level.keyEntityName]! as String
+            let doodadRow = entityData[Constants.Level.keyGridRow]! as Int
+            let doodadCol = entityData[Constants.Level.keyGridCol]! as Int
             let doodad = doodadFactory.createDoodad(doodadName)!
             
             level.addDoodad(doodad, atLocation: GridIndex(doodadRow, doodadCol))
