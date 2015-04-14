@@ -27,7 +27,7 @@ class GameEngine {
     // The AI engine that is used when multiplayer mode is not active
     private var gameAI: GameAI!
     
-    /// States to advance, initialized at 1 to rollover PreStart state.
+    /// States to advance, initialized at 1 to rollover PostExecution state.
     private var statesToAdvance: Int = 1
 
     var gameManager: GameManager = GameManager()
@@ -35,7 +35,7 @@ class GameEngine {
     /// Player index (we should change to player-id instead).
     var playerNumber = 1
     
-    // The initial game state is to be set at PostExecute
+    // The initial game state is to be set at PostExecution
     var state: GameState = .PostExecution
     
     /// GameState listener, listens for update on state change.
