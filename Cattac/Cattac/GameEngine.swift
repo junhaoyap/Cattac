@@ -98,22 +98,22 @@ class GameEngine {
         }
 
         self.on("playerActionEnded") {
-            self.nextState()
+            self.triggerStateAdvance()
         }
         
         self.on("allPlayersMoved") {
-            self.nextState()
+            self.triggerStateAdvance()
         }
         
         self.on("movementAnimationEnded") {
             if self.gameManager.movementsCompleted {
-                self.nextState()
+                self.triggerStateAdvance()
             }
         }
 
         self.on("actionAnimationEnded") {
             if self.gameManager.actionsCompleted {
-                self.nextState()
+                self.triggerStateAdvance()
             }
         }
     }
@@ -130,34 +130,34 @@ class GameEngine {
         switch state {
         case .Precalculation:
             precalculate()
-            nextState()
+            triggerStateAdvance()
         case .PlayerAction:
             break
         case .ServerUpdate:
             updateServer()
-            nextState()
+            triggerStateAdvance()
         case .WaitForAll:
             break
         case .AICalculation:
             gameAI.calculateTurn()
-            nextState()
+            triggerStateAdvance()
         case .StartMovesExecution:
             calculateMovementPaths()
-            nextState()
+            triggerStateAdvance()
         case .MovesExecution:
             // This state waits for the movement ended event that is triggered
             // from the scene.
             break
         case .StartActionsExecution:
             calculationActions()
-            nextState()
+            triggerStateAdvance()
         case .ActionsExecution:
             // This state waits for the action ended event that is triggered
             // from the scene.
             break
         case .PostExecution:
             postExecute()
-            nextState()
+            triggerStateAdvance()
         }
     }
     
@@ -170,7 +170,7 @@ class GameEngine {
     }
     
     /// Trigger state advancement in game engine.
-    private func nextState() {
+    private func triggerStateAdvance() {
         statesToAdvance++
     }
     
