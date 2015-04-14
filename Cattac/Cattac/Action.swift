@@ -99,7 +99,7 @@ class FartAction: Action {
     }
     
     func resetRange(range: Int) {
-    _range = range
+        _range = range
     }
 }
 
