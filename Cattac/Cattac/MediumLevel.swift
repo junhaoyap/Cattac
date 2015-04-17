@@ -4,6 +4,12 @@
 
 import Foundation
 
-class MediumLevel {
-    // nothing for now
+class MediumLevel: GameLevel {
+    init() {
+        super.init(rows: Constants.Level.mediumRows, columns: Constants.Level.mediumColumns)
+    }
+    
+    override init(rows: Int, columns: Int) {
+        super.init(rows: rows, columns: columns)
+    }
 }

@@ -117,6 +117,7 @@
 		76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DF1ABFE6190056B5F5 /* Nyan.png */; };
 		76FC46E51ABFE6190056B5F5 /* Pusheen.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46E01ABFE6190056B5F5 /* Pusheen.png */; };
 		76FC46EA1ABFEB4E0056B5F5 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Grid.swift */; };
+		BD0441C31ADD3899003B93BC /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0441C21ADD3899003B93BC /* DateUtils.swift */; };
 		BD29ED731ADBF03D0090B934 /* Poop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD29ED721ADBF03D0090B934 /* Poop.swift */; };
 		BD5E53241ADBFD6E00A80BA7 /* Poop.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5E53231ADBFD6E00A80BA7 /* Poop.png */; };
 		BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
@@ -224,6 +225,7 @@
 		76FC46DF1ABFE6190056B5F5 /* Nyan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nyan.png; path = Images.xcassets/Nyan.png; sourceTree = "<group>"; };
 		76FC46E01ABFE6190056B5F5 /* Pusheen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pusheen.png; path = Images.xcassets/Pusheen.png; sourceTree = "<group>"; };
 		76FC46E91ABFEB4E0056B5F5 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		BD0441C21ADD3899003B93BC /* DateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		BD29ED721ADBF03D0090B934 /* Poop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Poop.swift; sourceTree = "<group>"; };
 		BD5E53231ADBFD6E00A80BA7 /* Poop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Poop.png; sourceTree = "<group>"; };
 		BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 			isa = PBXGroup;
 			children = (
 				34BA89CA1ADA7CC500413C1B /* StringUtils.swift */,
+				BD0441C21ADD3899003B93BC /* DateUtils.swift */,
 				763D97B71ADA7CDB0064B73C /* SceneUtils.swift */,
 			);
 			name = Utils;
@@ -759,6 +762,7 @@
 				7689FC981ADAD41E0086613D /* GameAI.swift in Sources */,
 				761BB59E1AD04348007C31C1 /* Action.swift in Sources */,
 				7661CF4A1AD4336C0004B0FD /* Direction.swift in Sources */,
+				BD0441C31ADD3899003B93BC /* DateUtils.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
 				BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */,
 				763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */,
