@@ -4,8 +4,9 @@ protocol GameStateListener {
     func onStateUpdate(state: GameState)
 }
 
-protocol ActionListener {
+protocol EventListener {
     func onActionUpdate(action: Action?)
+    func addPendingPoopAnimation(target: GridIndex)
 }
 
 /// Game engine that does all the logic computation for the game.
@@ -42,7 +43,7 @@ class GameEngine {
     var gameStateListener: GameStateListener?
     
     /// Action listener, listens for action change on currentPlayer.
-    var actionListener: ActionListener?
+    var eventListener: EventListener?
     
     /// The local player
     var currentPlayer: Cat!
@@ -293,6 +294,14 @@ class GameEngine {
                     gameManager.doodadsToRemove[doodad.getSprite().hashValue] = doodad
                 }
             }
+            
+            if let poop = playerMoveToNode.poop {
+                poop.effect(player)
+                playerMoveToNode.poop = nil
+                
+                eventListener?.addPendingPoopAnimation(playerMoveToNode.position)
+            }
+            
             gameManager[movementPathOf: player] = path
         }
     }
@@ -487,7 +496,7 @@ class GameEngine {
     }
     
     private func notifyAction() {
-        actionListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
+        eventListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
     }
     
     func releaseAllListeners() {
