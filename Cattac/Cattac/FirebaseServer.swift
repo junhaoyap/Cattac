@@ -145,8 +145,7 @@ class FirebaseServer: Server {
     func append(childUrl: String) -> ConnectionManager {
         let appendedUrl = baseUrl + childUrl
         
-        return ConnectionManager(typeOfService: "Firebase",
-            urlProvided: appendedUrl)
+        return ConnectionManager(firebase: appendedUrl)
     }
     
     func removeAllObservers() {

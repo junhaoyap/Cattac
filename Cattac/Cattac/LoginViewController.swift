@@ -11,8 +11,7 @@ class LoginViewController: UIViewController {
     
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     
-    let connectionManager = ConnectionManager(typeOfService: "Firebase",
-        urlProvided: Constants.Firebase.baseUrl)
+    let connectionManager = ConnectionManager(firebase: Constants.Firebase.baseUrl)
     
     let backgroundMusicPlayer = MusicPlayer.sharedInstance
     
