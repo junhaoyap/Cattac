@@ -380,7 +380,7 @@ class GameScene: SKScene, GameStateListener, EventListener {
                 fart.alpha = 0
 
                 entityLayer.addChild(fart)
-                let action = sceneUtils.getFartAnimation(delay)
+                let action = sceneUtils.getFartAnimation(timeInterval)
                 
                 fart.runAction(action, completion: {
                     fart.removeFromParent()
