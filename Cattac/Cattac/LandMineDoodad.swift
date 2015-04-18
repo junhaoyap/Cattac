@@ -9,7 +9,7 @@ class LandMineDoodad: Doodad {
         setName(Constants.Doodad.landMineString)
     }
     
-    override func effect(cat: Cat) {
+    override func postmoveEffect(cat: Cat) {
         cat.inflict(Constants.Doodad.landMineDamage)
         setRemoved()
     }

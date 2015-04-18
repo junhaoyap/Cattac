@@ -10,7 +10,7 @@ class WatchTowerDoodad: Doodad {
         setName(Constants.Doodad.watchTowerString)
     }
     
-    override func effect(cat: Cat) {
+    override func postmoveEffect(cat: Cat) {
         cat.fartRangeMods += [fartRangeModification]
     }
     
