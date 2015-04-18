@@ -242,6 +242,7 @@ class GameEngine {
                 if doodad is WormholeDoodad {
                     let destNode = (doodad as WormholeDoodad).getDestinationNode()
                     gameManager[moveToPositionOf: player]! = destNode
+                    playerMoveToNode = destNode
                     path += [destNode]
                 } else if doodad.isRemoved() {
                     playerMoveToNode.doodad = nil
@@ -305,7 +306,7 @@ class GameEngine {
     /// :param: cat The player's action to execute
     func executePlayerAction(player: Cat) -> Action? {
         let action = gameManager[actionOf: player]
-        if action != nil && action is PoopAction {
+        if action is PoopAction {
             let targetNode = action!.targetNode!
             targetNode.poop = Poop(player, player.poopDmg)
         }
