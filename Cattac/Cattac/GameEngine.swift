@@ -18,9 +18,6 @@ class GameEngine {
     // The game grid
     private var grid: Grid!
     
-    /// Dictionary of event trigger closures.
-    private var events: [String:()->()] = [:]
-    
     /// Dictionary of Firebase references watching a data value.
     private var movementWatchers: [Int: Firebase] = [:]
 
@@ -68,58 +65,11 @@ class GameEngine {
         self.multiplayer = multiplayer
         
         createPlayers(playerNumber)
-        
+
         registerMovementWatcherExcept(playerNumber)
 
         self.gameAI = GameAI(grid: grid, gameManager: gameManager,
             currentPlayer: currentPlayer)
-
-        registerEvents()
-    }
-
-    /// Register all the events for the game engine.
-    private func registerEvents() {
-        self.on("puiButtonPressed") {
-            self.setAvailablePuiDirections()
-            self.notifyAction()
-        }
-        
-        self.on("fartButtonPressed") {
-            self.gameManager[actionOf: self.currentPlayer] =
-                FartAction(range: self.currentPlayer.fartRange)
-            self.notifyAction()
-        }
-        
-        self.on("poopButtonPressed") {
-            let targetNode = self.gameManager[positionOf: self.currentPlayer]!
-            self.gameManager[actionOf: self.currentPlayer] =
-                PoopAction(targetNode: targetNode)
-            self.notifyAction()
-        }
-
-        self.on("clearAction") {
-            self.gameManager[actionOf: self.currentPlayer] = nil
-        }
-
-        self.on("playerActionEnded") {
-            self.triggerStateAdvance()
-        }
-        
-        self.on("allPlayersMoved") {
-            self.triggerStateAdvance()
-        }
-        
-        self.on("movementAnimationEnded") {
-            if self.gameManager.movementsCompleted {
-                self.triggerStateAdvance()
-            }
-        }
-
-        self.on("actionAnimationEnded") {
-            if self.gameManager.actionsCompleted {
-                self.triggerStateAdvance()
-            }
-        }
     }
     
     /// Called every update by gameScene (60 times per second)
@@ -338,17 +288,7 @@ class GameEngine {
         }
         return action
     }
-    
-    func trigger(event: String) {
-        if let lambda = events[event] {
-            lambda()
-        }
-    }
-    
-    func on(event: String, _ lambda: ()->()) {
-        events[event] = lambda
-    }
-    
+
     func pathOfPui(startNode: TileNode, direction: Direction) -> [TileNode] {
         let offset = grid.neighboursOffset[direction]!
         var path = [TileNode]()
@@ -448,19 +388,16 @@ class GameEngine {
                 self.otherPlayersMoved++
                 
                 if self.otherPlayersMoved == 3 {
-                    self.trigger("allPlayersMoved")
+                    self.triggerAllPlayersMoved()
                     self.otherPlayersMoved = 0
                 }
             })
         }
     }
     
-    private func setAvailablePuiDirections() {
+    func getAvailablePuiDirections() -> [Direction] {
         let targetNode = gameManager[moveToPositionOf: currentPlayer]!
-        let availableDirections = grid.getAvailableDirections(targetNode)
-        var action = PuiAction(direction: availableDirections.first!)
-        action.availableDirections = availableDirections
-        gameManager[actionOf: currentPlayer] = action
+        return grid.getAvailableDirections(targetNode)
     }
     
     private func notifyAction() {
@@ -469,5 +406,50 @@ class GameEngine {
     
     func releaseAllListeners() {
         ref.removeAllObservers()
+    }
+}
+
+extension GameEngine {
+    func triggerPuiButtonPressed(direction: Direction) {
+        var action = PuiAction(direction: direction)
+        gameManager[actionOf: self.currentPlayer] = action
+        notifyAction()
+    }
+
+    func triggerFartButtonPressed() {
+        gameManager[actionOf: self.currentPlayer] =
+            FartAction(range: self.currentPlayer.fartRange)
+        notifyAction()
+    }
+
+    func triggerPoopButtonPressed() {
+        let targetNode = gameManager[positionOf: currentPlayer]!
+        gameManager[actionOf: currentPlayer] =
+            PoopAction(targetNode: targetNode)
+        notifyAction()
+    }
+
+    func triggerPlayerActionEnded() {
+        triggerStateAdvance()
+    }
+
+    func triggerClearAction() {
+        gameManager[actionOf: currentPlayer] = nil
+    }
+
+    func triggerAllPlayersMoved() {
+        triggerStateAdvance()
+    }
+
+    func triggerMovementAnimationEnded() {
+        if gameManager.movementsCompleted {
+            triggerStateAdvance()
+        }
+    }
+
+    func triggerActionAnimationEnded() {
+        if gameManager.actionsCompleted {
+            triggerStateAdvance()
+        }
     }
 }

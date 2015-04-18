@@ -76,12 +76,9 @@ func ==(lhs: Action, rhs: Action) -> Bool {
 }
 
 class PuiAction: Action {
-    var availableDirections: [Direction]!
-    
     init(direction: Direction) {
         super.init(actionType: ActionType.Pui)
         self._direction = direction
-        self.availableDirections = []
     }
 }
 

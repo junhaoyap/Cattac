@@ -9,27 +9,32 @@
 import Foundation
 import SpriteKit
 
-class SKActionButtonNode: SKNode {
+protocol ActionButton {
+    func unselect()
+}
+
+class SKActionButtonNode: SKNode, ActionButton {
     private var defaultButton: SKSpriteNode!
     private var activeButton: SKSpriteNode!
     private var action: () -> Void
     private var unselectAction: () -> Void
-    private var isSelected: Bool
+    var isEnabled = false
+    var isSelected: Bool
     
     init(defaultButtonImage: String, activeButtonImage: String,
         buttonAction: () -> Void, unselectAction: () -> Void) {
-        self.defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
-        self.activeButton = SKSpriteNode(imageNamed: activeButtonImage)
-        self.action = buttonAction
-        self.unselectAction = unselectAction
-        self.activeButton.hidden = true
-        self.isSelected = false
-        
-        super.init()
-        
-        userInteractionEnabled = true
-        addChild(defaultButton)
-        addChild(activeButton)
+            self.defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
+            self.activeButton = SKSpriteNode(imageNamed: activeButtonImage)
+            self.action = buttonAction
+            self.unselectAction = unselectAction
+            self.activeButton.hidden = true
+            self.isSelected = false
+            
+            super.init()
+            
+            userInteractionEnabled = true
+            addChild(defaultButton)
+            addChild(activeButton)
     }
 
     func unselect() {
@@ -43,14 +48,22 @@ class SKActionButtonNode: SKNode {
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        if !isEnabled {
+            return
+        }
+
         activeButton.hidden = false ^ isSelected
         defaultButton.hidden = true ^ isSelected
     }
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+        if !isEnabled {
+            return
+        }
+
         var touch = touches.allObjects[0] as UITouch
         var location = touch.locationInNode(self)
-        
+
         if defaultButton.containsPoint(location) {
             activeButton.hidden = false ^ isSelected
             defaultButton.hidden = true ^ isSelected
@@ -61,9 +74,13 @@ class SKActionButtonNode: SKNode {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        if !isEnabled {
+            return
+        }
+
         let touch = touches.allObjects[0] as UITouch
         let location = touch.locationInNode(self)
-        
+
         if defaultButton.containsPoint(location) {
             if !isSelected {
                 action()

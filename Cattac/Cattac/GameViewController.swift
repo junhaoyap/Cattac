@@ -90,7 +90,7 @@ class GameViewController: UIViewController {
         
         if currentTime == 0 {
             if isPlayerTurn {
-                scene.gameEngine.trigger("playerActionEnded")
+                scene.gameEngine.triggerPlayerActionEnded()
                 isPlayerTurn = false
             } else if scene.gameEngine.state == .PlayerAction {
                 timerLabel.text = "10"
