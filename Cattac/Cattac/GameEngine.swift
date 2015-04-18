@@ -97,6 +97,10 @@ class GameEngine {
             self.notifyAction()
         }
 
+        self.on("clearAction") {
+            self.gameManager[actionOf: self.currentPlayer] = nil
+        }
+
         self.on("playerActionEnded") {
             self.triggerStateAdvance()
         }

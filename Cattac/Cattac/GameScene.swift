@@ -30,6 +30,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     /// The button layer that consists of the main buttons for the actions.
     private let buttonLayer = SKNode()
 
+    /// All action buttons.
+    private var actionButtons = [SKActionButtonNode]()
+
     /// Button that sets the action of the player to Pui.
     private var puiButton: SKActionButtonNode!
 
@@ -141,23 +144,35 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         puiButton = SKActionButtonNode(
             defaultButtonImage: "PuiButton.png",
             activeButtonImage: "PuiButtonPressed.png",
-            buttonAction: { self.gameEngine.trigger("puiButtonPressed") })
+            buttonAction: { self.gameEngine.trigger("puiButtonPressed") },
+            unselectAction: {
+                self.clearDirectionArrows()
+                self.gameEngine.trigger("clearAction")
+            })
         puiButton.position = CGPoint(x: 0 * buttonSpacing, y: 0)
         buttonLayer.addChild(puiButton)
+        actionButtons.append(puiButton)
 
         fartButton = SKActionButtonNode(
             defaultButtonImage: "FartButton.png",
             activeButtonImage: "FartButtonPressed.png",
-            buttonAction: { self.gameEngine.trigger("fartButtonPressed") })
+            buttonAction: { self.gameEngine.trigger("fartButtonPressed") },
+            unselectAction: { self.gameEngine.trigger("clearAction") })
         fartButton.position = CGPoint(x: 1 * buttonSpacing, y: 0)
         buttonLayer.addChild(fartButton)
+        actionButtons.append(fartButton)
 
         poopButton = SKActionButtonNode(
             defaultButtonImage: "PoopButton.png",
             activeButtonImage: "PoopButtonPressed.png",
-            buttonAction: { self.gameEngine.trigger("poopButtonPressed") })
+            buttonAction: { self.gameEngine.trigger("poopButtonPressed") },
+            unselectAction: {
+                self.hidePoop()
+                self.gameEngine.trigger("clearAction")
+            })
         poopButton.position = CGPoint(x: 2 * buttonSpacing, y: 0)
         buttonLayer.addChild(poopButton)
+        actionButtons.append(poopButton)
     }
 
     /// Initializes the preview node for the current player.
@@ -457,6 +472,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             // intuitively hide poop preview only after pooper moved away
             hidePoop()
             performActions()
+            unselectActionButtons()
         default:
             break
         }
@@ -472,10 +488,27 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             case .Pui:
                 drawDirectionArrows(action as PuiAction)
                 hidePoop()
+                unselectActionButtonsExcept(puiButton)
             case .Fart:
                 hidePoop()
+                unselectActionButtonsExcept(fartButton)
             case .Poop:
                 drawPoop(action as PoopAction)
+                unselectActionButtonsExcept(poopButton)
+            }
+        }
+    }
+
+    func unselectActionButtons() {
+        for button in actionButtons {
+            button.unselect()
+        }
+    }
+
+    func unselectActionButtonsExcept(actionButton: SKActionButtonNode) {
+        for button in actionButtons {
+            if button != actionButton {
+                button.unselect()
             }
         }
     }

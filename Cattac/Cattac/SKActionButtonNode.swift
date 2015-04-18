@@ -10,15 +10,20 @@ import Foundation
 import SpriteKit
 
 class SKActionButtonNode: SKNode {
-    var defaultButton: SKSpriteNode!
-    var activeButton: SKSpriteNode!
-    var action: () -> Void
+    private var defaultButton: SKSpriteNode!
+    private var activeButton: SKSpriteNode!
+    private var action: () -> Void
+    private var unselectAction: () -> Void
+    private var isSelected: Bool
     
-    init(defaultButtonImage: String, activeButtonImage: String, buttonAction: () -> Void) {
+    init(defaultButtonImage: String, activeButtonImage: String,
+        buttonAction: () -> Void, unselectAction: () -> Void) {
         self.defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
         self.activeButton = SKSpriteNode(imageNamed: activeButtonImage)
         self.action = buttonAction
+        self.unselectAction = unselectAction
         self.activeButton.hidden = true
+        self.isSelected = false
         
         super.init()
         
@@ -27,13 +32,19 @@ class SKActionButtonNode: SKNode {
         addChild(activeButton)
     }
 
+    func unselect() {
+        activeButton.hidden = true
+        defaultButton.hidden = false
+        isSelected = false
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        activeButton.hidden = false
-        defaultButton.hidden = true
+        activeButton.hidden = false ^ isSelected
+        defaultButton.hidden = true ^ isSelected
     }
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
@@ -41,11 +52,11 @@ class SKActionButtonNode: SKNode {
         var location = touch.locationInNode(self)
         
         if defaultButton.containsPoint(location) {
-            activeButton.hidden = false
-            defaultButton.hidden = true
+            activeButton.hidden = false ^ isSelected
+            defaultButton.hidden = true ^ isSelected
         } else {
-            activeButton.hidden = true
-            defaultButton.hidden = false
+            activeButton.hidden = true ^ isSelected
+            defaultButton.hidden = false ^ isSelected
         }
     }
     
@@ -54,10 +65,16 @@ class SKActionButtonNode: SKNode {
         let location = touch.locationInNode(self)
         
         if defaultButton.containsPoint(location) {
-            action()
+            if !isSelected {
+                action()
+                isSelected = true
+            } else {
+                unselectAction()
+                unselect()
+            }
+        } else {
+            activeButton.hidden = true ^ isSelected
+            defaultButton.hidden = false ^ isSelected
         }
-        
-        activeButton.hidden = true
-        defaultButton.hidden = false
     }
 }
