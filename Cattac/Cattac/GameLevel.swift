@@ -5,6 +5,7 @@ class GameLevel {
     let numRows: Int
     var numDoodads: Int = Constants.Level.defaultDoodads
     var numWalls: Int = Constants.Level.defaultWalls
+    var numItems: Int = Constants.Level.defaultItems
     
     var grid: Grid!
     

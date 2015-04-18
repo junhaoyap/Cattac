@@ -2,6 +2,15 @@
     ItemFactory, for creating Item objects
 */
 
+enum ItemType: Int {
+    // let Nuke forever be the last item so the count works. 
+    // any better implementation?
+    case Milk, Projectile, Nuke
+    static var count: Int {
+        return ItemType.Nuke.hashValue + 1
+    }
+}
+
 private let _itemFactorySharedInstance: ItemFactory = ItemFactory()
 
 class ItemFactory {
@@ -13,21 +22,25 @@ class ItemFactory {
         return _itemFactorySharedInstance
     }
     
-    func createItem(nameOfItemToCreate: String) -> Item? {
-        var itemToReturn: Item?
-        
-        switch nameOfItemToCreate {
-        case Constants.itemName.milk:
-            itemToReturn = MilkItem()
-        case Constants.itemName.nuke:
-            itemToReturn = NukeItem()
-        case Constants.itemName.projectile:
-            itemToReturn = ProjectileItem()
+    func createItem(type: ItemType) -> Item? {
+        switch type {
+        case .Milk:
+            return MilkItem()
+        case .Nuke:
+            return NukeItem()
+        case .Projectile:
+            return ProjectileItem()
         default:
-            break
+            return nil
         }
-        
-        return itemToReturn
+    }
+    
+    func randomItem() -> Item {
+        return createItem(randomItemType())!
+    }
+    
+    func randomItemType() -> ItemType {
+        return ItemType(rawValue: Int(arc4random_uniform(UInt32(ItemType.count))))!
     }
     
 }

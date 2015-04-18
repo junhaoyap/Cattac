@@ -10,6 +10,7 @@ private let _levelGeneratorSharedInstance: LevelGenerator = LevelGenerator()
 class LevelGenerator {
     
     let doodadFactory = DoodadFactory.sharedInstance
+    let itemFactory = ItemFactory.sharedInstance
     
     private init() {
     }
@@ -24,6 +25,7 @@ class LevelGenerator {
         constructLevel(level)
         
         generateDoodadAndWalls(level)
+        generateItems(level)
         
         return level
     }
@@ -39,7 +41,47 @@ class LevelGenerator {
         level.grid.constructGraph()
     }
     
-    private func getValidDoodadLocation(level: GameLevel) -> GridIndex {
+    private func generateDoodadAndWalls(level: GameLevel) {
+        var wormholeCount = 0
+        var excludedDoodads = [DoodadType]()
+        
+        for i in 0...level.numDoodads {
+            var hasDoodadBeenAdded = false
+            let doodad = doodadFactory.randomDoodad(excludedDoodads)
+            let location = getValidEntityLocation(level)
+            let tileNode = level.addDoodad(doodad, atLocation: location)
+            
+            if doodad is WormholeDoodad {
+                if ++wormholeCount >= Constants.Doodad.maxWormhole {
+                    excludedDoodads += [.Wormhole]
+                }
+                
+                let destDoodad = doodadFactory.createDoodad(.Wormhole)! as WormholeDoodad
+                let destLocation = getValidEntityLocation(level)
+                let destTileNode = level.addDoodad(destDoodad, atLocation: destLocation)
+                (doodad as WormholeDoodad).setDestination(destTileNode)
+                destDoodad.setDestination(tileNode)
+            }
+        }
+        
+        for i in 0...level.numWalls {
+            let doodad = doodadFactory.generateWall()
+            let location = getValidEntityLocation(level)
+            let tileNode = level.addDoodad(doodad, atLocation: location)
+            level.grid.removeNodeFromGraph(tileNode)
+        }
+    }
+    
+    private func generateItems(level: GameLevel) {
+        for i in 0...level.numItems {
+            let item = itemFactory.randomItem()
+            let location = getValidEntityLocation(level)
+            let tileNode = level.nodeAt(location.row, location.col)!
+            tileNode.item = item
+        }
+    }
+    
+    private func getValidEntityLocation(level: GameLevel) -> GridIndex {
         let maxCol = UInt32(level.numColumns)
         let maxRow = UInt32(level.numRows)
         
@@ -56,37 +98,6 @@ class LevelGenerator {
             location = GridIndex(row, col)
         }
         return location
-    }
-    
-    private func generateDoodadAndWalls(level: GameLevel) {
-        var wormholeCount = 0
-        var excludedDoodads = [DoodadType]()
-        
-        for i in 0...level.numDoodads {
-            var hasDoodadBeenAdded = false
-            let doodad = doodadFactory.randomDoodad(excludedDoodads)
-            let location = getValidDoodadLocation(level)
-            let tileNode = level.addDoodad(doodad, atLocation: location)
-            
-            if doodad is WormholeDoodad {
-                if ++wormholeCount >= Constants.Doodad.maxWormhole {
-                    excludedDoodads += [.Wormhole]
-                }
-                
-                let destDoodad = doodadFactory.createDoodad(.Wormhole)! as WormholeDoodad
-                let destLocation = getValidDoodadLocation(level)
-                let destTileNode = level.addDoodad(destDoodad, atLocation: destLocation)
-                (doodad as WormholeDoodad).setDestination(destTileNode)
-                destDoodad.setDestination(tileNode)
-            }
-        }
-        
-        for i in 0...level.numWalls {
-            let doodad = doodadFactory.generateWall()
-            let location = getValidDoodadLocation(level)
-            let tileNode = level.addDoodad(doodad, atLocation: location)
-            level.grid.removeNodeFromGraph(tileNode)
-        }
     }
     
     func createGame(fromSnapshot data: FDataSnapshot) -> GameLevel {

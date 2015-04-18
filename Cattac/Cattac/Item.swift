@@ -4,10 +4,6 @@
 
 import SpriteKit
 
-enum ItemType {
-    case Milk, Rock, Nuke
-}
-
 class Item: TileEntity {
     var name: String!
     var sprite: SKSpriteNode
