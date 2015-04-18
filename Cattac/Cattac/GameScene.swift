@@ -30,6 +30,9 @@ class GameScene: SKScene, GameStateListener, EventListener {
     /// The button layer that consists of the main buttons for the actions.
     private let buttonLayer = SKNode()
 
+    /// All action buttons.
+    private var actionButtons = [SKActionButtonNode]()
+
     /// Button that sets the action of the player to Pui.
     private var puiButton: SKActionButtonNode!
 
@@ -45,10 +48,6 @@ class GameScene: SKScene, GameStateListener, EventListener {
     
     /// Preview of poop when used
     private var poopPreviewNode: SKSpriteNode!
-
-    /// Preview of the directional buttons that appears when the pui action 
-    /// button is selected.
-    private var previewDirectionNodes: SKNode!
     
     /// Pending animation events to be executed post movement
     private var pendingAnimations: [AnimationEvent] = []
@@ -141,26 +140,38 @@ class GameScene: SKScene, GameStateListener, EventListener {
     /// :param: buttonSpacing The spacing between the center anchor of the 
     ///                       buttons.
     private func initializeButtons(buttonSpacing: CGFloat) {
-        puiButton = SKActionButtonNode(
+        puiButton = SKPuiActionButtonNode(
             defaultButtonImage: "PuiButton.png",
             activeButtonImage: "PuiButtonPressed.png",
-            buttonAction: { self.gameEngine.trigger("puiButtonPressed") })
+            buttonAction: { (dir: Direction) in
+                self.gameEngine.triggerPuiButtonPressed(dir)
+            },
+            unselectAction: { self.gameEngine.triggerClearAction() },
+            getAvailableDirections: { return self.gameEngine.getAvailablePuiDirections() })
         puiButton.position = CGPoint(x: 0 * buttonSpacing, y: 0)
         buttonLayer.addChild(puiButton)
+        actionButtons.append(puiButton)
 
         fartButton = SKActionButtonNode(
             defaultButtonImage: "FartButton.png",
             activeButtonImage: "FartButtonPressed.png",
-            buttonAction: { self.gameEngine.trigger("fartButtonPressed") })
+            buttonAction: { self.gameEngine.triggerFartButtonPressed() },
+            unselectAction: { self.gameEngine.triggerClearAction() })
         fartButton.position = CGPoint(x: 1 * buttonSpacing, y: 0)
         buttonLayer.addChild(fartButton)
+        actionButtons.append(fartButton)
 
         poopButton = SKActionButtonNode(
             defaultButtonImage: "PoopButton.png",
             activeButtonImage: "PoopButtonPressed.png",
-            buttonAction: { self.gameEngine.trigger("poopButtonPressed") })
+            buttonAction: { self.gameEngine.triggerPoopButtonPressed() },
+            unselectAction: {
+                self.hidePoop()
+                self.gameEngine.triggerClearAction()
+            })
         poopButton.position = CGPoint(x: 2 * buttonSpacing, y: 0)
         buttonLayer.addChild(poopButton)
+        actionButtons.append(poopButton)
     }
 
     /// Initializes the preview node for the current player.
@@ -331,7 +342,7 @@ class GameScene: SKScene, GameStateListener, EventListener {
     /// :param: player The player that has completed its movement animation.
     private func notifyMovementCompletionFor(player: Cat) {
         gameManager.completeMovementOf(player)
-        gameEngine.trigger("movementAnimationEnded")
+        gameEngine.triggerMovementAnimationEnded()
     }
 
     /// Animates the pui action of the given player in the given direction.
@@ -432,7 +443,7 @@ class GameScene: SKScene, GameStateListener, EventListener {
     /// :param: player The player that has completed its action animation.
     private func notifyActionCompletionFor(player: Cat) {
         gameManager.completeActionOf(player)
-        gameEngine.trigger("actionAnimationEnded")
+        gameEngine.triggerActionAnimationEnded()
     }
 
     /// Updates the scene whenever the game state updates.
@@ -442,14 +453,15 @@ class GameScene: SKScene, GameStateListener, EventListener {
         // we should restrict next-state calls in game engine
         switch state {
         case .PlayerAction:
+            enableActionButtons()
             deleteRemovedDoodads()
             highlightReachableNodes()
             break
         case .ServerUpdate:
-            clearDirectionArrows()
+            disableActionButtons()
             removeHighlights()
         case .AICalculation:
-            clearDirectionArrows()
+            disableActionButtons()
             removeHighlights()
         case .StartMovesExecution:
             previewNode.hidden = true
@@ -460,6 +472,7 @@ class GameScene: SKScene, GameStateListener, EventListener {
             hidePoop()
             performPendingAnimations()
             performActions()
+            unselectActionButtons()
         default:
             break
         }
@@ -469,16 +482,17 @@ class GameScene: SKScene, GameStateListener, EventListener {
     ///
     /// :param: action The current selected action.
     func onActionUpdate(action: Action?) {
-        clearDirectionArrows()
         if let action = action {
             switch action.actionType {
             case .Pui:
-                drawDirectionArrows(action as PuiAction)
                 hidePoop()
+                unselectActionButtonsExcept(puiButton)
             case .Fart:
                 hidePoop()
+                unselectActionButtonsExcept(fartButton)
             case .Poop:
                 drawPoop(action as PoopAction)
+                unselectActionButtonsExcept(poopButton)
             }
         }
     }
@@ -493,25 +507,30 @@ class GameScene: SKScene, GameStateListener, EventListener {
         pendingAnimations += [AnimationEvent(poopSprite, action)]
     }
 
-    /// Draws the directional arrows for pui action button.
-    ///
-    /// :param: action The Pui Action object.
-    private func drawDirectionArrows(action: PuiAction) {
-        var directionSprite = SKDirectionButtonNode(
-            defaultButtonImage: "Direction.png",
-            activeButtonImage: "DirectionSelected.png",
-            size: CGSize(width: 50, height: 50),
-            centerSize: puiButton.calculateAccumulatedFrame().size,
-            hoverAction: {(direction) in
-                self.gameManager[actionOf:
-                    self.gameEngine.currentPlayer]!.direction = direction
-            },
-            availableDirection: action.availableDirections,
-            selected: action.direction
-        )
-        
-        puiButton.addChild(directionSprite)
-        previewDirectionNodes = directionSprite
+    func enableActionButtons() {
+        for button in actionButtons {
+            button.isEnabled = true
+        }
+    }
+
+    func disableActionButtons() {
+        for button in actionButtons {
+            button.isEnabled = false
+        }
+    }
+
+    func unselectActionButtons() {
+        for button in actionButtons {
+            button.unselect()
+        }
+    }
+
+    func unselectActionButtonsExcept(actionButton: SKActionButtonNode) {
+        for button in actionButtons {
+            if button != actionButton {
+                button.unselect()
+            }
+        }
     }
     
     /// Draws the preview poop on tile pooper is on.
@@ -526,13 +545,6 @@ class GameScene: SKScene, GameStateListener, EventListener {
     /// Removes the poop preview from tile
     private func hidePoop() {
         poopPreviewNode.hidden = true
-    }
-
-    /// Clears the directional arrows for the pui action button.
-    private func clearDirectionArrows() {
-        if previewDirectionNodes != nil {
-            previewDirectionNodes.removeFromParent()
-        }
     }
 
     /// Highlights the reachable nodes for the current player.

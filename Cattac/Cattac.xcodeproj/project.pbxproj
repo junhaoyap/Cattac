@@ -90,6 +90,7 @@
 		7661CF481AD4333E0004B0FD /* GridIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF471AD4333E0004B0FD /* GridIndex.swift */; };
 		7661CF4A1AD4336C0004B0FD /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF491AD4336C0004B0FD /* Direction.swift */; };
 		7661CF4C1AD560400004B0FD /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF4B1AD560400004B0FD /* GameManager.swift */; };
+		7676FEB91AE29400008FDC9D /* SKPuiActionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */; };
 		768383E21ADBD44900538F5D /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Grid.swift */; };
 		768383E31ADBD44900538F5D /* GridIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF471AD4333E0004B0FD /* GridIndex.swift */; };
 		768383E41ADBD44900538F5D /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF491AD4336C0004B0FD /* Direction.swift */; };
@@ -231,6 +232,7 @@
 		7661CF471AD4333E0004B0FD /* GridIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridIndex.swift; sourceTree = "<group>"; };
 		7661CF491AD4336C0004B0FD /* Direction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		7661CF4B1AD560400004B0FD /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
+		7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPuiActionButtonNode.swift; sourceTree = "<group>"; };
 		768384041ADBD55B00538F5D /* GridTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridTests.swift; sourceTree = "<group>"; };
 		7689FC971ADAD41E0086613D /* GameAI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
 		76D0F60A1ADAF65700CB91B3 /* GameState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				342584E41AACDB03004A3CFD /* GameScene.sks */,
 				342584E61AACDB03004A3CFD /* GameScene.swift */,
 				763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */,
+				7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */,
 				323454AE1AE29EED00CBB356 /* AnimationEvent.swift */,
 				763E71321AD2FFB200E90EF0 /* SKDirectionButtonNode.swift */,
 			);
@@ -812,6 +815,7 @@
 				34ED9F201AE29C88006DDA50 /* FirebaseServer.swift in Sources */,
 				34BA89CB1ADA7CC500413C1B /* StringUtils.swift in Sources */,
 				342584E31AACDB03004A3CFD /* AppDelegate.swift in Sources */,
+				7676FEB91AE29400008FDC9D /* SKPuiActionButtonNode.swift in Sources */,
 				34BA89C81AD6D55200413C1B /* ConnectionManager.swift in Sources */,
 				34B4B20B1AD29B8F00D06BD8 /* LobbyViewController.swift in Sources */,
 				342585531AACE392004A3CFD /* MenuViewController.swift in Sources */,
