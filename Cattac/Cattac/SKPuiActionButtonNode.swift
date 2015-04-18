@@ -113,8 +113,10 @@ class SKPuiActionButtonNode: SKActionButtonNode {
                 default:
                     break
                 }
-
-                buttonAction(directionNode!.selectedDirection!)
+                
+                if directionNode!.selectedDirection != nil {
+                    buttonAction(directionNode!.selectedDirection!)
+                }
         } else {
             directionNode!.unselectDirection()
             unselectAction()
