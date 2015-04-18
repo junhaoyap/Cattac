@@ -4,6 +4,7 @@
 */
 
 class GameConnectionManager {
+    
     let connectionManager: ConnectionManager!
     
     init() {

@@ -4,6 +4,7 @@
 */
 
 protocol Server {
+    
     func readOnce(childUrl: String, onComplete: (AnyObject) -> ())
     
     func overwrite(childUrl: String, data: [String: String])

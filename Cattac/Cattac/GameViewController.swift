@@ -22,6 +22,7 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
+    
     @IBOutlet weak var timerLabel: UILabel!
     
     var scene: GameScene!

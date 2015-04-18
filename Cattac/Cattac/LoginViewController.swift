@@ -11,6 +11,9 @@ class LoginViewController: UIViewController {
     
     let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
     
+    let connectionManager = ConnectionManager(typeOfService: "Firebase",
+        urlProvided: Constants.Firebase.baseUrl)
+    
     let backgroundMusicPlayer = MusicPlayer.sharedInstance
     
     override func viewDidLoad() {
@@ -18,16 +21,22 @@ class LoginViewController: UIViewController {
         
         backgroundMusicPlayer.playBackgroundMusic()
         
-        ref.authUser("b@b.com", password: "bbb",
-            withCompletionBlock: {
-                error, authData in
-                if error != nil {
-                    // There was an error logging in to this account
-                } else {
-                    self.performSegueWithIdentifier("loginSegue", sender: nil)
-                    // We are now logged in
-                }
+        connectionManager.readOnce("", onComplete: {
+            snapshot in
+            
+            println(snapshot)
         })
+        
+//        ref.authUser("b@b.com", password: "bbb",
+//            withCompletionBlock: {
+//                error, authData in
+//                if error != nil {
+//                    // There was an error logging in to this account
+//                } else {
+//                    self.performSegueWithIdentifier("loginSegue", sender: nil)
+//                    // We are now logged in
+//                }
+//        })
     }
     
     override func didReceiveMemoryWarning() {

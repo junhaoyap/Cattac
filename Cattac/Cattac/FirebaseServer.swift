@@ -3,6 +3,7 @@
 */
 
 class FirebaseServer: Server {
+    
     let stringUtil: StringUtils = StringUtils()
     let ref: Firebase?
     

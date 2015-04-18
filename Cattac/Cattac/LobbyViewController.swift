@@ -6,15 +6,15 @@ import UIKit
 
 class LobbyViewController: UIViewController {
     
-    private let ref = ConnectionManager(urlProvided: Constants.Firebase.baseUrl)
+    private let ref = Firebase(url: Constants.Firebase.baseUrl)
     
     let levelGenerator = LevelGenerator.sharedInstance
     var level: GameLevel!
     var playerNumber: Int!
     
     var gameRef: Firebase {
-        return ref.append(Constants.Firebase.nodeGames + "/" +
-            Constants.Firebase.nodeGame)
+        return ref.childByAppendingPath(Constants.Firebase.nodeGames)
+            .childByAppendingPath(Constants.Firebase.nodeGame)
     }
     
     var lobbyRef: Firebase {
@@ -41,7 +41,7 @@ class LobbyViewController: UIViewController {
                 self.lobbyRef.setValue([
                     "lastActive": currentTime,
                     Constants.Firebase.nodePlayers: [
-                        self.ref.getAuthId(), "", "", ""
+                        self.ref.authData.uid, "", "", ""
                     ]
                 ])
                 self.playerNumber = 1
@@ -58,7 +58,7 @@ class LobbyViewController: UIViewController {
                 
                 let playerRef = self.lobbyRef.childByAppendingPath(Constants.Firebase.nodePlayers)
                     .childByAppendingPath("\(numberOfPlayers - 1)")
-                playerRef.setValue(self.ref.getAuthId())
+                playerRef.setValue(self.ref.authData.uid)
                 
                 self.lobbyRef.updateChildValues(["lastActive": currentTime])
                 
@@ -116,6 +116,10 @@ class LobbyViewController: UIViewController {
                 self.performSegueWithIdentifier("waitGameStartSegue", sender: nil)
             })
         })
+    }
+    
+    func isAfter(dateOne: NSDate, dateTwo: NSDate) -> Bool {
+        return dateOne.compare(dateTwo) == NSComparisonResult.OrderedAscending
     }
     
     override func didReceiveMemoryWarning() {
