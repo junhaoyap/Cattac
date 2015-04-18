@@ -226,9 +226,12 @@ class GameScene: SKScene, GameStateListener, EventListener {
         spriteNode.size = sceneUtils.tileSize
         spriteNode.position = sceneUtils.pointFor(tileNode.position)
         tilesLayer.addChild(spriteNode)
-
+        
         if let doodad = tileNode.doodad {
             self.drawTileEntity(spriteNode, doodad)
+        }
+        if let item = tileNode.item {
+            self.drawTileEntity(spriteNode, item)
         }
     }
 
