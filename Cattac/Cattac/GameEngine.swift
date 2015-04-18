@@ -69,10 +69,12 @@ class GameEngine {
         
         createPlayers(playerNumber)
         
-        registerMovementWatcherExcept(playerNumber)
-
-        self.gameAI = GameAI(grid: grid, gameManager: gameManager,
-            currentPlayer: currentPlayer)
+        if multiplayer {
+            registerMovementWatcherExcept(playerNumber)
+        } else {
+            self.gameAI = GameAI(grid: grid, gameManager: gameManager,
+                currentPlayer: currentPlayer)
+        }
 
         registerEvents()
     }
