@@ -98,13 +98,13 @@ struct Constants {
     struct itemName {
         static let milk = "milk"
         static let nuke = "nuke"
-        static let rock = "rock"
+        static let projectile = "projectile"
     }
     
     struct itemEffect {
         static let milkHpIncreaseEffect = 150
         static let nukeDmg = 100
-        static let rockDmg = 150
+        static let projectileDmg = 150
     }
     
     struct Firebase {

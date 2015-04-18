@@ -14,20 +14,20 @@ class ItemFactory {
     }
     
     func createItem(nameOfItemToCreate: String) -> Item? {
-        var ItemToReturn: Item?
+        var itemToReturn: Item?
         
         switch nameOfItemToCreate {
         case Constants.itemName.milk:
-            ItemToReturn = Item(itemName: nameOfItemToCreate)
+            itemToReturn = MilkItem()
         case Constants.itemName.nuke:
-            ItemToReturn = Item(itemName: nameOfItemToCreate)
-        case Constants.itemName.rock:
-            ItemToReturn = Item(itemName: nameOfItemToCreate)
+            itemToReturn = NukeItem()
+        case Constants.itemName.projectile:
+            itemToReturn = ProjectileItem()
         default:
             break
         }
         
-        return ItemToReturn
+        return itemToReturn
     }
     
 }
