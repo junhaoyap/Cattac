@@ -9,6 +9,10 @@ struct Constants {
     struct Level {
         static let basicRows: Int = 10
         static let basicColumns: Int = 10
+        static let mediumRows: Int = 13
+        static let mediumColumns: Int = 13
+        static let hardRows: Int = 8
+        static let hardColumns: Int = 8
         static let defaultDoodads: Int = 8
         static let defaultWalls: Int = 10
         
@@ -19,6 +23,26 @@ struct Constants {
             GridIndex(9, 9)
         ]
         // magic numbers for now
+        
+        static let keyRows = "rows"
+        static let keyCols = "cols"
+        static let keyType = "type"
+        
+        static let valueTypeBasic = "basic"
+        static let valueTypeMedium = "medium"
+        static let valueTypeHard = "hard"
+        
+        static let keyEntities = "entities"
+        static let keyGridRow = "row"
+        static let keyGridCol = "col"
+        static let keyEntityName = "name"
+        static let keyWormholeDestNode = "destNode"
+        
+        static let keyPlayers = "players"
+        static let keyPlayer1 = "player1"
+        static let keyPlayer2 = "player2"
+        static let keyPlayer3 = "player3"
+        static let keyPlayer4 = "player4"
     }
     
     // default number of meows, standalone for now
@@ -83,5 +107,24 @@ struct Constants {
         static let rockDmg = 150
     }
     
-    static let firebaseBaseUrl = "https://torrid-inferno-1934.firebaseio.com/"
+    struct Firebase {
+        static let baseUrl = "https://torrid-inferno-1934.firebaseio.com/"
+        static let nodeGames = "games"
+        static let nodeUsers = "users"
+        
+        static let nodeGame = "game"
+        static let nodeGameLevel = "gameLevel"
+        static let nodeLobby = "lobby"
+        static let nodePlayers = "players"
+        static let nodePlayerMovements = "movements"
+        
+        static let keyMovementAttrDir = "attackDir"
+        static let keyMovementAttackDmg = "attackDmg"
+        static let keyMovementAttackRange = "attackRange"
+        static let keyMovementAttackType = "attackType"
+        static let keyMovementFromRow = "fromRow"
+        static let keyMovementFromCol = "fromCol"
+        static let keyMovementToRow = "toRow"
+        static let keyMovementToCol = "toCol"
+    }
 }

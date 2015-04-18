@@ -5,7 +5,7 @@
 import UIKit
 
 class MenuViewController: UIViewController {
-    let connectionManager = ConnectionManager(urlProvided: Constants.firebaseBaseUrl)
+    let connectionManager = ConnectionManager(urlProvided: Constants.Firebase.baseUrl)
     
     override func viewDidLoad() {
         super.viewDidLoad()
