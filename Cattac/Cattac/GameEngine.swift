@@ -277,7 +277,10 @@ class GameEngine {
     
     private func postExecute() {
         gameManager.advanceTurn()
-        currentPlayer.postExecute()
+        
+        for player in gameManager.players.values {
+            player.postExecute()
+        }
     }
     
     /// Called by UI to notify game engine that movement is executed on UI
