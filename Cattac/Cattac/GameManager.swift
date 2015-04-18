@@ -126,14 +126,14 @@ class GameManager {
             var player = _players[playerName]!
 
             if let doodad = tileNode.doodad {
-                doodad.effect(player)
+                doodad.premoveEffect(player)
 
                 if doodad.isRemoved() {
                     tileNode.doodad = nil
                     _doodadsToRemove[doodad.getSprite().hashValue] = doodad
                 }
             }
-
+            
             _playerMovementAnimationCompleted[playerName] = false
             _playerActionAnimationCompleted[playerName] = false
         }

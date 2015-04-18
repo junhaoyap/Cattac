@@ -10,8 +10,20 @@ class Doodad: TileEntity {
     private var removed = false
     private var sprite: SKNode = SKSpriteNode(imageNamed: "Nala.png")
     
-    func effect(cat: Cat) {
-        // inheriting doodads to implement effect, if any.
+    /// inheriting doodads to implement effect, if any.
+    /// effected by destination tile
+    /// after player move has been calculated.
+    ///
+    /// :param: player Player to apply effect on
+    func postmoveEffect(cat: Cat) {
+    }
+    
+    /// inheriting doodads to implement effect, if any.
+    /// effected by position tile
+    /// before player move has been calculated.
+    ///
+    /// :param: player Player to apply effect on
+    func premoveEffect(cat: Cat) {
     }
     
     func isRemoved() -> Bool {

@@ -10,7 +10,7 @@ class FortressDoodad: Doodad {
         setName(Constants.Doodad.fortressString)
     }
     
-    override func effect(cat: Cat) {
+    override func postmoveEffect(cat: Cat) {
         cat.defenceMods += [defenceModification]
     }
     
