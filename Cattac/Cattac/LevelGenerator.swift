@@ -118,14 +118,11 @@ class LevelGenerator {
             if doodad is WormholeDoodad {
                 let destDoodadData = entityData[Constants.Level.keyWormholeDestNode]! as [String: AnyObject]
                 let destDoodadRow = destDoodadData[Constants.Level.keyGridRow]! as Int
-                let destDoodadCol = destDoodadData[Constants.Level.keyGridRow]! as Int
-                let destDoodad = doodadFactory.createDoodad(Constants.Doodad.wormholeString)!
+                let destDoodadCol = destDoodadData[Constants.Level.keyGridCol]! as Int
                 
-                let destTileNode = level.addDoodad(destDoodad,
-                    atLocation: GridIndex(destDoodadRow, destDoodadCol))
+                let destTileNode = level.nodeAt(destDoodadRow, destDoodadCol)!
                 
                 (doodad as WormholeDoodad).setDestination(destTileNode)
-                (destDoodad as WormholeDoodad).setDestination(tileNode)
             } else if doodad is Wall {
                 level.grid.removeNodeFromGraph(tileNode)
             }

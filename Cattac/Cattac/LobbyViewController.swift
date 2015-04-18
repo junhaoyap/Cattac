@@ -89,7 +89,7 @@ class LobbyViewController: UIViewController {
     
     func initiateGameStart() {
         level = levelGenerator.generateBasic()
-        gameRef.updateChildValues([
+        gameRef.setValue([
             "hasGameStarted": 1,
             Constants.Firebase.nodeGameLevel: level.compress(),
             Constants.Firebase.nodePlayers: [
