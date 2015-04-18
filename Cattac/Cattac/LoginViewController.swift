@@ -21,22 +21,23 @@ class LoginViewController: UIViewController {
         
         backgroundMusicPlayer.playBackgroundMusic()
         
-        connectionManager.readOnce("", onComplete: {
-            snapshot in
-            
-            println(snapshot)
-        })
-        
-//        ref.authUser("b@b.com", password: "bbb",
-//            withCompletionBlock: {
-//                error, authData in
-//                if error != nil {
-//                    // There was an error logging in to this account
-//                } else {
-//                    self.performSegueWithIdentifier("loginSegue", sender: nil)
-//                    // We are now logged in
-//                }
+        // Connection Manager test code
+//        connectionManager.readOnce("", onComplete: {
+//            snapshot in
+//            
+//            println(snapshot)
 //        })
+        
+        ref.authUser("b@b.com", password: "bbb",
+            withCompletionBlock: {
+                error, authData in
+                if error != nil {
+                    // There was an error logging in to this account
+                } else {
+                    self.performSegueWithIdentifier("loginSegue", sender: nil)
+                    // We are now logged in
+                }
+        })
     }
     
     override func didReceiveMemoryWarning() {
