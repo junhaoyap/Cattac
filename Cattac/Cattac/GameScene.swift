@@ -42,6 +42,9 @@ class GameScene: SKScene {
     /// Button that sets the action of the player to Poop.
     private var poopButton: SKActionButtonNode!
     
+    /// Inventory slot showing player's held item
+    private var inventoryBox: SKSpriteNode!
+    
     /// Preview of the next position of the current player when setting the
     /// next tile to move to.
     private var previewNode: SKSpriteNode!
@@ -102,11 +105,12 @@ class GameScene: SKScene {
             // adds buttonLayer to the gameLayer
             let buttonSpacing: CGFloat = 220
             buttonLayer.position =
-                CGPoint(x: -buttonSpacing, y: layerPosition.y - 90)
+                CGPoint(x: -buttonSpacing, y: layerPosition.y - 100)
             gameLayer.addChild(buttonLayer)
 
             /// Additional initialization
             initializeButtons(buttonSpacing)
+            initializeInventory()
             initializePlayerPreview(currentPlayerNumber)
             initializePoopPreview()
             addTiles()
@@ -210,6 +214,15 @@ extension GameScene: EventListener {
 
         pendingAnimations += [AnimationEvent(poopSprite, action)]
     }
+    
+    func onItemObtained(item: Item) {
+        let scale = inventoryBox.size.height / item.sprite.size.height
+        let animAction = SKAction.group([
+            SKAction.moveTo(inventoryBox.position, duration: 0.5),
+            SKAction.scaleTo(scale, duration: 0.5)
+        ])
+        item.sprite.runAction(animAction)
+    }
 }
 
 
@@ -275,9 +288,17 @@ private extension GameScene {
         buttonLayer.addChild(poopButton)
         actionButtons.append(poopButton)
     }
+    
+    /// Initializes the inventory slot on game scene.
+    func initializeInventory() {
+        inventoryBox = SKSpriteNode(imageNamed: "InventoryBox.png")
+        inventoryBox.size = CGSizeMake(64, 64)
+        inventoryBox.position = CGPoint(x: 32, y: -37)
+        entityLayer.addChild(inventoryBox)
+    }
 
     /// Adds the player nodes to the grid.
-    private func addPlayers() {
+    func addPlayers() {
         for player in gameEngine.gameManager.players.values {
             let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
             let playerNode = player.getSprite() as SKSpriteNode

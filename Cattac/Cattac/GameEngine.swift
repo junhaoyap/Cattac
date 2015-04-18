@@ -6,6 +6,7 @@ protocol GameStateListener {
 
 protocol EventListener {
     func onActionUpdate(action: Action?)
+    func onItemObtained(item: Item)
     func addPendingPoopAnimation(target: GridIndex)
 }
 
@@ -281,6 +282,14 @@ class GameEngine {
         
         for player in gameManager.players.values {
             player.postExecute()
+            let tileNode = gameManager[positionOf: player]!
+            
+            if let item = tileNode.item {
+                gameManager[itemOf: player] = item
+                tileNode.item = nil
+                
+                eventListener?.onItemObtained(item)
+            }
         }
     }
     

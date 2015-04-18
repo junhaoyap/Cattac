@@ -7,6 +7,7 @@ class GameManager {
     private var _playerMovementPaths: [String:[TileNode]]
     private var _playerMovementAnimationCompleted: [String:Bool]
     private var _playerActionAnimationCompleted: [String:Bool]
+    private var _playerItems: [String:Item]
     private var _doodadsToRemove: [Int: Doodad]
 
     init() {
@@ -17,6 +18,7 @@ class GameManager {
         _playerMovementPaths = [:]
         _playerMovementAnimationCompleted = [:]
         _playerActionAnimationCompleted = [:]
+        _playerItems = [:]
         _doodadsToRemove = [:]
     }
 
@@ -37,7 +39,7 @@ class GameManager {
             return _playerMoveToPositions[player.name]
         }
     }
-
+    
     subscript(actionOf player:Cat) -> Action? {
         set {
             if newValue == nil {
@@ -48,6 +50,19 @@ class GameManager {
         }
         get {
             return _playerActions[player.name]
+        }
+    }
+    
+    subscript(itemOf player:Cat) -> Item? {
+        set {
+            if newValue == nil {
+                _playerItems.removeValueForKey(player.name)
+            } else {
+                _playerItems[player.name] = newValue
+            }
+        }
+        get {
+            return _playerItems[player.name]
         }
     }
 
