@@ -5,25 +5,22 @@
 import UIKit
 
 class LobbyViewController: UIViewController {
-    private let ref = Firebase(url: Constants.Firebase.baseUrl)
-    //private var gameStartObserver
+    
+    private let ref = ConnectionManager(urlProvided: Constants.Firebase.baseUrl)
+    
     let levelGenerator = LevelGenerator.sharedInstance
     var level: GameLevel!
     var playerNumber: Int!
     
     var gameRef: Firebase {
-        return ref.childByAppendingPath(Constants.Firebase.nodeGames)
-            .childByAppendingPath(Constants.Firebase.nodeGame)
+        return ref.append(Constants.Firebase.nodeGames + "/" +
+            Constants.Firebase.nodeGame)
     }
     
     var lobbyRef: Firebase {
         return gameRef.childByAppendingPath(Constants.Firebase.nodeLobby)
     }
     
-    // TODO check if the player who is joining the game has already joined,
-    // if not he can join as multiplayer players from the same game and
-    // screw the game up, hypothetically speaking shouldn't happen at the moment
-    // but we can keep that in view
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,7 +41,7 @@ class LobbyViewController: UIViewController {
                 self.lobbyRef.setValue([
                     "lastActive": currentTime,
                     Constants.Firebase.nodePlayers: [
-                        self.ref.authData.uid, "", "", ""
+                        self.ref.getAuthId(), "", "", ""
                     ]
                 ])
                 self.playerNumber = 1
@@ -61,7 +58,7 @@ class LobbyViewController: UIViewController {
                 
                 let playerRef = self.lobbyRef.childByAppendingPath(Constants.Firebase.nodePlayers)
                     .childByAppendingPath("\(numberOfPlayers - 1)")
-                playerRef.setValue(self.ref.authData.uid)
+                playerRef.setValue(self.ref.getAuthId())
                 
                 self.lobbyRef.updateChildValues(["lastActive": currentTime])
                 
@@ -119,10 +116,6 @@ class LobbyViewController: UIViewController {
                 self.performSegueWithIdentifier("waitGameStartSegue", sender: nil)
             })
         })
-    }
-    
-    func isAfter(dateOne: NSDate, dateTwo: NSDate) -> Bool {
-        return dateOne.compare(dateTwo) == NSComparisonResult.OrderedAscending
     }
     
     override func didReceiveMemoryWarning() {

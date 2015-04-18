@@ -35,12 +35,6 @@ class ConnectionManager {
         })
     }
     
-    func getAuthId() -> String {
-        let uid = baseFirebaseRef!.authData.uid
-        
-        return uid
-    }
-    
     func overwrite(childUrl: String, data: [String: String]) {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
@@ -66,7 +60,6 @@ class ConnectionManager {
     }
     
     func watchOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
-        
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var changeRef = baseFirebaseRef!
@@ -80,5 +73,23 @@ class ConnectionManager {
             
             onComplete(snapshot)
         })
+    }
+    
+    func getAuthId() -> String {
+        let uid = baseFirebaseRef!.authData.uid
+        
+        return uid
+    }
+    
+    func append(childUrl: String) -> Firebase {
+        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
+        
+        var appendedRef = baseFirebaseRef!
+        
+        for childString in splittedStringsToConstructRef {
+            appendedRef = appendedRef.childByAppendingPath(childString)
+        }
+        
+        return appendedRef
     }
 }
