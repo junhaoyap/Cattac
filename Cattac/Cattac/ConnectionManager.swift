@@ -12,84 +12,9 @@
 */
 
 class ConnectionManager {
-    let stringUtil: StringUtils = StringUtils()
-    let baseFirebaseRef: Firebase?
+    let firebaseServer: FirebaseServer?
     
-    init(urlProvided: String) {
-        baseFirebaseRef = Firebase(url: urlProvided)
-    }
-    
-    func readOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
+    init(typeOfService: String, urlProvided: String) {
         
-        var readRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            readRef = readRef.childByAppendingPath(childString)
-        }
-        
-        readRef.observeSingleEventOfType(.Value, withBlock: {
-            snapshot in
-            
-            onComplete(snapshot)
-        })
-    }
-    
-    func overwrite(childUrl: String, data: [String: String]) {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
-        
-        var overwriteRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            overwriteRef = overwriteRef.childByAppendingPath(childString)
-        }
-        
-        overwriteRef.setValue(data)
-    }
-    
-    func update(childUrl: String, data: [String: String]) {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
-        
-        var updateRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            updateRef = updateRef.childByAppendingPath(childString)
-        }
-        
-        updateRef.updateChildValues(data)
-    }
-    
-    func watchOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
-        
-        var changeRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            changeRef = changeRef.childByAppendingPath(childString)
-        }
-        
-        changeRef.observeSingleEventOfType(.ChildChanged, withBlock: {
-            snapshot in
-            
-            onComplete(snapshot)
-        })
-    }
-    
-    func getAuthId() -> String {
-        let uid = baseFirebaseRef!.authData.uid
-        
-        return uid
-    }
-    
-    func append(childUrl: String) -> Firebase {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
-        
-        var appendedRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            appendedRef = appendedRef.childByAppendingPath(childString)
-        }
-        
-        return appendedRef
     }
 }
