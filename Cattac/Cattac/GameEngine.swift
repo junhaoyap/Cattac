@@ -56,6 +56,9 @@ class GameEngine {
     
     /// The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
+
+    /// The node positions mapped to the player on that node.
+    var otherPlayerMoveToNodes = [GridIndex:Cat]()
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
         println("init GameEngine as playerNumber \(playerNumber)")
@@ -100,6 +103,7 @@ class GameEngine {
             triggerStateAdvance()
         case .StartMovesExecution:
             calculateMovementPaths()
+            generateOtherPlayerMoveToNodess()
             triggerStateAdvance()
         case .MovesExecution:
             // This state waits for the movement ended event that is triggered
@@ -283,6 +287,17 @@ class GameEngine {
             player.postExecute()
         }
     }
+
+    private func generateOtherPlayerMoveToNodess() {
+        otherPlayerMoveToNodes.removeAll(keepCapacity: true)
+
+        for player in gameManager.players.values {
+            if player.name != currentPlayer.name {
+                let node = gameManager[moveToPositionOf: player]!
+                otherPlayerMoveToNodes[node.position] = player
+            }
+        }
+    }
     
     /// Called by UI to notify game engine that movement is executed on UI
     /// and player position can be updated
@@ -317,16 +332,19 @@ class GameEngine {
         let offset = grid.neighboursOffset[direction]!
         var path = [TileNode]()
         var currentNode = startNode
+
         while let nextNode = grid[currentNode.position, with: offset] {
-            if let doodad = nextNode.doodad {
-                if doodad.getName() == Constants.Doodad.wallString {
-                    path.append(nextNode)
-                    break
-                }
-            }
             path.append(nextNode)
+
+            if nextNode.doodad is Wall {
+                break
+            } else if otherPlayerMoveToNodes[nextNode.position] != nil {
+                break
+            }
+
             currentNode = nextNode
         }
+
         return path
     }
 
