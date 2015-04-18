@@ -15,14 +15,8 @@ class ConnectionManager {
     
     let server: Server!
     
-    init(typeOfService: String, urlProvided: String) {
-        if (typeOfService == "Firebase") {
-            server = FirebaseServer(urlProvided: urlProvided)
-        } else {
-            // TODO: Support other types of servers
-            
-            // For now, just let the program crash
-        }
+    init(firebase urlProvided: String) {
+        server = FirebaseServer(urlProvided: urlProvided)
     }
     
     init(server: Server) {
@@ -30,7 +24,7 @@ class ConnectionManager {
     }
     
     func readOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
-        server!.readOnce(childUrl, onComplete: {
+        server.readOnce(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
@@ -38,15 +32,15 @@ class ConnectionManager {
     }
     
     func overwrite(childUrl: String, data: [String: String]) {
-        server!.overwrite(childUrl, data: data)
+        server.overwrite(childUrl, data: data)
     }
     
     func update(childUrl: String, data: [String: String]) {
-        server!.update(childUrl, data: data)
+        server.update(childUrl, data: data)
     }
     
     func watchUpdateOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
-        server!.watchUpdateOnce(childUrl, onComplete: {
+        server.watchUpdateOnce(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
@@ -54,7 +48,7 @@ class ConnectionManager {
     }
 
     func watchUpdate(childUrl: String, onComplete: (AnyObject) -> ()) {
-        server!.watchUpdate(childUrl, onComplete: {
+        server.watchUpdate(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
@@ -62,7 +56,7 @@ class ConnectionManager {
     }
     
     func watchNewOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
-        server!.watchNewOnce(childUrl, onComplete: {
+        server.watchNewOnce(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
@@ -70,7 +64,7 @@ class ConnectionManager {
     }
 
     func watchNew(childUrl: String, onComplete: (AnyObject) -> ()) {
-        server!.watchNew(childUrl, onComplete: {
+        server.watchNew(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
@@ -79,7 +73,7 @@ class ConnectionManager {
     
     func createUser(email: String, password: String,
         onComplete: (NSError!, [NSObject: AnyObject]!) -> ()) {
-            server!.createUser(email, password: password, onComplete: {
+            server.createUser(email, password: password, onComplete: {
                 error, result in
                 
                 onComplete(error, result)
@@ -88,7 +82,7 @@ class ConnectionManager {
 
     func authUser(email: String, password: String,
         onComplete: (NSError!, AnyObject) -> ()) {
-            server!.authUser(email, password: password, onComplete: {
+            server.authUser(email, password: password, onComplete: {
                 error, authdata in
                 
                 onComplete(error, authdata)
@@ -96,14 +90,14 @@ class ConnectionManager {
     }
     
     func getAuthId() -> String {
-        return server!.getAuthId()
+        return server.getAuthId()
     }
 
     func append(childUrl: String) -> ConnectionManager {
-        return server!.append(childUrl)
+        return server.append(childUrl)
     }
 
     func removeAllObservers() {
-        server!.removeAllObservers()
+        server.removeAllObservers()
     }
 }
