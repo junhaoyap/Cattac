@@ -2,7 +2,7 @@ import SpriteKit
 
 /// The spritekit scene for the game, in charge of drawing and animating all 
 /// entities of the game.
-class GameScene: SKScene, GameStateListener, EventListener {
+class GameScene: SKScene {
 
     /// Game Engine that does all the logic for the scene.
     let gameEngine: GameEngine!
@@ -112,161 +112,6 @@ class GameScene: SKScene, GameStateListener, EventListener {
             addTiles()
             addPlayers()
     }
-
-    /// Sets the game background image.
-    ///
-    /// :param: name The background image file.
-    private func setBackgroundImage(name: String) {
-        let image = UIImage(named: name)!
-        let backgroundCGImage = image.CGImage
-        let textureSize = CGRectMake(0, 0, image.size.width, image.size.height)
-
-        UIGraphicsBeginImageContext(size)
-        let context = UIGraphicsGetCurrentContext()
-        CGContextDrawTiledImage(context, textureSize, backgroundCGImage)
-        let tiledBackground = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        let backgroundTexture = SKTexture(CGImage: tiledBackground.CGImage)
-        let backgroundImage  = SKSpriteNode(texture: backgroundTexture)
-        backgroundImage.yScale = -1
-        backgroundImage.zPosition = -10
-
-        self.addChild(backgroundImage)
-    }
-
-    /// Initializes the action buttons for the scene.
-    ///
-    /// :param: buttonSpacing The spacing between the center anchor of the 
-    ///                       buttons.
-    private func initializeButtons(buttonSpacing: CGFloat) {
-        puiButton = SKPuiActionButtonNode(
-            defaultButtonImage: "PuiButton.png",
-            activeButtonImage: "PuiButtonPressed.png",
-            buttonAction: { (dir: Direction) in
-                self.gameEngine.triggerPuiButtonPressed(dir)
-            },
-            unselectAction: { self.gameEngine.triggerClearAction() },
-            getAvailableDirections: { return self.gameEngine.getAvailablePuiDirections() })
-        puiButton.position = CGPoint(x: 0 * buttonSpacing, y: 0)
-        buttonLayer.addChild(puiButton)
-        actionButtons.append(puiButton)
-
-        fartButton = SKActionButtonNode(
-            defaultButtonImage: "FartButton.png",
-            activeButtonImage: "FartButtonPressed.png",
-            buttonAction: { self.gameEngine.triggerFartButtonPressed() },
-            unselectAction: { self.gameEngine.triggerClearAction() })
-        fartButton.position = CGPoint(x: 1 * buttonSpacing, y: 0)
-        buttonLayer.addChild(fartButton)
-        actionButtons.append(fartButton)
-
-        poopButton = SKActionButtonNode(
-            defaultButtonImage: "PoopButton.png",
-            activeButtonImage: "PoopButtonPressed.png",
-            buttonAction: { self.gameEngine.triggerPoopButtonPressed() },
-            unselectAction: {
-                self.hidePoop()
-                self.gameEngine.triggerClearAction()
-            })
-        poopButton.position = CGPoint(x: 2 * buttonSpacing, y: 0)
-        buttonLayer.addChild(poopButton)
-        actionButtons.append(poopButton)
-    }
-
-    /// Initializes the preview node for the current player.
-    ///
-    /// :param: currentPlayerNumber The index/id of the currentPlayer.
-    private func initializePlayerPreview(currentPlayerNumber: Int) {
-        switch currentPlayerNumber {
-        case 1:
-            previewNode = SKSpriteNode(imageNamed: "Nala.png")
-        case 2:
-            previewNode = SKSpriteNode(imageNamed: "Nyan.png")
-        case 3:
-            previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
-        case 4:
-            previewNode = SKSpriteNode(imageNamed: "Pusheen.png")
-        default:
-            break
-        }
-
-        previewNode.size = sceneUtils.tileSize
-        previewNode.alpha = 0.5
-        previewNode.hidden = true
-        entityLayer.addChild(previewNode)
-    }
-    
-    /// Initializes the preview node for the poop action.
-    private func initializePoopPreview() {
-        poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
-        poopPreviewNode.size = sceneUtils.tileSize
-        poopPreviewNode.alpha = 0.5
-        poopPreviewNode.hidden = true
-        entityLayer.addChild(poopPreviewNode)
-    }
-
-    /// Adds the tiles to the grid based on the given level.
-    private func addTiles() {
-        for row in 0..<level.numRows {
-            for column in 0..<level.numColumns {
-                if let tileNode = level.nodeAt(row, column) {
-                    drawTile(tileNode)
-                }
-            }
-        }
-    }
-
-    /// Draws the tiles on the scene based on the `TileNode` given, including
-    /// the doodads.
-    ///
-    /// :param: tileNode The given `TileNode` to be drawn.
-    private func drawTile(tileNode: TileNode) {
-        let spriteNode = tileNode.sprite
-        spriteNode.size = sceneUtils.tileSize
-        spriteNode.position = sceneUtils.pointFor(tileNode.position)
-        tilesLayer.addChild(spriteNode)
-        
-        if let doodad = tileNode.doodad {
-            self.drawTileEntity(spriteNode, doodad)
-        }
-        if let item = tileNode.item {
-            self.drawTileEntity(spriteNode, item)
-        }
-    }
-
-    /// Draws the `TileEntity` on the `SKSpriteNode` of the `TileNode` that it
-    /// belongs to.
-    ///
-    /// :param: spriteNode The `SKSpriteNode` on which the parent `TileNode` is
-    ///                    drawn.
-    /// :param: tileEntity The given `TileEntity` to be drawn.
-    private func drawTileEntity(spriteNode: SKSpriteNode,
-        _ tileEntity: TileEntity) {
-            let entityNode = tileEntity.getSprite()
-
-            if entityNode is SKSpriteNode {
-                (entityNode as SKSpriteNode).size = spriteNode.size
-            }
-
-            if !tileEntity.isVisible() {
-                entityNode.alpha = 0.5
-            }
-
-            entityNode.position = spriteNode.position
-            entityLayer.addChild(entityNode)
-    }
-
-    /// Adds the player nodes to the grid.
-    private func addPlayers() {
-        for player in gameEngine.gameManager.players.values {
-            let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
-            let playerNode = player.getSprite() as SKSpriteNode
-            playerNode.size = spriteNode.size
-            playerNode.position = spriteNode.position
-            entityLayer.addChild(playerNode)
-        }
-    }
     
     /// When player tries to perform movement actions
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -291,164 +136,16 @@ class GameScene: SKScene, GameStateListener, EventListener {
             }
         }
     }
-
-    /// Sets the next position to move to for the current player.
-    ///
-    /// :param: node The `TileNode` that the player will be moving to.
-    private func registerPlayerMovement(node: TileNode) {
-        if gameEngine.state == GameState.PlayerAction {
-            if gameEngine.reachableNodes[Node(node).hashValue] != nil {
-                gameEngine.setCurrentPlayerMoveToPosition(node)
-                previewNode.position = sceneUtils.pointFor(node.position)
-                previewNode.hidden = false
-            }
-        }
-    }
     
     /// This is automatically called at every frame by the scene
     override func update(currentTime: CFTimeInterval) {
         gameEngine.gameLoop()
     }
+}
 
-    /// Moves all the players to their respective next positions.
-    ///
-    /// Notifies the game manager and game engine of movement completion.
-    private func movePlayers() {
-        for (playerName, player) in gameManager.players {
-            let path = gameEngine.executePlayerMove(player)
-            var pathSequence: [SKAction] = []
-            
-            for node in path {
-                let action = SKAction.moveTo(node.sprite.position,
-                    duration: 0.25)
-                pathSequence.append(action)
-            }
-            
-            if pathSequence.count > 0 {
-                player.getSprite().runAction(
-                    SKAction.sequence(pathSequence),
-                    completion: {
-                        self.notifyMovementCompletionFor(player)
-                    }
-                )
-            } else {
-                notifyMovementCompletionFor(player)
-            }
-        }
-    }
 
-    /// Sets the completion flag of the player movement in the game manager.
-    ///
-    /// Triggers the `movementAnimationEnded` event of the game engine so as to
-    /// advance to the next game state to animation the player actions.
-    ///
-    /// :param: player The player that has completed its movement animation.
-    private func notifyMovementCompletionFor(player: Cat) {
-        gameManager.completeMovementOf(player)
-        gameEngine.triggerMovementAnimationEnded()
-    }
 
-    /// Animates the pui action of the given player in the given direction.
-    ///
-    /// :param: player The cat that is performing the pui action.
-    /// :param: direction The direction to pui in.
-    private func animatePuiAction(player: Cat, direction: Direction) {
-        let startNode = gameManager[moveToPositionOf: player]!
-        let path = gameEngine.pathOfPui(startNode, direction: direction)
-        var pathSequence: [SKAction] = []
-
-        for node in path {
-            let action = SKAction.moveTo(node.sprite.position, duration: 0.15)
-            pathSequence.append(action)
-        }
-
-        let pui = SKSpriteNode(imageNamed: "Pui.png")
-        pui.size = sceneUtils.tileSize
-        pui.position = startNode.sprite.position
-        pui.zRotation = SceneUtils.zRotation(direction)
-
-        entityLayer.addChild(pui)
-
-        pui.runAction(
-            SKAction.sequence(pathSequence),
-            completion: {
-                pui.removeFromParent()
-                self.notifyActionCompletionFor(player)
-            }
-        )
-    }
-
-    private func animateFartAction(player: Cat) {
-        let startNode = gameManager[moveToPositionOf: player]!
-        let path = gameEngine.pathOfFart(startNode, range: player.fartRange)
-        let delay = 0.25
-
-        for (i, nodes) in enumerate(path) {
-            let timeInterval = Double(i) * delay
-            for (j, node) in enumerate(nodes.values) {
-
-                let fart = SKSpriteNode(imageNamed: "Fart.png")
-                fart.size = CGSize(width: sceneUtils.tileSize.width / 4,
-                    height: sceneUtils.tileSize.height / 4)
-                fart.position = node.sprite.position
-                fart.alpha = 0
-
-                entityLayer.addChild(fart)
-                let action = sceneUtils.getFartAnimation(timeInterval)
-                
-                fart.runAction(action, completion: {
-                    fart.removeFromParent()
-                    if i == path.count - 1 && j == nodes.count - 1 {
-                        self.notifyActionCompletionFor(player)
-                    }
-                })
-            }
-        }
-    }
-
-    /// Performs the respective actions for each player.
-    private func performActions() {
-        for player in gameManager.players.values {
-            if let action = gameEngine.executePlayerAction(player) {
-                println(action)
-                switch action.actionType {
-                case .Pui:
-                    let direction = (action as PuiAction).direction
-                    animatePuiAction(player, direction: direction)
-                case .Fart:
-                    animateFartAction(player)
-                case .Poop:
-                    notifyActionCompletionFor(player)
-                }
-            } else {
-                notifyActionCompletionFor(player)
-            }
-        }
-    }
-    
-    /// Performs the animations for each event, such as stepping on poop.
-    private func performPendingAnimations() {
-        for event in pendingAnimations {
-            entityLayer.addChild(event.sprite)
-            
-            event.sprite.runAction(event.action, completion: {
-                event.sprite.removeFromParent()
-            })
-        }
-        pendingAnimations.removeAll(keepCapacity: false)
-    }
-
-    /// Sets the completion flag of the player action in the game manager.
-    ///
-    /// Triggers the `actionAnimationEnded` event of the game engine so as to
-    /// advance to the next game state to post execution.
-    ///
-    /// :param: player The player that has completed its action animation.
-    private func notifyActionCompletionFor(player: Cat) {
-        gameManager.completeActionOf(player)
-        gameEngine.triggerActionAnimationEnded()
-    }
-
+extension GameScene: GameStateListener {
     /// Updates the scene whenever the game state updates.
     ///
     /// :param: state The update game state.
@@ -480,7 +177,11 @@ class GameScene: SKScene, GameStateListener, EventListener {
             break
         }
     }
+}
 
+
+
+extension GameScene: EventListener {
     /// Updates the scene based on the current action selected.
     ///
     /// :param: action The current selected action.
@@ -499,35 +200,357 @@ class GameScene: SKScene, GameStateListener, EventListener {
             }
         }
     }
-    
+
     func addPendingPoopAnimation(target: GridIndex) {
         let poopSprite = SKSpriteNode(imageNamed: "Poop.png")
         poopSprite.position = sceneUtils.pointFor(target)
         poopSprite.size = sceneUtils.tileSize
-        
+
         let action = sceneUtils.getFartAnimation(0)
-        
+
         pendingAnimations += [AnimationEvent(poopSprite, action)]
     }
+}
 
+
+
+private extension GameScene {
+    /// Sets the game background image.
+    ///
+    /// :param: name The background image file.
+    func setBackgroundImage(name: String) {
+        let image = UIImage(named: name)!
+        let backgroundCGImage = image.CGImage
+        let textureSize = CGRectMake(0, 0, image.size.width, image.size.height)
+
+        UIGraphicsBeginImageContext(size)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextDrawTiledImage(context, textureSize, backgroundCGImage)
+        let tiledBackground = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        let backgroundTexture = SKTexture(CGImage: tiledBackground.CGImage)
+        let backgroundImage  = SKSpriteNode(texture: backgroundTexture)
+        backgroundImage.yScale = -1
+        backgroundImage.zPosition = -10
+
+        self.addChild(backgroundImage)
+    }
+
+    /// Initializes the action buttons for the scene.
+    ///
+    /// :param: buttonSpacing The spacing between the center anchor of the
+    ///                       buttons.
+    func initializeButtons(buttonSpacing: CGFloat) {
+        puiButton = SKPuiActionButtonNode(
+            defaultButtonImage: "PuiButton.png",
+            activeButtonImage: "PuiButtonPressed.png",
+            buttonAction: { (dir: Direction) in
+                self.gameEngine.triggerPuiButtonPressed(dir)
+            },
+            unselectAction: { self.gameEngine.triggerClearAction() },
+            getAvailableDirections: { return self.gameEngine.getAvailablePuiDirections() })
+        puiButton.position = CGPoint(x: 0 * buttonSpacing, y: 0)
+        buttonLayer.addChild(puiButton)
+        actionButtons.append(puiButton)
+
+        fartButton = SKActionButtonNode(
+            defaultButtonImage: "FartButton.png",
+            activeButtonImage: "FartButtonPressed.png",
+            buttonAction: { self.gameEngine.triggerFartButtonPressed() },
+            unselectAction: { self.gameEngine.triggerClearAction() })
+        fartButton.position = CGPoint(x: 1 * buttonSpacing, y: 0)
+        buttonLayer.addChild(fartButton)
+        actionButtons.append(fartButton)
+
+        poopButton = SKActionButtonNode(
+            defaultButtonImage: "PoopButton.png",
+            activeButtonImage: "PoopButtonPressed.png",
+            buttonAction: { self.gameEngine.triggerPoopButtonPressed() },
+            unselectAction: {
+                self.hidePoop()
+                self.gameEngine.triggerClearAction()
+        })
+        poopButton.position = CGPoint(x: 2 * buttonSpacing, y: 0)
+        buttonLayer.addChild(poopButton)
+        actionButtons.append(poopButton)
+    }
+
+    /// Adds the player nodes to the grid.
+    private func addPlayers() {
+        for player in gameEngine.gameManager.players.values {
+            let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
+            let playerNode = player.getSprite() as SKSpriteNode
+            playerNode.size = spriteNode.size
+            playerNode.position = spriteNode.position
+            entityLayer.addChild(playerNode)
+        }
+    }
+
+    /// Initializes the preview node for the current player.
+    ///
+    /// :param: currentPlayerNumber The index/id of the currentPlayer.
+    func initializePlayerPreview(currentPlayerNumber: Int) {
+        switch currentPlayerNumber {
+        case 1:
+            previewNode = SKSpriteNode(imageNamed: "Nala.png")
+        case 2:
+            previewNode = SKSpriteNode(imageNamed: "Nyan.png")
+        case 3:
+            previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
+        case 4:
+            previewNode = SKSpriteNode(imageNamed: "Pusheen.png")
+        default:
+            break
+        }
+
+        previewNode.size = sceneUtils.tileSize
+        previewNode.alpha = 0.5
+        previewNode.hidden = true
+        entityLayer.addChild(previewNode)
+    }
+
+    /// Initializes the preview node for the poop action.
+    func initializePoopPreview() {
+        poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
+        poopPreviewNode.size = sceneUtils.tileSize
+        poopPreviewNode.alpha = 0.5
+        poopPreviewNode.hidden = true
+        entityLayer.addChild(poopPreviewNode)
+    }
+
+    /// Adds the tiles to the grid based on the given level.
+    func addTiles() {
+        for row in 0..<level.numRows {
+            for column in 0..<level.numColumns {
+                if let tileNode = level.nodeAt(row, column) {
+                    drawTile(tileNode)
+                }
+            }
+        }
+    }
+
+    /// Draws the tiles on the scene based on the `TileNode` given, including
+    /// the doodads.
+    ///
+    /// :param: tileNode The given `TileNode` to be drawn.
+    func drawTile(tileNode: TileNode) {
+        let spriteNode = tileNode.sprite
+        spriteNode.size = sceneUtils.tileSize
+        spriteNode.position = sceneUtils.pointFor(tileNode.position)
+        tilesLayer.addChild(spriteNode)
+        
+        if let doodad = tileNode.doodad {
+            self.drawTileEntity(spriteNode, doodad)
+        }
+        if let item = tileNode.item {
+            self.drawTileEntity(spriteNode, item)
+        }
+    }
+
+    /// Draws the `TileEntity` on the `SKSpriteNode` of the `TileNode` that it
+    /// belongs to.
+    ///
+    /// :param: spriteNode The `SKSpriteNode` on which the parent `TileNode` is
+    ///                    drawn.
+    /// :param: tileEntity The given `TileEntity` to be drawn.
+    func drawTileEntity(spriteNode: SKSpriteNode,
+        _ tileEntity: TileEntity) {
+            let entityNode = tileEntity.getSprite()
+
+            if entityNode is SKSpriteNode {
+                (entityNode as SKSpriteNode).size = spriteNode.size
+            }
+
+            if !tileEntity.isVisible() {
+                entityNode.alpha = 0.5
+            }
+
+            entityNode.position = spriteNode.position
+            entityLayer.addChild(entityNode)
+    }
+
+    /// Sets the next position to move to for the current player.
+    ///
+    /// :param: node The `TileNode` that the player will be moving to.
+    func registerPlayerMovement(node: TileNode) {
+        if gameEngine.state == GameState.PlayerAction {
+            if gameEngine.reachableNodes[Node(node).hashValue] != nil {
+                gameEngine.setCurrentPlayerMoveToPosition(node)
+                previewNode.position = sceneUtils.pointFor(node.position)
+                previewNode.hidden = false
+            }
+        }
+    }
+
+    /// Moves all the players to their respective next positions.
+    ///
+    /// Notifies the game manager and game engine of movement completion.
+    func movePlayers() {
+        for (playerName, player) in gameManager.players {
+            let path = gameEngine.executePlayerMove(player)
+            var pathSequence: [SKAction] = []
+
+            for node in path {
+                let action = SKAction.moveTo(node.sprite.position,
+                    duration: 0.25)
+                pathSequence.append(action)
+            }
+
+            if pathSequence.count > 0 {
+                player.getSprite().runAction(
+                    SKAction.sequence(pathSequence),
+                    completion: {
+                        self.notifyMovementCompletionFor(player)
+                    }
+                )
+            } else {
+                notifyMovementCompletionFor(player)
+            }
+        }
+    }
+
+    /// Sets the completion flag of the player movement in the game manager.
+    ///
+    /// Triggers the `movementAnimationEnded` event of the game engine so as to
+    /// advance to the next game state to animation the player actions.
+    ///
+    /// :param: player The player that has completed its movement animation.
+    func notifyMovementCompletionFor(player: Cat) {
+        gameManager.completeMovementOf(player)
+        gameEngine.triggerMovementAnimationEnded()
+    }
+
+    /// Animates the pui action of the given player in the given direction.
+    ///
+    /// :param: player The cat that is performing the pui action.
+    /// :param: direction The direction to pui in.
+    func animatePuiAction(player: Cat, direction: Direction) {
+        let startNode = gameManager[moveToPositionOf: player]!
+        let path = gameEngine.pathOfPui(startNode, direction: direction)
+        var pathSequence: [SKAction] = []
+
+        for node in path {
+            let action = SKAction.moveTo(node.sprite.position, duration: 0.15)
+            pathSequence.append(action)
+        }
+
+        let pui = SKSpriteNode(imageNamed: "Pui.png")
+        pui.size = sceneUtils.tileSize
+        pui.position = startNode.sprite.position
+        pui.zRotation = SceneUtils.zRotation(direction)
+
+        entityLayer.addChild(pui)
+
+        pui.runAction(
+            SKAction.sequence(pathSequence),
+            completion: {
+                pui.removeFromParent()
+                self.notifyActionCompletionFor(player)
+            }
+        )
+    }
+
+    /// Animates the fart action of the given player.
+    ///
+    /// :param: player The cat that is performing the fart action.
+    func animateFartAction(player: Cat) {
+        let startNode = gameManager[moveToPositionOf: player]!
+        let path = gameEngine.pathOfFart(startNode, range: player.fartRange)
+        let delay = 0.25
+
+        for (i, nodes) in enumerate(path) {
+            let timeInterval = Double(i) * delay
+            for (j, node) in enumerate(nodes.values) {
+
+                let fart = SKSpriteNode(imageNamed: "Fart.png")
+                fart.size = CGSize(width: sceneUtils.tileSize.width / 4,
+                    height: sceneUtils.tileSize.height / 4)
+                fart.position = node.sprite.position
+                fart.alpha = 0
+
+                entityLayer.addChild(fart)
+                let action = sceneUtils.getFartAnimation(timeInterval)
+
+                fart.runAction(action, completion: {
+                    fart.removeFromParent()
+                    if i == path.count - 1 && j == nodes.count - 1 {
+                        self.notifyActionCompletionFor(player)
+                    }
+                })
+            }
+        }
+    }
+
+    /// Performs the respective actions for each player.
+    func performActions() {
+        for player in gameManager.players.values {
+            if let action = gameEngine.executePlayerAction(player) {
+                println(action)
+                switch action.actionType {
+                case .Pui:
+                    let direction = (action as PuiAction).direction
+                    animatePuiAction(player, direction: direction)
+                case .Fart:
+                    animateFartAction(player)
+                case .Poop:
+                    notifyActionCompletionFor(player)
+                }
+            } else {
+                notifyActionCompletionFor(player)
+            }
+        }
+    }
+
+    /// Performs the animations for each event, such as stepping on poop.
+    func performPendingAnimations() {
+        for event in pendingAnimations {
+            entityLayer.addChild(event.sprite)
+
+            event.sprite.runAction(event.action, completion: {
+                event.sprite.removeFromParent()
+            })
+        }
+        pendingAnimations.removeAll(keepCapacity: false)
+    }
+
+    /// Sets the completion flag of the player action in the game manager.
+    ///
+    /// Triggers the `actionAnimationEnded` event of the game engine so as to
+    /// advance to the next game state to post execution.
+    ///
+    /// :param: player The player that has completed its action animation.
+    func notifyActionCompletionFor(player: Cat) {
+        gameManager.completeActionOf(player)
+        gameEngine.triggerActionAnimationEnded()
+    }
+
+    /// Enables all the action buttons.
     func enableActionButtons() {
         for button in actionButtons {
             button.isEnabled = true
         }
     }
 
+    /// Disables all the action buttons.
     func disableActionButtons() {
         for button in actionButtons {
             button.isEnabled = false
         }
     }
 
+    /// Unselect all of the actions buttons.
     func unselectActionButtons() {
         for button in actionButtons {
             button.unselect()
         }
     }
 
+    /// Unselect all of the actions buttons that is not the given selected
+    /// action button.
+    ///
+    /// :param: actionButton The action button that corresponds to the selected
+    ///                      action.
     func unselectActionButtonsExcept(actionButton: SKActionButtonNode) {
         for button in actionButtons {
             if button != actionButton {
@@ -535,37 +558,37 @@ class GameScene: SKScene, GameStateListener, EventListener {
             }
         }
     }
-    
+
     /// Draws the preview poop on tile pooper is on.
     ///
     /// :param: action The PoopAction object.
-    private func drawPoop(action: PoopAction) {
+    func drawPoop(action: PoopAction) {
         let referenceSprite = action.targetNode!.sprite
         poopPreviewNode.position = referenceSprite.position
         poopPreviewNode.hidden = false
     }
-    
+
     /// Removes the poop preview from tile
-    private func hidePoop() {
+    func hidePoop() {
         poopPreviewNode.hidden = true
     }
 
     /// Highlights the reachable nodes for the current player.
-    private func highlightReachableNodes() {
+    func highlightReachableNodes() {
         for node in gameEngine.reachableNodes.values {
             node.highlight()
         }
     }
 
     /// Removes the highlighted nodes for the current player.
-    private func removeHighlights() {
+    func removeHighlights() {
         for node in gameEngine.reachableNodes.values {
             node.unhighlight()
         }
     }
 
     /// Removes the doodads that are expended for the current turn.
-    private func deleteRemovedDoodads() {
+    func deleteRemovedDoodads() {
         let removedSprites = gameManager.doodadsToRemove.values.map {
             (doodad) -> SKNode in
             return doodad.getSprite()
