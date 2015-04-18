@@ -8,6 +8,16 @@ class GameLevel {
     
     var grid: Grid!
     
+    var levelType: String {
+        if self is BasicLevel {
+            return "basic"
+        } else if self is MediumLevel {
+            return "medium"
+        } else {
+            return "hard"
+        }
+    }
+    
     init(rows: Int, columns: Int) {
         numColumns = columns
         numRows = rows
@@ -32,5 +42,38 @@ class GameLevel {
     
     func getDoodad(atLocation gridIndex: GridIndex) -> Doodad {
         return grid[gridIndex]!.doodad!
+    }
+    
+    func compress() -> [String: AnyObject] {
+        var levelData:[String: AnyObject] = [:]
+        var entities: [[String: AnyObject]] = []
+        levelData[Constants.Level.keyRows] = numRows
+        levelData[Constants.Level.keyCols] = numColumns
+        levelData[Constants.Level.keyType] = levelType
+        
+        for row in 0..<numRows {
+            for col in 0..<numColumns {
+                if let doodad = grid[row, col]!.doodad {
+                    var doodadData: [String: AnyObject] = [:]
+                    
+                    doodadData[Constants.Level.keyEntityName] = doodad.getName()
+                    doodadData[Constants.Level.keyGridRow] = row
+                    doodadData[Constants.Level.keyGridCol] = col
+                    
+                    if doodad is WormholeDoodad {
+                        let destTileNode = (doodad as WormholeDoodad).getDestinationNode()
+                        doodadData[Constants.Level.keyWormholeDestNode] = [
+                            Constants.Level.keyGridRow: destTileNode.position.row,
+                            Constants.Level.keyGridCol: destTileNode.position.col
+                        ] as [String: AnyObject]
+                    }
+                    
+                    entities += [doodadData]
+                }
+            }
+        }
+        levelData[Constants.Level.keyEntities] = entities
+        
+        return levelData
     }
 }

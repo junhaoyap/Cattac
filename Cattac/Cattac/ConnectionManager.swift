@@ -12,73 +12,92 @@
 */
 
 class ConnectionManager {
-    let stringUtil: StringUtils = StringUtils()
-    let baseFirebaseRef: Firebase?
     
-    init(urlProvided: String) {
-        baseFirebaseRef = Firebase(url: urlProvided)
+    let server: Server!
+    
+    init(firebase urlProvided: String) {
+        server = FirebaseServer(urlProvided: urlProvided)
     }
     
-    func readOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
-        
-        var readRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            readRef = readRef.childByAppendingPath(childString)
-        }
-        
-        readRef.observeSingleEventOfType(.Value, withBlock: {
+    init(server: Server) {
+        self.server = server
+    }
+    
+    func readOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+        server.readOnce(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
         })
-    }
-    
-    func getAuthId() -> String {
-        let uid = baseFirebaseRef!.authData.uid
-        
-        return uid
     }
     
     func overwrite(childUrl: String, data: [String: String]) {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
-        
-        var overwriteRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            overwriteRef = overwriteRef.childByAppendingPath(childString)
-        }
-        
-        overwriteRef.setValue(data)
+        server.overwrite(childUrl, data: data)
     }
     
     func update(childUrl: String, data: [String: String]) {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
-        
-        var updateRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            updateRef = updateRef.childByAppendingPath(childString)
-        }
-        
-        updateRef.updateChildValues(data)
+        server.update(childUrl, data: data)
     }
     
-    func watchOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
-        
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
-        
-        var changeRef = baseFirebaseRef!
-        
-        for childString in splittedStringsToConstructRef {
-            changeRef = changeRef.childByAppendingPath(childString)
-        }
-        
-        changeRef.observeSingleEventOfType(.ChildChanged, withBlock: {
+    func watchUpdateOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+        server.watchUpdateOnce(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
         })
+    }
+
+    func watchUpdate(childUrl: String, onComplete: (AnyObject) -> ()) {
+        server.watchUpdate(childUrl, onComplete: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+    }
+    
+    func watchNewOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+        server.watchNewOnce(childUrl, onComplete: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+    }
+
+    func watchNew(childUrl: String, onComplete: (AnyObject) -> ()) {
+        server.watchNew(childUrl, onComplete: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+    }
+    
+    func createUser(email: String, password: String,
+        onComplete: (NSError!, [NSObject: AnyObject]!) -> ()) {
+            server.createUser(email, password: password, onComplete: {
+                error, result in
+                
+                onComplete(error, result)
+            })
+    }
+
+    func authUser(email: String, password: String,
+        onComplete: (NSError!, AnyObject) -> ()) {
+            server.authUser(email, password: password, onComplete: {
+                error, authdata in
+                
+                onComplete(error, authdata)
+            })
+    }
+    
+    func getAuthId() -> String {
+        return server.getAuthId()
+    }
+
+    func append(childUrl: String) -> ConnectionManager {
+        return server.append(childUrl)
+    }
+
+    func removeAllObservers() {
+        server.removeAllObservers()
     }
 }
