@@ -60,7 +60,7 @@
 		34BA89C81AD6D55200413C1B /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BA89C71AD6D55200413C1B /* ConnectionManager.swift */; };
 		34BA89CB1ADA7CC500413C1B /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BA89CA1ADA7CC500413C1B /* StringUtils.swift */; };
 		34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA651ACEA01500B0E68D /* LoginViewController.swift */; };
-		760645341AE2804700CC0279 /* poop.png in Resources */ = {isa = PBXBuildFile; fileRef = 760645331AE2804700CC0279 /* poop.png */; };
+		760645361AE2830E00CC0279 /* Poop.png in Resources */ = {isa = PBXBuildFile; fileRef = 760645351AE2830E00CC0279 /* Poop.png */; };
 		761BB59E1AD04348007C31C1 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761BB59D1AD04348007C31C1 /* Action.swift */; };
 		763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763D97B71ADA7CDB0064B73C /* SceneUtils.swift */; };
 		763E71171AD1B78D00E90EF0 /* Grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71161AD1B78D00E90EF0 /* Grass.png */; };
@@ -196,7 +196,7 @@
 		34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
 		34BA89C71AD6D55200413C1B /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		34BA89CA1ADA7CC500413C1B /* StringUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
-		760645331AE2804700CC0279 /* poop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = poop.png; path = Images.xcassets/poop.png; sourceTree = "<group>"; };
+		760645351AE2830E00CC0279 /* Poop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poop.png; path = Images.xcassets/Poop.png; sourceTree = "<group>"; };
 		761BB59D1AD04348007C31C1 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		763D97B71ADA7CDB0064B73C /* SceneUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneUtils.swift; sourceTree = "<group>"; };
 		763E71161AD1B78D00E90EF0 /* Grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grass.png; path = Images.xcassets/Grass.png; sourceTree = "<group>"; };
@@ -541,7 +541,7 @@
 		3471CA6E1ACEB7E900B0E68D /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				760645331AE2804700CC0279 /* poop.png */,
+				760645351AE2830E00CC0279 /* Poop.png */,
 				76D0F60C1ADB261000CB91B3 /* Fart.png */,
 				763E71301AD2FC6800E90EF0 /* DirectionSelected.png */,
 				763E712C1AD2F6AE00E90EF0 /* FartButtonPressed.png */,
@@ -715,6 +715,7 @@
 				76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */,
 				342584EE1AACDB03004A3CFD /* Images.xcassets in Resources */,
 				763E71201AD2E0EB00E90EF0 /* Direction.png in Resources */,
+				760645361AE2830E00CC0279 /* Poop.png in Resources */,
 				763E71231AD2EAB500E90EF0 /* PuiButton.png in Resources */,
 				763E712B1AD2F55700E90EF0 /* PoopButtonPressed.png in Resources */,
 				763E71311AD2FC6800E90EF0 /* DirectionSelected.png in Resources */,
@@ -723,7 +724,6 @@
 				763E71171AD1B78D00E90EF0 /* Grass.png in Resources */,
 				763E712E1AD2F6AE00E90EF0 /* FartButtonPressed.png in Resources */,
 				3459ABC81ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 in Resources */,
-				760645341AE2804700CC0279 /* poop.png in Resources */,
 				76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */,
 				763E71271AD2ED0400E90EF0 /* PoopButton.png in Resources */,
 				342584E51AACDB03004A3CFD /* GameScene.sks in Resources */,
