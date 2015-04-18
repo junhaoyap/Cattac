@@ -572,10 +572,10 @@
 		34BA89C61AD6D4D300413C1B /* Connectivity */ = {
 			isa = PBXGroup;
 			children = (
-				34BA89C71AD6D55200413C1B /* ConnectionManager.swift */,
-				34ED9F1B1AE28BA2006DDA50 /* GameConnectionManager.swift */,
 				34ED9F1D1AE29C80006DDA50 /* Server.swift */,
 				34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */,
+				34BA89C71AD6D55200413C1B /* ConnectionManager.swift */,
+				34ED9F1B1AE28BA2006DDA50 /* GameConnectionManager.swift */,
 			);
 			name = Connectivity;
 			sourceTree = "<group>";

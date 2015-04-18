@@ -7,7 +7,10 @@ class GameConnectionManager {
     
     let connectionManager: ConnectionManager!
     
-    init() {
-        
+    init(urlProvided: String) {
+        connectionManager = ConnectionManager(typeOfService: "Firebase",
+            urlProvided: urlProvided)
     }
+    
+    // TODO: Start adding abstracted connectivity commands within Cattac
 }

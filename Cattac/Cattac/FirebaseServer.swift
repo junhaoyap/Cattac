@@ -6,8 +6,10 @@ class FirebaseServer: Server {
     
     let stringUtil: StringUtils = StringUtils()
     let ref: Firebase?
+    let baseUrl: String!
     
     init(urlProvided: String) {
+        baseUrl = urlProvided
         ref = Firebase(url: urlProvided)
     }
     
@@ -141,16 +143,10 @@ class FirebaseServer: Server {
     }
     
     func append(childUrl: String) -> ConnectionManager {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
+        let appendedUrl = baseUrl + childUrl
         
-        var appendedRef = ref!
-        
-        for childString in splittedStringsToConstructRef {
-            appendedRef = appendedRef.childByAppendingPath(childString)
-        }
-        
-        // TODO: Change to the actual thing
-        return ConnectionManager(typeOfService: "", urlProvided: "")
+        return ConnectionManager(typeOfService: "Firebase",
+            urlProvided: appendedUrl)
     }
     
     func removeAllObservers() {
