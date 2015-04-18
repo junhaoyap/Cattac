@@ -212,9 +212,9 @@ class GameEngine {
                 Constants.Firebase.keyAttkDir: action!.direction.description,
                 Constants.Firebase.keyAttkRange: action!.range,
                 Constants.Firebase.keyTargetRow:
-                    targetNode != nil ? "\(targetNode!.position.row)" : "",
+                    targetNode != nil ? targetNode!.position.row : 0,
                 Constants.Firebase.keyTargetCol:
-                    targetNode != nil ? "\(targetNode!.position.col)" : ""
+                    targetNode != nil ? targetNode!.position.col : 0
             ]
         }
         
