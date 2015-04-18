@@ -5,8 +5,9 @@
 import UIKit
 
 class LobbyViewController: UIViewController {
+    
     private let ref = Firebase(url: Constants.Firebase.baseUrl)
-    //private var gameStartObserver
+    
     let levelGenerator = LevelGenerator.sharedInstance
     var level: GameLevel!
     var playerNumber: Int!
@@ -20,10 +21,6 @@ class LobbyViewController: UIViewController {
         return gameRef.childByAppendingPath(Constants.Firebase.nodeLobby)
     }
     
-    // TODO check if the player who is joining the game has already joined,
-    // if not he can join as multiplayer players from the same game and
-    // screw the game up, hypothetically speaking shouldn't happen at the moment
-    // but we can keep that in view
     override func viewDidLoad() {
         super.viewDidLoad()
         

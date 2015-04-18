@@ -1,5 +1,6 @@
 
 private let _dateUtilsSharedInstance: DateUtils = DateUtils()
+
 class DateUtils {
     
     private var _dateFormatter: NSDateFormatter?
