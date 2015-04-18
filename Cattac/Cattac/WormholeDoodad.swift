@@ -18,7 +18,7 @@ class WormholeDoodad: Doodad {
         return destinationTileNode
     }
     
-    override func effect(cat: Cat) {
+    override func postmoveEffect(cat: Cat) {
         // none, effect executed on game-engine, might need to change how players position is referenced
     }
     
