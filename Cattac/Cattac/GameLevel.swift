@@ -31,18 +31,8 @@ class GameLevel {
         return grid[row, column]
     }
     
-    func addDoodad(doodad: Doodad, atLocation gridIndex: GridIndex) -> TileNode {
-        var tileNode = grid[gridIndex]!
-        tileNode.setDoodad(doodad)
-        return tileNode
-    }
-    
-    func hasDoodad(atLocation gridIndex: GridIndex) -> Bool {
-        return grid[gridIndex]!.tileHasDoodad()
-    }
-    
-    func getDoodad(atLocation gridIndex: GridIndex) -> Doodad {
-        return grid[gridIndex]!.doodad!
+    func nodeAt(location: GridIndex) -> TileNode? {
+        return nodeAt(location.row, location.col)
     }
     
     func compress() -> [String: AnyObject] {
