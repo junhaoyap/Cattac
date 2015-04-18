@@ -81,9 +81,7 @@ class LobbyViewController: UIViewController {
                 destinationVC.playerNumber = playerNumber
                 destinationVC.multiplayer = true
             }
-        }
-        
-        if segue.identifier == "waitGameStartSegue" {
+        } else if segue.identifier == "waitGameStartSegue" {
             if let destinationVC = segue.destinationViewController as? GameViewController {
                 destinationVC.level = level
                 destinationVC.playerNumber = playerNumber
