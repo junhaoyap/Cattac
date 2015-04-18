@@ -62,6 +62,30 @@ class SceneUtils {
         let row = Int(normalizedY / tileHeight)
         return grid[row, col]
     }
+    
+    /// Generates a SKAction that enters with fadeIn, rotateIn, and scaleUp
+    /// and exits with fadeOut, rotateOut, and scaleDown
+    ///
+    /// :param: timeInterval Delay before animation starts
+    /// :returns: SKAction holding the sequence
+    func getFartAnimation(timeInterval: NSTimeInterval) -> SKAction {
+        let wait = SKAction.waitForDuration(timeInterval)
+        
+        let fadeIn = SKAction.fadeInWithDuration(0.5)
+        let rotateIn = SKAction.rotateToAngle(CGFloat(M_PI / 4), duration: 0.5)
+        let scaleUp = SKAction.scaleBy(2.0, duration: 0.5)
+        
+        let fadeOut = SKAction.fadeOutWithDuration(0.5)
+        let rotateOut = SKAction.rotateToAngle(CGFloat(M_PI / 2), duration: 0.5)
+        let scaleDown = SKAction.scaleBy(2.0, duration: 0.5)
+        
+        let entryGroup = SKAction.group([fadeIn, rotateIn, scaleUp])
+        let exitGroup = SKAction.group([fadeOut, rotateOut, scaleDown])
+        
+        let sequence = [wait, entryGroup, exitGroup]
+        
+        return SKAction.sequence(sequence)
+    }
 
     /// Calculates the amount of rotation for a given direction.
     ///

@@ -4,8 +4,9 @@ protocol GameStateListener {
     func onStateUpdate(state: GameState)
 }
 
-protocol ActionListener {
+protocol EventListener {
     func onActionUpdate(action: Action?)
+    func addPendingPoopAnimation(target: GridIndex)
 }
 
 /// Game engine that does all the logic computation for the game.
@@ -42,7 +43,7 @@ class GameEngine {
     var gameStateListener: GameStateListener?
     
     /// Action listener, listens for action change on currentPlayer.
-    var actionListener: ActionListener?
+    var eventListener: EventListener?
     
     /// The local player
     var currentPlayer: Cat!
@@ -69,10 +70,12 @@ class GameEngine {
         
         createPlayers(playerNumber)
         
-        registerMovementWatcherExcept(playerNumber)
-
-        self.gameAI = GameAI(grid: grid, gameManager: gameManager,
-            currentPlayer: currentPlayer)
+        if multiplayer {
+            registerMovementWatcherExcept(playerNumber)
+        } else {
+            self.gameAI = GameAI(grid: grid, gameManager: gameManager,
+                currentPlayer: currentPlayer)
+        }
 
         registerEvents()
     }
@@ -226,35 +229,42 @@ class GameEngine {
             .childByAppendingPath(Constants.Firebase.nodePlayerMovements)
             .childByAppendingPath("\(currentPlayerMoveNumber++)")
 
-        let currentPlayerTileNode = gameManager[positionOf: currentPlayer]!
-        let currentPlayerMoveToTileNode = gameManager[moveToPositionOf: currentPlayer]!
-        let currentPlayerAction = gameManager[actionOf: currentPlayer]
+        let currentTile = gameManager[positionOf: currentPlayer]!
+        let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
+        let action = gameManager[actionOf: currentPlayer]
         
-        var currentPlayerMoveData = [:]
+        var moveData = [:]
         
-        if currentPlayerAction == nil {
-            currentPlayerMoveData = [
-                "fromRow": currentPlayerTileNode.position.row,
-                "fromCol": currentPlayerTileNode.position.col,
-                "toRow": currentPlayerMoveToTileNode.position.row,
-                "toCol": currentPlayerMoveToTileNode.position.col,
-                "attackType": "",
-                "attackDir": "",
-                "attackRange": ""
+        if action == nil {
+            moveData = [
+                Constants.Firebase.keyMoveFromRow: currentTile.position.row,
+                Constants.Firebase.keyMoveFromCol: currentTile.position.col,
+                Constants.Firebase.keyMoveToRow: moveToTile.position.row,
+                Constants.Firebase.keyMoveToCol: moveToTile.position.col,
+                Constants.Firebase.keyAttkType: "",
+                Constants.Firebase.keyAttkDir: "",
+                Constants.Firebase.keyAttkRange: "",
+                Constants.Firebase.keyTargetRow: "",
+                Constants.Firebase.keyTargetCol: ""
             ]
         } else {
-            currentPlayerMoveData = [
-                "fromRow": currentPlayerTileNode.position.row,
-                "fromCol": currentPlayerTileNode.position.col,
-                "toRow": currentPlayerMoveToTileNode.position.row,
-                "toCol": currentPlayerMoveToTileNode.position.col,
-                "attackType": currentPlayerAction!.actionType.description,
-                "attackDir": currentPlayerAction!.direction.description,
-                "attackRange": currentPlayerAction!.range
+            let targetNode = action?.targetNode
+            moveData = [
+                Constants.Firebase.keyMoveFromRow: currentTile.position.row,
+                Constants.Firebase.keyMoveFromCol: currentTile.position.col,
+                Constants.Firebase.keyMoveToRow: moveToTile.position.row,
+                Constants.Firebase.keyMoveToCol: moveToTile.position.col,
+                Constants.Firebase.keyAttkType: action!.actionType.description,
+                Constants.Firebase.keyAttkDir: action!.direction.description,
+                Constants.Firebase.keyAttkRange: action!.range,
+                Constants.Firebase.keyTargetRow:
+                    targetNode != nil ? "\(targetNode!.position.row)" : "",
+                Constants.Firebase.keyTargetCol:
+                    targetNode != nil ? "\(targetNode!.position.col)" : ""
             ]
         }
         
-        playerMoveUpdateRef.updateChildValues(currentPlayerMoveData)
+        playerMoveUpdateRef.updateChildValues(moveData)
     }
 
     func setCurrentPlayerMoveToPosition(node: TileNode) {
@@ -284,6 +294,14 @@ class GameEngine {
                     gameManager.doodadsToRemove[doodad.getSprite().hashValue] = doodad
                 }
             }
+            
+            if let poop = playerMoveToNode.poop {
+                poop.effect(player)
+                playerMoveToNode.poop = nil
+                
+                eventListener?.addPendingPoopAnimation(playerMoveToNode.position)
+            }
+            
             gameManager[movementPathOf: player] = path
         }
     }
@@ -414,22 +432,22 @@ class GameEngine {
                 snapshot in
                 
                 let fromRow = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMovementFromRow) as? Int
+                    Constants.Firebase.keyMoveFromRow) as? Int
                 let fromCol = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMovementFromCol) as? Int
+                    Constants.Firebase.keyMoveFromCol) as? Int
                 let moveToRow = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMovementToRow) as? Int
+                    Constants.Firebase.keyMoveToRow) as? Int
                 let moveToCol = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMovementToCol) as? Int
+                    Constants.Firebase.keyMoveToCol) as? Int
                 
                 let attackType = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMovementAttackType) as? String
+                    Constants.Firebase.keyAttkType) as? String
                 let attackDir = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMovementAttrDir) as? String
+                    Constants.Firebase.keyAttkDir) as? String
                 let attackDmg = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMovementAttackDmg) as? Int
+                    Constants.Firebase.keyAttkDmg) as? Int
                 let attackRange = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMovementAttackRange) as? Int
+                    Constants.Firebase.keyAttkRange) as? Int
                 
                 let player = self.gameManager[Constants.catArray[i - 1]]!
                 
@@ -447,7 +465,13 @@ class GameEngine {
                         self.gameManager[actionOf: player] = FartAction(range: fartRange)
                         break
                     case .Poop:
-                        // do something!
+                        let targetNodeRow = snapshot.value.objectForKey(
+                            Constants.Firebase.keyTargetRow) as? Int
+                        let targetNodeCol = snapshot.value.objectForKey(
+                            Constants.Firebase.keyTargetCol) as? Int
+                        let targetNode = self.grid[targetNodeRow!, targetNodeCol!]!
+                        
+                        self.gameManager[actionOf: player] = PoopAction(targetNode: targetNode)
                         break
                     }
                     println("\(player.name)[\(i)] \(playerActionType.description)")
@@ -472,7 +496,7 @@ class GameEngine {
     }
     
     private func notifyAction() {
-        actionListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
+        eventListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
     }
     
     func releaseAllListeners() {

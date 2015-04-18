@@ -118,13 +118,15 @@ struct Constants {
         static let nodePlayers = "players"
         static let nodePlayerMovements = "movements"
         
-        static let keyMovementAttrDir = "attackDir"
-        static let keyMovementAttackDmg = "attackDmg"
-        static let keyMovementAttackRange = "attackRange"
-        static let keyMovementAttackType = "attackType"
-        static let keyMovementFromRow = "fromRow"
-        static let keyMovementFromCol = "fromCol"
-        static let keyMovementToRow = "toRow"
-        static let keyMovementToCol = "toCol"
+        static let keyAttkDir = "attackDir"
+        static let keyAttkDmg = "attackDmg"
+        static let keyAttkRange = "attackRange"
+        static let keyAttkType = "attackType"
+        static let keyMoveFromRow = "fromRow"
+        static let keyMoveFromCol = "fromCol"
+        static let keyMoveToRow = "toRow"
+        static let keyMoveToCol = "toCol"
+        static let keyTargetRow = "targetNodeRow"
+        static let keyTargetCol = "targetNodeCol"
     }
 }

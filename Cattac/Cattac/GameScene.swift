@@ -2,7 +2,7 @@ import SpriteKit
 
 /// The spritekit scene for the game, in charge of drawing and animating all 
 /// entities of the game.
-class GameScene: SKScene, GameStateListener, ActionListener {
+class GameScene: SKScene, GameStateListener, EventListener {
 
     /// Game Engine that does all the logic for the scene.
     let gameEngine: GameEngine!
@@ -50,6 +50,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
     /// button is selected.
     private var previewDirectionNodes: SKNode!
     
+    /// Pending animation events to be executed post movement
+    private var pendingAnimations: [AnimationEvent] = []
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -72,7 +75,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
             gameEngine = GameEngine(grid: level.grid,
                 playerNumber: currentPlayerNumber, multiplayer: multiplayer)
             gameEngine.gameStateListener = self
-            gameEngine.actionListener = self
+            gameEngine.eventListener = self
 
             gameManager = gameEngine.gameManager
 
@@ -369,20 +372,6 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         for (i, nodes) in enumerate(path) {
             let timeInterval = Double(i) * delay
             for (j, node) in enumerate(nodes.values) {
-                let wait = SKAction.waitForDuration(timeInterval)
-
-                let fadeIn = SKAction.fadeInWithDuration(0.5)
-                let rotateIn = SKAction.rotateToAngle(CGFloat(M_PI / 4), duration: 0.5)
-                let scaleUp = SKAction.scaleBy(2.0, duration: 0.5)
-
-                let fadeOut = SKAction.fadeOutWithDuration(0.5)
-                let rotateOut = SKAction.rotateToAngle(CGFloat(M_PI / 2), duration: 0.5)
-                let scaleDown = SKAction.scaleBy(2.0, duration: 0.5)
-
-                let entryGroup = SKAction.group([fadeIn, rotateIn, scaleUp])
-                let exitGroup = SKAction.group([fadeOut, rotateOut, scaleDown])
-
-                let sequence = [wait, entryGroup, exitGroup]
 
                 let fart = SKSpriteNode(imageNamed: "Fart.png")
                 fart.size = CGSize(width: sceneUtils.tileSize.width / 4,
@@ -391,8 +380,9 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                 fart.alpha = 0
 
                 entityLayer.addChild(fart)
-
-                fart.runAction(SKAction.sequence(sequence), completion: {
+                let action = sceneUtils.getFartAnimation(timeInterval)
+                
+                fart.runAction(action, completion: {
                     fart.removeFromParent()
                     if i == path.count - 1 && j == nodes.count - 1 {
                         self.notifyActionCompletionFor(player)
@@ -420,6 +410,18 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                 notifyActionCompletionFor(player)
             }
         }
+    }
+    
+    /// Performs the animations for each event, such as stepping on poop.
+    private func performPendingAnimations() {
+        for event in pendingAnimations {
+            entityLayer.addChild(event.sprite)
+            
+            event.sprite.runAction(event.action, completion: {
+                event.sprite.removeFromParent()
+            })
+        }
+        pendingAnimations.removeAll(keepCapacity: false)
     }
 
     /// Sets the completion flag of the player action in the game manager.
@@ -456,6 +458,7 @@ class GameScene: SKScene, GameStateListener, ActionListener {
         case .ActionsExecution:
             // intuitively hide poop preview only after pooper moved away
             hidePoop()
+            performPendingAnimations()
             performActions()
         default:
             break
@@ -478,6 +481,16 @@ class GameScene: SKScene, GameStateListener, ActionListener {
                 drawPoop(action as PoopAction)
             }
         }
+    }
+    
+    func addPendingPoopAnimation(target: GridIndex) {
+        let poopSprite = SKSpriteNode(imageNamed: "Poop.png")
+        poopSprite.position = sceneUtils.pointFor(target)
+        poopSprite.size = sceneUtils.tileSize
+        
+        let action = sceneUtils.getFartAnimation(0)
+        
+        pendingAnimations += [AnimationEvent(poopSprite, action)]
     }
 
     /// Draws the directional arrows for pui action button.

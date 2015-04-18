@@ -4,21 +4,14 @@ import SpriteKit
 class Poop {
     private let _pooper: Cat
     private let _damage: Int
-    private let _sprite: SKSpriteNode
     
     var pooper: Cat {
         return _pooper
     }
     
-    var sprite: SKSpriteNode {
-        return _sprite
-    }
-    
     init(_ pooper: Cat, _ damage: Int) {
         _pooper = pooper
         _damage = damage
-        _sprite = SKSpriteNode(imageNamed: "Poop.png")
-        _sprite.alpha = 0.5
     }
     
     /// Execute poop effects on given player
