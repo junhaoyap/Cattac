@@ -55,6 +55,8 @@
 		3471CA611ACDAE8F00B0E68D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */; };
 		3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */; };
 		3471CA6A1ACEAB3800B0E68D /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA691ACEAB3800B0E68D /* Firebase.framework */; };
+		348213B01AE27CC20079BA49 /* MediumLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425854B1AACE288004A3CFD /* MediumLevel.swift */; };
+		348213B11AE27CC40079BA49 /* HardLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425854D1AACE291004A3CFD /* HardLevel.swift */; };
 		34A356361AD1896000299049 /* Wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A356351AD1896000299049 /* Wall.swift */; };
 		34B4B20B1AD29B8F00D06BD8 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */; };
 		34BA89C81AD6D55200413C1B /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BA89C71AD6D55200413C1B /* ConnectionManager.swift */; };
@@ -825,6 +827,7 @@
 				768383EF1ADBD44900538F5D /* GameManager.swift in Sources */,
 				768383F01ADBD44900538F5D /* GameAI.swift in Sources */,
 				768383F11ADBD44900538F5D /* Wall.swift in Sources */,
+				348213B11AE27CC40079BA49 /* HardLevel.swift in Sources */,
 				768383F21ADBD44900538F5D /* WormholeDoodad.swift in Sources */,
 				768383F31ADBD44900538F5D /* LandMineDoodad.swift in Sources */,
 				768383F41ADBD44900538F5D /* FortressDoodad.swift in Sources */,
@@ -838,6 +841,7 @@
 				768383FA1ADBD44900538F5D /* StatModification.swift in Sources */,
 				768383FB1ADBD44900538F5D /* TileNode.swift in Sources */,
 				768383FC1ADBD44900538F5D /* ConnectionManager.swift in Sources */,
+				348213B01AE27CC20079BA49 /* MediumLevel.swift in Sources */,
 				3425852E1AACE049004A3CFD /* Queue.swift in Sources */,
 				3425852F1AACE049004A3CFD /* Stack.swift in Sources */,
 				342585301AACE049004A3CFD /* Node.swift in Sources */,
