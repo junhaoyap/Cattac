@@ -271,11 +271,15 @@ class GameEngine {
                 toNode: playerMoveToNode)
             
             if let doodad = playerMoveToNode.doodad {
-                doodad.effect(player)
+                // effect non-move modifications
+                doodad.postmoveEffect(player)
                 if doodad is WormholeDoodad {
                     let destNode = (doodad as WormholeDoodad).getDestinationNode()
                     gameManager[moveToPositionOf: player]! = destNode
                     path += [destNode]
+                } else if doodad.isRemoved() {
+                    playerMoveToNode.doodad = nil
+                    gameManager.doodadsToRemove[doodad.getSprite().hashValue] = doodad
                 }
             }
             gameManager[movementPathOf: player] = path

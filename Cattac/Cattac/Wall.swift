@@ -9,10 +9,6 @@ class Wall: Doodad {
         setName(Constants.Doodad.wallString)
     }
     
-    override func effect(cat: Cat) {
-        // none, cats can not move onto walls
-    }
-    
     override func isVisible() -> Bool {
         return true
     }

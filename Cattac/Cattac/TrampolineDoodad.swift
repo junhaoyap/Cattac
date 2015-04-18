@@ -10,7 +10,7 @@ class TrampolineDoodad: Doodad {
         setName(Constants.Doodad.trampolineString)
     }
     
-    override func effect(cat: Cat) {
+    override func premoveEffect(cat: Cat) {
         cat.moveRangeMods += [rangeModification]
     }
     
