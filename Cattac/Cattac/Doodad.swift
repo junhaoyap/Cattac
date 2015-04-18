@@ -10,7 +10,7 @@ class Doodad: TileEntity {
     private var removed = false
     private var sprite: SKNode = SKSpriteNode(imageNamed: "Nala.png")
     
-    /// inheriting doodads to implement effect, if any.
+    /// Inheriting doodads to implement effect, if any.
     /// effected by destination tile
     /// after player move has been calculated.
     ///
@@ -18,7 +18,7 @@ class Doodad: TileEntity {
     func postmoveEffect(cat: Cat) {
     }
     
-    /// inheriting doodads to implement effect, if any.
+    /// Inheriting doodads to implement effect, if any.
     /// effected by position tile
     /// before player move has been calculated.
     ///

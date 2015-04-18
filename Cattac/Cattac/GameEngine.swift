@@ -271,6 +271,7 @@ class GameEngine {
                 toNode: playerMoveToNode)
             
             if let doodad = playerMoveToNode.doodad {
+                // effect non-move modifications
                 doodad.postmoveEffect(player)
                 if doodad is WormholeDoodad {
                     let destNode = (doodad as WormholeDoodad).getDestinationNode()

@@ -124,7 +124,8 @@ class GameManager {
 
         for (playerName, tileNode) in _playerPositions {
             var player = _players[playerName]!
-
+            
+            // effect only move range modification
             if let doodad = tileNode.doodad {
                 doodad.premoveEffect(player)
 
