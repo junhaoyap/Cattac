@@ -79,6 +79,35 @@
 		7661CF481AD4333E0004B0FD /* GridIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF471AD4333E0004B0FD /* GridIndex.swift */; };
 		7661CF4A1AD4336C0004B0FD /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF491AD4336C0004B0FD /* Direction.swift */; };
 		7661CF4C1AD560400004B0FD /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF4B1AD560400004B0FD /* GameManager.swift */; };
+		768383E21ADBD44900538F5D /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Grid.swift */; };
+		768383E31ADBD44900538F5D /* GridIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF471AD4333E0004B0FD /* GridIndex.swift */; };
+		768383E41ADBD44900538F5D /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF491AD4336C0004B0FD /* Direction.swift */; };
+		768383E51ADBD44900538F5D /* CatFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585361AACE0D8004A3CFD /* CatFactory.swift */; };
+		768383E61ADBD44900538F5D /* DoodadFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585381AACE0E6004A3CFD /* DoodadFactory.swift */; };
+		768383E71ADBD44900538F5D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
+		768383E81ADBD44900538F5D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425853B1AACE159004A3CFD /* Constants.swift */; };
+		768383E91ADBD44900538F5D /* GameLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB31AD029FF00B7E9D4 /* GameLevel.swift */; };
+		768383EA1ADBD44900538F5D /* BasicLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585491AACE27D004A3CFD /* BasicLevel.swift */; };
+		768383EB1ADBD44900538F5D /* LevelGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585501AACE30F004A3CFD /* LevelGenerator.swift */; };
+		768383EC1ADBD44900538F5D /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761BB59D1AD04348007C31C1 /* Action.swift */; };
+		768383ED1ADBD44900538F5D /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0F60A1ADAF65700CB91B3 /* GameState.swift */; };
+		768383EE1ADBD44900538F5D /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585331AACE097004A3CFD /* GameEngine.swift */; };
+		768383EF1ADBD44900538F5D /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF4B1AD560400004B0FD /* GameManager.swift */; };
+		768383F01ADBD44900538F5D /* GameAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7689FC971ADAD41E0086613D /* GameAI.swift */; };
+		768383F11ADBD44900538F5D /* Wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A356351AD1896000299049 /* Wall.swift */; };
+		768383F21ADBD44900538F5D /* WormholeDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19ACF1AD399CC00B7E9D4 /* WormholeDoodad.swift */; };
+		768383F31ADBD44900538F5D /* LandMineDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB71AD034BF00B7E9D4 /* LandMineDoodad.swift */; };
+		768383F41ADBD44900538F5D /* FortressDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AC11AD0675100B7E9D4 /* FortressDoodad.swift */; };
+		768383F51ADBD44900538F5D /* TrampolineDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB51AD0330C00B7E9D4 /* TrampolineDoodad.swift */; };
+		768383F61ADBD44900538F5D /* WatchTowerDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19ABF1AD0609200B7E9D4 /* WatchTowerDoodad.swift */; };
+		768383F71ADBD44900538F5D /* Doodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585461AACE252004A3CFD /* Doodad.swift */; };
+		768383F81ADBD44900538F5D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585441AACE22C004A3CFD /* Item.swift */; };
+		768383F91ADBD44900538F5D /* Cat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585401AACE196004A3CFD /* Cat.swift */; };
+		768383FA1ADBD44900538F5D /* StatModification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AB91AD0382900B7E9D4 /* StatModification.swift */; };
+		768383FB1ADBD44900538F5D /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
+		768383FC1ADBD44900538F5D /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BA89C71AD6D55200413C1B /* ConnectionManager.swift */; };
+		768384051ADBD55B00538F5D /* GridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768384041ADBD55B00538F5D /* GridTests.swift */; };
+		768384091ADBD77500538F5D /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BA89CA1ADA7CC500413C1B /* StringUtils.swift */; };
 		7689FC981ADAD41E0086613D /* GameAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7689FC971ADAD41E0086613D /* GameAI.swift */; };
 		76D0F60B1ADAF65700CB91B3 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0F60A1ADAF65700CB91B3 /* GameState.swift */; };
 		76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60C1ADB261000CB91B3 /* Fart.png */; };
@@ -89,6 +118,7 @@
 		76FC46E51ABFE6190056B5F5 /* Pusheen.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46E01ABFE6190056B5F5 /* Pusheen.png */; };
 		76FC46EA1ABFEB4E0056B5F5 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Grid.swift */; };
 		BD0441C31ADD3899003B93BC /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0441C21ADD3899003B93BC /* DateUtils.swift */; };
+		BD0441C41AE20649003B93BC /* Poop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD29ED721ADBF03D0090B934 /* Poop.swift */; };
 		BD29ED731ADBF03D0090B934 /* Poop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD29ED721ADBF03D0090B934 /* Poop.swift */; };
 		BD5E53241ADBFD6E00A80BA7 /* Poop.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5E53231ADBFD6E00A80BA7 /* Poop.png */; };
 		BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
@@ -186,6 +216,7 @@
 		7661CF471AD4333E0004B0FD /* GridIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridIndex.swift; sourceTree = "<group>"; };
 		7661CF491AD4336C0004B0FD /* Direction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		7661CF4B1AD560400004B0FD /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
+		768384041ADBD55B00538F5D /* GridTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridTests.swift; sourceTree = "<group>"; };
 		7689FC971ADAD41E0086613D /* GameAI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
 		76D0F60A1ADAF65700CB91B3 /* GameState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		76D0F60C1ADB261000CB91B3 /* Fart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Fart.png; path = Images.xcassets/Fart.png; sourceTree = "<group>"; };
@@ -301,6 +332,7 @@
 		342584F91AACDB03004A3CFD /* CattacTests */ = {
 			isa = PBXGroup;
 			children = (
+				768384041ADBD55B00538F5D /* GridTests.swift */,
 				342585131AACDEB3004A3CFD /* DataStructures */,
 				342585241AACDFAE004A3CFD /* Graph */,
 				342584FC1AACDB03004A3CFD /* CattacTests.swift */,
@@ -776,6 +808,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				768384091ADBD77500538F5D /* StringUtils.swift in Sources */,
+				768383E21ADBD44900538F5D /* Grid.swift in Sources */,
+				768383E31ADBD44900538F5D /* GridIndex.swift in Sources */,
+				768383E41ADBD44900538F5D /* Direction.swift in Sources */,
+				768383E51ADBD44900538F5D /* CatFactory.swift in Sources */,
+				768383E61ADBD44900538F5D /* DoodadFactory.swift in Sources */,
+				768383E71ADBD44900538F5D /* ItemFactory.swift in Sources */,
+				768383E81ADBD44900538F5D /* Constants.swift in Sources */,
+				768383E91ADBD44900538F5D /* GameLevel.swift in Sources */,
+				768383EA1ADBD44900538F5D /* BasicLevel.swift in Sources */,
+				768383EB1ADBD44900538F5D /* LevelGenerator.swift in Sources */,
+				768383EC1ADBD44900538F5D /* Action.swift in Sources */,
+				768383ED1ADBD44900538F5D /* GameState.swift in Sources */,
+				768383EE1ADBD44900538F5D /* GameEngine.swift in Sources */,
+				768383EF1ADBD44900538F5D /* GameManager.swift in Sources */,
+				768383F01ADBD44900538F5D /* GameAI.swift in Sources */,
+				768383F11ADBD44900538F5D /* Wall.swift in Sources */,
+				768383F21ADBD44900538F5D /* WormholeDoodad.swift in Sources */,
+				768383F31ADBD44900538F5D /* LandMineDoodad.swift in Sources */,
+				768383F41ADBD44900538F5D /* FortressDoodad.swift in Sources */,
+				768384051ADBD55B00538F5D /* GridTests.swift in Sources */,
+				BD0441C41AE20649003B93BC /* Poop.swift in Sources */,
+				768383F51ADBD44900538F5D /* TrampolineDoodad.swift in Sources */,
+				768383F61ADBD44900538F5D /* WatchTowerDoodad.swift in Sources */,
+				768383F71ADBD44900538F5D /* Doodad.swift in Sources */,
+				768383F81ADBD44900538F5D /* Item.swift in Sources */,
+				768383F91ADBD44900538F5D /* Cat.swift in Sources */,
+				768383FA1ADBD44900538F5D /* StatModification.swift in Sources */,
+				768383FB1ADBD44900538F5D /* TileNode.swift in Sources */,
+				768383FC1ADBD44900538F5D /* ConnectionManager.swift in Sources */,
 				3425852E1AACE049004A3CFD /* Queue.swift in Sources */,
 				3425852F1AACE049004A3CFD /* Stack.swift in Sources */,
 				342585301AACE049004A3CFD /* Node.swift in Sources */,
@@ -944,6 +1006,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -952,6 +1015,7 @@
 				INFOPLIST_FILE = CattacTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cattac.app/Cattac";
 			};
 			name = Debug;
@@ -963,10 +1027,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = CattacTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cattac.app/Cattac";
 			};
 			name = Release;
