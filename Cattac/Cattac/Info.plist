@@ -42,5 +42,10 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>BubblegumSans-Regular.ttf</string>
+		<string>LuckiestGuy.ttf</string>
+	</array>
 </dict>
 </plist>

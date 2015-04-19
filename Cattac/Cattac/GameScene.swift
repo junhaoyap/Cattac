@@ -563,6 +563,7 @@ private extension GameScene {
         damageNode.position = node.sprite.position
         damageNode.alpha = 0
         damageNode.fontColor = UIColor.redColor()
+        damageNode.fontName = "LuckiestGuy-Regular"
         damageNode.zPosition = 20
         entityLayer.addChild(damageNode)
 
