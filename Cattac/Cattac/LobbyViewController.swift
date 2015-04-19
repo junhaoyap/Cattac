@@ -127,22 +127,20 @@ class LobbyViewController: UIViewController {
     }
     
     func waitForGameStart() {
-        let gameLevelRef = gameRef.append(
-            Constants.Firebase.nodeGameLevel
-        )
         
-        gameLevelRef.watchUpdateOnce("", onComplete: {
+        gameRef.watchUpdateOnce("", onComplete: {
             snapshot in
             
-            gameLevelRef.readOnce("", onComplete: {
-                gameSnapshot in
-                
-                self.level = self.levelGenerator
-                    .createGame(fromSnapshot: gameSnapshot as FDataSnapshot)
-                
-                self.performSegueWithIdentifier("waitGameStartSegue",
-                    sender: nil
-                )
+            self.gameRef.readOnce(Constants.Firebase.nodeGameLevel,
+                onComplete: {
+                    gameSnapshot in
+                    
+                    self.level = self.levelGenerator
+                        .createGame(fromSnapshot: gameSnapshot as FDataSnapshot)
+                    
+                    self.performSegueWithIdentifier("waitGameStartSegue",
+                        sender: nil
+                    )
             })
         })
     }
