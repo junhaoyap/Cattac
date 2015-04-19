@@ -12,7 +12,8 @@ class StringUtils {
         } else {
             var slashIndexes: [String.Index] = []
             
-            let endStringIndex: String.Index = stringWithSlashes.endIndex.predecessor()
+            let endStringIndex: String.Index = stringWithSlashes.endIndex
+                .predecessor()
             
             for index in indices(stringWithSlashes) {
                 if stringWithSlashes[index] == "/" {
@@ -38,5 +39,29 @@ class StringUtils {
             
             return stringsToReturn
         }
+    }
+    
+    func getNameFromEmail(email: String) -> String {
+        var stringToReturn = ""
+        
+        var atIndex = email.startIndex
+        
+        for index in indices(email) {
+            if email[index] == "@" {
+                atIndex = index
+            }
+        }
+        
+        for index in indices(email) {
+            let character = email[index]
+            
+            if index == atIndex {
+                break
+            } else {
+                stringToReturn.append(character)
+            }
+        }
+        
+        return stringToReturn
     }
 }

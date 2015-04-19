@@ -33,31 +33,39 @@ class LobbyViewController: UIViewController {
             
             let lastActiveTimeString = snapshot.value["lastActive"] as? String
             let lastActiveTime = lastActiveTimeString == nil ?
-                nil : DateUtils.dateFormatter.dateFromString(lastActiveTimeString!)
+                nil : DateUtils.dateFormatter.dateFromString(
+                    lastActiveTimeString!
+            )
             
             let currentTime = DateUtils.dateFormatter.stringFromDate(NSDate())
             
-            if lastActiveTime == nil || DateUtils.isMinutesBeforeNow(lastActiveTime!, minutes: 1) {
-                self.lobbyRef.setValue([
-                    "lastActive": currentTime,
-                    Constants.Firebase.nodePlayers: [
-                        self.ref.authData.uid, "", "", ""
-                    ]
-                ])
-                self.playerNumber = 1
-                self.waitForGameStart()
+            if lastActiveTime == nil ||
+                DateUtils.isMinutesBeforeNow(lastActiveTime!, minutes: 1) {
+                    self.lobbyRef.setValue([
+                        "lastActive": currentTime,
+                        Constants.Firebase.nodePlayers: [
+                            self.ref.authData.uid, "", "", ""
+                        ]
+                    ])
+                    self.playerNumber = 1
+                    self.waitForGameStart()
             } else {
                 var numberOfPlayers = 1
-                let players = snapshot.value.objectForKey(Constants.Firebase.nodePlayers)! as [String]
+                let players = snapshot.value.objectForKey(
+                    Constants.Firebase.nodePlayers)! as [String]
+                
                 for player in players {
                     if !player.isEmpty {
                         numberOfPlayers++
                     }
                 }
+                
                 self.playerNumber = numberOfPlayers
                 
-                let playerRef = self.lobbyRef.childByAppendingPath(Constants.Firebase.nodePlayers)
-                    .childByAppendingPath("\(numberOfPlayers - 1)")
+                let playerRef = self.lobbyRef.childByAppendingPath(
+                    Constants.Firebase.nodePlayers
+                    ).childByAppendingPath("\(numberOfPlayers - 1)")
+                
                 playerRef.setValue(self.ref.authData.uid)
                 
                 self.lobbyRef.updateChildValues(["lastActive": currentTime])
@@ -71,20 +79,23 @@ class LobbyViewController: UIViewController {
         })
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "gameStartSegue" {
-            if let destinationVC = segue.destinationViewController as? GameViewController {
-                destinationVC.level = level
-                destinationVC.playerNumber = playerNumber
-                destinationVC.multiplayer = true
+    override func prepareForSegue(segue: UIStoryboardSegue,
+        sender: AnyObject?) {
+            if segue.identifier == "gameStartSegue" {
+                if let destinationVC = segue.destinationViewController as?
+                    GameViewController {
+                        destinationVC.level = level
+                        destinationVC.playerNumber = playerNumber
+                        destinationVC.multiplayer = true
+                }
+            } else if segue.identifier == "waitGameStartSegue" {
+                if let destinationVC = segue.destinationViewController
+                    as? GameViewController {
+                        destinationVC.level = level
+                        destinationVC.playerNumber = playerNumber
+                        destinationVC.multiplayer = true
+                }
             }
-        } else if segue.identifier == "waitGameStartSegue" {
-            if let destinationVC = segue.destinationViewController as? GameViewController {
-                destinationVC.level = level
-                destinationVC.playerNumber = playerNumber
-                destinationVC.multiplayer = true
-            }
-        }
     }
     
     func initiateGameStart() {
@@ -104,22 +115,23 @@ class LobbyViewController: UIViewController {
     }
     
     func waitForGameStart() {
-        let gameLevelRef = gameRef.childByAppendingPath(Constants.Firebase.nodeGameLevel)
+        let gameLevelRef = gameRef.childByAppendingPath(
+            Constants.Firebase.nodeGameLevel
+        )
         
         gameLevelRef.observeSingleEventOfType(.ChildChanged, withBlock: {
             snapshot in
             gameLevelRef.observeSingleEventOfType(.Value, withBlock: {
                 gameSnapshot in
                 
-                self.level = self.levelGenerator.createGame(fromSnapshot: gameSnapshot)
+                self.level = self.levelGenerator
+                    .createGame(fromSnapshot: gameSnapshot)
                 
-                self.performSegueWithIdentifier("waitGameStartSegue", sender: nil)
+                self.performSegueWithIdentifier("waitGameStartSegue",
+                    sender: nil
+                )
             })
         })
-    }
-    
-    func isAfter(dateOne: NSDate, dateTwo: NSDate) -> Bool {
-        return dateOne.compare(dateTwo) == NSComparisonResult.OrderedAscending
     }
     
     override func didReceiveMemoryWarning() {
