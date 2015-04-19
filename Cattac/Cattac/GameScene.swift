@@ -600,6 +600,11 @@ private extension GameScene {
                             node: self.gameManager[moveToPositionOf: player]!)
                     }
                 }
+            } else if let item = action.item as? MilkItem {
+                completion = {
+                    self.showDamage(-Constants.itemEffect.milkHpIncreaseEffect,
+                        node: self.gameManager[moveToPositionOf: player]!)
+                }
             }
         } else {
             let dest = action.targetNode!.sprite.position
@@ -675,9 +680,10 @@ private extension GameScene {
     func showDamage(damage: Int, node: TileNode) {
         let nodeSprite = node.sprite
         let damageNode = SKLabelNode(text: "\(-damage)")
+        let color = damage > 0 ? UIColor.redColor() : UIColor.cyanColor()
         damageNode.position = node.sprite.position
         damageNode.alpha = 0
-        damageNode.fontColor = UIColor.redColor()
+        damageNode.fontColor = color
         damageNode.fontName = "LuckiestGuy-Regular"
         damageNode.zPosition = 20
         entityLayer.addChild(damageNode)
