@@ -215,13 +215,18 @@ extension GameScene: EventListener {
         pendingAnimations += [AnimationEvent(poopSprite, action)]
     }
     
-    func onItemObtained(item: Item) {
-        let scale = inventoryBox.size.height / item.sprite.size.height
-        let animAction = SKAction.group([
-            SKAction.moveTo(inventoryBox.position, duration: 0.5),
-            SKAction.scaleTo(scale, duration: 0.5)
-        ])
-        item.sprite.runAction(animAction)
+    func onItemObtained(item: Item, _ isCurrentPlayer: Bool) {
+        if isCurrentPlayer {
+            let scale = inventoryBox.size.height / item.sprite.size.height
+            let animAction = SKAction.group([
+                SKAction.moveTo(inventoryBox.position, duration: 0.5),
+                SKAction.scaleTo(scale, duration: 0.5)
+                ])
+            item.sprite.runAction(animAction)
+        } else {
+            let animAction = sceneUtils.getObtainItemAnimation()
+            item.sprite.runAction(animAction)
+        }
     }
 }
 

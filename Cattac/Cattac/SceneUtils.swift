@@ -86,6 +86,22 @@ class SceneUtils {
         
         return SKAction.sequence(sequence)
     }
+    
+    /// Generates a SKAction that animates the non-currentPlayers obtaining an
+    /// item.
+    ///
+    /// :returns: SKAction holding the sequence
+    func getObtainItemAnimation() -> SKAction {
+        let moveDistance = tileSize.height
+        let actionGroup = [
+            SKAction.sequence([
+                SKAction.moveByX(0, y: moveDistance, duration: 0.2),
+                SKAction.moveByX(0, y: -moveDistance, duration: 0.3)
+                ]),
+            SKAction.scaleTo(0, duration: 0.5)
+            ]
+        return SKAction.group(actionGroup);
+    }
 
     /// Calculates the amount of rotation for a given direction.
     ///
