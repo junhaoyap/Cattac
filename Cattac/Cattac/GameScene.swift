@@ -55,6 +55,9 @@ class GameScene: SKScene {
     /// Pending animation events to be executed post movement
     private var pendingAnimations: [AnimationEvent] = []
     
+    private var playerTargetArrows: [String:SKSpriteNode] = [:]
+    private var playerTarget: SKSpriteNode!
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -111,8 +114,7 @@ class GameScene: SKScene {
             /// Additional initialization
             initializeButtons(buttonSpacing)
             initializeInventory()
-            initializePlayerPreview(currentPlayerNumber)
-            initializePoopPreview()
+            initializePreviewNodes(currentPlayerNumber)
             addTiles()
             addPlayers()
     }
@@ -164,9 +166,11 @@ extension GameScene: GameStateListener {
         case .ServerUpdate:
             disableActionButtons()
             removeHighlights()
+            unhighlightTargetPlayers()
         case .AICalculation:
             disableActionButtons()
             removeHighlights()
+            unhighlightTargetPlayers()
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:
@@ -308,7 +312,10 @@ private extension GameScene {
             defaultButtonImage: "InventoryBox.png",
             activeButtonImage: "InventoryBoxPressed.png",
             buttonAction: { self.gameEngine.triggerItemButtonPressed() },
-            unselectAction: { self.gameEngine.triggerClearAction() })
+            unselectAction: {
+                self.gameEngine.triggerClearAction()
+                self.unhighlightTargetPlayers()
+        })
         
         inventoryBoxButton.position = CGPoint(x: 32, y: -37)
         actionButtons.append(inventoryBoxButton)
@@ -326,10 +333,10 @@ private extension GameScene {
         }
     }
 
-    /// Initializes the preview node for the current player.
+    /// Initializes the preview nodes game.
     ///
     /// :param: currentPlayerNumber The index/id of the currentPlayer.
-    func initializePlayerPreview(currentPlayerNumber: Int) {
+    func initializePreviewNodes(currentPlayerNumber: Int) {
         switch currentPlayerNumber {
         case 1:
             previewNode = SKSpriteNode(imageNamed: "Nala.png")
@@ -347,15 +354,20 @@ private extension GameScene {
         previewNode.alpha = 0.5
         previewNode.hidden = true
         entityLayer.addChild(previewNode)
-    }
-
-    /// Initializes the preview node for the poop action.
-    func initializePoopPreview() {
+        
+        
+        /// Initializes the preview node for the poop action.
         poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
         poopPreviewNode.size = sceneUtils.tileSize
         poopPreviewNode.alpha = 0.5
         poopPreviewNode.hidden = true
         entityLayer.addChild(poopPreviewNode)
+        
+        playerTarget = SKSpriteNode(imageNamed: "Crosshairs.png")
+        playerTarget.size = CGSize(width: sceneUtils.tileSize.width * 1.5,
+            height: sceneUtils.tileSize.height * 1.5)
+        playerTarget.hidden = true
+        entityLayer.addChild(playerTarget)
     }
 
     /// Adds the tiles to the grid based on the given level.
@@ -541,6 +553,7 @@ private extension GameScene {
         }
         
         itemSprite.runAction(animAction, completion: {
+            self.notifyActionCompletionFor(player)
             itemSprite.removeFromParent()
         })
     }
@@ -632,9 +645,13 @@ private extension GameScene {
             let playerSprite = player.getSprite() as SKTouchSpriteNode
             playerSprite.setTouchObserver({
                 self.gameEngine.triggerTargetPlayerChanged(player)
-                println("Touched \(player.name)")
+                self.playerTarget.position = playerSprite.position
+                self.playerTarget.hidden = false
             })
             playerSprite.userInteractionEnabled = true
+            let arrowSprite = sceneUtils.getPlayerTargetableArrow(playerSprite.position)
+            entityLayer.addChild(arrowSprite)
+            playerTargetArrows[player.name] = arrowSprite
         }
     }
     
@@ -648,7 +665,10 @@ private extension GameScene {
                 playerSprite.setTouchObserver(nil)
                 playerSprite.userInteractionEnabled = false
             }
+            playerTargetArrows[player.name]?.removeFromParent()
         }
+        playerTargetArrows.removeAll(keepCapacity: false)
+        playerTarget.hidden = true
     }
 
     /// Draws the preview poop on tile pooper is on.

@@ -128,11 +128,35 @@ class SceneUtils {
             SKAction.scaleTo(1.5, duration: 0.3),
             SKAction.waitForDuration(0.3),
             SKAction.group([
-                SKAction.moveByX(0, y: 200, duration: 0.5),
-                SKAction.fadeOutWithDuration(0.5)
+                SKAction.moveByX(0, y: tileHeight, duration: 0.5),
+                SKAction.fadeOutWithDuration(0.2)
                 ])
         ]
         return SKAction.sequence(actionSequence)
+    }
+    
+    func getPlayerTargetableArrow(pointAt: CGPoint) -> SKSpriteNode {
+        let sprite = SKSpriteNode(imageNamed: "OrangeArrow.png")
+        let offset = tileHeight * 1.2
+        sprite.position = CGPointMake(pointAt.x, pointAt.y + offset)
+        sprite.size = tileSize
+        sprite.runAction(getFloatingAnimation())
+        
+        return sprite
+    }
+    
+    func getFloatingAnimation() -> SKAction {
+        let offset = tileHeight * 0.6
+        let actionSequence = [
+            SKAction.moveByX(0, y: offset * 0.2, duration: 0.25),
+            SKAction.moveByX(0, y: offset * 0.4, duration: 0.25),
+            SKAction.moveByX(0, y: offset * 0.2, duration: 0.25),
+            SKAction.moveByX(0, y: -offset * 0.2, duration: 0.25),
+            SKAction.moveByX(0, y: -offset * 0.4, duration: 0.25),
+            SKAction.moveByX(0, y: -offset * 0.2, duration: 0.25)
+        ]
+        let action = SKAction.sequence(actionSequence)
+        return SKAction.repeatActionForever(action)
     }
 
     /// Calculates the amount of rotation for a given direction.

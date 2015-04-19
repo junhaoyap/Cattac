@@ -134,6 +134,6 @@ class ItemAction: Action {
 
 extension ItemAction: Printable {
     var description: String {
-        return "Used \(item.name) at \(targetPlayer)"
+        return "Used \(item.name) at \(targetPlayer.name)"
     }
 }

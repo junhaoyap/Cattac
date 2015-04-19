@@ -333,7 +333,6 @@ class GameEngine {
             itemAction.targetNode =
                 gameManager[moveToPositionOf: itemAction.targetPlayer]
             itemAction.item.effect(itemAction.targetPlayer)
-            println("\(player.name) \(itemAction.description)")
         }
         return action
     }
