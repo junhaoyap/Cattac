@@ -42,6 +42,9 @@ class GameScene: SKScene {
     /// Button that sets the action of the player to Poop.
     private var poopButton: SKActionButtonNode!
     
+    /// Inventory slot showing player's held item
+    private var inventoryBoxButton: SKActionButtonNode!
+    
     /// Preview of the next position of the current player when setting the
     /// next tile to move to.
     private var previewNode: SKSpriteNode!
@@ -51,6 +54,12 @@ class GameScene: SKScene {
     
     /// Pending animation events to be executed post movement
     private var pendingAnimations: [AnimationEvent] = []
+    
+    /// Container for previews displayed on game layer for targeting
+    private var targetPreviewNodes: [SKSpriteNode] = []
+    
+    /// Targeting preview during item action
+    private var crosshairNode: SKSpriteNode!
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -102,13 +111,13 @@ class GameScene: SKScene {
             // adds buttonLayer to the gameLayer
             let buttonSpacing: CGFloat = 220
             buttonLayer.position =
-                CGPoint(x: -buttonSpacing, y: layerPosition.y - 90)
+                CGPoint(x: -buttonSpacing, y: layerPosition.y - 100)
             gameLayer.addChild(buttonLayer)
 
             /// Additional initialization
             initializeButtons(buttonSpacing)
-            initializePlayerPreview(currentPlayerNumber)
-            initializePoopPreview()
+            initializeInventory()
+            initializePreviewNodes(currentPlayerNumber)
             addTiles()
             addPlayers()
     }
@@ -160,9 +169,11 @@ extension GameScene: GameStateListener {
         case .ServerUpdate:
             disableActionButtons()
             removeHighlights()
+            unhighlightTargetPlayers()
         case .AICalculation:
             disableActionButtons()
             removeHighlights()
+            unhighlightTargetPlayers()
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:
@@ -191,16 +202,29 @@ extension GameScene: EventListener {
             case .Pui:
                 hidePoop()
                 unselectActionButtonsExcept(puiButton)
+                unhighlightTargetPlayers()
             case .Fart:
                 hidePoop()
                 unselectActionButtonsExcept(fartButton)
+                unhighlightTargetPlayers()
             case .Poop:
                 drawPoop(action as PoopAction)
                 unselectActionButtonsExcept(poopButton)
+                unhighlightTargetPlayers()
+            case .Item:
+                unselectActionButtonsExcept(inventoryBoxButton)
+                if (action as ItemAction).item.canTargetOthers() {
+                    highlightTargetPlayers()
+                }
             }
         }
     }
-
+    
+    /// Adds poop activation animation to pending animations. Pending animations
+    /// are animated immediately after moves execution.
+    ///
+    /// :param: poop The Poop that is being activated.
+    /// :param: target The target TileNode to animate at.
     func addPendingPoopAnimation(poop: Poop, target: TileNode) {
         let poopSprite = SKSpriteNode(imageNamed: "Poop.png")
         poopSprite.position = sceneUtils.pointFor(target.position)
@@ -213,6 +237,29 @@ extension GameScene: EventListener {
 
         pendingAnimations += [AnimationEvent(poopSprite, action,
             completion: completion)]
+    }
+    
+    /// Animates the obtaining of an item. If item is obtained by current
+    /// player, the item sprite is flown to the inventory box, but if its not
+    /// the current player, item shrinks into character sprite and disappears.
+    ///
+    /// :param: item The item that is obtained.
+    /// :param: isCurrentPlayer true if item is picked by current player, false
+    ///         otherwise.
+    func onItemObtained(item: Item, _ isCurrentPlayer: Bool) {
+        if isCurrentPlayer {
+            let scale = 64 / item.sprite.size.height
+            let dur = sceneUtils.getAnimDuration(item.sprite.position,
+                dest: inventoryBoxButton.position)
+            let animAction = SKAction.group([
+                SKAction.moveTo(inventoryBoxButton.position, duration: dur),
+                SKAction.scaleTo(scale, duration: dur)
+                ])
+            item.sprite.runAction(animAction)
+        } else {
+            let animAction = sceneUtils.getObtainItemAnimation()
+            item.sprite.runAction(animAction)
+        }
     }
 }
 
@@ -279,9 +326,25 @@ private extension GameScene {
         buttonLayer.addChild(poopButton)
         actionButtons.append(poopButton)
     }
+    
+    /// Initializes the inventory slot on game scene.
+    func initializeInventory() {
+        inventoryBoxButton = SKActionButtonNode(
+            defaultButtonImage: "InventoryBox.png",
+            activeButtonImage: "InventoryBoxPressed.png",
+            buttonAction: { self.gameEngine.triggerItemButtonPressed() },
+            unselectAction: {
+                self.gameEngine.triggerClearAction()
+                self.unhighlightTargetPlayers()
+        })
+        
+        inventoryBoxButton.position = CGPoint(x: 32, y: -37)
+        actionButtons.append(inventoryBoxButton)
+        entityLayer.addChild(inventoryBoxButton)
+    }
 
     /// Adds the player nodes to the grid.
-    private func addPlayers() {
+    func addPlayers() {
         for player in gameEngine.gameManager.players.values {
             let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
             let playerNode = player.getSprite() as SKSpriteNode
@@ -291,10 +354,10 @@ private extension GameScene {
         }
     }
 
-    /// Initializes the preview node for the current player.
+    /// Initializes the preview nodes game.
     ///
     /// :param: currentPlayerNumber The index/id of the currentPlayer.
-    func initializePlayerPreview(currentPlayerNumber: Int) {
+    func initializePreviewNodes(currentPlayerNumber: Int) {
         switch currentPlayerNumber {
         case 1:
             previewNode = SKSpriteNode(imageNamed: "Nala.png")
@@ -312,15 +375,19 @@ private extension GameScene {
         previewNode.alpha = 0.5
         previewNode.hidden = true
         entityLayer.addChild(previewNode)
-    }
-
-    /// Initializes the preview node for the poop action.
-    func initializePoopPreview() {
+        
+        
+        /// Initializes the preview node for the poop action.
         poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
         poopPreviewNode.size = sceneUtils.tileSize
         poopPreviewNode.alpha = 0.5
         poopPreviewNode.hidden = true
         entityLayer.addChild(poopPreviewNode)
+        
+        /// Initializes the preview node for the crosshair.
+        crosshairNode = sceneUtils.getCrosshairNode()
+        crosshairNode.hidden = true
+        entityLayer.addChild(crosshairNode)
     }
 
     /// Adds the tiles to the grid based on the given level.
@@ -343,9 +410,12 @@ private extension GameScene {
         spriteNode.size = sceneUtils.tileSize
         spriteNode.position = sceneUtils.pointFor(tileNode.position)
         tilesLayer.addChild(spriteNode)
-
+        
         if let doodad = tileNode.doodad {
             self.drawTileEntity(spriteNode, doodad)
+        }
+        if let item = tileNode.item {
+            self.drawTileEntity(spriteNode, item)
         }
     }
 
@@ -506,6 +576,54 @@ private extension GameScene {
             }
         }
     }
+    
+    /// Animates the fart action of the given player.
+    ///
+    /// :param: player The cat that is performing the action.
+    /// :param: action ItemAction used
+    func animateItemAction(player: Cat, action: ItemAction) {
+        let itemSprite = action.item.sprite
+        let tileNode = gameManager[moveToPositionOf: player]!
+        let targetPlayer = action.targetPlayer
+        itemSprite.size = tileNode.sprite.size
+        itemSprite.position = tileNode.sprite.position
+        var completion: (() -> Void)?
+        
+        var animAction: SKAction!
+        
+        if gameManager.samePlayer(player, targetPlayer) {
+            animAction = sceneUtils.getPassiveItemUsedAnimation()
+            if let item = action.item as? NukeItem {
+                completion = {
+                    for player in self.gameManager.players.values {
+                        self.showDamage(Constants.itemEffect.nukeDmg,
+                            node: self.gameManager[moveToPositionOf: player]!)
+                    }
+                }
+            } else if let item = action.item as? MilkItem {
+                completion = {
+                    self.showDamage(-Constants.itemEffect.milkHpIncreaseEffect,
+                        node: self.gameManager[moveToPositionOf: player]!)
+                }
+            }
+        } else {
+            let dest = action.targetNode!.sprite.position
+            let v = SceneUtils.vector(tileNode.sprite.position, dest)
+            animAction = sceneUtils.getAggressiveItemUsedAnimation(v)
+            if let item = action.item as? ProjectileItem {
+                completion = {
+                    self.showDamage(Constants.itemEffect.projectileDmg,
+                        node: self.gameManager[moveToPositionOf: targetPlayer]!)
+                }
+            }
+        }
+        
+        itemSprite.runAction(animAction, completion: {
+            self.notifyActionCompletionFor(player)
+            itemSprite.removeFromParent()
+            completion?()
+        })
+    }
 
     /// Performs the respective actions for each player.
     func performActions() {
@@ -520,6 +638,8 @@ private extension GameScene {
                     animateFartAction(player)
                 case .Poop:
                     notifyActionCompletionFor(player)
+                case .Item:
+                    animateItemAction(player, action: action as ItemAction)
                 }
             } else {
                 notifyActionCompletionFor(player)
@@ -560,9 +680,10 @@ private extension GameScene {
     func showDamage(damage: Int, node: TileNode) {
         let nodeSprite = node.sprite
         let damageNode = SKLabelNode(text: "\(-damage)")
+        let color = damage > 0 ? UIColor.redColor() : UIColor.cyanColor()
         damageNode.position = node.sprite.position
         damageNode.alpha = 0
-        damageNode.fontColor = UIColor.redColor()
+        damageNode.fontColor = color
         damageNode.fontName = "LuckiestGuy-Regular"
         damageNode.zPosition = 20
         entityLayer.addChild(damageNode)
@@ -583,6 +704,9 @@ private extension GameScene {
     func enableActionButtons() {
         for button in actionButtons {
             button.isEnabled = true
+        }
+        if gameManager[itemOf: gameEngine.currentPlayer] == nil {
+            inventoryBoxButton.isEnabled = false
         }
     }
 
@@ -611,6 +735,56 @@ private extension GameScene {
                 button.unselect()
             }
         }
+    }
+    
+    /// Hides arrows indicating targetable players for item action.
+    func highlightTargetPlayers() {
+        let currentPlayer = gameEngine.currentPlayer
+        let item = gameManager[itemOf: currentPlayer]!
+        for player in gameManager.players.values {
+            if gameManager.samePlayer(player, currentPlayer) {
+                continue
+            }
+            
+            let playerSprite = player.getSprite() as SKTouchSpriteNode
+            let position = playerSprite.position
+            let arrowSprite = sceneUtils.getPlayerTargetableArrow(position)
+            entityLayer.addChild(arrowSprite)
+            targetPreviewNodes += [arrowSprite]
+            
+            if item.shouldTargetAll() {
+                let crosshairSprite = sceneUtils.getCrosshairNode()
+                crosshairSprite.position = playerSprite.position
+                entityLayer.addChild(crosshairSprite)
+                targetPreviewNodes += [crosshairSprite]
+            } else {
+                playerSprite.setTouchObserver({
+                    self.gameEngine.triggerTargetPlayerChanged(player)
+                    self.crosshairNode.position = playerSprite.position
+                    self.crosshairNode.hidden = false
+                })
+                playerSprite.userInteractionEnabled = true
+            }
+        }
+    }
+    
+    /// Hides arrows indicating targetable players for item action.
+    func unhighlightTargetPlayers() {
+        for player in gameManager.players.values {
+            if gameManager.samePlayer(player, gameEngine.currentPlayer) {
+                continue
+            }
+            let playerSprite = player.getSprite() as SKTouchSpriteNode
+            if playerSprite.userInteractionEnabled {
+                playerSprite.setTouchObserver(nil)
+                playerSprite.userInteractionEnabled = false
+            }
+        }
+        for node in targetPreviewNodes {
+            node.removeFromParent()
+        }
+        targetPreviewNodes.removeAll(keepCapacity: false)
+        crosshairNode.hidden = true
     }
 
     /// Draws the preview poop on tile pooper is on.

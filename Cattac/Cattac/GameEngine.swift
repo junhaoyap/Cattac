@@ -6,6 +6,7 @@ protocol GameStateListener {
 
 protocol EventListener {
     func onActionUpdate(action: Action?)
+    func onItemObtained(item: Item, _ isCurrentPlayer: Bool)
     func addPendingPoopAnimation(poop: Poop, target: TileNode)
 }
 
@@ -276,6 +277,8 @@ class GameEngine {
                     (action as FartAction).resetRange(player.fartRange)
                 case .Poop:
                     break
+                case .Item:
+                    break
                 }
             }
         }
@@ -286,6 +289,17 @@ class GameEngine {
         
         for player in gameManager.players.values {
             player.postExecute()
+            let tileNode = gameManager[positionOf: player]!
+            
+            if let item = tileNode.item {
+                gameManager[itemOf: player]?.sprite.removeFromParent()
+                
+                gameManager[itemOf: player] = item
+                tileNode.item = nil
+                
+                let isCurrentPlayer = currentPlayer.name == player.name
+                eventListener?.onItemObtained(item, isCurrentPlayer)
+            }
         }
     }
 
@@ -325,6 +339,16 @@ class GameEngine {
         if action is PoopAction {
             let targetNode = action!.targetNode!
             targetNode.poop = Poop(player, player.poopDmg)
+        } else if action is ItemAction {
+            let itemAction = action as ItemAction
+            if !itemAction.item.canTargetSelf() &&
+                gameManager.samePlayer(itemAction.targetPlayer, player) {
+                    // invalidate action, item cannot effect self.
+                    return nil
+            }
+            itemAction.targetNode =
+                gameManager[moveToPositionOf: itemAction.targetPlayer]
+            itemAction.item.effect(itemAction.targetPlayer)
         }
         return action
     }
@@ -430,7 +454,6 @@ class GameEngine {
                     case .Fart:
                         let fartRange = attackRange!
                         self.gameManager[actionOf: player] = FartAction(range: fartRange)
-                        break
                     case .Poop:
                         let targetNodeRow = snapshot.value.objectForKey(
                             Constants.Firebase.keyTargetRow) as? Int
@@ -439,6 +462,7 @@ class GameEngine {
                         let targetNode = self.grid[targetNodeRow!, targetNodeCol!]!
                         
                         self.gameManager[actionOf: player] = PoopAction(targetNode: targetNode)
+                    case .Item:
                         break
                     }
                     println("\(player.name)[\(i)] \(playerActionType.description)")
@@ -492,7 +516,23 @@ extension GameEngine {
             PoopAction(targetNode: targetNode)
         notifyAction()
     }
+    
+    func triggerItemButtonPressed() {
+        let targetNode = gameManager[positionOf: currentPlayer]!
+        let item = gameManager[itemOf: currentPlayer]!
+        gameManager[actionOf: currentPlayer] =
+            ItemAction(item: item, targetNode: targetNode,
+                targetPlayer: currentPlayer)
+        notifyAction()
+    }
 
+    func triggerTargetPlayerChanged(targetPlayer: Cat) {
+        if let action = gameManager[actionOf: currentPlayer] as? ItemAction {
+            action.targetPlayer = targetPlayer
+            action.targetNode = gameManager[positionOf: targetPlayer]
+        }
+    }
+    
     func triggerPlayerActionEnded() {
         triggerStateAdvance()
     }

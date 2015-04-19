@@ -7,6 +7,7 @@ class TileNode {
     var position: GridIndex
     var sprite: SKSpriteNode
     var doodad: Doodad?
+    var item: Item?
     var poop: Poop?
     
     private let grass = SKTexture(imageNamed: "Grass.png")

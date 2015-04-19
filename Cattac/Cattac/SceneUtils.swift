@@ -86,6 +86,118 @@ class SceneUtils {
         
         return SKAction.sequence(sequence)
     }
+    
+    /// Generates a SKAction that animates the non-currentPlayers obtaining an
+    /// item.
+    ///
+    /// :returns: SKAction holding the sequence
+    func getObtainItemAnimation() -> SKAction {
+        let moveDistance = tileSize.height
+        let actionGroup = [
+            SKAction.sequence([
+                SKAction.moveByX(0, y: moveDistance, duration: 0.2),
+                SKAction.moveByX(0, y: -moveDistance, duration: 0.3)
+                ]),
+            SKAction.scaleTo(0, duration: 0.5)
+        ]
+        return SKAction.group(actionGroup);
+    }
+    
+    /// Generates a SKAction that animates the aggressive item use for
+    /// player on game tile
+    ///
+    /// :returns: SKAction holding the sequence
+    func getAggressiveItemUsedAnimation(displacement: CGVector) -> SKAction {
+        let dur = getAnimDuration(displacement)
+        let actionSequence = [
+            SKAction.scaleTo(1, duration: 0),
+            SKAction.waitForDuration(0.3),
+            SKAction.moveBy(displacement, duration: dur),
+            SKAction.waitForDuration(0.3),
+            SKAction.fadeOutWithDuration(0.3)
+        ]
+        return SKAction.sequence(actionSequence)
+    }
+    
+    /// Generates a SKAction that animates the passive item use for 
+    /// player on game tile
+    ///
+    /// :returns: SKAction holding the sequence
+    func getPassiveItemUsedAnimation() -> SKAction {
+        let actionSequence = [
+            SKAction.scaleTo(1, duration: 0),
+            SKAction.scaleTo(1.5, duration: 0.3),
+            SKAction.waitForDuration(0.3),
+            SKAction.group([
+                SKAction.moveByX(0, y: tileHeight, duration: 0.5),
+                SKAction.fadeOutWithDuration(0.2)
+                ])
+        ]
+        return SKAction.sequence(actionSequence)
+    }
+    
+    /// Generates a orange crosshair used for showing targeted player.
+    ///
+    /// :returns: The SKSpriteNode
+    func getCrosshairNode() -> SKSpriteNode {
+        let node = SKSpriteNode(imageNamed: "Crosshairs.png")
+        node.size = CGSize(width: tileSize.width * 1.5,
+            height: tileSize.height * 1.5)
+        return node
+    }
+    
+    /// Generates a orange arrow sprite used for attracting user attention.
+    ///
+    /// :param: pointAt Point to which the arrow will point at.
+    /// :returns: The SKSpriteNode
+    func getPlayerTargetableArrow(pointAt: CGPoint) -> SKSpriteNode {
+        let sprite = SKSpriteNode(imageNamed: "OrangeArrow.png")
+        let offset = tileHeight * 1.2
+        sprite.position = CGPointMake(pointAt.x, pointAt.y + offset)
+        sprite.size = tileSize
+        sprite.runAction(getFloatingAnimation())
+        
+        return sprite
+    }
+    
+    /// Generates a SKAction that animates the passive item use for
+    /// player on game tile
+    ///
+    /// :returns: SKAction holding the sequence
+    func getFloatingAnimation() -> SKAction {
+        let offset = tileHeight * 0.6
+        let actionSequence = [
+            SKAction.moveByX(0, y: offset * 0.2, duration: 0.15),
+            SKAction.moveByX(0, y: offset * 0.4, duration: 0.15),
+            SKAction.moveByX(0, y: offset * 0.2, duration: 0.15),
+            SKAction.moveByX(0, y: -offset * 0.2, duration: 0.15),
+            SKAction.moveByX(0, y: -offset * 0.4, duration: 0.15),
+            SKAction.moveByX(0, y: -offset * 0.2, duration: 0.15)
+        ]
+        let action = SKAction.sequence(actionSequence)
+        return SKAction.repeatActionForever(action)
+    }
+    
+    /// Returns the standard animation duration for animating object movement
+    /// across game playing field
+    ///
+    /// :param: source Starting point of object movement
+    /// :param: dest Ending point of object movement
+    /// :returns: duraction
+    func getAnimDuration(source: CGPoint, dest: CGPoint) -> NSTimeInterval {
+        let v = self.dynamicType.vector(source, dest)
+        return getAnimDuration(v)
+    }
+    
+    /// Returns the standard animation duration for animating object movement
+    /// across game playing field
+    ///
+    /// :param: v The displacement vector
+    /// :returns: duraction
+    func getAnimDuration(v: CGVector) -> NSTimeInterval {
+        let dist = self.dynamicType.distance(v)
+        return NSTimeInterval(dist / tileHeight * 0.08)
+    }
 
     /// Calculates the amount of rotation for a given direction.
     ///
@@ -102,5 +214,22 @@ class SceneUtils {
         default:
             return 0
         }
+    }
+    
+    /// Calculates the length given a vector.
+    ///
+    /// :param: v The vector used to calculate the length.
+    /// :returns: vector length.
+    class func distance(v: CGVector) -> CGFloat {
+        return sqrt(v.dx * v.dx + v.dy * v.dy)
+    }
+    
+    /// Calculates the vector between points a and b.
+    ///
+    /// :param: source Source point.
+    /// :param: dest Destination point.
+    /// :returns: calculated vector from source to dest.
+    class func vector(source: CGPoint, _ dest: CGPoint) -> CGVector {
+        return CGVectorMake(dest.x - source.x, dest.y - source.y)
     }
 }
