@@ -15,7 +15,10 @@
 		327A01601AE316AA005BAF06 /* Milk.png in Resources */ = {isa = PBXBuildFile; fileRef = 327A015E1AE316AA005BAF06 /* Milk.png */; };
 		327A01621AE31714005BAF06 /* Projectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 327A01611AE31714005BAF06 /* Projectile.png */; };
 		327A01631AE31714005BAF06 /* Projectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 327A01611AE31714005BAF06 /* Projectile.png */; };
-		32B620FF1AE31B6D001A6AB5 /* InventoryBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B620FE1AE31B6D001A6AB5 /* InventoryBox.png */; };
+		32B621071AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */; };
+		32B621081AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */; };
+		32B6210A1AE32D85001A6AB5 /* InventoryBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621091AE32D85001A6AB5 /* InventoryBox.png */; };
+		32B6210B1AE32D85001A6AB5 /* InventoryBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621091AE32D85001A6AB5 /* InventoryBox.png */; };
 		342584E31AACDB03004A3CFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342584E21AACDB03004A3CFD /* AppDelegate.swift */; };
 		342584E51AACDB03004A3CFD /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 342584E41AACDB03004A3CFD /* GameScene.sks */; };
 		342584E71AACDB03004A3CFD /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342584E61AACDB03004A3CFD /* GameScene.swift */; };
@@ -166,7 +169,8 @@
 		327A015B1AE3163F005BAF06 /* Nuke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Nuke.png; sourceTree = "<group>"; };
 		327A015E1AE316AA005BAF06 /* Milk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Milk.png; sourceTree = "<group>"; };
 		327A01611AE31714005BAF06 /* Projectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Projectile.png; sourceTree = "<group>"; };
-		32B620FE1AE31B6D001A6AB5 /* InventoryBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InventoryBox.png; sourceTree = "<group>"; };
+		32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InventoryBoxPressed.png; sourceTree = "<group>"; };
+		32B621091AE32D85001A6AB5 /* InventoryBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InventoryBox.png; sourceTree = "<group>"; };
 		342584DD1AACDB02004A3CFD /* Cattac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cattac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		342584E11AACDB02004A3CFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		342584E21AACDB03004A3CFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -295,7 +299,8 @@
 		327A014E1AE30E3D005BAF06 /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				32B620FE1AE31B6D001A6AB5 /* InventoryBox.png */,
+				32B621091AE32D85001A6AB5 /* InventoryBox.png */,
+				32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */,
 				327A01611AE31714005BAF06 /* Projectile.png */,
 				327A015E1AE316AA005BAF06 /* Milk.png */,
 				327A015B1AE3163F005BAF06 /* Nuke.png */,
@@ -756,11 +761,13 @@
 			files = (
 				763E711B1AD1C45000E90EF0 /* Rock.png in Resources */,
 				76FC46E51ABFE6190056B5F5 /* Pusheen.png in Resources */,
+				32B6210A1AE32D85001A6AB5 /* InventoryBox.png in Resources */,
 				342584F11AACDB03004A3CFD /* LaunchScreen.xib in Resources */,
 				76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */,
 				763E71261AD2ED0400E90EF0 /* FartButton.png in Resources */,
 				763E712F1AD2F6AE00E90EF0 /* PuiButtonPressed.png in Resources */,
 				76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */,
+				32B621071AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */,
 				342584EE1AACDB03004A3CFD /* Images.xcassets in Resources */,
 				327A015C1AE3163F005BAF06 /* Nuke.png in Resources */,
 				763E71201AD2E0EB00E90EF0 /* Direction.png in Resources */,
@@ -768,7 +775,6 @@
 				763E71231AD2EAB500E90EF0 /* PuiButton.png in Resources */,
 				763E712B1AD2F55700E90EF0 /* PoopButtonPressed.png in Resources */,
 				763E71311AD2FC6800E90EF0 /* DirectionSelected.png in Resources */,
-				32B620FF1AE31B6D001A6AB5 /* InventoryBox.png in Resources */,
 				327A01621AE31714005BAF06 /* Projectile.png in Resources */,
 				327A015F1AE316AA005BAF06 /* Milk.png in Resources */,
 				763E71191AD1B87C00E90EF0 /* GrassPreview.png in Resources */,
@@ -789,6 +795,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B6210B1AE32D85001A6AB5 /* InventoryBox.png in Resources */,
+				32B621081AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */,
 				327A01601AE316AA005BAF06 /* Milk.png in Resources */,
 				327A015D1AE3163F005BAF06 /* Nuke.png in Resources */,
 				327A01631AE31714005BAF06 /* Projectile.png in Resources */,

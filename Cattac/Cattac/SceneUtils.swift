@@ -99,8 +99,25 @@ class SceneUtils {
                 SKAction.moveByX(0, y: -moveDistance, duration: 0.3)
                 ]),
             SKAction.scaleTo(0, duration: 0.5)
-            ]
+        ]
         return SKAction.group(actionGroup);
+    }
+    
+    /// Generates a SKAction that animates the item use for player on game
+    /// tile
+    ///
+    /// :returns: SKAction holding the sequence
+    func getPlayerItemUsedAnimation() -> SKAction {
+        let actionSequence = [
+            SKAction.scaleTo(1, duration: 0),
+            SKAction.scaleTo(1.5, duration: 0.3),
+            SKAction.waitForDuration(0.3),
+            SKAction.group([
+                SKAction.moveByX(0, y: 200, duration: 0.5),
+                SKAction.fadeOutWithDuration(0.5)
+                ])
+        ]
+        return SKAction.sequence(actionSequence)
     }
 
     /// Calculates the amount of rotation for a given direction.

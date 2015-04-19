@@ -43,7 +43,7 @@ class GameScene: SKScene {
     private var poopButton: SKActionButtonNode!
     
     /// Inventory slot showing player's held item
-    private var inventoryBox: SKSpriteNode!
+    private var inventoryBoxButton: SKActionButtonNode!
     
     /// Preview of the next position of the current player when setting the
     /// next tile to move to.
@@ -201,6 +201,8 @@ extension GameScene: EventListener {
             case .Poop:
                 drawPoop(action as PoopAction)
                 unselectActionButtonsExcept(poopButton)
+            case .Item:
+                unselectActionButtonsExcept(inventoryBoxButton)
             }
         }
     }
@@ -217,9 +219,9 @@ extension GameScene: EventListener {
     
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool) {
         if isCurrentPlayer {
-            let scale = inventoryBox.size.height / item.sprite.size.height
+            let scale = 64 / item.sprite.size.height
             let animAction = SKAction.group([
-                SKAction.moveTo(inventoryBox.position, duration: 0.5),
+                SKAction.moveTo(inventoryBoxButton.position, duration: 0.5),
                 SKAction.scaleTo(scale, duration: 0.5)
                 ])
             item.sprite.runAction(animAction)
@@ -296,10 +298,15 @@ private extension GameScene {
     
     /// Initializes the inventory slot on game scene.
     func initializeInventory() {
-        inventoryBox = SKSpriteNode(imageNamed: "InventoryBox.png")
-        inventoryBox.size = CGSizeMake(64, 64)
-        inventoryBox.position = CGPoint(x: 32, y: -37)
-        entityLayer.addChild(inventoryBox)
+        inventoryBoxButton = SKActionButtonNode(
+            defaultButtonImage: "InventoryBox.png",
+            activeButtonImage: "InventoryBoxPressed.png",
+            buttonAction: { self.gameEngine.triggerItemButtonPressed() },
+            unselectAction: { self.gameEngine.triggerClearAction() })
+        
+        inventoryBoxButton.position = CGPoint(x: 32, y: -37)
+        actionButtons.append(inventoryBoxButton)
+        entityLayer.addChild(inventoryBoxButton)
     }
 
     /// Adds the player nodes to the grid.
@@ -507,6 +514,21 @@ private extension GameScene {
             }
         }
     }
+    
+    /// Animates the fart action of the given player.
+    ///
+    /// :param: player The cat that is performing the action.
+    /// :param: action ItemAction used
+    func animateItemAction(player: Cat, action: ItemAction) {
+        let itemSprite = action.item.sprite
+        let tileNode = gameManager[moveToPositionOf: player]!
+        itemSprite.size = tileNode.sprite.size
+        itemSprite.position = tileNode.sprite.position
+        let action = sceneUtils.getPlayerItemUsedAnimation()
+        itemSprite.runAction(action, completion: {
+            itemSprite.removeFromParent()
+        })
+    }
 
     /// Performs the respective actions for each player.
     func performActions() {
@@ -521,6 +543,8 @@ private extension GameScene {
                     animateFartAction(player)
                 case .Poop:
                     notifyActionCompletionFor(player)
+                case .Item:
+                    animateItemAction(player, action: action as ItemAction)
                 }
             } else {
                 notifyActionCompletionFor(player)

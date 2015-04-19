@@ -9,13 +9,14 @@
 import Foundation
 
 enum ActionType: Int {
-    case Pui = 0, Fart, Poop
+    case Pui = 0, Fart, Poop, Item
     
     private var name: String {
         let names = [
             "pui",
             "fart",
-            "poop"
+            "poop",
+            "item"
         ]
         
         return names[rawValue]
@@ -116,5 +117,21 @@ class PoopAction: Action {
 extension PoopAction: Printable {
     var description: String {
         return "Poop at \(targetNode)"
+    }
+}
+
+class ItemAction: Action {
+    var item: Item
+    
+    init(item: Item, targetNode: TileNode) {
+        self.item = item
+        super.init(actionType: ActionType.Item)
+        self.targetNode = targetNode
+    }
+}
+
+extension ItemAction: Printable {
+    var description: String {
+        return "Used \(item.name) at \(targetNode)"
     }
 }
