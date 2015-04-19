@@ -36,12 +36,11 @@ class LobbyViewController: UIViewController {
     
     func joinLobby() {
         lobbyRef.readOnce("", onComplete: {
-            snapshot in
+            theSnapshot in
             
-            let snapshot = snapshot as FDataSnapshot
+            let snapshot = theSnapshot as FDataSnapshot
             
-            let lastActiveTimeString = snapshot.value
-                .objectForKey("lastActive") as? String
+            let lastActiveTimeString = snapshot.value["lastActive"] as? String
             
             let lastActiveTime = lastActiveTimeString == nil ?
                 nil : DateUtils.dateFormatter.dateFromString(
