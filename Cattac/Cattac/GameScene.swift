@@ -223,15 +223,20 @@ extension GameScene: EventListener {
     /// Adds poop activation animation to pending animations. Pending animations
     /// are animated immediately after moves execution.
     ///
-    /// :param: target The target GridIndex to animate.
-    func addPendingPoopAnimation(target: GridIndex) {
+    /// :param: poop The Poop that is being activated.
+    /// :param: target The target TileNode to animate at.
+    func addPendingPoopAnimation(poop: Poop, target: TileNode) {
         let poopSprite = SKSpriteNode(imageNamed: "Poop.png")
-        poopSprite.position = sceneUtils.pointFor(target)
+        poopSprite.position = sceneUtils.pointFor(target.position)
         poopSprite.size = sceneUtils.tileSize
 
         let action = sceneUtils.getFartAnimation(0)
+        let completion = {
+            self.showDamage(poop.damage, node: target)
+        }
 
-        pendingAnimations += [AnimationEvent(poopSprite, action)]
+        pendingAnimations += [AnimationEvent(poopSprite, action,
+            completion: completion)]
     }
     
     /// Animates the obtaining of an item. If item is obtained by current
@@ -497,10 +502,17 @@ private extension GameScene {
         let startNode = gameManager[moveToPositionOf: player]!
         let path = gameEngine.pathOfPui(startNode, direction: direction)
         var pathSequence: [SKAction] = []
+        var victimPlayer: Cat?
 
         for node in path {
             let action = SKAction.moveTo(node.sprite.position, duration: 0.15)
             pathSequence.append(action)
+        }
+
+        if let node = path.last {
+            if let player = gameEngine.otherPlayerMoveToNodes[node.position] {
+                victimPlayer = player
+            }
         }
 
         let pui = SKSpriteNode(imageNamed: "Pui.png")
@@ -514,6 +526,12 @@ private extension GameScene {
             SKAction.sequence(pathSequence),
             completion: {
                 pui.removeFromParent()
+                if victimPlayer != nil {
+                    victimPlayer!.inflict(player.puiDmg)
+                    self.showDamage(player.puiDmg, node: path.last!)
+                    println("\(player.name) pui on \(victimPlayer!.name) with" +
+                        "\(player.puiDmg) damage.")
+                }
                 self.notifyActionCompletionFor(player)
             }
         )
@@ -530,6 +548,11 @@ private extension GameScene {
         for (i, nodes) in enumerate(path) {
             let timeInterval = Double(i) * delay
             for (j, node) in enumerate(nodes.values) {
+                var victimPlayer: Cat?
+
+                if let player = gameEngine.otherPlayerMoveToNodes[node.position] {
+                    victimPlayer = player
+                }
 
                 let fart = SKSpriteNode(imageNamed: "Fart.png")
                 fart.size = CGSize(width: sceneUtils.tileSize.width / 4,
@@ -542,6 +565,12 @@ private extension GameScene {
 
                 fart.runAction(action, completion: {
                     fart.removeFromParent()
+                    if victimPlayer != nil {
+                        victimPlayer!.inflict(player.fartDmg)
+                        self.showDamage(player.fartDmg, node: node)
+                        println("\(player.name) fart on \(victimPlayer!.name)" +
+                            " with \(player.fartDmg) damage.")
+                    }
                     if i == path.count - 1 && j == nodes.count - 1 {
                         self.notifyActionCompletionFor(player)
                     }
@@ -605,6 +634,9 @@ private extension GameScene {
 
             event.sprite.runAction(event.action, completion: {
                 event.sprite.removeFromParent()
+                if event.completion != nil {
+                    event.completion!()
+                }
             })
         }
         pendingAnimations.removeAll(keepCapacity: false)
@@ -619,6 +651,32 @@ private extension GameScene {
     func notifyActionCompletionFor(player: Cat) {
         gameManager.completeActionOf(player)
         gameEngine.triggerActionAnimationEnded()
+    }
+
+    /// Show the damage dealt on the TileNode of the victim player.
+    ///
+    /// :param: damange The amount of damage dealt
+    /// :param: node The TileNode of the victim player.
+    func showDamage(damage: Int, node: TileNode) {
+        let nodeSprite = node.sprite
+        let damageNode = SKLabelNode(text: "\(-damage)")
+        damageNode.position = node.sprite.position
+        damageNode.alpha = 0
+        damageNode.fontColor = UIColor.redColor()
+        damageNode.fontName = "LuckiestGuy-Regular"
+        damageNode.zPosition = 20
+        entityLayer.addChild(damageNode)
+
+        let fadeIn = SKAction.fadeAlphaTo(1, duration: 0.25)
+        let move = SKAction.moveByX(0, y: node.sprite.size.height, duration: 0.25)
+        let entryGroup = SKAction.group([fadeIn, move])
+        let wait = SKAction.waitForDuration(0.5)
+        let fadeOut = SKAction.fadeAlphaTo(0, duration: 0.25)
+        let sequence = SKAction.sequence([entryGroup, wait, fadeOut])
+
+        damageNode.runAction(sequence, completion: {
+            damageNode.removeFromParent()
+        })
     }
 
     /// Enables all the action buttons.

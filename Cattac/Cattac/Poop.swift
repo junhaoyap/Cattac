@@ -8,6 +8,10 @@ class Poop {
     var pooper: Cat {
         return _pooper
     }
+
+    var damage: Int {
+        return _damage
+    }
     
     init(_ pooper: Cat, _ damage: Int) {
         _pooper = pooper
