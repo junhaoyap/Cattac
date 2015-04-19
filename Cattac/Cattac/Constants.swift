@@ -132,6 +132,11 @@ struct Constants {
         static let keyTargetCol = "targetNodeCol"
     }
     
+    struct AutoAccount {
+        static let username = "b@b.com"
+        static let password = "bbb"
+    }
+    
     struct Segues {
         static let loginToMenuSegueIdentifier = "loginSegue"
     }

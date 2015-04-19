@@ -45,7 +45,8 @@ class LoginViewController: UIViewController {
     }
     
     func autoLogin() {
-        gameConnectionManager.authUser("b@b.com", password: "bbb",
+        gameConnectionManager.authUser(Constants.AutoAccount.username,
+            password: Constants.AutoAccount.password,
             onComplete: {
                 error, authData in
                 if error != nil {
