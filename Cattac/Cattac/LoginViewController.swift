@@ -76,7 +76,7 @@ class LoginViewController: UIViewController {
                                     // do nothing, so many errors just make
                                     // the user click the login button again
                                 } else {
-                                    self.setInitialMeows()
+                                    self.gameConnectionManager.setInitialMeows()
                                     
                                     self.presentMenuView()
                             }
@@ -113,20 +113,6 @@ class LoginViewController: UIViewController {
                     println("Successfully created user account: \(uid)")
                 }
         })
-    }
-    
-    func setInitialMeows() {
-        let uid = self.gameConnectionManager.getAuthId()
-        
-        let meowsManager = self.gameConnectionManager.append(
-            Constants.Firebase.nodeMeows + "/" + uid
-        )
-        
-        let defaultUserMeow = [
-            Constants.Firebase.keyMeows : Constants.defaultNumberOfMeows
-        ]
-        
-        meowsManager.overwrite("", data: defaultUserMeow)
     }
     
     func presentMenuView() {

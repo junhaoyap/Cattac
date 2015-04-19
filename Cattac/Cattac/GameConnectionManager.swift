@@ -11,11 +11,11 @@ class GameConnectionManager {
         connectionManager = ConnectionManager(firebase: urlProvided)
     }
     
-    func readOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+    func readOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
         connectionManager.readOnce(childUrl, onComplete: {
             snapshot in
             
-            onComplete(snapshot)
+            onComplete(snapshot as FDataSnapshot)
         })
     }
     
@@ -87,6 +87,20 @@ class GameConnectionManager {
     
     func removeAllObconnectionManagers() {
         connectionManager.removeAllObservers()
+    }
+    
+    func setInitialMeows() {
+        let uid = connectionManager.getAuthId()
+        
+        let meowsManager = connectionManager.append(
+            Constants.Firebase.nodeMeows + "/" + uid
+        )
+        
+        let defaultUserMeow = [
+            Constants.Firebase.keyMeows : Constants.defaultNumberOfMeows
+        ]
+        
+        meowsManager.overwrite("", data: defaultUserMeow)
     }
     
     // TODO: Abstract specific connectivity commands within Cattac

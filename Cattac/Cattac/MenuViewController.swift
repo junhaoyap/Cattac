@@ -6,27 +6,12 @@ import UIKit
 
 class MenuViewController: UIViewController {
     
-    let connectionManager = ConnectionManager(firebase: Constants.Firebase.baseUrl)
+    let gameConnectionManager = GameConnectionManager(urlProvided: Constants.Firebase.baseUrl)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        connectionManager.readOnce("usersMeow/" + connectionManager.getAuthId(), onComplete: {
-//            snapshot in
-//            
-//            let myNumberOfMeows: AnyObject! = snapshot.value["numberOfMeows"]
-//            
-//            if myNumberOfMeows == nil {
-////                let meowsRef = self.ref.childByAppendingPath("usersMeow").childByAppendingPath(self.ref.authData.uid)
-////                
-////                var defaultUserMeow = ["numberOfMeows" : Constants.defaultNumberOfMeows]
-////                
-////                meowsRef.setValue(defaultUserMeow)
-//            } else {
-////                println("I has meows:")
-////                println(myNumberOfMeows)
-//            }
-//        })
+        getMeowsAndDisplay()
     }
     
     override func didReceiveMemoryWarning() {
@@ -35,5 +20,25 @@ class MenuViewController: UIViewController {
     
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    func getMeowsAndDisplay() {
+        let uid = self.gameConnectionManager.getAuthId()
+        
+        gameConnectionManager.readOnce(Constants.Firebase.nodeMeows + "/" + uid,
+            onComplete: {
+                snapshot in
+                
+                let myNumberOfMeows = snapshot.value["numberOfMeows"]
+
+                if myNumberOfMeows == nil {
+                    self.gameConnectionManager.setInitialMeows()
+                } else {
+                    // TODO: Display it somewhere rather than just
+                    // printing it
+                    println("I has meows:")
+                    println(myNumberOfMeows)
+                }
+        })
     }
 }
