@@ -29,7 +29,8 @@ class MenuViewController: UIViewController {
             onComplete: {
                 snapshot in
                 
-                let myNumberOfMeows = snapshot.value["numberOfMeows"]
+                let myNumberOfMeows = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMeows) as? String
 
                 if myNumberOfMeows == nil {
                     self.gameConnectionManager.setInitialMeows()
