@@ -7,14 +7,22 @@ import SpriteKit
 
 extension SKNode {
     class func unarchiveFromFile(file : NSString) -> SKNode? {
-        if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
-            var sceneData = NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe, error: nil)!
-            var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
-            
-            archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
-            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as GameScene
-            archiver.finishDecoding()
-            return scene
+        if let path = NSBundle.mainBundle().pathForResource(
+            file, ofType: "sks") {
+                var sceneData = NSData(contentsOfFile: path,
+                    options: .DataReadingMappedIfSafe, error: nil)!
+                
+                var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
+                
+                archiver.setClass(self.classForKeyedUnarchiver(),
+                    forClassName: "SKScene")
+                
+                let scene = archiver.decodeObjectForKey(
+                    NSKeyedArchiveRootObjectKey) as GameScene
+                
+                archiver.finishDecoding()
+                
+                return scene
         } else {
             return nil
         }
@@ -31,6 +39,7 @@ class GameViewController: UIViewController {
     let levelGenerator = LevelGenerator.sharedInstance
     var multiplayer: Bool = false
     private var isPlayerTurn: Bool = true
+    var timer: NSTimer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +49,8 @@ class GameViewController: UIViewController {
         skView.showsFPS = true
         skView.showsNodeCount = true
         
-        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        /// Sprite Kit applies additional optimizations to 
+        /// improve rendering performance
         skView.ignoresSiblingOrder = true
         
         scene = GameScene(size: skView.bounds.size, level: level,
@@ -50,7 +60,7 @@ class GameViewController: UIViewController {
         scene.scaleMode = .AspectFill
         
         /* Start timer */
-        NSTimer.scheduledTimerWithTimeInterval(
+        timer = NSTimer.scheduledTimerWithTimeInterval(
             1,
             target: self,
             selector: Selector("updateTime"),
@@ -63,9 +73,20 @@ class GameViewController: UIViewController {
         skView.presentScene(scene)
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.scene?.removeAllChildren()
+        self.scene?.removeFromParent()
+        (self.view as SKView).presentScene(nil)
+        scene.gameEngine.releaseAllListeners()
+        self.scene = nil
+        self.view.removeFromSuperview()
+        self.timer.invalidate()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -73,15 +94,6 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func backButtonPressed(sender: AnyObject) {
-        let skView = self.view as SKView
-        if let scene = skView.scene {
-            (skView.scene as GameScene).gameEngine.end()
-            skView.presentScene(nil)
-        }
-        
-        // Release all game engine's listeners first
-        scene.gameEngine.releaseAllListeners()
-        
         // TODO: confirm whether to exit game
         self.dismissViewControllerAnimated(true, completion: nil)
     }

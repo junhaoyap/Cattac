@@ -7,9 +7,9 @@ protocol Server {
     
     func readOnce(childUrl: String, onComplete: (AnyObject) -> ())
     
-    func overwrite(childUrl: String, data: [String: String])
+    func overwrite(childUrl: String, data: [String: AnyObject])
     
-    func update(childUrl: String, data: [String: String])
+    func update(childUrl: String, data: [String: AnyObject])
     
     func watchUpdateOnce(childUrl: String, onComplete: (AnyObject) -> ())
     

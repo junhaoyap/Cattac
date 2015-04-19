@@ -29,7 +29,7 @@ class FirebaseServer: Server {
         })
     }
     
-    func overwrite(childUrl: String, data: [String: String]) {
+    func overwrite(childUrl: String, data: [String: AnyObject]) {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var overwriteRef = ref!
@@ -41,7 +41,7 @@ class FirebaseServer: Server {
         overwriteRef.setValue(data)
     }
     
-    func update(childUrl: String, data: [String: String]) {
+    func update(childUrl: String, data: [String: AnyObject]) {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var updateRef = ref!

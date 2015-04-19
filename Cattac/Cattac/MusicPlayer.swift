@@ -9,7 +9,7 @@ import AVFoundation
 private let _musicPlayer: MusicPlayer = MusicPlayer()
 
 class MusicPlayer {
-    var nyanBackgroundMusicPlayer: AVAudioPlayer!
+    private var nyanBackgroundMusicPlayer: AVAudioPlayer!
     
     class var sharedInstance: MusicPlayer {
         return _musicPlayer

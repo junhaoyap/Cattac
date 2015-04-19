@@ -6,7 +6,10 @@ import UIKit
 
 class GameDifficultyViewController: UIViewController {
     
-    let ref = Firebase(url: Constants.Firebase.baseUrl)
+    let gameConnectionManager = GameConnectionManager(urlProvided:
+        Constants.Firebase.baseUrl
+    )
+    
     let levelGenerator = LevelGenerator.sharedInstance
     
     override func viewDidLoad() {
@@ -20,12 +23,20 @@ class GameDifficultyViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "bypassSegue" {
-            if let destinationVC = segue.destinationViewController as? GameViewController{
-                let level = levelGenerator.generateBasic()
-                destinationVC.level = level
+    
+    override func prepareForSegue(segue: UIStoryboardSegue,
+        sender: AnyObject?) {
+            if segue.identifier == "bypassSegue" {
+                if let destinationVC = segue.destinationViewController
+                    as? GameViewController {
+                        
+                    let level = levelGenerator.generateBasic()
+                    destinationVC.level = level
+                }
             }
-        }
+    }
+    
+    @IBAction func unwind(segue:UIStoryboardSegue) {
+        
     }
 }

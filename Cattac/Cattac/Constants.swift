@@ -50,7 +50,7 @@ struct Constants {
     }
     
     // default number of meows, standalone for now
-    static let defaultNumberOfMeows: Int = 100
+    static let defaultNumberOfMeows = "100"
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2
@@ -113,6 +113,9 @@ struct Constants {
     
     struct Firebase {
         static let baseUrl = "https://torrid-inferno-1934.firebaseio.com/"
+        
+        static let nodeMeows = "usersMeow"
+        
         static let nodeGames = "games"
         static let nodeUsers = "users"
         
@@ -121,6 +124,8 @@ struct Constants {
         static let nodeLobby = "lobby"
         static let nodePlayers = "players"
         static let nodePlayerMovements = "movements"
+        
+        static let keyMeows = "numberOfMeows"
         
         static let keyAttkDir = "attackDir"
         static let keyAttkDmg = "attackDmg"
@@ -132,5 +137,14 @@ struct Constants {
         static let keyMoveToCol = "toCol"
         static let keyTargetRow = "targetNodeRow"
         static let keyTargetCol = "targetNodeCol"
+    }
+    
+    struct AutoAccount {
+        static let username = "b@b.com"
+        static let password = "bbb"
+    }
+    
+    struct Segues {
+        static let loginToMenuSegueIdentifier = "loginSegue"
     }
 }

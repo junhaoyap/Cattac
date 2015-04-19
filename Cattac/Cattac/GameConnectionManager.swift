@@ -11,5 +11,98 @@ class GameConnectionManager {
         connectionManager = ConnectionManager(firebase: urlProvided)
     }
     
-    // TODO: Start adding abstracted connectivity commands within Cattac
+    func readOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
+        connectionManager.readOnce(childUrl, onComplete: {
+            snapshot in
+            
+            onComplete(snapshot as FDataSnapshot)
+        })
+    }
+    
+    func overwrite(childUrl: String, data: [String: AnyObject]) {
+        connectionManager.overwrite(childUrl, data: data)
+    }
+    
+    func update(childUrl: String, data: [String: AnyObject]) {
+        connectionManager.update(childUrl, data: data)
+    }
+    
+    func watchUpdateOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+        connectionManager.watchUpdateOnce(childUrl, onComplete: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+    }
+    
+    func watchUpdate(childUrl: String, onComplete: (AnyObject) -> ()) {
+        connectionManager.watchUpdate(childUrl, onComplete: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+    }
+    
+    func watchNewOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+        connectionManager.watchNewOnce(childUrl, onComplete: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+    }
+    
+    func watchNew(childUrl: String, onComplete: (AnyObject) -> ()) {
+        connectionManager.watchNew(childUrl, onComplete: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+    }
+    
+    func createUser(email: String, password: String,
+        onComplete: (NSError!, [NSObject: AnyObject]!) -> ()) {
+            connectionManager.createUser(email, password: password, onComplete: {
+                error, result in
+                
+                onComplete(error, result)
+            })
+    }
+    
+    func authUser(email: String, password: String,
+        onComplete: (NSError!, AnyObject) -> ()) {
+            connectionManager.authUser(email, password: password, onComplete: {
+                error, authdata in
+                
+                onComplete(error, authdata)
+            })
+    }
+    
+    func getAuthId() -> String {
+        return connectionManager.getAuthId()
+    }
+    
+    func append(childUrl: String) -> ConnectionManager {
+        return connectionManager.append(childUrl)
+    }
+    
+    func removeAllObconnectionManagers() {
+        connectionManager.removeAllObservers()
+    }
+    
+    func setInitialMeows() {
+        let uid = connectionManager.getAuthId()
+        
+        let meowsManager = connectionManager.append(
+            Constants.Firebase.nodeMeows + "/" + uid
+        )
+        
+        let defaultUserMeow = [
+            Constants.Firebase.keyMeows : Constants.defaultNumberOfMeows
+        ]
+        
+        meowsManager.overwrite("", data: defaultUserMeow)
+    }
+    
+    // TODO: Abstract specific connectivity commands within Cattac
+    // on top of the more generic ones above
 }
