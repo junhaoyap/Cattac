@@ -31,11 +31,11 @@ class ConnectionManager {
         })
     }
     
-    func overwrite(childUrl: String, data: [String: String]) {
+    func overwrite(childUrl: String, data: [String: AnyObject]) {
         server.overwrite(childUrl, data: data)
     }
     
-    func update(childUrl: String, data: [String: String]) {
+    func update(childUrl: String, data: [String: AnyObject]) {
         server.update(childUrl, data: data)
     }
     

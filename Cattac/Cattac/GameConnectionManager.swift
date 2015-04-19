@@ -19,11 +19,11 @@ class GameConnectionManager {
         })
     }
     
-    func overwrite(childUrl: String, data: [String: String]) {
+    func overwrite(childUrl: String, data: [String: AnyObject]) {
         connectionManager.overwrite(childUrl, data: data)
     }
     
-    func update(childUrl: String, data: [String: String]) {
+    func update(childUrl: String, data: [String: AnyObject]) {
         connectionManager.update(childUrl, data: data)
     }
     
