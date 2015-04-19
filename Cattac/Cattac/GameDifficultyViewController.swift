@@ -6,7 +6,10 @@ import UIKit
 
 class GameDifficultyViewController: UIViewController {
     
-    let ref = Firebase(url: Constants.Firebase.baseUrl)
+    let gameConnectionManager = GameConnectionManager(urlProvided:
+        Constants.Firebase.baseUrl
+    )
+    
     let levelGenerator = LevelGenerator.sharedInstance
     
     override func viewDidLoad() {
