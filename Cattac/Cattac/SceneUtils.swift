@@ -136,6 +136,16 @@ class SceneUtils {
         return SKAction.sequence(actionSequence)
     }
     
+    /// Generates a orange crosshair used for showing targeted player.
+    ///
+    /// :returns: The SKSpriteNode
+    func getCrosshairNode() -> SKSpriteNode {
+        let node = SKSpriteNode(imageNamed: "Crosshairs.png")
+        node.size = CGSize(width: tileSize.width * 1.5,
+            height: tileSize.height * 1.5)
+        return node
+    }
+    
     /// Generates a orange arrow sprite used for attracting user attention.
     ///
     /// :param: pointAt Point to which the arrow will point at.

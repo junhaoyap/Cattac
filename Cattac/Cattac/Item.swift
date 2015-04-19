@@ -29,6 +29,10 @@ class Item: TileEntity {
         return false
     }
     
+    func shouldTargetAll() -> Bool {
+        return false
+    }
+    
     func effect(cat: Cat) {
         assertionFailure("Item.effect() not implemented!")
     }
@@ -75,10 +79,14 @@ class NukeItem: Item {
     }
     
     override func canTargetSelf() -> Bool {
-        return false
+        return true
     }
     
     override func canTargetOthers() -> Bool {
+        return true
+    }
+    
+    override func shouldTargetAll() -> Bool {
         return true
     }
 }

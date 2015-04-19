@@ -55,8 +55,8 @@ class GameScene: SKScene {
     /// Pending animation events to be executed post movement
     private var pendingAnimations: [AnimationEvent] = []
     
-    /// Container for arrows displayed on game layer
-    private var playerTargetArrows: [String:SKSpriteNode] = [:]
+    /// Container for previews displayed on game layer for targeting
+    private var targetPreviewNodes: [SKSpriteNode] = []
     
     /// Targeting preview during item action
     private var crosshairNode: SKSpriteNode!
@@ -385,9 +385,7 @@ private extension GameScene {
         entityLayer.addChild(poopPreviewNode)
         
         /// Initializes the preview node for the crosshair.
-        crosshairNode = SKSpriteNode(imageNamed: "Crosshairs.png")
-        crosshairNode.size = CGSize(width: sceneUtils.tileSize.width * 1.5,
-            height: sceneUtils.tileSize.height * 1.5)
+        crosshairNode = sceneUtils.getCrosshairNode()
         crosshairNode.hidden = true
         entityLayer.addChild(crosshairNode)
     }
@@ -586,22 +584,39 @@ private extension GameScene {
     func animateItemAction(player: Cat, action: ItemAction) {
         let itemSprite = action.item.sprite
         let tileNode = gameManager[moveToPositionOf: player]!
+        let targetPlayer = action.targetPlayer
         itemSprite.size = tileNode.sprite.size
         itemSprite.position = tileNode.sprite.position
+        var completion: (() -> Void)?
         
         var animAction: SKAction!
         
-        if gameManager.samePlayer(player, action.targetPlayer) {
+        if gameManager.samePlayer(player, targetPlayer) {
             animAction = sceneUtils.getPassiveItemUsedAnimation()
+            if let item = action.item as? NukeItem {
+                completion = {
+                    for player in self.gameManager.players.values {
+                        self.showDamage(Constants.itemEffect.nukeDmg,
+                            node: self.gameManager[moveToPositionOf: player]!)
+                    }
+                }
+            }
         } else {
             let dest = action.targetNode!.sprite.position
             let v = SceneUtils.vector(tileNode.sprite.position, dest)
             animAction = sceneUtils.getAggressiveItemUsedAnimation(v)
+            if let item = action.item as? ProjectileItem {
+                completion = {
+                    self.showDamage(Constants.itemEffect.projectileDmg,
+                        node: self.gameManager[moveToPositionOf: targetPlayer]!)
+                }
+            }
         }
         
         itemSprite.runAction(animAction, completion: {
             self.notifyActionCompletionFor(player)
             itemSprite.removeFromParent()
+            completion?()
         })
     }
 
@@ -718,21 +733,32 @@ private extension GameScene {
     
     /// Hides arrows indicating targetable players for item action.
     func highlightTargetPlayers() {
+        let currentPlayer = gameEngine.currentPlayer
+        let item = gameManager[itemOf: currentPlayer]!
         for player in gameManager.players.values {
-            if gameManager.samePlayer(player, gameEngine.currentPlayer) {
+            if gameManager.samePlayer(player, currentPlayer) {
                 continue
             }
+            
             let playerSprite = player.getSprite() as SKTouchSpriteNode
-            playerSprite.setTouchObserver({
-                self.gameEngine.triggerTargetPlayerChanged(player)
-                self.crosshairNode.position = playerSprite.position
-                self.crosshairNode.hidden = false
-            })
-            playerSprite.userInteractionEnabled = true
             let position = playerSprite.position
             let arrowSprite = sceneUtils.getPlayerTargetableArrow(position)
             entityLayer.addChild(arrowSprite)
-            playerTargetArrows[player.name] = arrowSprite
+            targetPreviewNodes += [arrowSprite]
+            
+            if item.shouldTargetAll() {
+                let crosshairSprite = sceneUtils.getCrosshairNode()
+                crosshairSprite.position = playerSprite.position
+                entityLayer.addChild(crosshairSprite)
+                targetPreviewNodes += [crosshairSprite]
+            } else {
+                playerSprite.setTouchObserver({
+                    self.gameEngine.triggerTargetPlayerChanged(player)
+                    self.crosshairNode.position = playerSprite.position
+                    self.crosshairNode.hidden = false
+                })
+                playerSprite.userInteractionEnabled = true
+            }
         }
     }
     
@@ -747,9 +773,11 @@ private extension GameScene {
                 playerSprite.setTouchObserver(nil)
                 playerSprite.userInteractionEnabled = false
             }
-            playerTargetArrows[player.name]?.removeFromParent()
         }
-        playerTargetArrows.removeAll(keepCapacity: false)
+        for node in targetPreviewNodes {
+            node.removeFromParent()
+        }
+        targetPreviewNodes.removeAll(keepCapacity: false)
         crosshairNode.hidden = true
     }
 
