@@ -34,6 +34,9 @@ struct Constants {
         static let valueTypeHard = "hard"
         
         static let keyEntities = "entities"
+        static let keyEntityType = "entityType"
+        static let valueDoodadType = "doodad"
+        static let valueItemType = "item"
         static let keyGridRow = "row"
         static let keyGridCol = "col"
         static let keyEntityName = "name"

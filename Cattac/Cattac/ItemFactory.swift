@@ -22,6 +22,23 @@ class ItemFactory {
         return _itemFactorySharedInstance
     }
     
+    func typeForName(name: String) -> ItemType? {
+        switch name {
+        case Constants.itemName.milk:
+            return .Milk
+        case Constants.itemName.nuke:
+            return .Nuke
+        case Constants.itemName.projectile:
+            return .Projectile
+        default:
+            return nil
+        }
+    }
+    
+    func createItem(name: String) -> Item? {
+        return createItem(typeForName(name)!)
+    }
+    
     func createItem(type: ItemType) -> Item? {
         switch type {
         case .Milk:
