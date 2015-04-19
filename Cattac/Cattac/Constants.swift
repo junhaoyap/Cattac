@@ -63,7 +63,10 @@ struct Constants {
         
         static let maxWormhole = 1
     }
-
+    
+    // for randomising which player get which cat, copy the array before playing with it, only for
+    // initial reference
+    static let catArray = [catName.nalaCat, catName.nyanCat, catName.grumpyCat, catName.pusheenCat]
     
     struct catAttributes {
         // always hp, defence, puiDmg then fartDmg
