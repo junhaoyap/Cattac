@@ -4,15 +4,13 @@
 
 import SpriteKit
 
-enum ItemType {
-    case Milk, Rock, Nuke
-}
-
 class Item: TileEntity {
     var name: String!
+    var sprite: SKSpriteNode
     
-    init(itemName: String) {
-        name = itemName
+    private init(itemName: String, _ sprite: SKSpriteNode) {
+        self.name = itemName
+        self.sprite = sprite
     }
     
     func isVisible() -> Bool {
@@ -20,7 +18,19 @@ class Item: TileEntity {
     }
     
     func getSprite() -> SKNode {
-        return SKLabelNode(text: "?")
+        return sprite
+    }
+    
+    func canTargetSelf() -> Bool {
+        return true
+    }
+    
+    func canTargetOthers() -> Bool {
+        return false
+    }
+    
+    func shouldTargetAll() -> Bool {
+        return false
     }
     
     func effect(cat: Cat) {
@@ -29,31 +39,54 @@ class Item: TileEntity {
 }
 
 class MilkItem: Item {
+    init() {
+        super.init(itemName: Constants.itemName.milk,
+            SKSpriteNode(imageNamed: "Milk.png"))
+    }
+    
     override func effect(cat: Cat) {
         cat.heal(Constants.itemEffect.milkHpIncreaseEffect)
     }
-    
-    override func getSprite() -> SKNode {
-        return SKLabelNode(text: "H")
-    }
 }
 
-class RockItem: Item {
-    override func effect(cat: Cat) {
-        cat.inflict(Constants.itemEffect.rockDmg)
+class ProjectileItem: Item {
+    init() {
+        super.init(itemName: Constants.itemName.projectile,
+            SKSpriteNode(imageNamed: "Projectile.png"))
     }
     
-    override func getSprite() -> SKNode {
-        return SKLabelNode(text: "R")
+    override func effect(cat: Cat) {
+        cat.inflict(Constants.itemEffect.projectileDmg)
+    }
+    
+    override func canTargetSelf() -> Bool {
+        return false
+    }
+    
+    override func canTargetOthers() -> Bool {
+        return true
     }
 }
 
 class NukeItem: Item {
+    init() {
+        super.init(itemName: Constants.itemName.nuke,
+            SKSpriteNode(imageNamed: "Nuke.png"))
+    }
+    
     override func effect(cat: Cat) {
         cat.inflict(Constants.itemEffect.nukeDmg)
     }
     
-    override func getSprite() -> SKNode {
-        return SKLabelNode(text: "N")
+    override func canTargetSelf() -> Bool {
+        return true
+    }
+    
+    override func canTargetOthers() -> Bool {
+        return true
+    }
+    
+    override func shouldTargetAll() -> Bool {
+        return true
     }
 }

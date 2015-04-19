@@ -15,6 +15,7 @@ struct Constants {
         static let hardColumns: Int = 8
         static let defaultDoodads: Int = 8
         static let defaultWalls: Int = 10
+        static let defaultItems: Int = 2
         
         static let invalidDoodadWallLocation: [GridIndex] = [
             GridIndex(0, 0),
@@ -33,6 +34,9 @@ struct Constants {
         static let valueTypeHard = "hard"
         
         static let keyEntities = "entities"
+        static let keyEntityType = "entityType"
+        static let valueDoodadType = "doodad"
+        static let valueItemType = "item"
         static let keyGridRow = "row"
         static let keyGridCol = "col"
         static let keyEntityName = "name"
@@ -98,13 +102,13 @@ struct Constants {
     struct itemName {
         static let milk = "milk"
         static let nuke = "nuke"
-        static let rock = "rock"
+        static let projectile = "projectile"
     }
     
     struct itemEffect {
         static let milkHpIncreaseEffect = 150
         static let nukeDmg = 100
-        static let rockDmg = 150
+        static let projectileDmg = 150
     }
     
     struct Firebase {

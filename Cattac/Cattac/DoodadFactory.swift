@@ -22,8 +22,6 @@ class DoodadFactory {
     }
     
     func createDoodad(doodadType: DoodadType) -> Doodad? {
-        var doodadToReturn: Doodad?
-        
         switch doodadType {
         case .WatchTower:
             return WatchTowerDoodad()
