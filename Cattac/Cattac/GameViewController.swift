@@ -40,7 +40,8 @@ class GameViewController: UIViewController {
         skView.showsFPS = true
         skView.showsNodeCount = true
         
-        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        /// Sprite Kit applies additional optimizations to 
+        /// improve rendering performance
         skView.ignoresSiblingOrder = true
         
         scene = GameScene(size: skView.bounds.size, level: level,
@@ -65,7 +66,6 @@ class GameViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
     override func prefersStatusBarHidden() -> Bool {

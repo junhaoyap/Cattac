@@ -23,12 +23,16 @@ class GameDifficultyViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "bypassSegue" {
-            if let destinationVC = segue.destinationViewController as? GameViewController{
-                let level = levelGenerator.generateBasic()
-                destinationVC.level = level
+    
+    override func prepareForSegue(segue: UIStoryboardSegue,
+        sender: AnyObject?) {
+            if segue.identifier == "bypassSegue" {
+                if let destinationVC = segue.destinationViewController
+                    as? GameViewController {
+                        
+                    let level = levelGenerator.generateBasic()
+                    destinationVC.level = level
+                }
             }
-        }
     }
 }
