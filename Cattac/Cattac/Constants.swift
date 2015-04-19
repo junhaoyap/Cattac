@@ -46,7 +46,7 @@ struct Constants {
     }
     
     // default number of meows, standalone for now
-    static let defaultNumberOfMeows: Int = 100
+    static let defaultNumberOfMeows = "100"
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2
@@ -63,10 +63,7 @@ struct Constants {
         
         static let maxWormhole = 1
     }
-    
-    // for randomising which player get which cat, copy the array before playing with it, only for
-    // initial reference
-    static let catArray = [catName.nalaCat, catName.nyanCat, catName.grumpyCat, catName.pusheenCat]
+
     
     struct catAttributes {
         // always hp, defence, puiDmg then fartDmg
@@ -109,6 +106,9 @@ struct Constants {
     
     struct Firebase {
         static let baseUrl = "https://torrid-inferno-1934.firebaseio.com/"
+        
+        static let nodeMeows = "usersMeow"
+        
         static let nodeGames = "games"
         static let nodeUsers = "users"
         
@@ -117,6 +117,8 @@ struct Constants {
         static let nodeLobby = "lobby"
         static let nodePlayers = "players"
         static let nodePlayerMovements = "movements"
+        
+        static let keyMeows = "numberOfMeows"
         
         static let keyAttkDir = "attackDir"
         static let keyAttkDmg = "attackDmg"
@@ -128,5 +130,9 @@ struct Constants {
         static let keyMoveToCol = "toCol"
         static let keyTargetRow = "targetNodeRow"
         static let keyTargetCol = "targetNodeCol"
+    }
+    
+    struct Segues {
+        static let loginToMenuSegueIdentifier = "loginSegue"
     }
 }
