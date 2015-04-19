@@ -72,11 +72,7 @@ class LobbyViewController: UIViewController {
                 
                 self.playerNumber = numberOfPlayers
                 
-                let playerRef = self.lobbyRef.append(
-                    Constants.Firebase.nodePlayers
-                    )
-                
-                playerRef.overwrite("", data: [
+                self.lobbyRef.update(Constants.Firebase.nodePlayers, data: [
                     "\(numberOfPlayers - 1)": self.uid
                     ]
                 )
