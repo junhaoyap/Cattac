@@ -55,8 +55,11 @@ class GameScene: SKScene {
     /// Pending animation events to be executed post movement
     private var pendingAnimations: [AnimationEvent] = []
     
+    /// Container for arrows displayed on game layer
     private var playerTargetArrows: [String:SKSpriteNode] = [:]
-    private var playerTarget: SKSpriteNode!
+    
+    /// Targeting preview during item action
+    private var crosshairNode: SKSpriteNode!
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -363,11 +366,11 @@ private extension GameScene {
         poopPreviewNode.hidden = true
         entityLayer.addChild(poopPreviewNode)
         
-        playerTarget = SKSpriteNode(imageNamed: "Crosshairs.png")
-        playerTarget.size = CGSize(width: sceneUtils.tileSize.width * 1.5,
+        crosshairNode = SKSpriteNode(imageNamed: "Crosshairs.png")
+        crosshairNode.size = CGSize(width: sceneUtils.tileSize.width * 1.5,
             height: sceneUtils.tileSize.height * 1.5)
-        playerTarget.hidden = true
-        entityLayer.addChild(playerTarget)
+        crosshairNode.hidden = true
+        entityLayer.addChild(crosshairNode)
     }
 
     /// Adds the tiles to the grid based on the given level.
@@ -608,6 +611,9 @@ private extension GameScene {
         for button in actionButtons {
             button.isEnabled = true
         }
+        if gameManager[itemOf: gameEngine.currentPlayer] == nil {
+            inventoryBoxButton.isEnabled = false
+        }
     }
 
     /// Disables all the action buttons.
@@ -645,8 +651,8 @@ private extension GameScene {
             let playerSprite = player.getSprite() as SKTouchSpriteNode
             playerSprite.setTouchObserver({
                 self.gameEngine.triggerTargetPlayerChanged(player)
-                self.playerTarget.position = playerSprite.position
-                self.playerTarget.hidden = false
+                self.crosshairNode.position = playerSprite.position
+                self.crosshairNode.hidden = false
             })
             playerSprite.userInteractionEnabled = true
             let arrowSprite = sceneUtils.getPlayerTargetableArrow(playerSprite.position)
@@ -668,7 +674,7 @@ private extension GameScene {
             playerTargetArrows[player.name]?.removeFromParent()
         }
         playerTargetArrows.removeAll(keepCapacity: false)
-        playerTarget.hidden = true
+        crosshairNode.hidden = true
     }
 
     /// Draws the preview poop on tile pooper is on.
