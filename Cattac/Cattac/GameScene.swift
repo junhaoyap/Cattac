@@ -201,14 +201,18 @@ extension GameScene: EventListener {
         }
     }
 
-    func addPendingPoopAnimation(target: GridIndex) {
+    func addPendingPoopAnimation(poop: Poop, target: TileNode) {
         let poopSprite = SKSpriteNode(imageNamed: "Poop.png")
-        poopSprite.position = sceneUtils.pointFor(target)
+        poopSprite.position = sceneUtils.pointFor(target.position)
         poopSprite.size = sceneUtils.tileSize
 
         let action = sceneUtils.getFartAnimation(0)
+        let completion = {
+            self.showDamage(poop.damage, node: target)
+        }
 
-        pendingAnimations += [AnimationEvent(poopSprite, action)]
+        pendingAnimations += [AnimationEvent(poopSprite, action,
+            completion: completion)]
     }
 }
 
@@ -530,6 +534,9 @@ private extension GameScene {
 
             event.sprite.runAction(event.action, completion: {
                 event.sprite.removeFromParent()
+                if event.completion != nil {
+                    event.completion!()
+                }
             })
         }
         pendingAnimations.removeAll(keepCapacity: false)

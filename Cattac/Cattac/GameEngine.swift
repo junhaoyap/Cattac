@@ -6,7 +6,7 @@ protocol GameStateListener {
 
 protocol EventListener {
     func onActionUpdate(action: Action?)
-    func addPendingPoopAnimation(target: GridIndex)
+    func addPendingPoopAnimation(poop: Poop, target: TileNode)
 }
 
 /// Game engine that does all the logic computation for the game.
@@ -258,7 +258,8 @@ class GameEngine {
                 poop.effect(player)
                 playerMoveToNode.poop = nil
                 
-                eventListener?.addPendingPoopAnimation(playerMoveToNode.position)
+                eventListener?.addPendingPoopAnimation(poop,
+                    target: playerMoveToNode)
             }
             
             gameManager[movementPathOf: player] = path
