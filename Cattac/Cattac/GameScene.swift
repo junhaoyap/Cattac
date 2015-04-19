@@ -195,14 +195,20 @@ extension GameScene: EventListener {
             case .Pui:
                 hidePoop()
                 unselectActionButtonsExcept(puiButton)
+                unhighlightTargetPlayers()
             case .Fart:
                 hidePoop()
                 unselectActionButtonsExcept(fartButton)
+                unhighlightTargetPlayers()
             case .Poop:
                 drawPoop(action as PoopAction)
                 unselectActionButtonsExcept(poopButton)
+                unhighlightTargetPlayers()
             case .Item:
                 unselectActionButtonsExcept(inventoryBoxButton)
+                if (action as ItemAction).item.canTargetOthers() {
+                    highlightTargetPlayers()
+                }
             }
         }
     }
@@ -524,8 +530,17 @@ private extension GameScene {
         let tileNode = gameManager[moveToPositionOf: player]!
         itemSprite.size = tileNode.sprite.size
         itemSprite.position = tileNode.sprite.position
-        let action = sceneUtils.getPlayerItemUsedAnimation()
-        itemSprite.runAction(action, completion: {
+        
+        var animAction: SKAction!
+        
+        if gameManager.samePlayer(player, action.targetPlayer) {
+            animAction = sceneUtils.getPassiveItemUsedAnimation()
+        } else {
+            let destSprite = action.targetNode!.sprite
+            animAction = sceneUtils.getAggressiveItemUsedAnimation(destSprite)
+        }
+        
+        itemSprite.runAction(animAction, completion: {
             itemSprite.removeFromParent()
         })
     }
@@ -605,6 +620,33 @@ private extension GameScene {
         for button in actionButtons {
             if button != actionButton {
                 button.unselect()
+            }
+        }
+    }
+    
+    func highlightTargetPlayers() {
+        for player in gameManager.players.values {
+            if gameManager.samePlayer(player, gameEngine.currentPlayer) {
+                continue
+            }
+            let playerSprite = player.getSprite() as SKTouchSpriteNode
+            playerSprite.setTouchObserver({
+                self.gameEngine.triggerTargetPlayerChanged(player)
+                println("Touched \(player.name)")
+            })
+            playerSprite.userInteractionEnabled = true
+        }
+    }
+    
+    func unhighlightTargetPlayers() {
+        for player in gameManager.players.values {
+            if gameManager.samePlayer(player, gameEngine.currentPlayer) {
+                continue
+            }
+            let playerSprite = player.getSprite() as SKTouchSpriteNode
+            if playerSprite.userInteractionEnabled {
+                playerSprite.setTouchObserver(nil)
+                playerSprite.userInteractionEnabled = false
             }
         }
     }

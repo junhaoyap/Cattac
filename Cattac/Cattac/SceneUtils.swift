@@ -103,11 +103,26 @@ class SceneUtils {
         return SKAction.group(actionGroup);
     }
     
-    /// Generates a SKAction that animates the item use for player on game
-    /// tile
+    /// Generates a SKAction that animates the aggressive item use for
+    /// player on game tile
     ///
     /// :returns: SKAction holding the sequence
-    func getPlayerItemUsedAnimation() -> SKAction {
+    func getAggressiveItemUsedAnimation(destNode: SKNode) -> SKAction {
+        let actionSequence = [
+            SKAction.scaleTo(1, duration: 0),
+            SKAction.waitForDuration(0.3),
+            SKAction.moveTo(destNode.position, duration: 0.5),
+            SKAction.waitForDuration(0.3),
+            SKAction.fadeOutWithDuration(0.3)
+        ]
+        return SKAction.sequence(actionSequence)
+    }
+    
+    /// Generates a SKAction that animates the passive item use for 
+    /// player on game tile
+    ///
+    /// :returns: SKAction holding the sequence
+    func getPassiveItemUsedAnimation() -> SKAction {
         let actionSequence = [
             SKAction.scaleTo(1, duration: 0),
             SKAction.scaleTo(1.5, duration: 0.3),

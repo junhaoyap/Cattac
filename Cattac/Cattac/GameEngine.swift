@@ -323,6 +323,17 @@ class GameEngine {
         if action is PoopAction {
             let targetNode = action!.targetNode!
             targetNode.poop = Poop(player, player.poopDmg)
+        } else if action is ItemAction {
+            let itemAction = action as ItemAction
+            if !itemAction.item.canTargetSelf() &&
+                gameManager.samePlayer(itemAction.targetPlayer, player) {
+                    // invalidate action, item cannot effect self.
+                    return nil
+            }
+            itemAction.targetNode =
+                gameManager[moveToPositionOf: itemAction.targetPlayer]
+            itemAction.item.effect(itemAction.targetPlayer)
+            println("\(player.name) \(itemAction.description)")
         }
         return action
     }
@@ -492,10 +503,18 @@ extension GameEngine {
         let targetNode = gameManager[positionOf: currentPlayer]!
         let item = gameManager[itemOf: currentPlayer]!
         gameManager[actionOf: currentPlayer] =
-            ItemAction(item: item, targetNode: targetNode)
+            ItemAction(item: item, targetNode: targetNode,
+                targetPlayer: currentPlayer)
         notifyAction()
     }
 
+    func triggerTargetPlayerChanged(targetPlayer: Cat) {
+        if let action = gameManager[actionOf: currentPlayer] as? ItemAction {
+            action.targetPlayer = targetPlayer
+            action.targetNode = gameManager[positionOf: targetPlayer]
+        }
+    }
+    
     func triggerPlayerActionEnded() {
         triggerStateAdvance()
     }

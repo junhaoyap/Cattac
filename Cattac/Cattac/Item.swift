@@ -21,6 +21,14 @@ class Item: TileEntity {
         return sprite
     }
     
+    func canTargetSelf() -> Bool {
+        return true
+    }
+    
+    func canTargetOthers() -> Bool {
+        return false
+    }
+    
     func effect(cat: Cat) {
         assertionFailure("Item.effect() not implemented!")
     }
@@ -46,6 +54,14 @@ class ProjectileItem: Item {
     override func effect(cat: Cat) {
         cat.inflict(Constants.itemEffect.projectileDmg)
     }
+    
+    override func canTargetSelf() -> Bool {
+        return false
+    }
+    
+    override func canTargetOthers() -> Bool {
+        return true
+    }
 }
 
 class NukeItem: Item {
@@ -56,5 +72,13 @@ class NukeItem: Item {
     
     override func effect(cat: Cat) {
         cat.inflict(Constants.itemEffect.nukeDmg)
+    }
+    
+    override func canTargetSelf() -> Bool {
+        return false
+    }
+    
+    override func canTargetOthers() -> Bool {
+        return true
     }
 }

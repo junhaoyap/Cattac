@@ -150,4 +150,8 @@ class GameManager {
     func completeActionOf(player: Cat) {
         _playerActionAnimationCompleted[player.name] = true
     }
+    
+    func samePlayer(playerA: Cat, _ playerB: Cat) -> Bool {
+        return playerA.name == playerB.name
+    }
 }

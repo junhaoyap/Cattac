@@ -6,7 +6,7 @@ import Foundation
 import SpriteKit
 
 class Cat: TileEntity {
-    private var _sprite = SKSpriteNode(imageNamed: "Nala.png")
+    private var _sprite = SKTouchSpriteNode(imageNamed: "Nala.png")
     private let baseDefence: Int
     private let baseMoveRange: Int
     private let baseFartRange: Int
@@ -71,13 +71,13 @@ class Cat: TileEntity {
         
         switch catName {
         case Constants.catName.nalaCat:
-            _sprite = SKSpriteNode(imageNamed: "Nala.png")
+            _sprite = SKTouchSpriteNode(imageNamed: "Nala.png")
         case Constants.catName.nyanCat:
-            _sprite = SKSpriteNode(imageNamed: "Nyan.png")
+            _sprite = SKTouchSpriteNode(imageNamed: "Nyan.png")
         case Constants.catName.grumpyCat:
-            _sprite = SKSpriteNode(imageNamed: "Grumpy.png")
+            _sprite = SKTouchSpriteNode(imageNamed: "Grumpy.png")
         case Constants.catName.pusheenCat:
-            _sprite = SKSpriteNode(imageNamed: "Pusheen.png")
+            _sprite = SKTouchSpriteNode(imageNamed: "Pusheen.png")
         default:
             break
         }

@@ -19,6 +19,8 @@
 		32B621081AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */; };
 		32B6210A1AE32D85001A6AB5 /* InventoryBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621091AE32D85001A6AB5 /* InventoryBox.png */; };
 		32B6210B1AE32D85001A6AB5 /* InventoryBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621091AE32D85001A6AB5 /* InventoryBox.png */; };
+		32B6210D1AE34326001A6AB5 /* SKTouchSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */; };
+		32B6210E1AE34326001A6AB5 /* SKTouchSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */; };
 		342584E31AACDB03004A3CFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342584E21AACDB03004A3CFD /* AppDelegate.swift */; };
 		342584E51AACDB03004A3CFD /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 342584E41AACDB03004A3CFD /* GameScene.sks */; };
 		342584E71AACDB03004A3CFD /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342584E61AACDB03004A3CFD /* GameScene.swift */; };
@@ -171,6 +173,7 @@
 		327A01611AE31714005BAF06 /* Projectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Projectile.png; sourceTree = "<group>"; };
 		32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InventoryBoxPressed.png; sourceTree = "<group>"; };
 		32B621091AE32D85001A6AB5 /* InventoryBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InventoryBox.png; sourceTree = "<group>"; };
+		32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTouchSpriteNode.swift; sourceTree = "<group>"; };
 		342584DD1AACDB02004A3CFD /* Cattac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cattac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		342584E11AACDB02004A3CFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		342584E21AACDB03004A3CFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -411,6 +414,7 @@
 				342584E41AACDB03004A3CFD /* GameScene.sks */,
 				342584E61AACDB03004A3CFD /* GameScene.swift */,
 				763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */,
+				32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */,
 				7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */,
 				323454AE1AE29EED00CBB356 /* AnimationEvent.swift */,
 				763E71321AD2FFB200E90EF0 /* SKDirectionButtonNode.swift */,
@@ -820,6 +824,7 @@
 				BDA19AD01AD399CC00B7E9D4 /* WormholeDoodad.swift in Sources */,
 				7661CF4C1AD560400004B0FD /* GameManager.swift in Sources */,
 				323454AF1AE29EED00CBB356 /* AnimationEvent.swift in Sources */,
+				32B6210D1AE34326001A6AB5 /* SKTouchSpriteNode.swift in Sources */,
 				BD29ED731ADBF03D0090B934 /* Poop.swift in Sources */,
 				7689FC981ADAD41E0086613D /* GameAI.swift in Sources */,
 				34ED9F1C1AE28BA2006DDA50 /* GameConnectionManager.swift in Sources */,
@@ -902,6 +907,7 @@
 				768383F71ADBD44900538F5D /* Doodad.swift in Sources */,
 				768383F81ADBD44900538F5D /* Item.swift in Sources */,
 				768383F91ADBD44900538F5D /* Cat.swift in Sources */,
+				32B6210E1AE34326001A6AB5 /* SKTouchSpriteNode.swift in Sources */,
 				768383FA1ADBD44900538F5D /* StatModification.swift in Sources */,
 				768383FB1ADBD44900538F5D /* TileNode.swift in Sources */,
 				768383FC1ADBD44900538F5D /* ConnectionManager.swift in Sources */,

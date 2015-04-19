@@ -122,9 +122,11 @@ extension PoopAction: Printable {
 
 class ItemAction: Action {
     var item: Item
+    var targetPlayer: Cat
     
-    init(item: Item, targetNode: TileNode) {
+    init(item: Item, targetNode: TileNode, targetPlayer: Cat) {
         self.item = item
+        self.targetPlayer = targetPlayer
         super.init(actionType: ActionType.Item)
         self.targetNode = targetNode
     }
@@ -132,6 +134,6 @@ class ItemAction: Action {
 
 extension ItemAction: Printable {
     var description: String {
-        return "Used \(item.name) at \(targetNode)"
+        return "Used \(item.name) at \(targetPlayer)"
     }
 }
