@@ -212,6 +212,7 @@ extension GameScene: EventListener {
                 unselectActionButtonsExcept(poopButton)
                 unhighlightTargetPlayers()
             case .Item:
+                hidePoop()
                 unselectActionButtonsExcept(inventoryBoxButton)
                 if (action as ItemAction).item.canTargetOthers() {
                     highlightTargetPlayers()
