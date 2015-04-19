@@ -15,7 +15,7 @@ struct Constants {
         static let hardColumns: Int = 8
         static let defaultDoodads: Int = 8
         static let defaultWalls: Int = 10
-        static let defaultItems: Int = 2
+        static let defaultItems: Int = 20
         
         static let invalidDoodadWallLocation: [GridIndex] = [
             GridIndex(0, 0),

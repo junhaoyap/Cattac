@@ -219,7 +219,11 @@ extension GameScene: EventListener {
             }
         }
     }
-
+    
+    /// Adds poop activation animation to pending animations. Pending animations
+    /// are animated immediately after moves execution.
+    ///
+    /// :param: target The target GridIndex to animate.
     func addPendingPoopAnimation(target: GridIndex) {
         let poopSprite = SKSpriteNode(imageNamed: "Poop.png")
         poopSprite.position = sceneUtils.pointFor(target)
@@ -230,12 +234,21 @@ extension GameScene: EventListener {
         pendingAnimations += [AnimationEvent(poopSprite, action)]
     }
     
+    /// Animates the obtaining of an item. If item is obtained by current
+    /// player, the item sprite is flown to the inventory box, but if its not
+    /// the current player, item shrinks into character sprite and disappears.
+    ///
+    /// :param: item The item that is obtained.
+    /// :param: isCurrentPlayer true if item is picked by current player, false
+    ///         otherwise.
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool) {
         if isCurrentPlayer {
             let scale = 64 / item.sprite.size.height
+            let dur = sceneUtils.getAnimDuration(item.sprite.position,
+                dest: inventoryBoxButton.position)
             let animAction = SKAction.group([
-                SKAction.moveTo(inventoryBoxButton.position, duration: 0.5),
-                SKAction.scaleTo(scale, duration: 0.5)
+                SKAction.moveTo(inventoryBoxButton.position, duration: dur),
+                SKAction.scaleTo(scale, duration: dur)
                 ])
             item.sprite.runAction(animAction)
         } else {
@@ -366,6 +379,7 @@ private extension GameScene {
         poopPreviewNode.hidden = true
         entityLayer.addChild(poopPreviewNode)
         
+        /// Initializes the preview node for the crosshair.
         crosshairNode = SKSpriteNode(imageNamed: "Crosshairs.png")
         crosshairNode.size = CGSize(width: sceneUtils.tileSize.width * 1.5,
             height: sceneUtils.tileSize.height * 1.5)
@@ -551,8 +565,9 @@ private extension GameScene {
         if gameManager.samePlayer(player, action.targetPlayer) {
             animAction = sceneUtils.getPassiveItemUsedAnimation()
         } else {
-            let destSprite = action.targetNode!.sprite
-            animAction = sceneUtils.getAggressiveItemUsedAnimation(destSprite)
+            let dest = action.targetNode!.sprite.position
+            let v = SceneUtils.vector(tileNode.sprite.position, dest)
+            animAction = sceneUtils.getAggressiveItemUsedAnimation(v)
         }
         
         itemSprite.runAction(animAction, completion: {
@@ -643,6 +658,7 @@ private extension GameScene {
         }
     }
     
+    /// Hides arrows indicating targetable players for item action.
     func highlightTargetPlayers() {
         for player in gameManager.players.values {
             if gameManager.samePlayer(player, gameEngine.currentPlayer) {
@@ -655,12 +671,14 @@ private extension GameScene {
                 self.crosshairNode.hidden = false
             })
             playerSprite.userInteractionEnabled = true
-            let arrowSprite = sceneUtils.getPlayerTargetableArrow(playerSprite.position)
+            let position = playerSprite.position
+            let arrowSprite = sceneUtils.getPlayerTargetableArrow(position)
             entityLayer.addChild(arrowSprite)
             playerTargetArrows[player.name] = arrowSprite
         }
     }
     
+    /// Hides arrows indicating targetable players for item action.
     func unhighlightTargetPlayers() {
         for player in gameManager.players.values {
             if gameManager.samePlayer(player, gameEngine.currentPlayer) {
