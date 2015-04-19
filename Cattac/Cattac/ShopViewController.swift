@@ -6,7 +6,9 @@ import UIKit
 
 class ShopViewController: UIViewController {
     
-    let ref = Firebase(url: "https://torrid-inferno-1934.firebaseio.com/")
+    let gameConnectionManager = GameConnectionManager(urlProvided:
+        Constants.Firebase.baseUrl
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()

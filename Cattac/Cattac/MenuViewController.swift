@@ -6,7 +6,9 @@ import UIKit
 
 class MenuViewController: UIViewController {
     
-    let gameConnectionManager = GameConnectionManager(urlProvided: Constants.Firebase.baseUrl)
+    let gameConnectionManager = GameConnectionManager(urlProvided:
+        Constants.Firebase.baseUrl
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
