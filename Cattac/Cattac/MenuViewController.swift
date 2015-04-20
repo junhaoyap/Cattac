@@ -6,6 +6,8 @@ import UIKit
 
 class MenuViewController: UIViewController {
     
+    var numberOfMeows: Int!
+    
     let gameConnectionManager = GameConnectionManager(urlProvided:
         Constants.Firebase.baseUrl
     )
@@ -13,7 +15,12 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getMeowsAndDisplay()
+        gameConnectionManager.getMeows(self)
+        
+        // TODO: Display it somewhere rather than just printing it
+        println("I has meows:")
+        println(numberOfMeows)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -22,29 +29,5 @@ class MenuViewController: UIViewController {
     
     override func prefersStatusBarHidden() -> Bool {
         return true
-    }
-    
-    // TODO: completely abstract into game connection manager when the time
-    // has come for us to start showing meows and also update players
-    // on the amount of meows they have
-    func getMeowsAndDisplay() {
-        let uid = self.gameConnectionManager.getAuthId()
-        
-        gameConnectionManager.readOnce(Constants.Firebase.nodeMeows + "/" + uid,
-            onComplete: {
-                snapshot in
-                
-                let myNumberOfMeows = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMeows) as? String
-
-                if myNumberOfMeows == nil {
-                    self.gameConnectionManager.setInitialMeows()
-                } else {
-                    // TODO: Display it somewhere rather than just
-                    // printing it
-                    println("I has meows:")
-                    println(myNumberOfMeows)
-                }
-        })
     }
 }

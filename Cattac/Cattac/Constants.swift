@@ -50,7 +50,7 @@ struct Constants {
     }
     
     // default number of meows, standalone for now
-    static let defaultNumberOfMeows = "100"
+    static let defaultNumberOfMeows = 100
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2

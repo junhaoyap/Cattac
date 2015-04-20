@@ -10,14 +10,6 @@ class GameConnectionManager {
         connectionManager = ConnectionManager(firebase: urlProvided)
     }
     
-    func readOnce(childUrl: String, onComplete: (FDataSnapshot) -> ()) {
-        connectionManager.readOnce(childUrl, onComplete: {
-            snapshot in
-            
-            onComplete(snapshot as FDataSnapshot)
-        })
-    }
-    
     // MARK: LoginViewController
     
     func autoLogin(theSender: AnyObject) {
@@ -110,6 +102,30 @@ class GameConnectionManager {
     }
     
     // MARK: MenuViewController
+    
+    func getMeows(theSender: AnyObject) {
+        let sender = theSender as MenuViewController
+        
+        let uid = connectionManager.getAuthId()
+        
+        connectionManager.readOnce(Constants.Firebase.nodeMeows + "/" + uid,
+            onComplete: {
+                theSnapshot in
+                
+                let snapshot = theSnapshot as FDataSnapshot
+                
+                let myNumberOfMeows = snapshot.value.objectForKey(
+                    Constants.Firebase.keyMeows) as? Int
+                
+                if myNumberOfMeows == nil {
+                    self.setInitialMeows()
+                    
+                    sender.numberOfMeows = Constants.defaultNumberOfMeows
+                } else {
+                    sender.numberOfMeows = myNumberOfMeows!
+                }
+        })
+    }
     
     // MARK: LobbyViewController
     
