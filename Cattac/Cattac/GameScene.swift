@@ -62,6 +62,12 @@ class GameScene: SKScene {
     
     /// Targeting preview during item action
     private var crosshairNode: SKSpriteNode!
+
+    /// Timer
+    private var timer: NSTimer!
+    private var currentTime: Int = 5
+    private var timerLabel: SKLabelNode!
+    private var isPlayerTurn: Bool = true
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -154,6 +160,27 @@ class GameScene: SKScene {
     /// This is automatically called at every frame by the scene
     override func update(currentTime: CFTimeInterval) {
         gameEngine.gameLoop()
+    }
+
+    override func willMoveFromView(view: SKView) {
+        timer.invalidate()
+    }
+
+    func updateTime() {
+        if currentTime == 0 {
+            if isPlayerTurn {
+                timerLabel.text = "Executing Turn"
+                gameEngine.triggerPlayerActionEnded()
+                isPlayerTurn = false
+            } else if gameEngine.state == .PlayerAction {
+                currentTime = 5
+                timerLabel.text = "Turn Ending in\n\(currentTime)s"
+                isPlayerTurn = true
+            }
+        } else {
+            currentTime--
+            timerLabel.text = "Turn Ending in\n\(currentTime)s"
+        }
     }
 }
 
@@ -258,7 +285,11 @@ extension GameScene: EventListener {
             let dur = sceneUtils.getAnimDuration(item.sprite.position,
                 dest: inventoryBoxButton.position)
             let animAction = SKAction.group([
-                SKAction.moveTo(inventoryBoxButton.position, duration: dur),
+                SKAction.moveTo(
+                    buttonLayer.convertPoint(inventoryBoxButton.position,
+                        toNode: entityLayer),
+                    duration: dur
+                ),
                 SKAction.scaleTo(scale, duration: dur)
                 ])
             item.sprite.runAction(animAction)
@@ -364,6 +395,25 @@ private extension GameScene {
             playerNode.position = spriteNode.position
             entityLayer.addChild(playerNode)
         }
+    }
+
+    func initializeInformationBar() {
+        let topBoard = SKSpriteNode(imageNamed: "TopBoard.png")
+        topBoard.size = CGSize(width: self.size.width, height: 192)
+        topBoard.position = CGPoint(x: 0, y: 416)
+        gameLayer.addChild(topBoard)
+
+        timer = NSTimer.scheduledTimerWithTimeInterval(
+            1,
+            target: self,
+            selector: Selector("updateTime"),
+            userInfo: nil,
+            repeats: true
+        )
+
+        timerLabel = SKLabelNode(fontNamed: "BubblegumSans-Regular")
+        timerLabel.fontColor = UIColor.blackColor()
+        topBoard.addChild(timerLabel)
     }
 
     /// Initializes the preview nodes game.
