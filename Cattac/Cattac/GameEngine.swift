@@ -14,8 +14,9 @@ protocol EventListener {
 class GameEngine {
     private let catFactory = CatFactory.sharedInstance
     
-    /// Firebase reference. To be wrapped in upcoming Server Protocol.
-    private let ref = Firebase(url: Constants.Firebase.baseUrl)
+    let gameConnectionManager = GameConnectionManager(urlProvided:
+        Constants.Firebase.baseUrl
+    )
     
     // The game grid
     private var grid: Grid!
@@ -182,15 +183,13 @@ class GameEngine {
         )
     }
     
-    /// TODO: For firebase refactoring
     private func updateServer() {
-        let playerMoveUpdateRef = ref
-            .childByAppendingPath(Constants.Firebase.nodeGames)
-            .childByAppendingPath(Constants.Firebase.nodeGame)
-            .childByAppendingPath(Constants.Firebase.nodePlayers)
-            .childByAppendingPath("\(playerNumber - 1)")
-            .childByAppendingPath(Constants.Firebase.nodePlayerMovements)
-            .childByAppendingPath("\(currentPlayerMoveNumber++)")
+        let playerMoveUpdateRef = gameConnectionManager
+            .append(Constants.Firebase.nodeGames)
+            .append(Constants.Firebase.nodeGame)
+            .append(Constants.Firebase.nodePlayers)
+            .append("\(playerNumber - 1)")
+            .append(Constants.Firebase.nodePlayerMovements)
 
         let currentTile = gameManager[positionOf: currentPlayer]!
         let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
@@ -227,7 +226,10 @@ class GameEngine {
             ]
         }
         
-        playerMoveUpdateRef.updateChildValues(moveData)
+        playerMoveUpdateRef.update("", data: [
+            "\(currentPlayerMoveNumber++)": moveData
+            ]
+        )
     }
 
     func setCurrentPlayerMoveToPosition(node: TileNode) {
@@ -416,17 +418,22 @@ class GameEngine {
     /// TODO: For firebase refactoring
     private func registerMovementWatcherExcept(number: Int) {
         for i in 1...4 {
+            
             if i == number {
                 continue
             }
-            let playerMovementWatcherRef = ref.childByAppendingPath(Constants.Firebase.nodeGames)
-                .childByAppendingPath(Constants.Firebase.nodeGame)
-                .childByAppendingPath(Constants.Firebase.nodePlayers)
-                .childByAppendingPath("\(i - 1)")
-                .childByAppendingPath(Constants.Firebase.nodePlayerMovements)
+            
+            let playerMovementWatcherRef = gameConnectionManager
+                .append(Constants.Firebase.nodeGames)
+                .append(Constants.Firebase.nodeGame)
+                .append(Constants.Firebase.nodePlayers)
+                .append("\(i - 1)")
+                .append(Constants.Firebase.nodePlayerMovements)
 
-            playerMovementWatcherRef.observeEventType(.ChildAdded, withBlock: {
-                snapshot in
+            playerMovementWatcherRef.watchNew("", onComplete: {
+                theSnapshot in
+                
+                let snapshot = theSnapshot as FDataSnapshot
                 
                 let fromRow = snapshot.value.objectForKey(
                     Constants.Firebase.keyMoveFromRow) as? Int
@@ -496,10 +503,6 @@ class GameEngine {
     
     private func notifyAction() {
         eventListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
-    }
-    
-    func releaseAllListeners() {
-        ref.removeAllObservers()
     }
 }
 
