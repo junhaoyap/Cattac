@@ -20,9 +20,6 @@ class GameEngine {
     
     // The game grid
     private var grid: Grid!
-    
-    /// Dictionary of Firebase references watching a data value.
-    private var movementWatchers: [Int: Firebase] = [:]
 
     // The AI engine that is used when multiplayer mode is not active
     private var gameAI: GameAI!
@@ -126,22 +123,13 @@ class GameEngine {
         }
     }
     
-    /// Releases all resources associated with this game, called
-    /// when game has ended.
-    /// TODO: For firebase refactoring
-    func end() {
-        for ref in movementWatchers.values {
-            ref.removeAllObservers()
-        }
-    }
-    
     /// Trigger state advancement in game engine.
     private func triggerStateAdvance() {
         statesToAdvance++
     }
     
-    /// Effectively advances the state, GameState shall not be
-    /// altered out of this method.
+    /// Effectively advances the state, GameState should not be
+    /// altered outside of this method.
     private func advanceState() {
         switch state {
         case .Precalculation:
@@ -184,52 +172,19 @@ class GameEngine {
     }
     
     private func updateServer() {
-        let playerMoveUpdateRef = gameConnectionManager
-            .append(Constants.Firebase.nodeGames)
-            .append(Constants.Firebase.nodeGame)
-            .append(Constants.Firebase.nodePlayers)
-            .append("\(playerNumber - 1)")
-            .append(Constants.Firebase.nodePlayerMovements)
-
+        let currentPlayerNumber = playerNumber - 1
         let currentTile = gameManager[positionOf: currentPlayer]!
         let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
         let action = gameManager[actionOf: currentPlayer]
         
-        var moveData = [:]
-        
-        if action == nil {
-            moveData = [
-                Constants.Firebase.keyMoveFromRow: currentTile.position.row,
-                Constants.Firebase.keyMoveFromCol: currentTile.position.col,
-                Constants.Firebase.keyMoveToRow: moveToTile.position.row,
-                Constants.Firebase.keyMoveToCol: moveToTile.position.col,
-                Constants.Firebase.keyAttkType: "",
-                Constants.Firebase.keyAttkDir: "",
-                Constants.Firebase.keyAttkRange: "",
-                Constants.Firebase.keyTargetRow: "",
-                Constants.Firebase.keyTargetCol: ""
-            ]
-        } else {
-            let targetNode = action?.targetNode
-            moveData = [
-                Constants.Firebase.keyMoveFromRow: currentTile.position.row,
-                Constants.Firebase.keyMoveFromCol: currentTile.position.col,
-                Constants.Firebase.keyMoveToRow: moveToTile.position.row,
-                Constants.Firebase.keyMoveToCol: moveToTile.position.col,
-                Constants.Firebase.keyAttkType: action!.actionType.description,
-                Constants.Firebase.keyAttkDir: action!.direction.description,
-                Constants.Firebase.keyAttkRange: action!.range,
-                Constants.Firebase.keyTargetRow:
-                    targetNode != nil ? targetNode!.position.row : 0,
-                Constants.Firebase.keyTargetCol:
-                    targetNode != nil ? targetNode!.position.col : 0
-            ]
-        }
-        
-        playerMoveUpdateRef.update("", data: [
-            "\(currentPlayerMoveNumber++)": moveData
-            ]
+        gameConnectionManager.updateServer(playerNumber,
+            currentTile: currentTile,
+            moveToTile: moveToTile,
+            action: action,
+            number: currentPlayerMoveNumber
         )
+        
+        currentPlayerMoveNumber++
     }
 
     func setCurrentPlayerMoveToPosition(node: TileNode) {

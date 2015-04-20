@@ -72,6 +72,19 @@
 		348213B01AE27CC20079BA49 /* MediumLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425854B1AACE288004A3CFD /* MediumLevel.swift */; };
 		348213B11AE27CC40079BA49 /* HardLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425854D1AACE291004A3CFD /* HardLevel.swift */; };
 		34A356361AD1896000299049 /* Wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A356351AD1896000299049 /* Wall.swift */; };
+		34AE22A51AE4F6A300C0EA6D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA651ACEA01500B0E68D /* LoginViewController.swift */; };
+		34AE22A61AE4F6A700C0EA6D /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
+		34AE22A71AE4F6A700C0EA6D /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
+		34AE22A81AE4F6A700C0EA6D /* GameDifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */; };
+		34AE22A91AE4F6A700C0EA6D /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */; };
+		34AE22AA1AE4F6A700C0EA6D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342584E81AACDB03004A3CFD /* GameViewController.swift */; };
+		34AE22AB1AE4F8EC00C0EA6D /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0441C21ADD3899003B93BC /* DateUtils.swift */; };
+		34AE22AC1AE4F8EF00C0EA6D /* SceneUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763D97B71ADA7CDB0064B73C /* SceneUtils.swift */; };
+		34AE22AD1AE4F8F600C0EA6D /* SKDirectionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763E71321AD2FFB200E90EF0 /* SKDirectionButtonNode.swift */; };
+		34AE22AE1AE4F8F800C0EA6D /* SKPuiActionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */; };
+		34AE22AF1AE4F8FF00C0EA6D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342584E61AACDB03004A3CFD /* GameScene.swift */; };
+		34AE22B01AE4F90100C0EA6D /* SKActionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */; };
+		34AE22B11AE4F92200C0EA6D /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585181AACDEFF004A3CFD /* MusicPlayer.swift */; };
 		34B4B20B1AD29B8F00D06BD8 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */; };
 		34BA89C81AD6D55200413C1B /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BA89C71AD6D55200413C1B /* ConnectionManager.swift */; };
 		34BA89CB1ADA7CC500413C1B /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BA89CA1ADA7CC500413C1B /* StringUtils.swift */; };
@@ -910,31 +923,40 @@
 				768383E21ADBD44900538F5D /* Grid.swift in Sources */,
 				768383E31ADBD44900538F5D /* GridIndex.swift in Sources */,
 				768383E41ADBD44900538F5D /* Direction.swift in Sources */,
+				34AE22A71AE4F6A700C0EA6D /* ShopViewController.swift in Sources */,
 				768383E51ADBD44900538F5D /* CatFactory.swift in Sources */,
 				768383E61ADBD44900538F5D /* DoodadFactory.swift in Sources */,
 				768383E71ADBD44900538F5D /* ItemFactory.swift in Sources */,
 				768383E81ADBD44900538F5D /* Constants.swift in Sources */,
 				768383E91ADBD44900538F5D /* GameLevel.swift in Sources */,
 				768383EA1ADBD44900538F5D /* BasicLevel.swift in Sources */,
+				34AE22AD1AE4F8F600C0EA6D /* SKDirectionButtonNode.swift in Sources */,
 				768383EB1ADBD44900538F5D /* LevelGenerator.swift in Sources */,
 				768383EC1ADBD44900538F5D /* Action.swift in Sources */,
 				768383ED1ADBD44900538F5D /* GameState.swift in Sources */,
 				768383EE1ADBD44900538F5D /* GameEngine.swift in Sources */,
+				34AE22B01AE4F90100C0EA6D /* SKActionButtonNode.swift in Sources */,
+				34AE22A91AE4F6A700C0EA6D /* LobbyViewController.swift in Sources */,
 				768383EF1ADBD44900538F5D /* GameManager.swift in Sources */,
 				768383F01ADBD44900538F5D /* GameAI.swift in Sources */,
 				768383F11ADBD44900538F5D /* Wall.swift in Sources */,
 				348213B11AE27CC40079BA49 /* HardLevel.swift in Sources */,
+				34AE22AA1AE4F6A700C0EA6D /* GameViewController.swift in Sources */,
 				768383F21ADBD44900538F5D /* WormholeDoodad.swift in Sources */,
 				768383F31ADBD44900538F5D /* LandMineDoodad.swift in Sources */,
 				768383F41ADBD44900538F5D /* FortressDoodad.swift in Sources */,
 				768384051ADBD55B00538F5D /* GridTests.swift in Sources */,
+				34AE22AB1AE4F8EC00C0EA6D /* DateUtils.swift in Sources */,
 				34ED9F231AE29F41006DDA50 /* FirebaseServer.swift in Sources */,
 				BD0441C41AE20649003B93BC /* Poop.swift in Sources */,
 				768383F51ADBD44900538F5D /* TrampolineDoodad.swift in Sources */,
+				34AE22AF1AE4F8FF00C0EA6D /* GameScene.swift in Sources */,
 				768383F61ADBD44900538F5D /* WatchTowerDoodad.swift in Sources */,
 				768383F71ADBD44900538F5D /* Doodad.swift in Sources */,
 				768383F81ADBD44900538F5D /* Item.swift in Sources */,
+				34AE22A61AE4F6A700C0EA6D /* MenuViewController.swift in Sources */,
 				768383F91ADBD44900538F5D /* Cat.swift in Sources */,
+				34AE22AC1AE4F8EF00C0EA6D /* SceneUtils.swift in Sources */,
 				32B6210E1AE34326001A6AB5 /* SKTouchSpriteNode.swift in Sources */,
 				768383FA1ADBD44900538F5D /* StatModification.swift in Sources */,
 				768383FB1ADBD44900538F5D /* TileNode.swift in Sources */,
@@ -943,7 +965,9 @@
 				34ED9F221AE29F3F006DDA50 /* Server.swift in Sources */,
 				34ED9F211AE29F3D006DDA50 /* GameConnectionManager.swift in Sources */,
 				3425852E1AACE049004A3CFD /* Queue.swift in Sources */,
+				34AE22B11AE4F92200C0EA6D /* MusicPlayer.swift in Sources */,
 				3425852F1AACE049004A3CFD /* Stack.swift in Sources */,
+				34AE22A51AE4F6A300C0EA6D /* LoginViewController.swift in Sources */,
 				342585301AACE049004A3CFD /* Node.swift in Sources */,
 				342585311AACE049004A3CFD /* Edge.swift in Sources */,
 				342585321AACE049004A3CFD /* Graph.swift in Sources */,
@@ -954,7 +978,9 @@
 				BDA19AA71AC556D200B7E9D4 /* TileEntity.swift in Sources */,
 				3425852D1AACDFF2004A3CFD /* GraphTests.swift in Sources */,
 				3425852B1AACDFEB004A3CFD /* EdgeTests.swift in Sources */,
+				34AE22AE1AE4F8F800C0EA6D /* SKPuiActionButtonNode.swift in Sources */,
 				323454B01AE29EED00CBB356 /* AnimationEvent.swift in Sources */,
+				34AE22A81AE4F6A700C0EA6D /* GameDifficultyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
