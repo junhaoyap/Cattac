@@ -63,6 +63,22 @@ class SceneUtils {
         return grid[row, col]
     }
     
+    /// Generates a SKAction that animates the traversal of TileNodes at
+    /// given duration per TileNode
+    ///
+    /// :param: path TileNode sequence to be traversed
+    /// :param: dur Duration of animation in seconds per tile
+    /// :returns: SKAction holding the sequence
+    func getTraverseAnim(path: [TileNode], _ dur: NSTimeInterval) -> SKAction {
+        var pathSequence: [SKAction] = []
+        for node in path {
+            let action = SKAction.moveTo(node.sprite.position,
+                duration: dur)
+            pathSequence.append(action)
+        }
+        return SKAction.sequence(pathSequence)
+    }
+    
     /// Generates a SKAction that enters with fadeIn, rotateIn, and scaleUp
     /// and exits with fadeOut, rotateOut, and scaleDown
     ///
@@ -132,6 +148,45 @@ class SceneUtils {
                 SKAction.moveByX(0, y: tileHeight, duration: 0.5),
                 SKAction.fadeOutWithDuration(0.2)
                 ])
+        ]
+        return SKAction.sequence(actionSequence)
+    }
+    
+    /// Generates a spit sprite node that represents the Pui attack.
+    ///
+    /// :param: direction The direction of PuiAction
+    /// :returns: The SKSpriteNode
+    func getPuiNode(direction: Direction) -> SKSpriteNode {
+        let pui = SKSpriteNode(imageNamed: "Pui.png")
+        pui.size = tileSize
+        pui.zRotation = SceneUtils.zRotation(direction)
+        return pui
+    }
+    
+    /// Generates a floating text indicated the damage inflicted upon a player.
+    ///
+    /// :param: dmg The damage inflicted upon player
+    /// :returns: The SKSpriteNode
+    func getDamageLabelNode(dmg: Int) -> SKLabelNode {
+        let damageNode = SKLabelNode(text: "\(-dmg)")
+        damageNode.alpha = 0
+        damageNode.fontColor = dmg > 0 ? UIColor.redColor():UIColor.cyanColor()
+        damageNode.fontName = "LuckiestGuy-Regular"
+        damageNode.zPosition = 20
+        return damageNode
+    }
+    
+    /// Generates a SKAction that animates floating damage label.
+    ///
+    /// :returns: SKAction holding the sequence
+    func getDamageLabelAnim() -> SKAction {
+        let actionSequence = [
+            SKAction.group([
+                SKAction.fadeAlphaTo(1, duration: 0.25),
+                SKAction.moveByX(0, y: tileHeight, duration: 0.25)
+            ]),
+            SKAction.waitForDuration(0.5),
+            SKAction.fadeAlphaTo(0, duration: 0.25)
         ]
         return SKAction.sequence(actionSequence)
     }

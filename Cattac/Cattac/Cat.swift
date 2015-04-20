@@ -6,7 +6,8 @@ import Foundation
 import SpriteKit
 
 class Cat: TileEntity {
-    private var _sprite = SKTouchSpriteNode(imageNamed: "Nala.png")
+    private let _sprite: SKSpriteNode
+    private let _previewSprite: SKSpriteNode
     private let baseDefence: Int
     private let baseMoveRange: Int
     private let baseFartRange: Int
@@ -52,6 +53,11 @@ class Cat: TileEntity {
         return applyAttrMods(basePoopDmg, mods: dmgMods)
     }
     
+    /// Movement preview sprite
+    var previewSprite: SKSpriteNode {
+        return _previewSprite
+    }
+    
     /// Constructs a cat with its base attributes
     ///
     /// :param: catName Name speicifying cat type
@@ -70,17 +76,20 @@ class Cat: TileEntity {
         baseFartRange = Constants.catAttributes.fartRange
         
         switch catName {
-        case Constants.catName.nalaCat:
-            _sprite = SKTouchSpriteNode(imageNamed: "Nala.png")
         case Constants.catName.nyanCat:
             _sprite = SKTouchSpriteNode(imageNamed: "Nyan.png")
+            _previewSprite = SKTouchSpriteNode(imageNamed: "Nyan.png")
         case Constants.catName.grumpyCat:
             _sprite = SKTouchSpriteNode(imageNamed: "Grumpy.png")
+            _previewSprite = SKTouchSpriteNode(imageNamed: "Grumpy.png")
         case Constants.catName.pusheenCat:
             _sprite = SKTouchSpriteNode(imageNamed: "Pusheen.png")
+            _previewSprite = SKTouchSpriteNode(imageNamed: "Pusheen.png")
         default:
-            break
+            _sprite = SKTouchSpriteNode(imageNamed: "Nala.png")
+            _previewSprite = SKTouchSpriteNode(imageNamed: "Nala.png")
         }
+        _previewSprite.alpha = 0.5
     }
     
     /// Inflicts the damage on to cat's hp,

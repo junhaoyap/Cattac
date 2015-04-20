@@ -179,7 +179,6 @@ extension GameScene: GameStateListener {
         case .MovesExecution:
             movePlayers()
         case .ActionsExecution:
-            // intuitively hide poop preview only after pooper moved away
             hidePoop()
             performPendingAnimations()
             performActions()
@@ -228,8 +227,8 @@ extension GameScene: EventListener {
     /// :param: target The target TileNode to animate at.
     func addPendingPoopAnimation(poop: Poop, target: TileNode) {
         let poopSprite = SKSpriteNode(imageNamed: "Poop.png")
-        poopSprite.position = sceneUtils.pointFor(target.position)
         poopSprite.size = sceneUtils.tileSize
+        poopSprite.position = sceneUtils.pointFor(target.position)
 
         let action = sceneUtils.getFartAnimation(0)
         let completion = {
@@ -301,7 +300,9 @@ private extension GameScene {
                 self.gameEngine.triggerPuiButtonPressed(dir)
             },
             unselectAction: { self.gameEngine.triggerClearAction() },
-            getAvailableDirections: { return self.gameEngine.getAvailablePuiDirections() })
+            getAvailableDirections: {
+                return self.gameEngine.getAvailablePuiDirections()
+        })
         puiButton.position = CGPoint(x: 0 * buttonSpacing, y: 0)
         buttonLayer.addChild(puiButton)
         actionButtons.append(puiButton)
@@ -355,25 +356,12 @@ private extension GameScene {
         }
     }
 
-    /// Initializes the preview nodes game.
+    /// Initializes the preview nodes.
     ///
     /// :param: currentPlayerNumber The index/id of the currentPlayer.
     func initializePreviewNodes(currentPlayerNumber: Int) {
-        switch currentPlayerNumber {
-        case 1:
-            previewNode = SKSpriteNode(imageNamed: "Nala.png")
-        case 2:
-            previewNode = SKSpriteNode(imageNamed: "Nyan.png")
-        case 3:
-            previewNode = SKSpriteNode(imageNamed: "Grumpy.png")
-        case 4:
-            previewNode = SKSpriteNode(imageNamed: "Pusheen.png")
-        default:
-            break
-        }
-
+        previewNode = gameEngine.currentPlayer.previewSprite
         previewNode.size = sceneUtils.tileSize
-        previewNode.alpha = 0.5
         previewNode.hidden = true
         entityLayer.addChild(previewNode)
         
@@ -426,8 +414,7 @@ private extension GameScene {
     /// :param: spriteNode The `SKSpriteNode` on which the parent `TileNode` is
     ///                    drawn.
     /// :param: tileEntity The given `TileEntity` to be drawn.
-    func drawTileEntity(spriteNode: SKSpriteNode,
-        _ tileEntity: TileEntity) {
+    func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
             let entityNode = tileEntity.getSprite()
 
             if entityNode is SKSpriteNode {
@@ -461,24 +448,17 @@ private extension GameScene {
     func movePlayers() {
         for (playerName, player) in gameManager.players {
             let path = gameEngine.executePlayerMove(player)
-            var pathSequence: [SKAction] = []
-
-            for node in path {
-                let action = SKAction.moveTo(node.sprite.position,
-                    duration: 0.25)
-                pathSequence.append(action)
-            }
-
-            if pathSequence.count > 0 {
-                player.getSprite().runAction(
-                    SKAction.sequence(pathSequence),
-                    completion: {
-                        self.notifyMovementCompletionFor(player)
-                    }
-                )
-            } else {
+            
+            if path.count == 0 {
                 notifyMovementCompletionFor(player)
+                continue
             }
+            
+            player.getSprite().runAction(sceneUtils.getTraverseAnim(path, 0.25),
+                completion: {
+                    self.notifyMovementCompletionFor(player)
+                }
+            )
         }
     }
 
@@ -500,13 +480,7 @@ private extension GameScene {
     func animatePuiAction(player: Cat, direction: Direction) {
         let startNode = gameManager[moveToPositionOf: player]!
         let path = gameEngine.pathOfPui(startNode, direction: direction)
-        var pathSequence: [SKAction] = []
         var victimPlayer: Cat?
-
-        for node in path {
-            let action = SKAction.moveTo(node.sprite.position, duration: 0.15)
-            pathSequence.append(action)
-        }
 
         if let node = path.last {
             if let player = gameEngine.otherPlayerMoveToNodes[node.position] {
@@ -514,15 +488,12 @@ private extension GameScene {
             }
         }
 
-        let pui = SKSpriteNode(imageNamed: "Pui.png")
-        pui.size = sceneUtils.tileSize
+        let pui = sceneUtils.getPuiNode(direction)
         pui.position = startNode.sprite.position
-        pui.zRotation = SceneUtils.zRotation(direction)
-
         entityLayer.addChild(pui)
 
         pui.runAction(
-            SKAction.sequence(pathSequence),
+            sceneUtils.getTraverseAnim(path, 0.15),
             completion: {
                 pui.removeFromParent()
                 if victimPlayer != nil {
@@ -578,7 +549,7 @@ private extension GameScene {
         }
     }
     
-    /// Animates the fart action of the given player.
+    /// Animates the item action of the given player.
     ///
     /// :param: player The cat that is performing the action.
     /// :param: action ItemAction used
@@ -679,24 +650,11 @@ private extension GameScene {
     /// :param: damange The amount of damage dealt
     /// :param: node The TileNode of the victim player.
     func showDamage(damage: Int, node: TileNode) {
-        let nodeSprite = node.sprite
-        let damageNode = SKLabelNode(text: "\(-damage)")
-        let color = damage > 0 ? UIColor.redColor() : UIColor.cyanColor()
+        let damageNode = sceneUtils.getDamageLabelNode(damage)
         damageNode.position = node.sprite.position
-        damageNode.alpha = 0
-        damageNode.fontColor = color
-        damageNode.fontName = "LuckiestGuy-Regular"
-        damageNode.zPosition = 20
         entityLayer.addChild(damageNode)
 
-        let fadeIn = SKAction.fadeAlphaTo(1, duration: 0.25)
-        let move = SKAction.moveByX(0, y: node.sprite.size.height, duration: 0.25)
-        let entryGroup = SKAction.group([fadeIn, move])
-        let wait = SKAction.waitForDuration(0.5)
-        let fadeOut = SKAction.fadeAlphaTo(0, duration: 0.25)
-        let sequence = SKAction.sequence([entryGroup, wait, fadeOut])
-
-        damageNode.runAction(sequence, completion: {
+        damageNode.runAction(sceneUtils.getDamageLabelAnim(), completion: {
             damageNode.removeFromParent()
         })
     }
