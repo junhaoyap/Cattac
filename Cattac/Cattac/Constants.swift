@@ -50,7 +50,7 @@ struct Constants {
     }
     
     // default number of meows, standalone for now
-    static let defaultNumberOfMeows = "100"
+    static let defaultNumberOfMeows = 100
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2
@@ -126,6 +126,8 @@ struct Constants {
         static let nodePlayerMovements = "movements"
         
         static let keyMeows = "numberOfMeows"
+        
+        static let keyTime = "lastActive"
         
         static let keyAttkDir = "attackDir"
         static let keyAttkDmg = "attackDmg"
