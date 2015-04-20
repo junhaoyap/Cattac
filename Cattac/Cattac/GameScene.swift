@@ -284,14 +284,16 @@ extension GameScene: EventListener {
             let scale = 64 / item.sprite.size.height
             let dur = sceneUtils.getAnimDuration(item.sprite.position,
                 dest: inventoryBoxButton.position)
+
+            let inventoryPositionInGameLayer = buttonLayer.convertPoint(
+                inventoryBoxButton.position, toNode: gameLayer)
+            let inventoryPositionInEntityLayer = gameLayer.convertPoint(
+                inventoryPositionInGameLayer, toNode: entityLayer)
+
             let animAction = SKAction.group([
-                SKAction.moveTo(
-                    buttonLayer.convertPoint(inventoryBoxButton.position,
-                        toNode: entityLayer),
-                    duration: dur
-                ),
+                SKAction.moveTo(inventoryPositionInEntityLayer, duration: dur),
                 SKAction.scaleTo(scale, duration: dur)
-                ])
+            ])
             item.sprite.runAction(animAction)
         } else {
             let animAction = sceneUtils.getObtainItemAnimation()
