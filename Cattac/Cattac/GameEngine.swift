@@ -170,22 +170,6 @@ class GameEngine {
             range: currentPlayer.moveRange
         )
     }
-    
-    private func updateServer() {
-        let currentPlayerNumber = playerNumber - 1
-        let currentTile = gameManager[positionOf: currentPlayer]!
-        let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
-        let action = gameManager[actionOf: currentPlayer]
-        
-        gameConnectionManager.updateServer(playerNumber,
-            currentTile: currentTile,
-            moveToTile: moveToTile,
-            action: action,
-            number: currentPlayerMoveNumber
-        )
-        
-        currentPlayerMoveNumber++
-    }
 
     func setCurrentPlayerMoveToPosition(node: TileNode) {
         if node != gameManager[moveToPositionOf: currentPlayer] {
@@ -370,82 +354,6 @@ class GameEngine {
         }
     }
     
-    /// TODO: For firebase refactoring
-    private func registerMovementWatcherExcept(number: Int) {
-        for i in 1...4 {
-            
-            if i == number {
-                continue
-            }
-            
-            let playerMovementWatcherRef = gameConnectionManager
-                .append(Constants.Firebase.nodeGames)
-                .append(Constants.Firebase.nodeGame)
-                .append(Constants.Firebase.nodePlayers)
-                .append("\(i - 1)")
-                .append(Constants.Firebase.nodePlayerMovements)
-
-            playerMovementWatcherRef.watchNew("", onComplete: {
-                theSnapshot in
-                
-                let snapshot = theSnapshot as FDataSnapshot
-                
-                let fromRow = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMoveFromRow) as? Int
-                let fromCol = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMoveFromCol) as? Int
-                let moveToRow = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMoveToRow) as? Int
-                let moveToCol = snapshot.value.objectForKey(
-                    Constants.Firebase.keyMoveToCol) as? Int
-                
-                let attackType = snapshot.value.objectForKey(
-                    Constants.Firebase.keyAttkType) as? String
-                let attackDir = snapshot.value.objectForKey(
-                    Constants.Firebase.keyAttkDir) as? String
-                let attackDmg = snapshot.value.objectForKey(
-                    Constants.Firebase.keyAttkDmg) as? Int
-                let attackRange = snapshot.value.objectForKey(
-                    Constants.Firebase.keyAttkRange) as? Int
-                
-                let player = self.gameManager[Constants.catArray[i - 1]]!
-                
-                self.gameManager[positionOf: player] = self.grid[fromRow!, fromCol!]
-                self.gameManager[moveToPositionOf: player] = self.grid[moveToRow!, moveToCol!]
-                println("\(player.name)[\(i)] moving to \(moveToRow!),\(moveToCol!)")
-                
-                if let playerActionType = ActionType.create(attackType!) {
-                    switch playerActionType {
-                    case .Pui:
-                        let puiDirection = Direction.create(attackDir!)!
-                        self.gameManager[actionOf: player] = PuiAction(direction: puiDirection)
-                    case .Fart:
-                        let fartRange = attackRange!
-                        self.gameManager[actionOf: player] = FartAction(range: fartRange)
-                    case .Poop:
-                        let targetNodeRow = snapshot.value.objectForKey(
-                            Constants.Firebase.keyTargetRow) as? Int
-                        let targetNodeCol = snapshot.value.objectForKey(
-                            Constants.Firebase.keyTargetCol) as? Int
-                        let targetNode = self.grid[targetNodeRow!, targetNodeCol!]!
-                        
-                        self.gameManager[actionOf: player] = PoopAction(targetNode: targetNode)
-                    case .Item:
-                        break
-                    }
-                    println("\(player.name)[\(i)] \(playerActionType.description)")
-                }
-                
-                self.otherPlayersMoved++
-                
-                if self.otherPlayersMoved == 3 {
-                    self.triggerAllPlayersMoved()
-                    self.otherPlayersMoved = 0
-                }
-            })
-        }
-    }
-    
     func getAvailablePuiDirections() -> [Direction] {
         var targetNode = gameManager[moveToPositionOf: currentPlayer]!
         if targetNode.doodad is WormholeDoodad {
@@ -458,6 +366,44 @@ class GameEngine {
     
     private func notifyAction() {
         eventListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
+    }
+    
+    private func updateServer() {
+        let currentPlayerNumber = playerNumber - 1
+        let currentTile = gameManager[positionOf: currentPlayer]!
+        let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
+        let action = gameManager[actionOf: currentPlayer]
+        
+        gameConnectionManager.updateServer(playerNumber,
+            currentTile: currentTile,
+            moveToTile: moveToTile,
+            action: action,
+            number: currentPlayerMoveNumber
+        )
+        
+        currentPlayerMoveNumber++
+    }
+    
+    private func registerMovementWatcherExcept(number: Int) {
+        for i in 1...4 {
+            if i == number {
+                continue
+            }
+            
+            let currentNumber = i - 1
+            
+            gameConnectionManager.registerMovementWatcher(currentNumber,
+                theSender: self
+            )
+        }
+    }
+
+    func getGrid() -> Grid {
+        return self.grid
+    }
+    
+    func getPlayer() -> Cat {
+        return self.currentPlayer
     }
 }
 
