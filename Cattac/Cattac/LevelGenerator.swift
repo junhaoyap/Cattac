@@ -20,19 +20,20 @@ class LevelGenerator {
     }
     
     func generateBasic() -> BasicLevel {
-        let level = BasicLevel()
-        
+        var attempt = 1
+        var level = BasicLevel()
         constructLevel(level)
-        
-        generateDoodad(level)
         generateWalls(level)
         
         while !isValidLevel(level) {
-            level.removeAllEntities()
-            generateDoodad(level)
+            level = BasicLevel()
+            constructLevel(level)
             generateWalls(level)
+            attempt++
         }
+        println("Level generated in \(attempt) attempt(s)")
         
+        generateDoodad(level)
         generateItems(level)
         
         return level

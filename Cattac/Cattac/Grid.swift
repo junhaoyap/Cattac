@@ -299,7 +299,7 @@ class Grid {
             
             for neighbour in graph.adjacentNodesFromNode(Node(checkNode)) {
                 let neighbourNode = neighbour.getLabel()
-                if (neighbourNode.doodad == nil)
+                if neighbourNode.doodad == nil
                     && visitedNodes[neighbourNode.hashValue] == nil
                     && !contains(enqueuedNodes, neighbourNode) {
                         enqueuedNodes += [neighbourNode]

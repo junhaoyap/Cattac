@@ -80,18 +80,10 @@ class GameLevel {
         return levelData
     }
     
-    func removeAllEntities() {
-        for row in 0..<numRows {
-            for col in 0..<numColumns {
-                grid[row, col]?.doodad = nil
-            }
-        }
-    }
-    
     func emptyTiles() -> [TileNode] {
         var emptyTiles: [TileNode] = []
         for tileNode in grid {
-            if tileNode.doodad != nil {
+            if tileNode.doodad == nil {
                 emptyTiles += [tileNode]
             }
         }
