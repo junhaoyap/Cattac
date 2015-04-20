@@ -17,10 +17,10 @@ class MenuViewController: UIViewController {
         
         gameConnectionManager.getMeows(self)
         
-        // TODO: Display it somewhere rather than just printing it
-        println("I has meows:")
-        println(numberOfMeows)
-
+        // TODO: Display the number of meows somewhere and maybe put it
+        // as a UILabel somewhere so that gameConnectionManager can change
+        // the number depending on what the number actually is
+        // once the asynchronous call completes
     }
     
     override func didReceiveMemoryWarning() {
