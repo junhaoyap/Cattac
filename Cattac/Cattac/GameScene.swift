@@ -30,6 +30,8 @@ class GameScene: SKScene {
     /// The button layer that consists of the main buttons for the actions.
     private let buttonLayer = SKNode()
 
+    private let infoLayer = SKNode()
+
     /// All action buttons.
     private var actionButtons = [SKActionButtonNode]()
 
@@ -110,8 +112,7 @@ class GameScene: SKScene {
 
             // adds buttonLayer to the gameLayer
             let buttonSpacing: CGFloat = 220
-            buttonLayer.position =
-                CGPoint(x: -buttonSpacing, y: layerPosition.y - 100)
+            buttonLayer.position = CGPoint(x: 0, y: -416)
             gameLayer.addChild(buttonLayer)
 
             /// Additional initialization
@@ -120,6 +121,10 @@ class GameScene: SKScene {
             initializePreviewNodes(currentPlayerNumber)
             addTiles()
             addPlayers()
+
+            infoLayer.position = CGPoint(x: 0, y: 416)
+            gameLayer.addChild(infoLayer)
+            initializeInformationBar()
     }
     
     /// When player tries to perform movement actions
@@ -294,6 +299,12 @@ private extension GameScene {
     /// :param: buttonSpacing The spacing between the center anchor of the
     ///                       buttons.
     func initializeButtons(buttonSpacing: CGFloat) {
+        let bottomBoard = SKSpriteNode(imageNamed: "BottomBoard.png")
+        bottomBoard.size = CGSize(width: self.size.width,
+            height: 192)
+        bottomBoard.position = CGPoint(x: 0, y: 0)
+        buttonLayer.addChild(bottomBoard)
+
         puiButton = SKPuiActionButtonNode(
             defaultButtonImage: "PuiButton.png",
             activeButtonImage: "PuiButtonPressed.png",
@@ -302,8 +313,8 @@ private extension GameScene {
             },
             unselectAction: { self.gameEngine.triggerClearAction() },
             getAvailableDirections: { return self.gameEngine.getAvailablePuiDirections() })
-        puiButton.position = CGPoint(x: 0 * buttonSpacing, y: 0)
-        buttonLayer.addChild(puiButton)
+        puiButton.position = CGPoint(x: -buttonSpacing, y: 0)
+        bottomBoard.addChild(puiButton)
         actionButtons.append(puiButton)
 
         fartButton = SKActionButtonNode(
@@ -311,8 +322,8 @@ private extension GameScene {
             activeButtonImage: "FartButtonPressed.png",
             buttonAction: { self.gameEngine.triggerFartButtonPressed() },
             unselectAction: { self.gameEngine.triggerClearAction() })
-        fartButton.position = CGPoint(x: 1 * buttonSpacing, y: 0)
-        buttonLayer.addChild(fartButton)
+        fartButton.position = CGPoint(x: 0, y: 0)
+        bottomBoard.addChild(fartButton)
         actionButtons.append(fartButton)
 
         poopButton = SKActionButtonNode(
@@ -323,8 +334,8 @@ private extension GameScene {
                 self.hidePoop()
                 self.gameEngine.triggerClearAction()
         })
-        poopButton.position = CGPoint(x: 2 * buttonSpacing, y: 0)
-        buttonLayer.addChild(poopButton)
+        poopButton.position = CGPoint(x: buttonSpacing, y: 0)
+        bottomBoard.addChild(poopButton)
         actionButtons.append(poopButton)
     }
     
@@ -339,14 +350,14 @@ private extension GameScene {
                 self.unhighlightTargetPlayers()
         })
         
-        inventoryBoxButton.position = CGPoint(x: 32, y: -37)
+        inventoryBoxButton.position = CGPoint(x: -310, y: 30)
         actionButtons.append(inventoryBoxButton)
-        entityLayer.addChild(inventoryBoxButton)
+        buttonLayer.addChild(inventoryBoxButton)
     }
 
     /// Adds the player nodes to the grid.
     func addPlayers() {
-        for player in gameEngine.gameManager.players.values {
+        for player in gameManager.players.values {
             let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
             let playerNode = player.getSprite() as SKSpriteNode
             playerNode.size = spriteNode.size

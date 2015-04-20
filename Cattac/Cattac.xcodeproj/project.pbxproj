@@ -103,6 +103,9 @@
 		7661CF4A1AD4336C0004B0FD /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF491AD4336C0004B0FD /* Direction.swift */; };
 		7661CF4C1AD560400004B0FD /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF4B1AD560400004B0FD /* GameManager.swift */; };
 		7676FEB91AE29400008FDC9D /* SKPuiActionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */; };
+		767C41031AE3B79000D28EB4 /* SKPlayerInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767C41021AE3B79000D28EB4 /* SKPlayerInfoNode.swift */; };
+		767C41051AE4B0C100D28EB4 /* BottomBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = 767C41041AE4B0C100D28EB4 /* BottomBoard.png */; };
+		767C41071AE4B0CC00D28EB4 /* TopBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = 767C41061AE4B0CC00D28EB4 /* TopBoard.png */; };
 		768383E21ADBD44900538F5D /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Grid.swift */; };
 		768383E31ADBD44900538F5D /* GridIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF471AD4333E0004B0FD /* GridIndex.swift */; };
 		768383E41ADBD44900538F5D /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7661CF491AD4336C0004B0FD /* Direction.swift */; };
@@ -257,6 +260,9 @@
 		7661CF491AD4336C0004B0FD /* Direction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		7661CF4B1AD560400004B0FD /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPuiActionButtonNode.swift; sourceTree = "<group>"; };
+		767C41021AE3B79000D28EB4 /* SKPlayerInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPlayerInfoNode.swift; sourceTree = "<group>"; };
+		767C41041AE4B0C100D28EB4 /* BottomBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BottomBoard.png; path = Images.xcassets/BottomBoard.png; sourceTree = "<group>"; };
+		767C41061AE4B0CC00D28EB4 /* TopBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TopBoard.png; path = Images.xcassets/TopBoard.png; sourceTree = "<group>"; };
 		768384041ADBD55B00538F5D /* GridTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridTests.swift; sourceTree = "<group>"; };
 		7689FC971ADAD41E0086613D /* GameAI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
 		7694EDD11AE3324900572818 /* BubblegumSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BubblegumSans-Regular.ttf"; path = "Fonts/BubblegumSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -429,6 +435,7 @@
 				7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */,
 				323454AE1AE29EED00CBB356 /* AnimationEvent.swift */,
 				763E71321AD2FFB200E90EF0 /* SKDirectionButtonNode.swift */,
+				767C41021AE3B79000D28EB4 /* SKPlayerInfoNode.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -586,6 +593,8 @@
 		3471CA6C1ACEB7C400B0E68D /* Arena */ = {
 			isa = PBXGroup;
 			children = (
+				767C41061AE4B0CC00D28EB4 /* TopBoard.png */,
+				767C41041AE4B0C100D28EB4 /* BottomBoard.png */,
 				763E71181AD1B87C00E90EF0 /* GrassPreview.png */,
 				763E71161AD1B78D00E90EF0 /* Grass.png */,
 			);
@@ -810,12 +819,14 @@
 				76D0F60F1ADBA69100CB91B3 /* background.jpg in Resources */,
 				763E71171AD1B78D00E90EF0 /* Grass.png in Resources */,
 				763E712E1AD2F6AE00E90EF0 /* FartButtonPressed.png in Resources */,
+				767C41071AE4B0CC00D28EB4 /* TopBoard.png in Resources */,
 				3459ABC81ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 in Resources */,
 				76FC46E31ABFE6190056B5F5 /* Nala.png in Resources */,
 				763E71271AD2ED0400E90EF0 /* PoopButton.png in Resources */,
 				342584E51AACDB03004A3CFD /* GameScene.sks in Resources */,
 				342584EC1AACDB03004A3CFD /* Main.storyboard in Resources */,
 				763E71211AD2E0EB00E90EF0 /* Pui.png in Resources */,
+				767C41051AE4B0C100D28EB4 /* BottomBoard.png in Resources */,
 				7694EDD41AE3324900572818 /* LuckiestGuy.ttf in Resources */,
 				76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */,
 			);
@@ -886,6 +897,7 @@
 				34ED9F201AE29C88006DDA50 /* FirebaseServer.swift in Sources */,
 				34BA89CB1ADA7CC500413C1B /* StringUtils.swift in Sources */,
 				342584E31AACDB03004A3CFD /* AppDelegate.swift in Sources */,
+				767C41031AE3B79000D28EB4 /* SKPlayerInfoNode.swift in Sources */,
 				7676FEB91AE29400008FDC9D /* SKPuiActionButtonNode.swift in Sources */,
 				34BA89C81AD6D55200413C1B /* ConnectionManager.swift in Sources */,
 				34B4B20B1AD29B8F00D06BD8 /* LobbyViewController.swift in Sources */,
@@ -1073,6 +1085,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1081,6 +1094,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1093,6 +1107,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1101,6 +1116,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
