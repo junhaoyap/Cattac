@@ -29,9 +29,10 @@ class GameEngine {
     /// States to advance, initialized at 1 to rollover PostExecution state.
     private var statesToAdvance: Int = 1
 
+    /// Game Manager to help manage player movement and actions
     var gameManager: GameManager = GameManager()
     
-    /// Player index (we should change to player-id instead).
+    /// Player index (TODO: we should change to player-id instead).
     var playerNumber = 1
     
     // The initial game state is to be set at PostExecution
@@ -63,6 +64,7 @@ class GameEngine {
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
         println("init GameEngine as playerNumber \(playerNumber)")
+        
         self.playerNumber = playerNumber
         
         self.grid = grid
@@ -79,7 +81,7 @@ class GameEngine {
         }
     }
     
-    /// Called every update by gameScene (60 times per second)
+    /// Called every update by gameScene (1 time per frame)
     func gameLoop() {
         if statesToAdvance > 0 {
             advanceState()
@@ -125,6 +127,7 @@ class GameEngine {
     
     /// Releases all resources associated with this game, called
     /// when game has ended.
+    /// TODO: For firebase refactoring
     func end() {
         for ref in movementWatchers.values {
             ref.removeAllObservers()
@@ -179,6 +182,7 @@ class GameEngine {
         )
     }
     
+    /// TODO: For firebase refactoring
     private func updateServer() {
         let playerMoveUpdateRef = ref
             .childByAppendingPath(Constants.Firebase.nodeGames)
@@ -409,6 +413,7 @@ class GameEngine {
         }
     }
     
+    /// TODO: For firebase refactoring
     private func registerMovementWatcherExcept(number: Int) {
         for i in 1...4 {
             if i == number {
