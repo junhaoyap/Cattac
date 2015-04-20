@@ -26,6 +26,13 @@ class LevelGenerator {
         
         generateDoodad(level)
         generateWalls(level)
+        
+        while !isValidLevel(level) {
+            level.removeAllEntities()
+            generateDoodad(level)
+            generateWalls(level)
+        }
+        
         generateItems(level)
         
         return level
@@ -105,6 +112,16 @@ class LevelGenerator {
             location = GridIndex(row, col)
         }
         return location
+    }
+    
+    /// Checks level validity, invalid if any empty tile is isolated from play.
+    ///
+    /// :param: level The level to check
+    /// :returns: true if level is valid, false otherwise
+    private func isValidLevel(level: GameLevel) -> Bool {
+        let emptyTiles = level.emptyTiles()
+        let emptyRegion = level.grid.largestEmptyRegion(emptyTiles.first!)
+        return emptyTiles.count == emptyRegion.count
     }
     
     func createGame(fromSnapshot data: FDataSnapshot) -> GameLevel {
