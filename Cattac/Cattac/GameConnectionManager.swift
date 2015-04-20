@@ -89,6 +89,8 @@ class GameConnectionManager {
         connectionManager.removeAllObservers()
     }
     
+    // MARK: LoginViewController
+    
     func autoLogin(theSender: AnyObject) {
         let sender = theSender as LoginViewController
         
@@ -177,6 +179,124 @@ class GameConnectionManager {
         
         meowsManager.overwrite("", data: defaultUserMeow)
     }
+    
+    // MARK: MenuViewController
+    
+    // MARK: LobbyViewController
+    
+    func joinLobby(theSender: AnyObject) {
+        let sender = theSender as LobbyViewController
+        
+        let lobbyRef = connectionManager.append(
+            Constants.Firebase.nodeGames + "/" +
+            Constants.Firebase.nodeGame + "/" +
+            Constants.Firebase.nodeLobby
+        )
+        
+        var uid = connectionManager.getAuthId()
+        
+        lobbyRef.readOnce("", onComplete: {
+            theSnapshot in
+            
+            let snapshot = theSnapshot as FDataSnapshot
+            
+            let lastActiveTimeString = snapshot.value[
+                Constants.Firebase.keyTime] as? String
+            
+            let lastActiveTime = lastActiveTimeString == nil ?
+                nil : DateUtils.dateFormatter.dateFromString(
+                    lastActiveTimeString!
+            )
+            
+            let currentTime = DateUtils.dateFormatter.stringFromDate(NSDate())
+            
+            if lastActiveTime == nil ||
+                DateUtils.isMinutesBeforeNow(lastActiveTime!, minutes: 1) {
+                    lobbyRef.overwrite("", data: [
+                        Constants.Firebase.keyTime: currentTime,
+                        Constants.Firebase.nodePlayers: [
+                            uid, "", "", ""
+                        ]
+                        ])
+                    sender.playerNumber = 1
+                    sender.waitForGameStart()
+            } else {
+                var numberOfPlayers = 1
+                
+                let players = snapshot.value.objectForKey(
+                    Constants.Firebase.nodePlayers)! as [String]
+                
+                for player in players {
+                    if !player.isEmpty {
+                        numberOfPlayers++
+                    }
+                }
+                
+                sender.playerNumber = numberOfPlayers
+                
+                lobbyRef.update(Constants.Firebase.nodePlayers, data: [
+                    "\(numberOfPlayers - 1)": uid
+                    ]
+                )
+                
+                lobbyRef.update("", data: [
+                    "lastActive": currentTime
+                    ]
+                )
+                
+                if numberOfPlayers == 4 {
+                    sender.initiateGameStart()
+                } else {
+                    sender.waitForGameStart()
+                }
+            }
+        })
+    }
+    
+    func sendLevel(aLevel: GameLevel) {
+        let gameRef = connectionManager.append(
+            Constants.Firebase.nodeGames + "/" +
+            Constants.Firebase.nodeGame
+        )
+        
+        gameRef.overwrite("", data:
+            [
+                "hasGameStarted": 1,
+                Constants.Firebase.nodeGameLevel: aLevel.compress(),
+                Constants.Firebase.nodePlayers: [
+                    Constants.Firebase.nodePlayerMovements,
+                    Constants.Firebase.nodePlayerMovements,
+                    Constants.Firebase.nodePlayerMovements,
+                    Constants.Firebase.nodePlayerMovements
+                ]
+            ]
+        )
+    }
+    
+    func waitForGameStart(theSender: AnyObject) {
+        let sender = theSender as LobbyViewController
+        
+        let gameRef = connectionManager.append(
+            Constants.Firebase.nodeGames + "/" +
+                Constants.Firebase.nodeGame
+        )
+        
+        gameRef.watchUpdateOnce("", onComplete: {
+            snapshot in
+            
+            gameRef.readOnce(Constants.Firebase.nodeGameLevel,
+                onComplete: {
+                    gameSnapshot in
+                    
+                    sender.level = sender.levelGenerator
+                        .createGame(fromSnapshot: gameSnapshot as FDataSnapshot)
+                    
+                    sender.startGame()
+            })
+        })
+    }
+    
+    // MARK: GameEngine
     
     func updateServer(playerNumber: Int, currentTile: TileNode,
         moveToTile: TileNode, action: Action?, number: Int) {

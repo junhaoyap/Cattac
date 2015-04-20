@@ -127,6 +127,8 @@ struct Constants {
         
         static let keyMeows = "numberOfMeows"
         
+        static let keyTime = "lastActive"
+        
         static let keyAttkDir = "attackDir"
         static let keyAttkDmg = "attackDmg"
         static let keyAttkRange = "attackRange"

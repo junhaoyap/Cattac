@@ -24,6 +24,9 @@ class MenuViewController: UIViewController {
         return true
     }
     
+    // TODO: completely abstract into game connection manager when the time
+    // has come for us to start showing meows and also update players
+    // on the amount of meows they have
     func getMeowsAndDisplay() {
         let uid = self.gameConnectionManager.getAuthId()
         

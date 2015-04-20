@@ -258,7 +258,6 @@
                     <connections>
                         <segue destination="BV1-FR-VrT" kind="show" identifier="gameStartSegue" id="l2v-Ib-U9H"/>
                         <segue destination="BkA-v6-0HU" kind="show" identifier="backFromLobbySegue" id="Dj2-4M-bzx"/>
-                        <segue destination="BV1-FR-VrT" kind="show" identifier="waitGameStartSegue" id="YXU-hP-zIn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7gh-2U-MnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -307,6 +306,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="Ioc-6a-4bE"/>
         <segue reference="xpq-qD-ra0"/>
-        <segue reference="YXU-hP-zIn"/>
+        <segue reference="l2v-Ib-U9H"/>
     </inferredMetricsTieBreakers>
 </document>

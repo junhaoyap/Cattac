@@ -32,6 +32,16 @@ class LoginViewController: UIViewController {
         return true
     }
     
+    func presentMenuView() {
+        self.performSegueWithIdentifier(
+            Constants.Segues.loginToMenuSegueIdentifier, sender: nil
+        )
+    }
+    
+    func login(email: String, password: String) {
+        gameConnectionManager.login(email, password: password, theSender: self)
+    }
+    
     @IBAction func loginButtonPressed(sender: UIButton) {
         let email = loginUsername.text
         let password = loginPassword.text
@@ -42,15 +52,5 @@ class LoginViewController: UIViewController {
         }
         
         login(email, password: password)
-    }
-    
-    func login(email: String, password: String) {
-        gameConnectionManager.login(email, password: password, theSender: self)
-    }
-    
-    func presentMenuView() {
-        self.performSegueWithIdentifier(
-            Constants.Segues.loginToMenuSegueIdentifier, sender: nil
-        )
     }
 }
