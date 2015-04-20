@@ -524,11 +524,7 @@ private extension GameScene {
                     victimPlayer = player
                 }
 
-                let fart = SKSpriteNode(imageNamed: "Fart.png")
-                fart.size = CGSize(width: sceneUtils.tileSize.width / 4,
-                    height: sceneUtils.tileSize.height / 4)
-                fart.position = node.sprite.position
-                fart.alpha = 0
+                let fart = sceneUtils.getFartNode(at: node.sprite.position)
 
                 entityLayer.addChild(fart)
                 let action = sceneUtils.getFartAnimation(timeInterval)

@@ -79,6 +79,20 @@ class SceneUtils {
         return SKAction.sequence(pathSequence)
     }
     
+    
+    /// Generates a fart sprite node used to animate the Fart attack.
+    ///
+    /// :param: direction The direction of PuiAction
+    /// :returns: The SKSpriteNode
+    func getFartNode(at position: CGPoint) -> SKSpriteNode {
+        let fartNode = SKSpriteNode(imageNamed: "Fart.png")
+        fartNode.size = CGSize(width: tileWidth / 4,
+            height: tileHeight / 4)
+        fartNode.position = position
+        fartNode.alpha = 0
+        return fartNode
+    }
+    
     /// Generates a SKAction that enters with fadeIn, rotateIn, and scaleUp
     /// and exits with fadeOut, rotateOut, and scaleDown
     ///
