@@ -7,12 +7,9 @@ class WormholeDoodad: Doodad {
     private let blueTexture = SKTexture(imageNamed: "WormholeBlue.png")
     private let orangeTexture = SKTexture(imageNamed: "WormholeOrange.png")
 
-    override init() {
+    init() {
         _spriteNode = SKSpriteNode()
-
-        super.init()
-
-        setSprite(_spriteNode)
+        super.init(sprite: _spriteNode)
         setName(Constants.Doodad.wormholeString)
     }
 

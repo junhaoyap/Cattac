@@ -47,29 +47,40 @@ class ConnectionManager {
         })
     }
 
-    func watchUpdate(childUrl: String, onComplete: (AnyObject) -> ()) {
-        server.watchUpdate(childUrl, onComplete: {
+    func watchUpdate(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
+        return server.watchUpdate(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
         })
     }
     
-    func watchNewOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
-        server.watchNewOnce(childUrl, onComplete: {
+    func watchNewOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
+        return server.watchNewOnce(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)
         })
     }
-
+    
     func watchNew(childUrl: String,
         onComplete: (AnyObject) -> ()) -> ObserverReference {
-        return server.watchNew(childUrl, onComplete: {
-            snapshot in
-            
-            onComplete(snapshot)
-        })
+            return server.watchNew(childUrl, onComplete: {
+                snapshot in
+                
+                onComplete(snapshot)
+            })
+    }
+    
+    func watchRemovedOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
+            return server.watchRemovedOnce(childUrl, onComplete: {
+                snapshot in
+                
+                onComplete(snapshot)
+            })
     }
     
     func createUser(email: String, password: String,

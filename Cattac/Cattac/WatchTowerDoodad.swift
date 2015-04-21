@@ -4,9 +4,8 @@ import SpriteKit
 class WatchTowerDoodad: Doodad {
     let fartRangeModification = AttrModification(Constants.Doodad.watchTowerActionRangeModification, life: 1)
     
-    override init() {
-        super.init()
-        setSprite(SKSpriteNode(imageNamed: "Tower.png"))
+    init() {
+        super.init(sprite: SKSpriteNode(imageNamed: "Tower.png"))
         setName(Constants.Doodad.watchTowerString)
     }
     

@@ -13,11 +13,16 @@ protocol Server {
     
     func watchUpdateOnce(childUrl: String, onComplete: (AnyObject) -> ())
     
-    func watchUpdate(childUrl: String, onComplete: (AnyObject) -> ())
+    func watchUpdate(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference
     
-    func watchNewOnce(childUrl: String, onComplete: (AnyObject) -> ())
+    func watchNewOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference
     
     func watchNew(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference
+    
+    func watchRemovedOnce(childUrl: String,
         onComplete: (AnyObject) -> ()) -> ObserverReference
     
     func createUser(email: String, password: String,

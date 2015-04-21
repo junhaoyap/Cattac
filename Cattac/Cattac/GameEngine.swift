@@ -180,10 +180,10 @@ class GameEngine {
     }
     
     private func countDownForDrop() {
-        if !host || gameManager.allTurnsCompleted {
+        if !host || gameManager.allTurnsCompleted
+            || gameManager.aiPlayers.count == 3 {
             return
         }
-        println("Initiated drop timer \(Constants.Firebase.maxDelayBeforeDrop)")
         
         countDownTimer = NSTimer.scheduledTimerWithTimeInterval(
             Constants.Firebase.maxDelayBeforeDrop,
@@ -193,7 +193,7 @@ class GameEngine {
     }
     
     @objc func onCountDownForDrop() {
-        println("Drop timer reached")
+        println("Initiate drop inactive players")
         if !gameManager.allTurnsCompleted {
             var playersToDrop: [Cat] = []
             for (name, player) in gameManager.players {
@@ -212,7 +212,7 @@ class GameEngine {
         for player in players {
             let playerNum = gameManager[playerNumber: player]!
             gameConnectionManager.dropPlayer(playerNum)
-            println("Dropped player \(player.name)")
+            println("Dropping player \(player.name)")
         }
     }
 
@@ -448,9 +448,7 @@ class GameEngine {
                 continue
             }
             
-            let currentNumber = i - 1
-            
-            gameConnectionManager.registerPlayerWatcher(currentNumber,
+            gameConnectionManager.registerPlayerWatcher(i,
                 dropped: playerDropped,
                 completion: movementUpdate
             )
@@ -463,6 +461,7 @@ class GameEngine {
             gameManager[aiFor: player] = true
             gameAI.calculateTurn()
         }
+        gameConnectionManager.unregisterPlayerWatcher(playerNum)
     }
     
     private func movementUpdate(snapshot: FDataSnapshot) {

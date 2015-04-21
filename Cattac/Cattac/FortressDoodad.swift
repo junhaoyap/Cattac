@@ -4,9 +4,8 @@ import SpriteKit
 class FortressDoodad: Doodad {
     let defenceModification = AttrModification(Constants.Doodad.fortressDefenceModification, life: 1)
     
-    override init() {
-        super.init()
-        setSprite(SKSpriteNode(imageNamed: "Fortress.png"))
+    init() {
+        super.init(sprite: SKSpriteNode(imageNamed: "Fortress.png"))
         setName(Constants.Doodad.fortressString)
     }
     

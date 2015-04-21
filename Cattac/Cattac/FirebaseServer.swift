@@ -69,7 +69,8 @@ class FirebaseServer: Server {
         })
     }
     
-    func watchUpdate(childUrl: String, onComplete: (AnyObject) -> ()) {
+    func watchUpdate(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var changeRef = ref!
@@ -83,9 +84,35 @@ class FirebaseServer: Server {
             
             onComplete(snapshot)
         })
+        
+        return ObserverReference(unregister: {
+            changeRef.removeAllObservers()
+        })
     }
     
-    func watchNewOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+    func watchRemovedOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
+        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
+        
+        var changeRef = ref!
+        
+        for childString in splittedStringsToConstructRef {
+            changeRef = changeRef.childByAppendingPath(childString)
+        }
+        
+        changeRef.observeEventType(.ChildRemoved, withBlock: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+        
+        return ObserverReference(unregister: {
+            changeRef.removeAllObservers()
+        })
+    }
+    
+    func watchNewOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var changeRef = ref!
@@ -98,6 +125,10 @@ class FirebaseServer: Server {
             snapshot in
             
             onComplete(snapshot)
+        })
+            
+        return ObserverReference(unregister: {
+            changeRef.removeAllObservers()
         })
     }
     
