@@ -62,11 +62,16 @@ class LevelGenerator {
             tileNode.doodad = doodad
             
             if doodad is WormholeDoodad {
+                (doodad as WormholeDoodad).setColor(wormholeCount)
+
                 if ++wormholeCount >= Constants.Doodad.maxWormhole {
                     excludedDoodads += [.Wormhole]
                 }
                 
-                let destDoodad = doodadFactory.createDoodad(.Wormhole)! as WormholeDoodad
+                let destDoodad =
+                    doodadFactory.createDoodad(.Wormhole)! as WormholeDoodad
+                destDoodad.setColor(wormholeCount)
+
                 let destLocation = getValidEntityLocation(level)
                 let destTileNode = level.nodeAt(destLocation)!
                 destTileNode.doodad = destDoodad
@@ -142,11 +147,14 @@ class LevelGenerator {
         constructLevel(level)
         
         let entitiesData = data.value.objectForKey(Constants.Level.keyEntities) as [[String: AnyObject]]
+
+        var wormholeCount = 0
         
         for entityData in entitiesData {
             let entityType = entityData[Constants.Level.keyEntityType]! as String
             if entityType == Constants.Level.valueDoodadType {
-                createDoodad(fromDict: entityData, level: level)
+                createDoodad(fromDict: entityData, level: level,
+                    wormholeCount: wormholeCount)
             } else if entityType == Constants.Level.valueItemType {
                 createItem(fromDict: entityData, level: level)
             }
@@ -165,25 +173,30 @@ class LevelGenerator {
         tileNode.item = item
     }
     
-    func createDoodad(fromDict data: [String: AnyObject], level: GameLevel) {
-        let doodadName = data[Constants.Level.keyEntityName]! as String
-        let doodadRow = data[Constants.Level.keyGridRow]! as Int
-        let doodadCol = data[Constants.Level.keyGridCol]! as Int
-        let doodad = doodadFactory.createDoodad(doodadName)!
-        
-        let tileNode = level.nodeAt(doodadRow, doodadCol)!
-        tileNode.doodad = doodad
-        
-        if doodad is WormholeDoodad {
-            let destDoodadData = data[Constants.Level.keyWormholeDestNode]! as [String: AnyObject]
-            let destDoodadRow = destDoodadData[Constants.Level.keyGridRow]! as Int
-            let destDoodadCol = destDoodadData[Constants.Level.keyGridCol]! as Int
+    func createDoodad(fromDict data: [String: AnyObject], level: GameLevel,
+        wormholeCount: Int) {
+            let doodadName = data[Constants.Level.keyEntityName]! as String
+            let doodadRow = data[Constants.Level.keyGridRow]! as Int
+            let doodadCol = data[Constants.Level.keyGridCol]! as Int
+            let doodad = doodadFactory.createDoodad(doodadName)!
             
-            let destTileNode = level.nodeAt(destDoodadRow, destDoodadCol)!
+            let tileNode = level.nodeAt(doodadRow, doodadCol)!
+            tileNode.doodad = doodad
             
-            (doodad as WormholeDoodad).setDestination(destTileNode)
-        } else if doodad is Wall {
-            level.grid.removeNodeFromGraph(tileNode)
-        }
+            if doodad is WormholeDoodad {
+                let destDoodadData = data[Constants.Level.keyWormholeDestNode]!
+                    as [String: AnyObject]
+                let destDoodadRow = destDoodadData[Constants.Level.keyGridRow]!
+                    as Int
+                let destDoodadCol = destDoodadData[Constants.Level.keyGridCol]!
+                    as Int
+                
+                let destTileNode = level.nodeAt(destDoodadRow, destDoodadCol)!
+                
+                (doodad as WormholeDoodad).setDestination(destTileNode)
+                (doodad as WormholeDoodad).setColor(wormholeCount)
+            } else if doodad is Wall {
+                level.grid.removeNodeFromGraph(tileNode)
+            }
     }
 }

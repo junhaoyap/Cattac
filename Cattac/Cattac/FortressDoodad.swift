@@ -6,7 +6,7 @@ class FortressDoodad: Doodad {
     
     override init() {
         super.init()
-        setSprite(SKLabelNode(text: "F"))
+        setSprite(SKSpriteNode(imageNamed: "Fortress.png"))
         setName(Constants.Doodad.fortressString)
     }
     

@@ -3,11 +3,25 @@ import SpriteKit
 
 class WormholeDoodad: Doodad {
     private var destinationTileNode: TileNode!
-    
+    private var _spriteNode: SKSpriteNode
+    private let blueTexture = SKTexture(imageNamed: "WormholeBlue.png")
+    private let orangeTexture = SKTexture(imageNamed: "WormholeOrange.png")
+
     override init() {
+        _spriteNode = SKSpriteNode()
+
         super.init()
-        setSprite(SKLabelNode(text: "X"))
+
+        setSprite(_spriteNode)
         setName(Constants.Doodad.wormholeString)
+    }
+
+    func setColor(wormholeCount: Int) {
+        if wormholeCount % 2 == 0 {
+            _spriteNode.texture = blueTexture
+        } else {
+            _spriteNode.texture = orangeTexture
+        }
     }
     
     func setDestination(dest: TileNode) {
