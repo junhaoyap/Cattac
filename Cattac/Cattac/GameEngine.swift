@@ -120,6 +120,7 @@ class GameEngine {
             // from the scene.
             break
         case .DeconflictExecution:
+            deconflictUpdate()
             // This state waits for the deconflict that is triggered
             // from the scene.
             break
@@ -225,6 +226,7 @@ class GameEngine {
     /// is called.
     private func calculateMovementPaths() {
         for player in gameManager.players.values {
+            var shouldContinue = false
             var playerAtNode = gameManager[positionOf: player]!
             var playerMoveToNode = gameManager[moveToPositionOf: player]!
             var path = grid.shortestPathFromNode(playerAtNode,
@@ -239,7 +241,7 @@ class GameEngine {
                     
                     if playerMoveToNode == otherPlayerMoveToNode {
                         if path.count == 0 {
-                            println("we got a problem houston")
+                            println("a cat moving onto another cat, no backward movement")
                         } else {
                             var reversedPath = reverse(path)
                             reversedPath.removeAtIndex(0)
@@ -247,12 +249,15 @@ class GameEngine {
                             
                             gameManager[deconflictPathOf: player] = reversedPath
                             gameManager[movementPathOf: player] = path
-                            gameManager[moveToPositionOf: player] = playerAtNode
                             
-                            return
+                            shouldContinue = true
                         }
                     }
                 }
+            }
+            
+            if shouldContinue {
+                continue
             }
             
             if let doodad = playerMoveToNode.doodad {
@@ -347,6 +352,18 @@ class GameEngine {
             return path!
         } else {
             return []
+        }
+    }
+    
+    func deconflictUpdate() {
+        for player in gameManager.players.values {
+            let path = gameManager[deconflictPathOf: player]
+            
+            if path != nil {
+                if path!.count != 0 {
+                    gameManager[moveToPositionOf: player] = path!.last
+                }
+            }
         }
     }
     
