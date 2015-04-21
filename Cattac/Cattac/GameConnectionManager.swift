@@ -4,10 +4,12 @@
 */
 
 class GameConnectionManager {
-    let connectionManager: ConnectionManager!
+    let connectionManager: ConnectionManager
+    private var observerReferences: [Int: ObserverReference]
     
     init(urlProvided: String) {
         connectionManager = ConnectionManager(firebase: urlProvided)
+        observerReferences = [:]
     }
     
     // MARK: LoginViewController
@@ -293,7 +295,7 @@ class GameConnectionManager {
             )
     }
     
-    func registerMovementWatcher(playerNum: Int,
+    func registerPlayerWatcher(playerNum: Int,
         completion: (FDataSnapshot) -> Void) {
         
         let playerMovementWatcherRef = connectionManager
@@ -303,12 +305,16 @@ class GameConnectionManager {
             .append("\(playerNum)")
             .append(Constants.Firebase.nodePlayerMovements)
         
-        playerMovementWatcherRef.watchNew("", onComplete: {
+        let obsvRef = playerMovementWatcherRef.watchNew("", onComplete: {
             theSnapshot in
             
             let snapshot = theSnapshot as FDataSnapshot
             completion(snapshot)
         })
-
+        observerReferences[playerNum] = obsvRef
+    }
+    
+    func unregisterPlayerWatcher(playerNum: Int) {
+        observerReferences[playerNum]?.unregister()
     }
 }

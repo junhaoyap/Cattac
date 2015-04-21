@@ -17,7 +17,8 @@ protocol Server {
     
     func watchNewOnce(childUrl: String, onComplete: (AnyObject) -> ())
     
-    func watchNew(childUrl: String, onComplete: (AnyObject) -> ())
+    func watchNew(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference
     
     func createUser(email: String, password: String,
         onComplete: (NSError!, [NSObject: AnyObject]!) -> ())

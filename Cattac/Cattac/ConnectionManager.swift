@@ -63,8 +63,9 @@ class ConnectionManager {
         })
     }
 
-    func watchNew(childUrl: String, onComplete: (AnyObject) -> ()) {
-        server.watchNew(childUrl, onComplete: {
+    func watchNew(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
+        return server.watchNew(childUrl, onComplete: {
             snapshot in
             
             onComplete(snapshot)

@@ -206,6 +206,8 @@ class GameEngine {
     private func dropPlayers(players: [Cat]) {
         for player in players {
             gameManager[aiFor: player] = true
+            let playerNum = gameManager[playerNumber: player]!
+            gameConnectionManager.unregisterPlayerWatcher(playerNum)
             println("Drop player \(player.name)")
             //gameConnectionManager.dropPlayers(players)
         }
@@ -365,19 +367,19 @@ class GameEngine {
     
     private func createPlayers(playerNumber: Int) {
         let cat1 = catFactory.createCat(Constants.catName.nalaCat)!
-        gameManager.registerPlayer(cat1)
+        gameManager.registerPlayer(cat1, playerNum: 1)
         gameManager[positionOf: cat1] = grid[0, 0]
         
         let cat2 = catFactory.createCat(Constants.catName.nyanCat)!
-        gameManager.registerPlayer(cat2)
+        gameManager.registerPlayer(cat2, playerNum: 2)
         gameManager[positionOf: cat2] = grid[grid.rows - 1, 0]
         
         let cat3 = catFactory.createCat(Constants.catName.grumpyCat)!
-        gameManager.registerPlayer(cat3)
+        gameManager.registerPlayer(cat3, playerNum: 3)
         gameManager[positionOf: cat3] = grid[grid.rows - 1, grid.columns - 1]
         
         let cat4 = catFactory.createCat(Constants.catName.pusheenCat)!
-        gameManager.registerPlayer(cat4)
+        gameManager.registerPlayer(cat4, playerNum: 4)
         gameManager[positionOf: cat4] = grid[0, grid.columns - 1]
         
         if !multiplayer {
@@ -445,7 +447,7 @@ class GameEngine {
             
             let currentNumber = i - 1
             
-            gameConnectionManager.registerMovementWatcher(currentNumber,
+            gameConnectionManager.registerPlayerWatcher(currentNumber,
                 completion: movementUpdate
             )
         }

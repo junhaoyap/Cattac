@@ -4,6 +4,7 @@ class GameManager {
     private var _playerMoveToPositions: [String:TileNode]
     private var _playerActions: [String:Action]
     private var _players: [String:Cat]
+    private var _playerNumber: [String:Int]
     private var _playerAIControlled: [String:Cat]
     private var _playerTurnComplete: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
@@ -17,6 +18,7 @@ class GameManager {
         _playerMoveToPositions = [:]
         _playerActions = [:]
         _players = [:]
+        _playerNumber = [:]
         _playerAIControlled = [:]
         _playerTurnComplete = [:]
         _playerMovementPaths = [:]
@@ -25,13 +27,22 @@ class GameManager {
         _playerItems = [:]
         _doodadsToRemove = [:]
     }
-
+    
     subscript(positionOf player:Cat) -> TileNode? {
         set {
             _playerPositions[player.name] = newValue
         }
         get {
             return _playerPositions[player.name]
+        }
+    }
+    
+    subscript(playerNumber player:Cat) -> Int? {
+        set {
+            _playerNumber[player.name] = newValue
+        }
+        get {
+            return _playerNumber[player.name]
         }
     }
 
@@ -141,8 +152,9 @@ class GameManager {
         return allCompleted
     }
 
-    func registerPlayer(player: Cat) {
+    func registerPlayer(player: Cat, playerNum: Int) {
         _players[player.name] = player
+        _playerNumber[player.name] = playerNum
     }
     
     func registerAIPlayers(players: [Cat]) {
