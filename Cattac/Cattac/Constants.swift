@@ -51,6 +51,9 @@ struct Constants {
     
     // default number of meows, standalone for now
     static let defaultNumberOfMeows = 100
+
+    // time for each turn
+    static let turnDuration = 5
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2
@@ -70,33 +73,28 @@ struct Constants {
     
     // for randomising which player get which cat, copy the array before playing with it, only for
     // initial reference
-    static let catArray = [catName.nalaCat, catName.nyanCat, catName.grumpyCat, catName.pusheenCat]
+    static let catArray = [cat.grumpyCat, cat.nyanCat, cat.kittyCat, cat.octoCat]
     
-    struct catAttributes {
-        // always hp, defence, puiDmg then fartDmg
-        
-        static let nyanCatAttributes = [500, 1, 50, 25]
-        // nyan cat is the most balanced cat
-        
-        static let nalaCatAttributes = [600, 1, 45, 20]
-        // nala cat is thicker, but does less dmg
-        
-        static let grumpyCatAttributes = [400, 1, 55, 30]
-        // grumpy cat is thinner, but does more dmg
-        
-        static let pusheenCatAttributes = [500, 1, 40, 30]
-        // pusheen cat pui for less dmg, but does more fartdmg, otherwise balanced
-        
-        static let poopDmg = 15
-        static let moveRange = 2
-        static let fartRange = 2
-    }
-    
-    struct catName {
-        static let nyanCat = "nyanCat"
-        static let nalaCat = "nalaCat"
-        static let grumpyCat = "grumpyCat"
-        static let pusheenCat = "pusheenCat"
+    struct cat {
+        static let grumpyCat = "Grumpy"
+        static let nyanCat = "Nyan"
+        static let kittyCat = "Hello Kitty"
+        static let octoCat = "Octocat"
+
+        static let attributes: [String:(hp: Int, defense: Int, puiDmg: Int,
+        fartDmg: Int, poopDmg: Int, moveRange: Int, fartRange: Int)] = [
+            grumpyCat: (400, 1, 55, 30, 15, 2, 2),
+            nyanCat:   (500, 1, 50, 25, 15, 2, 2),
+            kittyCat:  (600, 1, 45, 20, 15, 2, 2),
+            octoCat:   (500, 1, 40, 30, 15, 2, 2)
+        ]
+
+        static let images = [
+            grumpyCat: "Grumpy.png",
+            nyanCat: "Nyan.png",
+            kittyCat: "HelloKitty.png",
+            octoCat: "Octocat.png"
+        ]
     }
     
     struct itemName {

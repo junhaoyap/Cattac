@@ -30,6 +30,8 @@ class GameScene: SKScene {
     /// The button layer that consists of the main buttons for the actions.
     private let buttonLayer = SKNode()
 
+    private let infoLayer = SKNode()
+
     /// All action buttons.
     private var actionButtons = [SKActionButtonNode]()
 
@@ -60,6 +62,12 @@ class GameScene: SKScene {
     
     /// Targeting preview during item action
     private var crosshairNode: SKSpriteNode!
+
+    /// Timer
+    private var timer: NSTimer!
+    private var currentTime: Int = Constants.turnDuration
+    private var timerLabel: SKLabelNode!
+    private var isPlayerTurn: Bool = true
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -96,10 +104,15 @@ class GameScene: SKScene {
             initializeBackground()
             initializeLayers()
             initializeButtons()
+
             initializeInventory()
             initializePreviewNodes(currentPlayerNumber)
             addTiles()
             addPlayers()
+
+            infoLayer.position = CGPoint(x: -384, y: 320)
+            gameLayer.addChild(infoLayer)
+            initializeInformationBar()
     }
     
     /// When player tries to perform movement actions
@@ -130,6 +143,22 @@ class GameScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         gameEngine.gameLoop()
     }
+
+    override func willMoveFromView(view: SKView) {
+        timer.invalidate()
+    }
+
+    func updateTime() {
+        if currentTime == 0 {
+            timerLabel.text = "Wait"
+            gameEngine.triggerPlayerActionEnded()
+            timer.invalidate()
+            currentTime = Constants.turnDuration
+        } else {
+            currentTime--
+            timerLabel.text = "\(currentTime)s"
+        }
+    }
 }
 
 
@@ -142,6 +171,7 @@ extension GameScene: GameStateListener {
         // we should restrict next-state calls in game engine
         switch state {
         case .PlayerAction:
+            startTimer()
             enableActionButtons()
             deleteRemovedDoodads()
             highlightReachableNodes()
@@ -224,10 +254,17 @@ extension GameScene: EventListener {
             let scale = 64 / item.sprite.size.height
             let dur = sceneUtils.getAnimDuration(item.sprite.position,
                 dest: inventoryBoxButton.position)
+
+            let inventoryPositionInGameLayer = buttonLayer.convertPoint(
+                inventoryBoxButton.position, toNode: gameLayer)
+            let inventoryPositionInEntityLayer = gameLayer.convertPoint(
+                inventoryPositionInGameLayer, toNode: entityLayer)
+
             let animAction = SKAction.group([
-                SKAction.moveTo(inventoryBoxButton.position, duration: dur),
+                SKAction.moveTo(inventoryPositionInEntityLayer, duration: dur),
                 SKAction.scaleTo(scale, duration: dur)
-                ])
+            ])
+
             item.sprite.zPosition = Constants.Z.itemActivated
             item.sprite.runAction(animAction)
         } else {
@@ -275,13 +312,21 @@ private extension GameScene {
         
         // adds buttonLayer to the gameLayer
         buttonLayer.position =
-            CGPoint(x: -Constants.UI.buttonSpacing, y: layerPosition.y - 100)
+            CGPoint(x: -384, y: -512)
         gameLayer.addChild(buttonLayer)
     }
 
     /// Initializes the action buttons for the scene.
     func initializeButtons() {
+        let bottomBoard = SKSpriteNode(imageNamed: "BottomBoard.png")
+        bottomBoard.size = CGSize(width: self.size.width,
+            height: 192)
+        bottomBoard.position = CGPoint(x: 384, y: 96)
+        bottomBoard.zPosition = -10
+        buttonLayer.addChild(bottomBoard)
+
         let buttonSpacing: CGFloat = Constants.UI.buttonSpacing
+
         puiButton = SKPuiActionButtonNode(
             defaultButtonImage: "PuiButton.png",
             activeButtonImage: "PuiButtonPressed.png",
@@ -292,7 +337,7 @@ private extension GameScene {
             getAvailableDirections: {
                 return self.gameEngine.getAvailablePuiDirections()
         })
-        puiButton.position = CGPoint(x: 0 * buttonSpacing, y: 0)
+        puiButton.position = CGPoint(x: 384 - buttonSpacing, y: 80)
         buttonLayer.addChild(puiButton)
         actionButtons.append(puiButton)
 
@@ -301,7 +346,7 @@ private extension GameScene {
             activeButtonImage: "FartButtonPressed.png",
             buttonAction: { self.gameEngine.triggerFartButtonPressed() },
             unselectAction: { self.gameEngine.triggerClearAction() })
-        fartButton.position = CGPoint(x: 1 * buttonSpacing, y: 0)
+        fartButton.position = CGPoint(x: 384, y: 80)
         buttonLayer.addChild(fartButton)
         actionButtons.append(fartButton)
 
@@ -313,7 +358,7 @@ private extension GameScene {
                 self.hidePoop()
                 self.gameEngine.triggerClearAction()
         })
-        poopButton.position = CGPoint(x: 2 * buttonSpacing, y: 0)
+        poopButton.position = CGPoint(x: 384 + buttonSpacing, y: 80)
         buttonLayer.addChild(poopButton)
         actionButtons.append(poopButton)
     }
@@ -329,20 +374,62 @@ private extension GameScene {
                 self.unhighlightTargetPlayers()
         })
         
-        inventoryBoxButton.position = CGPoint(x: 32, y: -37)
+        inventoryBoxButton.position = CGPoint(x: 384, y: 140)
         actionButtons.append(inventoryBoxButton)
-        entityLayer.addChild(inventoryBoxButton)
+        buttonLayer.addChild(inventoryBoxButton)
+    }
+
+    func startTimer() {
+        timerLabel.text = "\(currentTime)s"
+        timer = NSTimer.scheduledTimerWithTimeInterval(
+            1,
+            target: self,
+            selector: Selector("updateTime"),
+            userInfo: nil,
+            repeats: true
+        )
     }
 
     /// Adds the player nodes to the grid.
     func addPlayers() {
-        for player in gameEngine.gameManager.players.values {
+        for player in gameManager.players.values {
             let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
             let playerNode = player.getSprite() as SKSpriteNode
             playerNode.size = spriteNode.size
             playerNode.position = spriteNode.position
             entityLayer.addChild(playerNode)
         }
+    }
+
+    func initializeInformationBar() {
+        let topBoard = SKSpriteNode(imageNamed: "TopBoard.png")
+        topBoard.size = CGSize(width: self.size.width, height: 192)
+        topBoard.position = CGPoint(x: 384, y: 96)
+        topBoard.zPosition = -10
+        infoLayer.addChild(topBoard)
+
+        let playerInfoLayer = SKNode()
+        playerInfoLayer.position = CGPoint(x: 384, y: 110)
+        infoLayer.addChild(playerInfoLayer)
+
+        let playerInfoNodeSize = CGSize(width: 250, height: 64)
+        let playerInfoNodePositions = [
+            CGPoint(x: -175, y: 32),
+            CGPoint(x: -175, y: -32),
+            CGPoint(x: 175, y: 32),
+            CGPoint(x: 175, y: -32)
+        ]
+
+        for (index, player) in enumerate(gameManager.players.values) {
+            let playerInfoNode = SKPlayerInfoNode(player: player,
+                size: playerInfoNodeSize)
+            playerInfoNode.position = playerInfoNodePositions[index]
+            playerInfoLayer.addChild(playerInfoNode)
+        }
+
+        timerLabel = SKLabelNode(fontNamed: "BubblegumSans-Regular")
+        timerLabel.fontColor = UIColor.blackColor()
+        playerInfoLayer.addChild(timerLabel)
     }
 
     /// Initializes the preview nodes.
@@ -575,7 +662,7 @@ private extension GameScene {
                 }
             } else if let item = action.item as? MilkItem {
                 completion = {
-                    self.showDamage(-Constants.itemEffect.milkHpIncreaseEffect,
+                    self.showHeal(Constants.itemEffect.milkHpIncreaseEffect,
                         node: self.gameManager[moveToPositionOf: player]!)
                 }
             }
@@ -646,9 +733,17 @@ private extension GameScene {
         gameEngine.triggerActionAnimationEnded()
     }
 
+    /// Shows the health awarded on the TileNode of the receiving player.
+    ///
+    /// :param: health The amount of health awarded.
+    /// :param: node The TileNode of the receiving player.
+    func showHeal(health: Int, node: TileNode) {
+        showDamage(-health, node: node)
+    }
+
     /// Show the damage dealt on the TileNode of the victim player.
     ///
-    /// :param: damange The amount of damage dealt
+    /// :param: damange The amount of damage dealt.
     /// :param: node The TileNode of the victim player.
     func showDamage(damage: Int, node: TileNode) {
         let damageNode = sceneUtils.getDamageLabelNode(damage)

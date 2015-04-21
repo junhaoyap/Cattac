@@ -5,9 +5,15 @@
 import Foundation
 import SpriteKit
 
+protocol HpListener {
+    func onHpUpdate(hp: Int)
+}
+
 class Cat: TileEntity {
+    private let _spriteImage: String
     private let _sprite: SKSpriteNode
     private let _previewSprite: SKSpriteNode
+    private let maxHp: Int
     private let baseDefence: Int
     private let baseMoveRange: Int
     private let baseFartRange: Int
@@ -17,6 +23,8 @@ class Cat: TileEntity {
     
     var name: String!
     var hp: Int
+
+    var hpListener: HpListener?
     
     var defenceMods = [AttrModification]()
     var dmgMods = [AttrModification]()
@@ -52,6 +60,11 @@ class Cat: TileEntity {
     var poopDmg: Int {
         return applyAttrMods(basePoopDmg, mods: dmgMods)
     }
+
+    /// Name of the sprite image used to draw the cat
+    var spriteImage: String {
+        return _spriteImage
+    }
     
     /// Movement preview sprite
     var previewSprite: SKSpriteNode {
@@ -65,30 +78,23 @@ class Cat: TileEntity {
     /// :param: catDef Base defence
     /// :param: catPuiDmg Base Pui damage
     /// :param: catFartDmg Base Fart damage
-    init(catName: String, catHp: Int, catDef: Int, catPuiDmg: Int, catFartDmg: Int) {
+    init(catName: String, attributes: (hp: Int, defense: Int, puiDmg: Int,
+        fartDmg: Int, poopDmg: Int, moveRange: Int, fartRange: Int)) {
         name = catName
-        hp = catHp
-        baseDefence = catDef
-        basePuiDmg = catPuiDmg
-        baseFartDmg = catFartDmg
-        basePoopDmg = Constants.catAttributes.poopDmg
-        baseMoveRange = Constants.catAttributes.moveRange
-        baseFartRange = Constants.catAttributes.fartRange
-        
-        switch catName {
-        case Constants.catName.nyanCat:
-            _sprite = SKTouchSpriteNode(imageNamed: "Nyan.png")
-            _previewSprite = SKTouchSpriteNode(imageNamed: "Nyan.png")
-        case Constants.catName.grumpyCat:
-            _sprite = SKTouchSpriteNode(imageNamed: "Grumpy.png")
-            _previewSprite = SKTouchSpriteNode(imageNamed: "Grumpy.png")
-        case Constants.catName.pusheenCat:
-            _sprite = SKTouchSpriteNode(imageNamed: "Pusheen.png")
-            _previewSprite = SKTouchSpriteNode(imageNamed: "Pusheen.png")
-        default:
-            _sprite = SKTouchSpriteNode(imageNamed: "Nala.png")
-            _previewSprite = SKTouchSpriteNode(imageNamed: "Nala.png")
-        }
+        maxHp = attributes.hp
+        hp = maxHp
+        baseDefence = attributes.defense
+        basePuiDmg = attributes.puiDmg
+        baseFartDmg = attributes.fartDmg
+        basePoopDmg = attributes.poopDmg
+        baseMoveRange = attributes.moveRange
+        baseFartRange = attributes.fartRange
+
+        _spriteImage = Constants.cat.images[catName]!
+
+        _sprite = SKTouchSpriteNode(imageNamed: _spriteImage)
+        _previewSprite = SKTouchSpriteNode(imageNamed: _spriteImage)
+
         _sprite.zPosition = Constants.Z.cat
         _previewSprite.zPosition = Constants.Z.catPreview
         _previewSprite.alpha = 0.5
@@ -100,15 +106,23 @@ class Cat: TileEntity {
     ///
     /// :param: damage Points to be reduced from hp
     func inflict(damage: Int) {
-        self.hp -= damage * 1/defence
+        if hp > 0 {
+            hp -= damage * 1/defence
+            hpListener?.onHpUpdate(hp)
+        }
     }
     
     /// Heals cat's HP directly.
     /// cat.hp += hp
     ///
-    /// :param: hp Points to increase the hp
-    func heal(hp: Int) {
-        self.hp += hp
+    /// :param: health Points to increase the hp
+    func heal(health: Int) {
+        hp += health
+        if hp > maxHp {
+            hp = maxHp
+        }
+
+        hpListener?.onHpUpdate(hp)
     }
     
     func isVisible() -> Bool {

@@ -369,19 +369,19 @@ class GameEngine {
     }
     
     private func createPlayers(playerNumber: Int) {
-        let cat1 = catFactory.createCat(Constants.catName.nalaCat)!
+        let cat1 = catFactory.createCat(Constants.cat.grumpyCat)!
         gameManager.registerPlayer(cat1, playerNum: 1)
         gameManager[positionOf: cat1] = grid[0, 0]
         
-        let cat2 = catFactory.createCat(Constants.catName.nyanCat)!
+        let cat2 = catFactory.createCat(Constants.cat.nyanCat)!
         gameManager.registerPlayer(cat2, playerNum: 2)
         gameManager[positionOf: cat2] = grid[grid.rows - 1, 0]
         
-        let cat3 = catFactory.createCat(Constants.catName.grumpyCat)!
+        let cat3 = catFactory.createCat(Constants.cat.kittyCat)!
         gameManager.registerPlayer(cat3, playerNum: 3)
         gameManager[positionOf: cat3] = grid[grid.rows - 1, grid.columns - 1]
         
-        let cat4 = catFactory.createCat(Constants.catName.pusheenCat)!
+        let cat4 = catFactory.createCat(Constants.cat.octoCat)!
         gameManager.registerPlayer(cat4, playerNum: 4)
         gameManager[positionOf: cat4] = grid[0, grid.columns - 1]
         

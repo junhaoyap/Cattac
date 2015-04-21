@@ -200,12 +200,13 @@ class GameConnectionManager {
             if lastActiveTime == nil ||
                 DateUtils.isMinutesBeforeNow(lastActiveTime!, minutes: 1) {
                     lobbyRef.overwrite("", data: [
-                        Constants.Firebase.keyTime: currentTime,
-                        Constants.Firebase.nodePlayers: [
-                            uid, "", "", ""
-                        ]
+                            Constants.Firebase.keyTime: currentTime,
+                            Constants.Firebase.nodePlayers: [
+                                uid, "", "", ""
+                            ]
                         ])
                     sender.playerNumber = 1
+                    self.waitPlayerName(theSender)
                     sender.waitForGameStart()
             } else {
                 var numberOfPlayers = 1
@@ -218,6 +219,10 @@ class GameConnectionManager {
                         numberOfPlayers++
                     }
                 }
+                
+                let playerCount = players.count
+                
+                self.waitPlayerName(theSender)
                 
                 sender.playerNumber = numberOfPlayers
                 
@@ -237,6 +242,68 @@ class GameConnectionManager {
                     sender.waitForGameStart()
                 }
             }
+        })
+    }
+    
+    func waitPlayerName(theSender: AnyObject) {
+        let sender = theSender as LobbyViewController
+        
+        let lobbyRef = connectionManager.append(
+            Constants.Firebase.nodeGames + "/" +
+            Constants.Firebase.nodeGame + "/" +
+            Constants.Firebase.nodeLobby
+        )
+        
+        lobbyRef.watchNew("", onComplete: {
+            aSnapshot in
+            
+            lobbyRef.readOnce("", onComplete: {
+                theSnapshot in
+                
+                let snapshot = theSnapshot as FDataSnapshot
+                
+                let playerNames = snapshot.value.objectForKey(
+                    Constants.Firebase.nodePlayers
+                    ) as? [String]
+                
+                if playerNames != nil {
+                    for i in 0...3 {
+                        let playerId = playerNames![i]
+                        
+                        println(playerId)
+                        
+                        self.connectionManager.readOnce("", onComplete: {
+                            secondSnapshot in
+                            
+                            let thisSnapshot = secondSnapshot as FDataSnapshot
+                            
+                            let playerName = thisSnapshot.value.objectForKey(
+                                playerId
+                                ) as? String
+                            
+                            println(playerName)
+                            
+                            if playerName == "" || playerName == nil {
+                                // do nothing, let it stay as 
+                                // "awaiting player..."
+                            } else {
+                                switch i {
+                                case 0:
+                                    sender.playerOneName.text = playerName
+                                case 1:
+                                    sender.playerTwoName.text = playerName
+                                case 2:
+                                    sender.playerThreeName.text = playerName
+                                case 3:
+                                    sender.playerFourName.text = playerName
+                                default:
+                                    break
+                                }
+                            }
+                        })
+                    }
+                }
+            })
         })
     }
     
