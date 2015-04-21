@@ -93,6 +93,10 @@ class ConnectionManager {
     func getAuthId() -> String {
         return server.getAuthId()
     }
+    
+    func getEmail() -> String {
+        return server.getEmail()
+    }
 
     func append(childUrl: String) -> ConnectionManager {
         return server.append(childUrl)

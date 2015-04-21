@@ -4,6 +4,7 @@
 */
 
 class GameConnectionManager {
+    let stringUtils = StringUtils()
     let connectionManager: ConnectionManager
     private var observerReferences: [Int: ObserverReference]
     
@@ -41,6 +42,7 @@ class GameConnectionManager {
                     switch (errorCode) {
                     case .UserDoesNotExist:
                         self.createAUser(email, aPassword: password)
+                        self.createUsername(email)
                         
                         self.connectionManager.authUser(email,
                             password: password) {
@@ -89,6 +91,16 @@ class GameConnectionManager {
         })
     }
     
+    func createUsername(anEmail: String) {
+        let uid = connectionManager.getAuthId()
+        
+        let usernameData = [
+            uid: stringUtils.getNameFromEmail(anEmail)
+        ]
+        
+        connectionManager.update("", data: usernameData)
+    }
+    
     func setInitialMeows() {
         let uid = connectionManager.getAuthId()
         
@@ -126,6 +138,32 @@ class GameConnectionManager {
                 } else {
                     sender.numberOfMeows = myNumberOfMeows!
                 }
+        })
+    }
+    
+    func getName(theSender: AnyObject) {
+        let sender = theSender as MenuViewController
+        
+        let uid = connectionManager.getAuthId()
+        
+        connectionManager.readOnce("", onComplete: {
+            theSnapshot in
+            
+            let snapshot = theSnapshot as FDataSnapshot
+            
+            let myUsername = snapshot.value.objectForKey(uid) as? String
+            
+            if myUsername == nil {
+                let email = self.connectionManager.getEmail()
+                
+                let usernameToWrite = self.stringUtils.getNameFromEmail(email)
+                
+                self.createUsername(email)
+                
+                println(usernameToWrite)
+            } else {
+                println(myUsername)
+            }
         })
     }
     
@@ -225,10 +263,10 @@ class GameConnectionManager {
         
         let gameRef = connectionManager.append(
             Constants.Firebase.nodeGames + "/" +
-                Constants.Firebase.nodeGame
+            Constants.Firebase.nodeGame
         )
         
-        gameRef.watchUpdateOnce("", onComplete: {
+        gameRef.watchUpdateOnce(Constants.Firebase.nodeGameLevel, onComplete: {
             snapshot in
             
             gameRef.readOnce(Constants.Firebase.nodeGameLevel,
