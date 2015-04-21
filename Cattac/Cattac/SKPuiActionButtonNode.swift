@@ -44,6 +44,24 @@ class SKPuiActionButtonNode: SKActionButtonNode {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    /// Resets the direction arrow on PuiActionButton, highlights the provided
+    /// direction, if any.
+    ///
+    /// :param: selected Direction to select, nil if unselect all.
+    func resetDirectionNode(selected: Direction?) {
+        directionNode?.removeFromParent()
+        directionNode = SKDirectionButtonNode(
+            defaultButtonImage: "Direction.png",
+            activeButtonImage: "DirectionSelected",
+            size: CGSize(width: 50, height: 50),
+            centerSize: self.calculateAccumulatedFrame().size,
+            availableDirection: getAvailableDirections())
+        if selected != nil {
+            directionNode?.selectDirection(selected!)
+        }
+        self.addChild(directionNode!)
+    }
 
     /// Removes the directional arrows in addition to unselecting the button
     override func unselect() {
@@ -68,13 +86,7 @@ class SKPuiActionButtonNode: SKActionButtonNode {
         /// Resets the direction on touch begin or create the direction arrows
         /// if they do not exist
         if directionNode == nil {
-            directionNode = SKDirectionButtonNode(
-                defaultButtonImage: "Direction.png",
-                activeButtonImage: "DirectionSelected",
-                size: CGSize(width: 50, height: 50),
-                centerSize: self.calculateAccumulatedFrame().size,
-                availableDirection: getAvailableDirections())
-            self.addChild(directionNode!)
+            resetDirectionNode(nil)
         } else {
             directionNode!.unselectDirection()
             unselectAction()

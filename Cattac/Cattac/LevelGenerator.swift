@@ -20,12 +20,20 @@ class LevelGenerator {
     }
     
     func generateBasic() -> BasicLevel {
-        let level = BasicLevel()
-        
+        var attempt = 1
+        var level = BasicLevel()
         constructLevel(level)
+        generateWalls(level)
+        
+        while !isValidLevel(level) {
+            level = BasicLevel()
+            constructLevel(level)
+            generateWalls(level)
+            attempt++
+        }
+        println("Level generated in \(attempt) attempt(s)")
         
         generateDoodad(level)
-        generateWalls(level)
         generateItems(level)
         
         return level
@@ -105,6 +113,16 @@ class LevelGenerator {
             location = GridIndex(row, col)
         }
         return location
+    }
+    
+    /// Checks level validity, invalid if any empty tile is isolated from play.
+    ///
+    /// :param: level The level to check
+    /// :returns: true if level is valid, false otherwise
+    private func isValidLevel(level: GameLevel) -> Bool {
+        let emptyTiles = level.emptyTiles()
+        let emptyRegion = level.grid.largestEmptyRegion(emptyTiles.first!)
+        return emptyTiles.count == emptyRegion.count
     }
     
     func createGame(fromSnapshot data: FDataSnapshot) -> GameLevel {

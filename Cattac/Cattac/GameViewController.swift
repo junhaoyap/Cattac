@@ -64,7 +64,6 @@ class GameViewController: UIViewController {
         self.scene?.removeAllChildren()
         self.scene?.removeFromParent()
         (self.view as SKView).presentScene(nil)
-        scene.gameEngine.releaseAllListeners()
         self.scene = nil
         self.view.removeFromSuperview()
     }

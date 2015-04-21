@@ -11,6 +11,7 @@ class Item: TileEntity {
     private init(itemName: String, _ sprite: SKSpriteNode) {
         self.name = itemName
         self.sprite = sprite
+        self.sprite.zPosition = Constants.Z.items
     }
     
     func isVisible() -> Bool {

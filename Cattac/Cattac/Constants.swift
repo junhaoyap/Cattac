@@ -50,7 +50,7 @@ struct Constants {
     }
     
     // default number of meows, standalone for now
-    static let defaultNumberOfMeows = "100"
+    static let defaultNumberOfMeows = 100
 
     // time for each turn
     static let turnDuration = 5
@@ -130,6 +130,8 @@ struct Constants {
         
         static let keyMeows = "numberOfMeows"
         
+        static let keyTime = "lastActive"
+        
         static let keyAttkDir = "attackDir"
         static let keyAttkDmg = "attackDmg"
         static let keyAttkRange = "attackRange"
@@ -149,5 +151,40 @@ struct Constants {
     
     struct Segues {
         static let loginToMenuSegueIdentifier = "loginSegue"
+    }
+    
+    struct Z {
+        static let background: CGFloat = -100
+        
+        // Tile/TileEntities/Doodads layer -10 - -1
+        static let tile: CGFloat = -10
+        static let doodad: CGFloat = -9
+        static let items: CGFloat = -8
+        static let catPreview: CGFloat = -7
+        
+        static let poopPreview: CGFloat = 29
+        // Cat layer 30 - 39
+        static let cat: CGFloat = 30
+        
+        // Action buttons layer 40 - 49
+        static let actionButtons: CGFloat = 40
+        // They have to be the same, iOS z-indexing for touch and drawing
+        // is different, and apparently buggy. So to prevent wasting time 
+        // doing a workaround for something someone else will eventually fix:
+        static let itemActivated: CGFloat = actionButtons
+        
+        // Actions effect layer 70 - 49
+        static let fart: CGFloat = 70
+        static let pui: CGFloat = 71
+        static let poop: CGFloat = 72
+        static let targetArrow: CGFloat = 73
+        static let targetCrosshair: CGFloat = 74
+        
+        // Damage layer 90 - 99
+        static let damage: CGFloat = 90
+    }
+    
+    struct UI {
+        static let buttonSpacing: CGFloat = 220
     }
 }

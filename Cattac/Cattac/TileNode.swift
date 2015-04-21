@@ -17,7 +17,7 @@ class TileNode {
         position = GridIndex(row, column)
         sprite = SKSpriteNode(texture: grass)
         sprite.setScale(1.0)
-        sprite.zPosition = -1.0
+        sprite.zPosition = Constants.Z.tile
     }
     
     /// Highlights tile for indicating reachable tiles.

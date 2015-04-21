@@ -63,6 +63,59 @@ class SceneUtils {
         return grid[row, col]
     }
     
+    /// Generates a SKAction that animates the traversal of TileNodes at
+    /// given duration per TileNode
+    ///
+    /// :param: path TileNode sequence to be traversed
+    /// :param: dur Duration of animation in seconds per tile
+    /// :returns: SKAction holding the sequence
+    func getTraverseAnim(path: [TileNode], _ dur: NSTimeInterval) -> SKAction {
+        var pathSequence: [SKAction] = []
+        for node in path {
+            let action = SKAction.moveTo(node.sprite.position,
+                duration: dur)
+            pathSequence.append(action)
+        }
+        return SKAction.sequence(pathSequence)
+    }
+    
+    /// Generates a poop sprite node used to animate the Poop activation.
+    ///
+    /// :param: position Location to place the poop
+    /// :returns: The SKSpriteNode
+    func getPoopNode(at position: CGPoint) -> SKSpriteNode {
+        let poopNode = SKSpriteNode(imageNamed: "Poop.png")
+        poopNode.size = tileSize
+        poopNode.position = position
+        poopNode.zPosition = Constants.Z.poop
+        return poopNode
+    }
+    
+    /// Generates a poop sprite node used to preview poop location.
+    ///
+    /// :returns: The SKSpriteNode
+    func getPoopPreviewNode() -> SKSpriteNode {
+        let poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
+        poopPreviewNode.size = tileSize
+        poopPreviewNode.alpha = 0.5
+        poopPreviewNode.zPosition = Constants.Z.poopPreview
+        return poopPreviewNode
+    }
+    
+    /// Generates a fart sprite node used to animate the Fart attack.
+    ///
+    /// :param: direction The direction of PuiAction
+    /// :returns: The SKSpriteNode
+    func getFartNode(at position: CGPoint) -> SKSpriteNode {
+        let fartNode = SKSpriteNode(imageNamed: "Fart.png")
+        fartNode.size = CGSize(width: tileWidth / 4,
+            height: tileHeight / 4)
+        fartNode.position = position
+        fartNode.zPosition = Constants.Z.fart
+        fartNode.alpha = 0
+        return fartNode
+    }
+    
     /// Generates a SKAction that enters with fadeIn, rotateIn, and scaleUp
     /// and exits with fadeOut, rotateOut, and scaleDown
     ///
@@ -136,6 +189,46 @@ class SceneUtils {
         return SKAction.sequence(actionSequence)
     }
     
+    /// Generates a spit sprite node that represents the Pui attack.
+    ///
+    /// :param: direction The direction of PuiAction
+    /// :returns: The SKSpriteNode
+    func getPuiNode(direction: Direction) -> SKSpriteNode {
+        let puiNode = SKSpriteNode(imageNamed: "Pui.png")
+        puiNode.size = tileSize
+        puiNode.zRotation = SceneUtils.zRotation(direction)
+        puiNode.zPosition = Constants.Z.pui
+        return puiNode
+    }
+    
+    /// Generates a floating text indicated the damage inflicted upon a player.
+    ///
+    /// :param: dmg The damage inflicted upon player
+    /// :returns: The SKSpriteNode
+    func getDamageLabelNode(dmg: Int) -> SKLabelNode {
+        let damageNode = SKLabelNode(text: "\(-dmg)")
+        damageNode.alpha = 0
+        damageNode.fontColor = dmg > 0 ? UIColor.redColor():UIColor.cyanColor()
+        damageNode.fontName = "LuckiestGuy-Regular"
+        damageNode.zPosition = Constants.Z.damage
+        return damageNode
+    }
+    
+    /// Generates a SKAction that animates floating damage label.
+    ///
+    /// :returns: SKAction holding the sequence
+    func getDamageLabelAnim() -> SKAction {
+        let actionSequence = [
+            SKAction.group([
+                SKAction.fadeAlphaTo(1, duration: 0.25),
+                SKAction.moveByX(0, y: tileHeight, duration: 0.25)
+            ]),
+            SKAction.waitForDuration(0.5),
+            SKAction.fadeAlphaTo(0, duration: 0.25)
+        ]
+        return SKAction.sequence(actionSequence)
+    }
+    
     /// Generates a orange crosshair used for showing targeted player.
     ///
     /// :returns: The SKSpriteNode
@@ -143,6 +236,7 @@ class SceneUtils {
         let node = SKSpriteNode(imageNamed: "Crosshairs.png")
         node.size = CGSize(width: tileSize.width * 1.5,
             height: tileSize.height * 1.5)
+        node.zPosition = Constants.Z.targetCrosshair
         return node
     }
     
@@ -156,6 +250,7 @@ class SceneUtils {
         sprite.position = CGPointMake(pointAt.x, pointAt.y + offset)
         sprite.size = tileSize
         sprite.runAction(getFloatingAnimation())
+        sprite.zPosition = Constants.Z.targetArrow
         
         return sprite
     }
