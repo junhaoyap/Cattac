@@ -18,6 +18,8 @@ class LobbyViewController: UIViewController {
         Constants.Firebase.baseUrl
     )
     
+    let soundPlayer = SoundPlayer.sharedInstance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,5 +64,21 @@ class LobbyViewController: UIViewController {
     
     func waitForGameStart() {
         gameConnectionManager.waitForGameStart(self)
+    }
+    
+    @IBAction func grumpyTapped(sender: UIButton) {
+        soundPlayer.playGrumpy()
+    }
+    
+    @IBAction func nyanTapped(sender: UIButton) {
+        soundPlayer.playNyan()
+    }
+    
+    @IBAction func helloKittyTapped(sender: UIButton) {
+        soundPlayer.playHelloKitty()
+    }
+    
+    @IBAction func octoTapped(sender: UIButton) {
+        soundPlayer.playOcto()
     }
 }

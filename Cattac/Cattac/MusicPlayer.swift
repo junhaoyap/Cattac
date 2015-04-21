@@ -16,14 +16,18 @@ class MusicPlayer {
     }
     
     private init() {
-        let nyanBackgroundMusic = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("NyanBackgroundMusic", ofType: "mp3")!)
-        nyanBackgroundMusicPlayer = AVAudioPlayer(contentsOfURL: nyanBackgroundMusic, error: nil)
+        let nyanBackgroundMusic = NSURL(fileURLWithPath: NSBundle.mainBundle()
+            .pathForResource("ShantyTownBackgroundMusic", ofType: "wav")!)
+        
+        nyanBackgroundMusicPlayer = AVAudioPlayer(
+            contentsOfURL: nyanBackgroundMusic, error: nil
+        )
         
         nyanBackgroundMusicPlayer.numberOfLoops = -1
         nyanBackgroundMusicPlayer.prepareToPlay()
     }
     
     func playBackgroundMusic() {
-        nyanBackgroundMusicPlayer.play()
+//        nyanBackgroundMusicPlayer.play()
     }
 }
