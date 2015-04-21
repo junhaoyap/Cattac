@@ -419,6 +419,7 @@ class GameEngine {
         let moveToTile = gameManager[moveToPositionOf: player]!
         let action = gameManager[actionOf: player]
         
+        // use movementNumber - 1 for multiplayer AI movements
         let movementNumber = playerNumber == playerNum
             ? currentPlayerMoveNumber : currentPlayerMoveNumber - 1
         

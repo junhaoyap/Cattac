@@ -179,11 +179,11 @@ extension GameScene: GameStateListener {
         switch state {
         case .PlayerAction:
             startTimer()
-            enableActionButtons()
             deleteRemovedDoodads()
-            highlightReachableNodes()
             wiggleCurrentPlayer()
-            break
+        case .WaitForAll:
+            highlightReachableNodes()
+            enableActionButtons()
         case .ServerUpdate:
             disableActionButtons()
             removeHighlights()
