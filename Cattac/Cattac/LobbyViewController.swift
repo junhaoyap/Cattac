@@ -49,11 +49,7 @@ class LobbyViewController: UIViewController {
     }
     
     func startGame() {
-        NSTimer.scheduledTimerWithTimeInterval(2, target: self,
-            selector: Selector("startGameSegue"),
-            userInfo: nil,
-            repeats: false
-        )
+        startGameSegue()
     }
     
     func initiateGameStart() {
