@@ -420,7 +420,7 @@ class GameEngine {
     }
     
     private func updateServer() {
-        let currentPlayerNumber = playerNumber - 1
+        let currentPlayerNumber = playerNumber
         let currentTile = gameManager[positionOf: currentPlayer]!
         let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
         let action = gameManager[actionOf: currentPlayer]
