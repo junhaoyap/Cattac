@@ -142,6 +142,14 @@ class FirebaseServer: Server {
         return uid
     }
     
+    func getEmail() -> String {
+        let authData = ref!.authData
+        let providerData = authData.providerData
+        let email = providerData["email"] as? String
+        
+        return email!
+    }
+    
     func append(childUrl: String) -> ConnectionManager {
         let appendedUrl = baseUrl + childUrl
         
