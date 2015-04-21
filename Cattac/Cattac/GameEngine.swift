@@ -119,6 +119,10 @@ class GameEngine {
             // This state waits for the movement ended event that is triggered
             // from the scene.
             break
+        case .DeconflictExecution:
+            // This state waits for the deconflict that is triggered
+            // from the scene.
+            break
         case .StartActionsExecution:
             calculationActions()
             triggerStateAdvance()
@@ -156,6 +160,8 @@ class GameEngine {
         case .StartMovesExecution:
             state = .MovesExecution
         case .MovesExecution:
+            state = .DeconflictExecution
+        case .DeconflictExecution:
             state = .StartActionsExecution
         case .StartActionsExecution:
             state = .ActionsExecution
@@ -223,6 +229,30 @@ class GameEngine {
             var playerMoveToNode = gameManager[moveToPositionOf: player]!
             var path = grid.shortestPathFromNode(playerAtNode,
                 toNode: playerMoveToNode)
+            
+            for otherPlayer in gameManager.players.values {
+                if player.name == otherPlayer.name {
+                    continue
+                } else {
+                    var otherPlayerNode = gameManager[positionOf: otherPlayer]!
+                    var otherPlayerMoveToNode = gameManager[moveToPositionOf: otherPlayer]!
+                    
+                    if playerMoveToNode == otherPlayerMoveToNode {
+                        if path.count == 0 {
+                            println("we got a problem houston")
+                        } else {
+                            var reversedPath = reverse(path)
+                            reversedPath.removeAtIndex(0)
+                            reversedPath.append(playerAtNode)
+                            
+                            gameManager[deconflictPathOf: player] = reversedPath
+                            gameManager[movementPathOf: player] = path
+                            
+                            return
+                        }
+                    }
+                }
+            }
             
             if let doodad = playerMoveToNode.doodad {
                 // effect non-move modifications
@@ -303,6 +333,15 @@ class GameEngine {
     /// :param: cat The player's move to execute
     func executePlayerMove(player: Cat) -> [TileNode] {
         let path = gameManager[movementPathOf: player]
+        if path != nil {
+            return path!
+        } else {
+            return []
+        }
+    }
+    
+    func executePlayerDeconflict(player: Cat) -> [TileNode] {
+        let path = gameManager[deconflictPathOf: player]
         if path != nil {
             return path!
         } else {
@@ -575,12 +614,21 @@ extension GameEngine {
 
     func triggerMovementAnimationEnded() {
         if gameManager.movementsCompleted {
+            println("called here 1")
+            triggerStateAdvance()
+        }
+    }
+    
+    func triggerDeconflictAnimationEnded() {
+        if gameManager.deconflictsCompleted {
+            println("called here 2")
             triggerStateAdvance()
         }
     }
 
     func triggerActionAnimationEnded() {
         if gameManager.actionsCompleted {
+            println("called here 3")
             triggerStateAdvance()
         }
     }

@@ -190,6 +190,8 @@ extension GameScene: GameStateListener {
             unwiggleCurrentPlayer()
         case .StartMovesExecution:
             previewNode.hidden = true
+        case .DeconflictExecution:
+            deconflictPlayer()
         case .MovesExecution:
             movePlayers()
         case .ActionsExecution:
@@ -572,6 +574,28 @@ private extension GameScene {
         gameManager.completeMovementOf(player)
         gameEngine.triggerMovementAnimationEnded()
     }
+    
+    func deconflictPlayer() {
+        for (playerName, player) in gameManager.players {
+            let path = gameEngine.executePlayerDeconflict(player)
+            
+            if path.count == 0 {
+                notifyDeconflictCompletionFor(player)
+                continue
+            }
+            
+            player.getSprite().runAction(sceneUtils.getTraverseAnim(path, 0.25),
+                completion: {
+                    self.notifyDeconflictCompletionFor(player)
+                }
+            )
+        }
+    }
+    
+    func notifyDeconflictCompletionFor(player: Cat) {
+        gameManager.completeDeconflictOf(player)
+        gameEngine.triggerDeconflictAnimationEnded()
+    }
 
     /// Animates the pui action of the given player in the given direction.
     ///
@@ -698,22 +722,28 @@ private extension GameScene {
 
     /// Performs the respective actions for each player.
     func performActions() {
-        for player in gameManager.players.values {
-            if let action = gameEngine.executePlayerAction(player) {
-                println(action)
-                switch action.actionType {
-                case .Pui:
-                    let direction = (action as PuiAction).direction
-                    animatePuiAction(player, direction: direction)
-                    soundPlayer.playPui()
-                case .Fart:
-                    animateFartAction(player)
-                    soundPlayer.playFart()
-                case .Poop:
+        for (playerName, player) in gameManager.players {
+            let path = gameEngine.executePlayerDeconflict(player)
+            
+            if path.count == 0 {
+                if let action = gameEngine.executePlayerAction(player) {
+                    println(action)
+                    switch action.actionType {
+                    case .Pui:
+                        let direction = (action as PuiAction).direction
+                        animatePuiAction(player, direction: direction)
+                        soundPlayer.playPui()
+                    case .Fart:
+                        animateFartAction(player)
+                        soundPlayer.playFart()
+                    case .Poop:
+                        notifyActionCompletionFor(player)
+                        soundPlayer.playPoopArm()
+                    case .Item:
+                        animateItemAction(player, action: action as ItemAction)
+                    }
+                } else {
                     notifyActionCompletionFor(player)
-                    soundPlayer.playPoopArm()
-                case .Item:
-                    animateItemAction(player, action: action as ItemAction)
                 }
             } else {
                 notifyActionCompletionFor(player)

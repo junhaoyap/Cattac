@@ -8,6 +8,8 @@ class GameManager {
     private var _playerAIControlled: [String:Cat]
     private var _playerTurnComplete: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
+    private var _deconflictMovementPaths: [String:[TileNode]]
+    private var _playerDeconflictAnimationCompleted: [String:Bool]
     private var _playerMovementAnimationCompleted: [String:Bool]
     private var _playerActionAnimationCompleted: [String:Bool]
     private var _playerItems: [String:Item]
@@ -22,6 +24,8 @@ class GameManager {
         _playerAIControlled = [:]
         _playerTurnComplete = [:]
         _playerMovementPaths = [:]
+        _deconflictMovementPaths = [:]
+        _playerDeconflictAnimationCompleted = [:]
         _playerMovementAnimationCompleted = [:]
         _playerActionAnimationCompleted = [:]
         _playerItems = [:]
@@ -105,6 +109,15 @@ class GameManager {
         }
     }
     
+    subscript(deconflictPathOf player:Cat) -> [TileNode]? {
+        set {
+            _deconflictMovementPaths[player.name] = newValue
+        }
+        get {
+            return _deconflictMovementPaths[player.name]
+        }
+    }
+    
     subscript(aiFor player:Cat) -> Bool {
         set {
             if newValue {
@@ -143,6 +156,16 @@ class GameManager {
         var allCompleted = true
         
         for completed in _playerMovementAnimationCompleted.values {
+            allCompleted = allCompleted && completed
+        }
+        
+        return allCompleted
+    }
+    
+    var deconflictsCompleted: Bool {
+        var allCompleted = true
+        
+        for completed in _playerDeconflictAnimationCompleted.values {
             allCompleted = allCompleted && completed
         }
         
@@ -188,6 +211,7 @@ class GameManager {
 
     func precalculate() {
         _playerMoveToPositions = _playerPositions
+        _deconflictMovementPaths = [:]
         _playerMovementPaths = [:]
 
         for (playerName, tileNode) in _playerPositions {
@@ -204,12 +228,17 @@ class GameManager {
             }
             
             _playerMovementAnimationCompleted[playerName] = false
+            _playerDeconflictAnimationCompleted[playerName] = false
             _playerActionAnimationCompleted[playerName] = false
         }
     }
 
     func completeMovementOf(player: Cat) {
         _playerMovementAnimationCompleted[player.name] = true
+    }
+    
+    func completeDeconflictOf(player: Cat) {
+        _playerDeconflictAnimationCompleted[player.name] = true
     }
 
     func completeActionOf(player: Cat) {
