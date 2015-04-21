@@ -353,7 +353,6 @@
                                 </state>
                                 <connections>
                                     <action selector="grumpyTapped:" destination="Cqh-hj-ZZi" eventType="touchUpInside" id="f26-c9-ZZc"/>
-                                    <action selector="nyanTapped:" destination="Cqh-hj-ZZi" eventType="touchUpInside" id="kTr-QV-uKl"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fmd-ab-xoB" userLabel="nyan">
@@ -389,7 +388,6 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
-                        <outlet property="nyanTapped" destination="Fmd-ab-xoB" id="7xD-Bz-BJk"/>
                         <outlet property="playerFourName" destination="Pi7-cT-Ua5" id="XB6-bG-Mk2"/>
                         <outlet property="playerOneName" destination="AvJ-AU-sgI" id="yxp-f4-5qM"/>
                         <outlet property="playerThreeName" destination="RJM-fn-651" id="FDH-Qs-iGR"/>

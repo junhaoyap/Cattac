@@ -12,12 +12,63 @@ class GameConnectionManager {
     }
     
     // MARK: LoginViewController
-    
-    func autoLogin(theSender: AnyObject) {
+
+    func autoLogin1(theSender: AnyObject) {
         let sender = theSender as LoginViewController
         
-        connectionManager.authUser(Constants.AutoAccount.username,
-            password: Constants.AutoAccount.password,
+        connectionManager.authUser(Constants.AutoAccount.username1,
+            password: Constants.AutoAccount.password1,
+            onComplete: {
+                error, authData in
+                if error != nil {
+                    // There was an error logging in to this account
+                } else {
+                    // We are now logged in
+                    
+                    sender.presentMenuView()
+                }
+        })
+    }
+    
+    func autoLogin2(theSender: AnyObject) {
+        let sender = theSender as LoginViewController
+        
+        connectionManager.authUser(Constants.AutoAccount.username2,
+            password: Constants.AutoAccount.password2,
+            onComplete: {
+                error, authData in
+                if error != nil {
+                    // There was an error logging in to this account
+                } else {
+                    // We are now logged in
+                    
+                    sender.presentMenuView()
+                }
+        })
+    }
+    
+    func autoLogin3(theSender: AnyObject) {
+        let sender = theSender as LoginViewController
+        
+        connectionManager.authUser(Constants.AutoAccount.username3,
+            password: Constants.AutoAccount.password3,
+            onComplete: {
+                error, authData in
+                if error != nil {
+                    // There was an error logging in to this account
+                } else {
+                    // We are now logged in
+                    
+                    sender.presentMenuView()
+                }
+        })
+    }
+    
+    func autoLogin4(theSender: AnyObject) {
+        let sender = theSender as LoginViewController
+        
+        connectionManager.authUser(Constants.AutoAccount.username4,
+            password: Constants.AutoAccount.password4,
             onComplete: {
                 error, authData in
                 if error != nil {
