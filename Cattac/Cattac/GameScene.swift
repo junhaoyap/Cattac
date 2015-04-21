@@ -110,7 +110,7 @@ class GameScene: SKScene {
             addTiles()
             addPlayers()
 
-            infoLayer.position = CGPoint(x: -360, y: 320)
+            infoLayer.position = CGPoint(x: -384, y: 320)
             gameLayer.addChild(infoLayer)
             initializeInformationBar()
     }
@@ -316,7 +316,7 @@ private extension GameScene {
         
         // adds buttonLayer to the gameLayer
         buttonLayer.position =
-            CGPoint(x: -360, y: -512)
+            CGPoint(x: -384, y: -512)
         gameLayer.addChild(buttonLayer)
     }
 
@@ -325,7 +325,7 @@ private extension GameScene {
         let bottomBoard = SKSpriteNode(imageNamed: "BottomBoard.png")
         bottomBoard.size = CGSize(width: self.size.width,
             height: 192)
-        bottomBoard.position = CGPoint(x: 360, y: 96)
+        bottomBoard.position = CGPoint(x: 384, y: 96)
         bottomBoard.zPosition = -10
         buttonLayer.addChild(bottomBoard)
 
@@ -341,7 +341,7 @@ private extension GameScene {
             getAvailableDirections: {
                 return self.gameEngine.getAvailablePuiDirections()
         })
-        puiButton.position = CGPoint(x: 360 - buttonSpacing, y: 80)
+        puiButton.position = CGPoint(x: 384 - buttonSpacing, y: 80)
         buttonLayer.addChild(puiButton)
         actionButtons.append(puiButton)
 
@@ -350,7 +350,7 @@ private extension GameScene {
             activeButtonImage: "FartButtonPressed.png",
             buttonAction: { self.gameEngine.triggerFartButtonPressed() },
             unselectAction: { self.gameEngine.triggerClearAction() })
-        fartButton.position = CGPoint(x: 360, y: 80)
+        fartButton.position = CGPoint(x: 384, y: 80)
         buttonLayer.addChild(fartButton)
         actionButtons.append(fartButton)
 
@@ -362,7 +362,7 @@ private extension GameScene {
                 self.hidePoop()
                 self.gameEngine.triggerClearAction()
         })
-        poopButton.position = CGPoint(x: 360 + buttonSpacing, y: 80)
+        poopButton.position = CGPoint(x: 384 + buttonSpacing, y: 80)
         buttonLayer.addChild(poopButton)
         actionButtons.append(poopButton)
     }
@@ -378,7 +378,7 @@ private extension GameScene {
                 self.unhighlightTargetPlayers()
         })
         
-        inventoryBoxButton.position = CGPoint(x: 360, y: 140)
+        inventoryBoxButton.position = CGPoint(x: 384, y: 140)
         actionButtons.append(inventoryBoxButton)
         buttonLayer.addChild(inventoryBoxButton)
     }
@@ -408,14 +408,32 @@ private extension GameScene {
     func initializeInformationBar() {
         let topBoard = SKSpriteNode(imageNamed: "TopBoard.png")
         topBoard.size = CGSize(width: self.size.width, height: 192)
-        topBoard.position = CGPoint(x: 360, y: 96)
+        topBoard.position = CGPoint(x: 384, y: 96)
         topBoard.zPosition = -10
         infoLayer.addChild(topBoard)
 
+        let playerInfoLayer = SKNode()
+        playerInfoLayer.position = CGPoint(x: 384, y: 110)
+        infoLayer.addChild(playerInfoLayer)
+
+        let playerInfoNodeSize = CGSize(width: 250, height: 64)
+        let playerInfoNodePositions = [
+            CGPoint(x: -175, y: 32),
+            CGPoint(x: -175, y: -32),
+            CGPoint(x: 175, y: 32),
+            CGPoint(x: 175, y: -32)
+        ]
+
+        for (index, player) in enumerate(gameManager.players.values) {
+            let playerInfoNode = SKPlayerInfoNode(player: player,
+                size: playerInfoNodeSize)
+            playerInfoNode.position = playerInfoNodePositions[index]
+            playerInfoLayer.addChild(playerInfoNode)
+        }
+
         timerLabel = SKLabelNode(fontNamed: "BubblegumSans-Regular")
         timerLabel.fontColor = UIColor.blackColor()
-        timerLabel.position = CGPoint(x: 360, y: 96)
-        infoLayer.addChild(timerLabel)
+        playerInfoLayer.addChild(timerLabel)
     }
 
     /// Initializes the preview nodes.

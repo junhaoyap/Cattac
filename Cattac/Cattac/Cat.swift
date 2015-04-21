@@ -5,7 +5,12 @@
 import Foundation
 import SpriteKit
 
+protocol HpListener {
+    func onHpUpdate(hp: Int)
+}
+
 class Cat: TileEntity {
+    private let _spriteImage: String
     private let _sprite: SKSpriteNode
     private let _previewSprite: SKSpriteNode
     private let baseDefence: Int
@@ -17,6 +22,8 @@ class Cat: TileEntity {
     
     var name: String!
     var hp: Int
+
+    var hpListener: HpListener?
     
     var defenceMods = [AttrModification]()
     var dmgMods = [AttrModification]()
@@ -52,6 +59,11 @@ class Cat: TileEntity {
     var poopDmg: Int {
         return applyAttrMods(basePoopDmg, mods: dmgMods)
     }
+
+    /// Name of the sprite image used to draw the cat
+    var spriteImage: String {
+        return _spriteImage
+    }
     
     /// Movement preview sprite
     var previewSprite: SKSpriteNode {
@@ -77,18 +89,18 @@ class Cat: TileEntity {
         
         switch catName {
         case Constants.catName.nyanCat:
-            _sprite = SKTouchSpriteNode(imageNamed: "Nyan.png")
-            _previewSprite = SKTouchSpriteNode(imageNamed: "Nyan.png")
+            _spriteImage = "Nyan.png"
         case Constants.catName.grumpyCat:
-            _sprite = SKTouchSpriteNode(imageNamed: "Grumpy.png")
-            _previewSprite = SKTouchSpriteNode(imageNamed: "Grumpy.png")
+            _spriteImage = "Grumpy.png"
         case Constants.catName.pusheenCat:
-            _sprite = SKTouchSpriteNode(imageNamed: "Pusheen.png")
-            _previewSprite = SKTouchSpriteNode(imageNamed: "Pusheen.png")
+            _spriteImage = "Pusheen.png"
         default:
-            _sprite = SKTouchSpriteNode(imageNamed: "Nala.png")
-            _previewSprite = SKTouchSpriteNode(imageNamed: "Nala.png")
+            _spriteImage = "Nala.png"
         }
+
+        _sprite = SKTouchSpriteNode(imageNamed: _spriteImage)
+        _previewSprite = SKTouchSpriteNode(imageNamed: _spriteImage)
+
         _sprite.zPosition = Constants.Z.cat
         _previewSprite.zPosition = Constants.Z.catPreview
         _previewSprite.alpha = 0.5
@@ -101,6 +113,8 @@ class Cat: TileEntity {
     /// :param: damage Points to be reduced from hp
     func inflict(damage: Int) {
         self.hp -= damage * 1/defence
+
+        hpListener?.onHpUpdate(hp)
     }
     
     /// Heals cat's HP directly.
@@ -109,6 +123,8 @@ class Cat: TileEntity {
     /// :param: hp Points to increase the hp
     func heal(hp: Int) {
         self.hp += hp
+
+        hpListener?.onHpUpdate(hp)
     }
     
     func isVisible() -> Bool {
