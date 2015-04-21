@@ -11,7 +11,8 @@ protocol Server {
     
     func update(childUrl: String, data: [String: AnyObject])
     
-    func watchUpdateOnce(childUrl: String, onComplete: (AnyObject) -> ())
+    func watchUpdateOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference
     
     func watchUpdate(childUrl: String,
         onComplete: (AnyObject) -> ()) -> ObserverReference

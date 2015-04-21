@@ -111,7 +111,6 @@ class GameEngine {
         case .WaitForAll:
             countDownForDrop()
             gameAI.calculateTurn()
-            break
         case .StartMovesExecution:
             calculateMovementPaths()
             generateOtherPlayerMoveToNodess()
@@ -201,7 +200,7 @@ class GameEngine {
                     continue
                 }
                 if gameManager.playersTurnCompleted[name] == nil {
-                    let playerNum = gameManager[playerNumber: player]!
+                    let playerNum = gameManager[playerNumFor: player]!
                     gameConnectionManager.dropPlayer(playerNum)
                     gameManager[aiFor: player] = true
                 }
@@ -414,7 +413,7 @@ class GameEngine {
     }
     
     private func updateServer(playerNum: Int) {
-        let player = gameManager[player: playerNum]!
+        let player = gameManager[playerWithNum: playerNum]!
         let currentTile = gameManager[positionOf: player]!
         let moveToTile = gameManager[moveToPositionOf: player]!
         let action = gameManager[actionOf: player]
@@ -474,7 +473,7 @@ class GameEngine {
         let attackRange = snapshot.value.objectForKey(
             Constants.Firebase.keyAttkRange) as? Int
         
-        let player = gameManager[player: playerNum]!
+        let player = gameManager[playerWithNum: playerNum]!
         let dest = grid[moveToRow!, moveToCol!]!
         var action: Action?
         
@@ -560,7 +559,7 @@ extension GameEngine {
     func triggerAIPlayerMove(player: Cat, dest: TileNode, action: Action?) {
         gameManager.playerTurn(player, moveTo: dest, action: action)
         if multiplayer {
-            updateServer(gameManager[playerNumber: player]!)
+            updateServer(gameManager[playerNumFor: player]!)
         } else {
             checkAllTurns()
         }

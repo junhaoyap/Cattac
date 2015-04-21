@@ -53,7 +53,8 @@ class FirebaseServer: Server {
         updateRef.updateChildValues(data)
     }
     
-    func watchUpdateOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+    func watchUpdateOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var changeRef = ref!
@@ -66,6 +67,10 @@ class FirebaseServer: Server {
             snapshot in
             
             onComplete(snapshot)
+        })
+            
+        return ObserverReference(unregister: {
+            changeRef.removeAllObservers()
         })
     }
     

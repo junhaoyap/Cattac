@@ -37,7 +37,7 @@ class GameManager {
         }
     }
     
-    subscript(playerNumber player:Cat) -> Int? {
+    subscript(playerNumFor player:Cat) -> Int? {
         set {
             _playerNumber[player.name] = newValue
         }
@@ -46,7 +46,7 @@ class GameManager {
         }
     }
     
-    subscript(player playerNum:Int) -> Cat? {
+    subscript(playerWithNum playerNum:Int) -> Cat? {
         get {
             for (name, num) in _playerNumber {
                 if num == playerNum {
