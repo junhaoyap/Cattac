@@ -30,6 +30,9 @@ class GameAI {
             let index = Int(arc4random_uniform(UInt32(reachableNodes.count)))
             let moveToNode = Array(reachableNodes.values)[index]
             
+            // moveto position of player has to be set for action generation.
+            gameEngine.gameManager[moveToPositionOf: player] = moveToNode
+            
             var action: Action?
             // if has item, use item
             if let item = gameEngine.gameManager[itemOf: player] {
