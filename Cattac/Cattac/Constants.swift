@@ -180,4 +180,8 @@ struct Constants {
         // Damage layer 90 - 99
         static let damage: CGFloat = 90
     }
+    
+    struct UI {
+        static let buttonSpacing: CGFloat = 220
+    }
 }

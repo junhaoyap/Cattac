@@ -92,30 +92,10 @@ class GameScene: SKScene {
             
             // Sets the anchorpoint for the scene to be the center of the screen
             anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            
-            self.addChild(gameLayer)
 
-            setBackgroundImage("background.jpg")
-            
-            // position of the general game layer
-            let layerPosition = sceneUtils.getLayerPosition()
-
-            // adds tilesLayer to the game layer
-            tilesLayer.position = layerPosition
-            gameLayer.addChild(tilesLayer)
-            
-            // adds entityLayer to the game layer
-            entityLayer.position = layerPosition
-            gameLayer.addChild(entityLayer)
-
-            // adds buttonLayer to the gameLayer
-            let buttonSpacing: CGFloat = 220
-            buttonLayer.position =
-                CGPoint(x: -buttonSpacing, y: layerPosition.y - 100)
-            gameLayer.addChild(buttonLayer)
-
-            /// Additional initialization
-            initializeButtons(buttonSpacing)
+            initializeBackground()
+            initializeLayers()
+            initializeButtons()
             initializeInventory()
             initializePreviewNodes(currentPlayerNumber)
             addTiles()
@@ -265,10 +245,8 @@ extension GameScene: EventListener {
 
 private extension GameScene {
     /// Sets the game background image.
-    ///
-    /// :param: name The background image file.
-    func setBackgroundImage(name: String) {
-        let image = UIImage(named: name)!
+    func initializeBackground() {
+        let image = UIImage(named: "background.jpg")!
         let backgroundCGImage = image.CGImage
         let textureSize = CGRectMake(0, 0, image.size.width, image.size.height)
 
@@ -285,12 +263,29 @@ private extension GameScene {
 
         self.addChild(backgroundImage)
     }
+    
+    func initializeLayers() {
+        self.addChild(gameLayer)
+        // position of the general game layer
+        let layerPosition = sceneUtils.getLayerPosition()
+        
+        // adds tilesLayer to the game layer
+        tilesLayer.position = layerPosition
+        gameLayer.addChild(tilesLayer)
+        
+        // adds entityLayer to the game layer
+        entityLayer.position = layerPosition
+        gameLayer.addChild(entityLayer)
+        
+        // adds buttonLayer to the gameLayer
+        buttonLayer.position =
+            CGPoint(x: -Constants.UI.buttonSpacing, y: layerPosition.y - 100)
+        gameLayer.addChild(buttonLayer)
+    }
 
     /// Initializes the action buttons for the scene.
-    ///
-    /// :param: buttonSpacing The spacing between the center anchor of the
-    ///                       buttons.
-    func initializeButtons(buttonSpacing: CGFloat) {
+    func initializeButtons() {
+        let buttonSpacing: CGFloat = Constants.UI.buttonSpacing
         puiButton = SKPuiActionButtonNode(
             defaultButtonImage: "PuiButton.png",
             activeButtonImage: "PuiButtonPressed.png",
