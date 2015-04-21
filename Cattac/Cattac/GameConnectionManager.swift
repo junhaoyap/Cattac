@@ -264,7 +264,7 @@ class GameConnectionManager {
             Constants.Firebase.nodeGame
         )
         
-        gameRef.watchUpdateOnce("", onComplete: {
+        gameRef.watchUpdateOnce(Constants.Firebase.nodeGameLevel, onComplete: {
             snapshot in
             
             gameRef.readOnce(Constants.Firebase.nodeGameLevel,
