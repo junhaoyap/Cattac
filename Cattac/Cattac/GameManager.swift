@@ -5,6 +5,7 @@ class GameManager {
     private var _playerActions: [String:Action]
     private var _players: [String:Cat]
     private var _playerAIControlled: [String:Cat]
+    private var _playerTurnComplete: [String:Bool]
     private var _playerMovementPaths: [String:[TileNode]]
     private var _playerMovementAnimationCompleted: [String:Bool]
     private var _playerActionAnimationCompleted: [String:Bool]
@@ -17,6 +18,7 @@ class GameManager {
         _playerActions = [:]
         _players = [:]
         _playerAIControlled = [:]
+        _playerTurnComplete = [:]
         _playerMovementPaths = [:]
         _playerMovementAnimationCompleted = [:]
         _playerActionAnimationCompleted = [:]
@@ -120,6 +122,10 @@ class GameManager {
         
         return allCompleted
     }
+    
+    var allTurnsCompleted: Bool {
+        return _playerTurnComplete.count == 3
+    }
 
     var actionsCompleted: Bool {
         var allCompleted = true
@@ -138,6 +144,13 @@ class GameManager {
     func advanceTurn() {
         _playerPositions = _playerMoveToPositions
         _playerActions = [:]
+        _playerTurnComplete = [:]
+    }
+    
+    func playerTurn(player: Cat, moveTo dest: TileNode, action: Action?) {
+        self[moveToPositionOf: player] = dest
+        self[actionOf: player] = action
+        _playerTurnComplete[player.name] = true
     }
 
     func precalculate() {

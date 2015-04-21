@@ -380,6 +380,10 @@ class GameEngine {
         currentPlayerMoveNumber++
     }
     
+    private func checkAllTurns() {
+        
+    }
+    
     private func registerMovementWatcherExcept(number: Int) {
         for i in 1...4 {
             if i == number {
@@ -414,9 +418,10 @@ class GameEngine {
             Constants.Firebase.keyAttkRange) as? Int
         
         let player = gameManager[Constants.catArray[playerNumber]]!
+        let dest = grid[moveToRow!, moveToCol!]!
+        var action: Action?
         
         gameManager[positionOf: player] = grid[fromRow!, fromCol!]
-        gameManager[moveToPositionOf: player] = grid[moveToRow!, moveToCol!]
         println("\(getPlayer().name)[\(playerNumber)]" +
             " moving to \(moveToRow!),\(moveToCol!)"
         )
@@ -425,12 +430,10 @@ class GameEngine {
             switch playerActionType {
             case .Pui:
                 let puiDirection = Direction.create(attackDir!)!
-                gameManager[actionOf: player] = PuiAction(direction:
-                    puiDirection)
+                action = PuiAction(direction: puiDirection)
             case .Fart:
                 let fartRange = attackRange!
-                gameManager[actionOf: player] = FartAction(range:
-                    fartRange)
+                action = FartAction(range: fartRange)
             case .Poop:
                 let targetNodeRow = snapshot.value.objectForKey(
                     Constants.Firebase.keyTargetRow) as? Int
@@ -439,8 +442,7 @@ class GameEngine {
                 let targetNode = grid[targetNodeRow!,
                     targetNodeCol!]!
                 
-                gameManager[actionOf: player] = PoopAction(
-                    targetNode: targetNode)
+                action = PoopAction(targetNode: targetNode)
             case .Item:
                 break
             }
@@ -449,12 +451,7 @@ class GameEngine {
             )
         }
         
-        otherPlayersMoved++
-        
-        if otherPlayersMoved == 3 {
-            triggerAllPlayersMoved()
-            otherPlayersMoved = 0
-        }
+        gameManager.playerTurn(player, moveTo: dest, action: action)
     }
 
     func getGrid() -> Grid {
@@ -502,16 +499,16 @@ extension GameEngine {
         }
     }
     
+    func triggerAIPlayerMove(player: Cat, dest: TileNode, action: Action?) {
+        gameManager.playerTurn(player, moveTo: dest, action: action)
+    }
+    
     func triggerPlayerActionEnded() {
         triggerStateAdvance()
     }
 
     func triggerClearAction() {
         gameManager[actionOf: currentPlayer] = nil
-    }
-
-    func triggerAllPlayersMoved() {
-        triggerStateAdvance()
     }
 
     func triggerMovementAnimationEnded() {
