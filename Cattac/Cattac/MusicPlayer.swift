@@ -30,4 +30,8 @@ class MusicPlayer {
     func playBackgroundMusic() {
 //        nyanBackgroundMusicPlayer.play()
     }
+    
+    func stopBackgroundMusic() {
+//        nyanBackgroundMusicPlayer.stop()
+    }
 }
