@@ -145,6 +145,7 @@ class SoundPlayer {
             contentsOfURL: nukeSoundFile, error: nil
         )
         
+        nukeSoundPlayer.volume = 0.25
         nukeSoundPlayer.numberOfLoops = 0
         nukeSoundPlayer.prepareToPlay()
     }
