@@ -6,7 +6,7 @@ class WatchTowerDoodad: Doodad {
     
     override init() {
         super.init()
-        setSprite(SKLabelNode(text: "T"))
+        setSprite(SKSpriteNode(imageNamed: "Tower.png"))
         setName(Constants.Doodad.watchTowerString)
     }
     
