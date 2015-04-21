@@ -4,6 +4,9 @@ class GameManager {
     private var _playerMoveToPositions: [String:TileNode]
     private var _playerActions: [String:Action]
     private var _players: [String:Cat]
+    private var _playerNumber: [String:Int]
+    private var _playerAIControlled: [String:Cat]
+    private var _playerTurnComplete: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
     private var _playerMovementAnimationCompleted: [String:Bool]
     private var _playerActionAnimationCompleted: [String:Bool]
@@ -15,19 +18,42 @@ class GameManager {
         _playerMoveToPositions = [:]
         _playerActions = [:]
         _players = [:]
+        _playerNumber = [:]
+        _playerAIControlled = [:]
+        _playerTurnComplete = [:]
         _playerMovementPaths = [:]
         _playerMovementAnimationCompleted = [:]
         _playerActionAnimationCompleted = [:]
         _playerItems = [:]
         _doodadsToRemove = [:]
     }
-
+    
     subscript(positionOf player:Cat) -> TileNode? {
         set {
             _playerPositions[player.name] = newValue
         }
         get {
             return _playerPositions[player.name]
+        }
+    }
+    
+    subscript(playerNumFor player:Cat) -> Int? {
+        set {
+            _playerNumber[player.name] = newValue
+        }
+        get {
+            return _playerNumber[player.name]
+        }
+    }
+    
+    subscript(playerWithNum playerNum:Int) -> Cat? {
+        get {
+            for (name, num) in _playerNumber {
+                if num == playerNum {
+                    return _players[name]
+                }
+            }
+            return nil
         }
     }
 
@@ -69,7 +95,7 @@ class GameManager {
     subscript(name: String) -> Cat? {
         return _players[name]
     }
-
+    
     subscript(movementPathOf player:Cat) -> [TileNode]? {
         set {
             _playerMovementPaths[player.name] = newValue
@@ -79,8 +105,29 @@ class GameManager {
         }
     }
     
+    subscript(aiFor player:Cat) -> Bool {
+        set {
+            if newValue {
+                _playerAIControlled[player.name] = player
+            } else {
+                _playerAIControlled.removeValueForKey(player.name)
+            }
+        }
+        get {
+            return _playerAIControlled[player.name] != nil
+        }
+    }
+    
     var players: [String:Cat] {
         return _players
+    }
+    
+    var aiPlayers: [String:Cat] {
+        return _playerAIControlled
+    }
+    
+    var playersTurnCompleted: [String: Cat] {
+        return _playerTurnComplete
     }
 
     var doodadsToRemove: [Int:Doodad] {
@@ -101,6 +148,10 @@ class GameManager {
         
         return allCompleted
     }
+    
+    var allTurnsCompleted: Bool {
+        return _playerTurnComplete.count == 3
+    }
 
     var actionsCompleted: Bool {
         var allCompleted = true
@@ -112,13 +163,27 @@ class GameManager {
         return allCompleted
     }
 
-    func registerPlayer(player: Cat) {
+    func registerPlayer(player: Cat, playerNum: Int) {
         _players[player.name] = player
+        _playerNumber[player.name] = playerNum
+    }
+    
+    func registerAIPlayers(players: [Cat]) {
+        for player in players {
+            self[aiFor: player] = true
+        }
     }
 
     func advanceTurn() {
         _playerPositions = _playerMoveToPositions
         _playerActions = [:]
+        _playerTurnComplete = [:]
+    }
+    
+    func playerTurn(player: Cat, moveTo dest: TileNode, action: Action?) {
+        self[moveToPositionOf: player] = dest
+        self[actionOf: player] = action
+        _playerTurnComplete[player.name] = player
     }
 
     func precalculate() {

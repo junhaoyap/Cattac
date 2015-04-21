@@ -8,7 +8,11 @@ class Doodad: TileEntity {
     
     private var dictionaryName = ""
     private var removed = false
-    private var sprite: SKNode = SKSpriteNode(imageNamed: "Nala.png")
+    private var sprite: SKNode
+    
+    init(sprite: SKNode) {
+        self.sprite = sprite
+    }
     
     /// Inheriting doodads to implement effect, if any.
     /// effected by destination tile

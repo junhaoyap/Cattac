@@ -4,36 +4,33 @@
 class GameAI {
 
     private var grid: Grid
-    private var gameManager: GameManager
+    private var gameEngine: GameEngine
     private var currentPlayer: Cat
 
     /// Intializes the game AI.
     ///
     /// :param: grid The game level grid.
-    /// :param: gameManager The game manager of the game engine.
+    /// :param: gameManager The game engine.
     /// :param: currentPlayer The Cat object of the current player.
-    init(grid: Grid, gameManager: GameManager, currentPlayer: Cat) {
+    init(grid: Grid, gameEngine: GameEngine, currentPlayer: Cat) {
         self.grid = grid
-        self.gameManager = gameManager
+        self.gameEngine = gameEngine
         self.currentPlayer = currentPlayer
     }
 
     /// Calculates the movement and action for the bots based on their current
     /// positions.
     func calculateTurn() {
-        for (playerName, player) in gameManager.players {
-            if playerName == currentPlayer.name {
-                continue
-            }
-
+        for (playerName, player) in gameEngine.gameManager.aiPlayers {
             let reachableNodes = grid.getNodesInRange(
-                gameManager[positionOf: player]!,
+                gameEngine.gameManager[positionOf: player]!,
                 range: player.moveRange
             )
 
             let index = Int(arc4random_uniform(UInt32(reachableNodes.count)))
             let moveToNode = Array(reachableNodes.values)[index]
-            gameManager[moveToPositionOf: player] = moveToNode
+            gameEngine.triggerAIPlayerMove(player,
+                dest: moveToNode, action: nil)
         }
     }
 }

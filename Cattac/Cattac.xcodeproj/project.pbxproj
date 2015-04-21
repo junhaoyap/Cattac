@@ -197,6 +197,8 @@
 		BDA19AD01AD399CC00B7E9D4 /* WormholeDoodad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19ACF1AD399CC00B7E9D4 /* WormholeDoodad.swift */; };
 		BDFF7EFC1AE3EB7D00F2E942 /* Crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = BDFF7EFB1AE3EB7D00F2E942 /* Crosshairs.png */; };
 		BDFF7EFD1AE3EB7D00F2E942 /* Crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = BDFF7EFB1AE3EB7D00F2E942 /* Crosshairs.png */; };
+		BDFF7EFF1AE648C000F2E942 /* ObserverReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFF7EFE1AE648C000F2E942 /* ObserverReference.swift */; };
+		BDFF7F001AE648C000F2E942 /* ObserverReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFF7EFE1AE648C000F2E942 /* ObserverReference.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -341,6 +343,7 @@
 		BDA19AC11AD0675100B7E9D4 /* FortressDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FortressDoodad.swift; sourceTree = "<group>"; };
 		BDA19ACF1AD399CC00B7E9D4 /* WormholeDoodad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WormholeDoodad.swift; sourceTree = "<group>"; };
 		BDFF7EFB1AE3EB7D00F2E942 /* Crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Crosshairs.png; sourceTree = "<group>"; };
+		BDFF7EFE1AE648C000F2E942 /* ObserverReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverReference.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -706,6 +709,7 @@
 			children = (
 				34ED9F1D1AE29C80006DDA50 /* Server.swift */,
 				34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */,
+				BDFF7EFE1AE648C000F2E942 /* ObserverReference.swift */,
 				34BA89C71AD6D55200413C1B /* ConnectionManager.swift */,
 				34ED9F1B1AE28BA2006DDA50 /* GameConnectionManager.swift */,
 			);
@@ -965,6 +969,7 @@
 				BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */,
 				763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */,
 				34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */,
+				BDFF7EFF1AE648C000F2E942 /* ObserverReference.swift in Sources */,
 				3425854A1AACE27D004A3CFD /* BasicLevel.swift in Sources */,
 				342585411AACE196004A3CFD /* Cat.swift in Sources */,
 				763E71331AD2FFB200E90EF0 /* SKDirectionButtonNode.swift in Sources */,
@@ -1029,6 +1034,7 @@
 				34AE22B01AE4F90100C0EA6D /* SKActionButtonNode.swift in Sources */,
 				34AE22A91AE4F6A700C0EA6D /* LobbyViewController.swift in Sources */,
 				768383EF1ADBD44900538F5D /* GameManager.swift in Sources */,
+				BDFF7F001AE648C000F2E942 /* ObserverReference.swift in Sources */,
 				768383F01ADBD44900538F5D /* GameAI.swift in Sources */,
 				768383F11ADBD44900538F5D /* Wall.swift in Sources */,
 				348213B11AE27CC40079BA49 /* HardLevel.swift in Sources */,

@@ -50,9 +50,15 @@ class GameEngine {
     
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
-
+    
     /// Whether the game is currently in multiplayer mode
     var multiplayer: Bool
+    
+    /// Whether the game is currently the host
+    var host: Bool
+    
+    /// For wait countdown to drop player
+    var countDownTimer: NSTimer?
     
     /// The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
@@ -64,19 +70,24 @@ class GameEngine {
         println("init GameEngine as playerNumber \(playerNumber)")
         
         self.playerNumber = playerNumber
-        
         self.grid = grid
-
+        self.host = playerNumber == 4
         self.multiplayer = multiplayer
         
         createPlayers(playerNumber)
         
         if multiplayer {
             registerMovementWatcherExcept(playerNumber)
-        } else {
-            self.gameAI = GameAI(grid: grid, gameManager: gameManager,
-                currentPlayer: currentPlayer)
         }
+        
+        self.gameAI = GameAI(grid: grid, gameEngine: self,
+            currentPlayer: currentPlayer)
+    }
+    
+    /// Set this game as host game. Host will be incharge of dealing with player
+    /// drops.
+    func setHost() {
+        host = true
     }
     
     /// Called every update by gameScene (1 time per frame)
@@ -95,13 +106,11 @@ class GameEngine {
         case .PlayerAction:
             break
         case .ServerUpdate:
-            updateServer()
+            updateServer(playerNumber)
             triggerStateAdvance()
         case .WaitForAll:
-            break
-        case .AICalculation:
+            countDownForDrop()
             gameAI.calculateTurn()
-            triggerStateAdvance()
         case .StartMovesExecution:
             calculateMovementPaths()
             generateOtherPlayerMoveToNodess()
@@ -138,13 +147,11 @@ class GameEngine {
             if multiplayer {
                 state = .ServerUpdate
             } else {
-                state = .AICalculation
+                state = .WaitForAll
             }
         case .ServerUpdate:
             state = .WaitForAll
         case .WaitForAll:
-            state = .StartMovesExecution
-        case .AICalculation:
             state = .StartMovesExecution
         case .StartMovesExecution:
             state = .MovesExecution
@@ -169,6 +176,37 @@ class GameEngine {
             gameManager[positionOf: currentPlayer]!,
             range: currentPlayer.moveRange
         )
+    }
+    
+    private func countDownForDrop() {
+        if !host || gameManager.allTurnsCompleted
+            || gameManager.aiPlayers.count == 3 {
+            return
+        }
+        
+        countDownTimer = NSTimer.scheduledTimerWithTimeInterval(
+            Constants.Firebase.maxDelayBeforeDrop,
+            target: self, selector: Selector("onCountDownForDrop"),
+            userInfo: nil, repeats: false)
+        
+    }
+    
+    @objc func onCountDownForDrop() {
+        println("Initiate drop inactive players")
+        if !gameManager.allTurnsCompleted {
+            var playersToDrop: [Cat] = []
+            for (name, player) in gameManager.players {
+                if gameManager.samePlayer(player, currentPlayer) {
+                    continue
+                }
+                if gameManager.playersTurnCompleted[name] == nil {
+                    let playerNum = gameManager[playerNumFor: player]!
+                    gameConnectionManager.dropPlayer(playerNum)
+                    gameManager[aiFor: player] = true
+                }
+            }
+            gameAI.calculateTurn()
+        }
     }
 
     func setCurrentPlayerMoveToPosition(node: TileNode) {
@@ -325,20 +363,26 @@ class GameEngine {
     
     private func createPlayers(playerNumber: Int) {
         let cat1 = catFactory.createCat(Constants.cat.grumpyCat)!
-        gameManager.registerPlayer(cat1)
+        gameManager.registerPlayer(cat1, playerNum: 1)
         gameManager[positionOf: cat1] = grid[0, 0]
         
         let cat2 = catFactory.createCat(Constants.cat.nyanCat)!
-        gameManager.registerPlayer(cat2)
+        gameManager.registerPlayer(cat2, playerNum: 2)
         gameManager[positionOf: cat2] = grid[grid.rows - 1, 0]
         
         let cat3 = catFactory.createCat(Constants.cat.kittyCat)!
-        gameManager.registerPlayer(cat3)
+        gameManager.registerPlayer(cat3, playerNum: 3)
         gameManager[positionOf: cat3] = grid[grid.rows - 1, grid.columns - 1]
         
         let cat4 = catFactory.createCat(Constants.cat.octoCat)!
-        gameManager.registerPlayer(cat4)
+        gameManager.registerPlayer(cat4, playerNum: 4)
         gameManager[positionOf: cat4] = grid[0, grid.columns - 1]
+        
+        if !multiplayer {
+            var bots = [cat1, cat2, cat3, cat4]
+            bots.removeAtIndex(playerNumber - 1)
+            gameManager.registerAIPlayers(bots)
+        }
         
         switch playerNumber {
         case 1:
@@ -368,20 +412,34 @@ class GameEngine {
         eventListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
     }
     
-    private func updateServer() {
-        let currentPlayerNumber = playerNumber
-        let currentTile = gameManager[positionOf: currentPlayer]!
-        let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
-        let action = gameManager[actionOf: currentPlayer]
+    private func updateServer(playerNum: Int) {
+        let player = gameManager[playerWithNum: playerNum]!
+        let currentTile = gameManager[positionOf: player]!
+        let moveToTile = gameManager[moveToPositionOf: player]!
+        let action = gameManager[actionOf: player]
         
-        gameConnectionManager.updateServer(playerNumber,
+        // use movementNumber - 1 for multiplayer AI movements
+        let movementNumber = playerNumber == playerNum
+            ? currentPlayerMoveNumber : currentPlayerMoveNumber - 1
+        
+        gameConnectionManager.updateServer(playerNum,
             currentTile: currentTile,
             moveToTile: moveToTile,
             action: action,
-            number: currentPlayerMoveNumber
+            number: movementNumber
         )
         
-        currentPlayerMoveNumber++
+        if playerNumber == playerNum {
+            currentPlayerMoveNumber++
+        }
+    }
+    
+    private func checkAllTurns() {
+        if gameManager.allTurnsCompleted {
+            countDownTimer?.invalidate()
+            triggerStateAdvance()
+            println("turn all completed")
+        }
     }
     
     private func registerMovementWatcherExcept(number: Int) {
@@ -390,12 +448,67 @@ class GameEngine {
                 continue
             }
             
-            let currentNumber = i - 1
-            
-            gameConnectionManager.registerMovementWatcher(currentNumber,
-                theSender: self
+            gameConnectionManager.registerPlayerWatcher(i,
+                completion: movementUpdate
             )
         }
+    }
+    
+    private func movementUpdate(snapshot: FDataSnapshot, _ playerNum: Int) {
+        let fromRow = snapshot.value.objectForKey(
+            Constants.Firebase.keyMoveFromRow) as? Int
+        let fromCol = snapshot.value.objectForKey(
+            Constants.Firebase.keyMoveFromCol) as? Int
+        let moveToRow = snapshot.value.objectForKey(
+            Constants.Firebase.keyMoveToRow) as? Int
+        let moveToCol = snapshot.value.objectForKey(
+            Constants.Firebase.keyMoveToCol) as? Int
+        
+        let attackType = snapshot.value.objectForKey(
+            Constants.Firebase.keyAttkType) as? String
+        let attackDir = snapshot.value.objectForKey(
+            Constants.Firebase.keyAttkDir) as? String
+        let attackDmg = snapshot.value.objectForKey(
+            Constants.Firebase.keyAttkDmg) as? Int
+        let attackRange = snapshot.value.objectForKey(
+            Constants.Firebase.keyAttkRange) as? Int
+        
+        let player = gameManager[playerWithNum: playerNum]!
+        let dest = grid[moveToRow!, moveToCol!]!
+        var action: Action?
+        
+        gameManager[positionOf: player] = grid[fromRow!, fromCol!]
+        println("\(player.name)[\(playerNum)]" +
+            " moving to \(moveToRow!),\(moveToCol!)"
+        )
+        
+        if let playerActionType = ActionType.create(attackType!) {
+            switch playerActionType {
+            case .Pui:
+                let puiDirection = Direction.create(attackDir!)!
+                action = PuiAction(direction: puiDirection)
+            case .Fart:
+                let fartRange = attackRange!
+                action = FartAction(range: fartRange)
+            case .Poop:
+                let targetNodeRow = snapshot.value.objectForKey(
+                    Constants.Firebase.keyTargetRow) as? Int
+                let targetNodeCol = snapshot.value.objectForKey(
+                    Constants.Firebase.keyTargetCol) as? Int
+                let targetNode = grid[targetNodeRow!,
+                    targetNodeCol!]!
+                
+                action = PoopAction(targetNode: targetNode)
+            case .Item:
+                break
+            }
+            println("\(player.name)[\(playerNumber)]" +
+                " \(playerActionType.description)"
+            )
+        }
+        
+        gameManager.playerTurn(player, moveTo: dest, action: action)
+        checkAllTurns()
     }
 
     func getGrid() -> Grid {
@@ -443,16 +556,21 @@ extension GameEngine {
         }
     }
     
+    func triggerAIPlayerMove(player: Cat, dest: TileNode, action: Action?) {
+        gameManager.playerTurn(player, moveTo: dest, action: action)
+        if multiplayer {
+            updateServer(gameManager[playerNumFor: player]!)
+        } else {
+            checkAllTurns()
+        }
+    }
+    
     func triggerPlayerActionEnded() {
         triggerStateAdvance()
     }
 
     func triggerClearAction() {
         gameManager[actionOf: currentPlayer] = nil
-    }
-
-    func triggerAllPlayersMoved() {
-        triggerStateAdvance()
     }
 
     func triggerMovementAnimationEnded() {

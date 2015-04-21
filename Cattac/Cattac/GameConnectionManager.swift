@@ -5,10 +5,14 @@
 
 class GameConnectionManager {
     let stringUtils = StringUtils()
-    let connectionManager: ConnectionManager!
+    let connectionManager: ConnectionManager
+    private var observerReferences: [Int: ObserverReference]
+    private var dropObserverReferences: [Int: ObserverReference]
     
     init(urlProvided: String) {
         connectionManager = ConnectionManager(firebase: urlProvided)
+        observerReferences = [:]
+        dropObserverReferences = [:]
     }
     
     // MARK: LoginViewController
@@ -272,6 +276,7 @@ class GameConnectionManager {
                 self.waitPlayerName(theSender)
                 
                 sender.playerNumber = numberOfPlayers
+                println(sender.playerNumber)
                 
                 lobbyRef.update(Constants.Firebase.nodePlayers, data: [
                     "\(numberOfPlayers - 1)": uid
@@ -412,15 +417,20 @@ class GameConnectionManager {
             Constants.Firebase.nodeGame
         )
         
+        let playerTurnInfo = [
+            Constants.Firebase.nodePlayerMovements:"",
+            Constants.Firebase.nodePlayerDropped:""
+        ]
+        
         gameRef.overwrite("", data:
             [
                 "hasGameStarted": 1,
                 Constants.Firebase.nodeGameLevel: aLevel.compress(),
                 Constants.Firebase.nodePlayers: [
-                    Constants.Firebase.nodePlayerMovements,
-                    Constants.Firebase.nodePlayerMovements,
-                    Constants.Firebase.nodePlayerMovements,
-                    Constants.Firebase.nodePlayerMovements
+                    "1": playerTurnInfo,
+                    "2": playerTurnInfo,
+                    "3": playerTurnInfo,
+                    "4": playerTurnInfo
                 ]
             ]
         )
@@ -501,83 +511,37 @@ class GameConnectionManager {
             )
     }
     
-    func registerMovementWatcher(playerNumber: Int, theSender: AnyObject) {
-        let sender = theSender as GameEngine
-        
-        let playerMovementWatcherRef = connectionManager
+    func dropPlayer(playerNum: Int) {
+        let playerRef = connectionManager
             .append(Constants.Firebase.nodeGames)
             .append(Constants.Firebase.nodeGame)
             .append(Constants.Firebase.nodePlayers)
-            .append("\(playerNumber)")
-            .append(Constants.Firebase.nodePlayerMovements)
+            .append("\(playerNum)")
+        playerRef.update("",
+            data: [Constants.Firebase.nodePlayerDropped: DateUtils.nowString()])
+    }
+    
+    func registerPlayerWatcher(playerNum: Int,
+        completion: (data: FDataSnapshot, playerNum: Int) -> Void) {
+            
+            let playerMovementWatcherRef = connectionManager
+                .append(Constants.Firebase.nodeGames)
+                .append(Constants.Firebase.nodeGame)
+                .append(Constants.Firebase.nodePlayers)
+                .append("\(playerNum)")
+                .append(Constants.Firebase.nodePlayerMovements)
         
-        playerMovementWatcherRef.watchNew("", onComplete: {
-            theSnapshot in
+            let obsvRef = playerMovementWatcherRef.watchNew("", onComplete: {
+                theSnapshot in
             
-            let snapshot = theSnapshot as FDataSnapshot
-            
-            let fromRow = snapshot.value.objectForKey(
-                Constants.Firebase.keyMoveFromRow) as? Int
-            let fromCol = snapshot.value.objectForKey(
-                Constants.Firebase.keyMoveFromCol) as? Int
-            let moveToRow = snapshot.value.objectForKey(
-                Constants.Firebase.keyMoveToRow) as? Int
-            let moveToCol = snapshot.value.objectForKey(
-                Constants.Firebase.keyMoveToCol) as? Int
-            
-            let attackType = snapshot.value.objectForKey(
-                Constants.Firebase.keyAttkType) as? String
-            let attackDir = snapshot.value.objectForKey(
-                Constants.Firebase.keyAttkDir) as? String
-            let attackDmg = snapshot.value.objectForKey(
-                Constants.Firebase.keyAttkDmg) as? Int
-            let attackRange = snapshot.value.objectForKey(
-                Constants.Firebase.keyAttkRange) as? Int
-            
-            let player = sender.gameManager[Constants.catArray[playerNumber]]!
-            
-            sender.gameManager[positionOf: player] = sender.getGrid()[
-                fromRow!, fromCol!]
-            sender.gameManager[moveToPositionOf: player] = sender.getGrid()[
-                moveToRow!, moveToCol!]
-            println("\(sender.getPlayer().name)[\(playerNumber)]" +
-                " moving to \(moveToRow!),\(moveToCol!)"
-            )
-            
-            if let playerActionType = ActionType.create(attackType!) {
-                switch playerActionType {
-                case .Pui:
-                    let puiDirection = Direction.create(attackDir!)!
-                    sender.gameManager[actionOf: player] = PuiAction(direction:
-                        puiDirection)
-                case .Fart:
-                    let fartRange = attackRange!
-                    sender.gameManager[actionOf: player] = FartAction(range:
-                        fartRange)
-                case .Poop:
-                    let targetNodeRow = snapshot.value.objectForKey(
-                        Constants.Firebase.keyTargetRow) as? Int
-                    let targetNodeCol = snapshot.value.objectForKey(
-                        Constants.Firebase.keyTargetCol) as? Int
-                    let targetNode = sender.getGrid()[targetNodeRow!,
-                        targetNodeCol!]!
-                    
-                    sender.gameManager[actionOf: player] = PoopAction(
-                        targetNode: targetNode)
-                case .Item:
-                    break
-                }
-                println("\(player.name)[\(playerNumber)]" +
-                    " \(playerActionType.description)"
-                )
-            }
-            
-            sender.otherPlayersMoved++
-            
-            if sender.otherPlayersMoved == 3 {
-                sender.triggerAllPlayersMoved()
-                sender.otherPlayersMoved = 0
-            }
-        })
+                let snapshot = theSnapshot as FDataSnapshot
+                completion(data: snapshot, playerNum: playerNum)
+            })
+            observerReferences[playerNum] = obsvRef
+    }
+    
+    func unregisterPlayerWatcher(playerNum: Int) {
+        println("unregistered \(playerNum)")
+        observerReferences[playerNum]?.unregister()
     }
 }

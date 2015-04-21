@@ -53,7 +53,8 @@ class FirebaseServer: Server {
         updateRef.updateChildValues(data)
     }
     
-    func watchUpdateOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+    func watchUpdateOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var changeRef = ref!
@@ -67,9 +68,14 @@ class FirebaseServer: Server {
             
             onComplete(snapshot)
         })
+            
+        return ObserverReference(unregister: {
+            changeRef.removeAllObservers()
+        })
     }
     
-    func watchUpdate(childUrl: String, onComplete: (AnyObject) -> ()) {
+    func watchUpdate(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var changeRef = ref!
@@ -83,9 +89,35 @@ class FirebaseServer: Server {
             
             onComplete(snapshot)
         })
+        
+        return ObserverReference(unregister: {
+            changeRef.removeAllObservers()
+        })
     }
     
-    func watchNewOnce(childUrl: String, onComplete: (AnyObject) -> ()) {
+    func watchRemovedOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
+        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
+        
+        var changeRef = ref!
+        
+        for childString in splittedStringsToConstructRef {
+            changeRef = changeRef.childByAppendingPath(childString)
+        }
+        
+        changeRef.observeEventType(.ChildRemoved, withBlock: {
+            snapshot in
+            
+            onComplete(snapshot)
+        })
+        
+        return ObserverReference(unregister: {
+            changeRef.removeAllObservers()
+        })
+    }
+    
+    func watchNewOnce(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
         let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
         var changeRef = ref!
@@ -99,22 +131,31 @@ class FirebaseServer: Server {
             
             onComplete(snapshot)
         })
+            
+        return ObserverReference(unregister: {
+            changeRef.removeAllObservers()
+        })
     }
     
-    func watchNew(childUrl: String, onComplete: (AnyObject) -> ()) {
-        let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
+    func watchNew(childUrl: String,
+        onComplete: (AnyObject) -> ()) -> ObserverReference {
+            let splittedStringsToConstructRef = stringUtil.splitOnSlash(childUrl)
         
-        var changeRef = ref!
+            var changeRef = ref!
         
-        for childString in splittedStringsToConstructRef {
-            changeRef = changeRef.childByAppendingPath(childString)
-        }
+            for childString in splittedStringsToConstructRef {
+                changeRef = changeRef.childByAppendingPath(childString)
+            }
         
-        changeRef.observeEventType(.ChildAdded, withBlock: {
-            snapshot in
+            changeRef.observeEventType(.ChildAdded, withBlock: {
+                snapshot in
             
-            onComplete(snapshot)
-        })
+                onComplete(snapshot)
+            })
+            
+            return ObserverReference(unregister: {
+                changeRef.removeAllObservers()
+            })
     }
     
     func createUser(email: String, password: String,

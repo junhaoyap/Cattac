@@ -32,7 +32,8 @@ extension ActionType: Printable {
         let types = [
             "pui": ActionType.Pui,
             "fart": ActionType.Fart,
-            "poop": ActionType.Poop
+            "poop": ActionType.Poop,
+            "item": ActionType.Item
         ]
         
         return types[name]

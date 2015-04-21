@@ -3,9 +3,8 @@ import SpriteKit
 
 class LandMineDoodad: Doodad {
     
-    override init() {
-        super.init()
-        setSprite(SKLabelNode(text: "M"))
+    init() {
+        super.init(sprite: SKLabelNode(text: "M"))
         setName(Constants.Doodad.landMineString)
     }
     
