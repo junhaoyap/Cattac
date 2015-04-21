@@ -79,4 +79,14 @@ class GameLevel {
         
         return levelData
     }
+    
+    func emptyTiles() -> [TileNode] {
+        var emptyTiles: [TileNode] = []
+        for tileNode in grid {
+            if tileNode.doodad == nil {
+                emptyTiles += [tileNode]
+            }
+        }
+        return emptyTiles
+    }
 }

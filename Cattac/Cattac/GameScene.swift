@@ -34,7 +34,7 @@ class GameScene: SKScene {
     private var actionButtons = [SKActionButtonNode]()
 
     /// Button that sets the action of the player to Pui.
-    private var puiButton: SKActionButtonNode!
+    private var puiButton: SKPuiActionButtonNode!
 
     /// Button that sets the action of the player to Fart.
     private var fartButton: SKActionButtonNode!
@@ -437,10 +437,28 @@ private extension GameScene {
                 gameEngine.setCurrentPlayerMoveToPosition(node)
                 previewNode.position = sceneUtils.pointFor(node.position)
                 previewNode.hidden = false
+                validateActionOnMove()
             }
         }
     }
-
+    
+    /// Revalidates the current player action after player decides to move to a
+    /// new node.
+    func validateActionOnMove() {
+        let currentPlayer = gameEngine.currentPlayer
+        let action = gameManager[actionOf: currentPlayer]
+        if let puiAction = action as? PuiAction {
+            let moveToPosition = gameManager[moveToPositionOf: currentPlayer]
+            let directions = gameEngine.getAvailablePuiDirections()
+            if contains(directions, puiAction.direction) {
+                puiButton.resetDirectionNode(puiAction.direction)
+            } else {
+                puiButton.unselect()
+                gameManager[actionOf: currentPlayer] = nil
+            }
+        }
+    }
+    
     /// Moves all the players to their respective next positions.
     ///
     /// Notifies the game manager and game engine of movement completion.
