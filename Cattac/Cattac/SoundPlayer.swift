@@ -99,23 +99,25 @@ class SoundPlayer {
             contentsOfURL: poopArmSoundFile, error: nil
         )
         
+        poopArmSoundPlayer.volume = 0.25
         poopArmSoundPlayer.numberOfLoops = 0
         poopArmSoundPlayer.prepareToPlay()
         
         // Fart
         let fartSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
-            .pathForResource("fart", ofType: "flac")!)
+            .pathForResource("fart", ofType: "wav")!)
         
         fartSoundPlayer = AVAudioPlayer(
             contentsOfURL: fartSoundFile, error: nil
         )
         
+        poopArmSoundPlayer.volume = 0.70
         fartSoundPlayer.numberOfLoops = 0
         fartSoundPlayer.prepareToPlay()
         
         // Pui
         let puiSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
-            .pathForResource("pui", ofType: "")!)
+            .pathForResource("pui", ofType: "wav")!)
         
         puiSoundPlayer = AVAudioPlayer(
             contentsOfURL: puiSoundFile, error: nil
@@ -126,7 +128,7 @@ class SoundPlayer {
         
         // Poop
         let poopSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
-            .pathForResource("pui", ofType: "")!)
+            .pathForResource("poop", ofType: "wav")!)
         
         poopSoundPlayer = AVAudioPlayer(
             contentsOfURL: poopSoundFile, error: nil
@@ -137,7 +139,7 @@ class SoundPlayer {
         
         // Nuke
         let nukeSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
-            .pathForResource("pui", ofType: "")!)
+            .pathForResource("nuke", ofType: "wav")!)
         
         nukeSoundPlayer = AVAudioPlayer(
             contentsOfURL: nukeSoundFile, error: nil
