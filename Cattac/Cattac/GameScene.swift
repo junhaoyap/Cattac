@@ -833,7 +833,7 @@ private extension GameScene {
             button.isEnabled = true
         }
         if gameManager[itemOf: gameEngine.currentPlayer] == nil {
-            //inventoryBoxButton.isEnabled = false
+            inventoryBoxButton.isEnabled = false
         }
     }
 

@@ -10,7 +10,7 @@ class GameManager {
     private var _playerMovementPaths: [String:[TileNode]]
     private var _playerMovementAnimationCompleted: [String:Bool]
     private var _playerActionAnimationCompleted: [String:Bool]
-    private var _playerItems: [String:Item]
+    private var _playerItems: [String:Inventory]
     private var _doodadsToRemove: [Int: Doodad]
 
     init() {
@@ -79,7 +79,7 @@ class GameManager {
         }
     }
     
-    subscript(itemOf player:Cat) -> Item? {
+    subscript(inventoryOf player:Cat) -> Inventory? {
         set {
             if newValue == nil {
                 _playerItems.removeValueForKey(player.name)

@@ -110,6 +110,7 @@
 		34ED9F231AE29F41006DDA50 /* FirebaseServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */; };
 		760645361AE2830E00CC0279 /* Poop.png in Resources */ = {isa = PBXBuildFile; fileRef = 760645351AE2830E00CC0279 /* Poop.png */; };
 		761BB59E1AD04348007C31C1 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761BB59D1AD04348007C31C1 /* Action.swift */; };
+		76344ED71AE7169700848789 /* SKInventoryItemNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76344ED61AE7169700848789 /* SKInventoryItemNode.swift */; };
 		763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763D97B71ADA7CDB0064B73C /* SceneUtils.swift */; };
 		763E71171AD1B78D00E90EF0 /* Grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71161AD1B78D00E90EF0 /* Grass.png */; };
 		763E71191AD1B87C00E90EF0 /* GrassPreview.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71181AD1B87C00E90EF0 /* GrassPreview.png */; };
@@ -172,6 +173,8 @@
 		769BB4C91AE70514000A6B57 /* Music.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C61AE70514000A6B57 /* Music.png */; };
 		769BB4CA1AE70514000A6B57 /* Quit.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C71AE70514000A6B57 /* Quit.png */; };
 		769BB4CB1AE70514000A6B57 /* Sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C81AE70514000A6B57 /* Sound.png */; };
+		769BB4CD1AE714F1000A6B57 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769BB4CC1AE714F1000A6B57 /* Inventory.swift */; };
+		769BB4CE1AE714F1000A6B57 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769BB4CC1AE714F1000A6B57 /* Inventory.swift */; };
 		76D0F60B1ADAF65700CB91B3 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0F60A1ADAF65700CB91B3 /* GameState.swift */; };
 		76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60C1ADB261000CB91B3 /* Fart.png */; };
 		76D0F60F1ADBA69100CB91B3 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60E1ADBA69100CB91B3 /* background.jpg */; };
@@ -287,6 +290,7 @@
 		34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseServer.swift; sourceTree = "<group>"; };
 		760645351AE2830E00CC0279 /* Poop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poop.png; path = Images.xcassets/Poop.png; sourceTree = "<group>"; };
 		761BB59D1AD04348007C31C1 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		76344ED61AE7169700848789 /* SKInventoryItemNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKInventoryItemNode.swift; sourceTree = "<group>"; };
 		763D97B71ADA7CDB0064B73C /* SceneUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneUtils.swift; sourceTree = "<group>"; };
 		763E71161AD1B78D00E90EF0 /* Grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grass.png; path = Images.xcassets/Grass.png; sourceTree = "<group>"; };
 		763E71181AD1B87C00E90EF0 /* GrassPreview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GrassPreview.png; path = Images.xcassets/GrassPreview.png; sourceTree = "<group>"; };
@@ -320,6 +324,7 @@
 		769BB4C61AE70514000A6B57 /* Music.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Music.png; path = Images.xcassets/Music.png; sourceTree = "<group>"; };
 		769BB4C71AE70514000A6B57 /* Quit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Quit.png; path = Images.xcassets/Quit.png; sourceTree = "<group>"; };
 		769BB4C81AE70514000A6B57 /* Sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Sound.png; path = Images.xcassets/Sound.png; sourceTree = "<group>"; };
+		769BB4CC1AE714F1000A6B57 /* Inventory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		76D0F60A1ADAF65700CB91B3 /* GameState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		76D0F60C1ADB261000CB91B3 /* Fart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Fart.png; path = Images.xcassets/Fart.png; sourceTree = "<group>"; };
 		76D0F60E1ADBA69100CB91B3 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = background.jpg; path = Images.xcassets/background.jpg; sourceTree = "<group>"; };
@@ -483,6 +488,7 @@
 				342584E41AACDB03004A3CFD /* GameScene.sks */,
 				342584E61AACDB03004A3CFD /* GameScene.swift */,
 				763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */,
+				76344ED61AE7169700848789 /* SKInventoryItemNode.swift */,
 				32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */,
 				7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */,
 				323454AE1AE29EED00CBB356 /* AnimationEvent.swift */,
@@ -612,6 +618,7 @@
 				BDA19AB91AD0382900B7E9D4 /* StatModification.swift */,
 				BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */,
 				BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */,
+				769BB4CC1AE714F1000A6B57 /* Inventory.swift */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -940,6 +947,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76344ED71AE7169700848789 /* SKInventoryItemNode.swift in Sources */,
 				7661CF481AD4333E0004B0FD /* GridIndex.swift in Sources */,
 				342585391AACE0E6004A3CFD /* DoodadFactory.swift in Sources */,
 				763E71291AD2F26500E90EF0 /* SKActionButtonNode.swift in Sources */,
@@ -952,6 +960,7 @@
 				323454AF1AE29EED00CBB356 /* AnimationEvent.swift in Sources */,
 				32B6210D1AE34326001A6AB5 /* SKTouchSpriteNode.swift in Sources */,
 				BD29ED731ADBF03D0090B934 /* Poop.swift in Sources */,
+				769BB4CD1AE714F1000A6B57 /* Inventory.swift in Sources */,
 				7689FC981ADAD41E0086613D /* GameAI.swift in Sources */,
 				34ED9F1C1AE28BA2006DDA50 /* GameConnectionManager.swift in Sources */,
 				761BB59E1AD04348007C31C1 /* Action.swift in Sources */,
@@ -1066,6 +1075,7 @@
 				342585171AACDEDC004A3CFD /* StackTests.swift in Sources */,
 				342585291AACDFE3004A3CFD /* NodeTests.swift in Sources */,
 				BDA19AA71AC556D200B7E9D4 /* TileEntity.swift in Sources */,
+				769BB4CE1AE714F1000A6B57 /* Inventory.swift in Sources */,
 				3425852D1AACDFF2004A3CFD /* GraphTests.swift in Sources */,
 				3425852B1AACDFEB004A3CFD /* EdgeTests.swift in Sources */,
 				34AE22AE1AE4F8F800C0EA6D /* SKPuiActionButtonNode.swift in Sources */,
