@@ -31,15 +31,11 @@ extension SKNode {
 
 class GameViewController: UIViewController {
     
-    @IBOutlet weak var timerLabel: UILabel!
-    
     var scene: GameScene!
     var level: GameLevel!
     var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
     var multiplayer: Bool = false
-    private var isPlayerTurn: Bool = true
-    var timer: NSTimer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,17 +55,6 @@ class GameViewController: UIViewController {
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
         
-        /* Start timer */
-        timer = NSTimer.scheduledTimerWithTimeInterval(
-            1,
-            target: self,
-            selector: Selector("updateTime"),
-            userInfo: nil,
-            repeats: true
-        )
-        
-        timerLabel.text = "10"
-        
         skView.presentScene(scene)
     }
     
@@ -81,7 +66,6 @@ class GameViewController: UIViewController {
         (self.view as SKView).presentScene(nil)
         self.scene = nil
         self.view.removeFromSuperview()
-        self.timer.invalidate()
     }
     
     override func didReceiveMemoryWarning() {
@@ -95,21 +79,5 @@ class GameViewController: UIViewController {
     @IBAction func backButtonPressed(sender: AnyObject) {
         // TODO: confirm whether to exit game
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func updateTime() {
-        var currentTime = timerLabel.text!.toInt()
-        
-        if currentTime == 0 {
-            if isPlayerTurn {
-                scene.gameEngine.triggerPlayerActionEnded()
-                isPlayerTurn = false
-            } else if scene.gameEngine.state == .PlayerAction {
-                timerLabel.text = "10"
-                isPlayerTurn = true
-            }
-        } else {
-            timerLabel.text = String(currentTime! - 1)
-        }
     }
 }
