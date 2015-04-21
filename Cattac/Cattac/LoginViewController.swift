@@ -21,7 +21,7 @@ class LoginViewController: UIViewController {
         backgroundMusicPlayer.playBackgroundMusic()
         
         // For testing and demo purposes only
-//        gameConnectionManager.autoLogin1(self)
+        gameConnectionManager.autoLogin1(self)
     }
     
     override func didReceiveMemoryWarning() {
