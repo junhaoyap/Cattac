@@ -190,8 +190,32 @@ struct Constants {
         // Damage layer 90 - 99
         static let damage: CGFloat = 90
     }
-    
+
     struct UI {
-        static let buttonSpacing: CGFloat = 220
+        struct bottomBoard {
+            static let position = CGPoint(x: 54, y: 32)
+
+            private static let width: CGFloat = 640
+            private static let height: CGFloat = 140
+
+            private static let firstSection: CGFloat = 200
+
+            static let puiButtonPosition =
+                CGPoint(x: firstSection / 2, y: height / 2)
+
+
+            private static let secondSection: CGFloat = 200
+
+            static let fartButtonPosition =
+                CGPoint(x: firstSection + secondSection / 2, y: 3 * height / 4)
+            static let poopButtonPosition =
+            CGPoint(x: firstSection + secondSection / 2,  y: height / 4)
+
+            private static let thirdSection: CGFloat = 240
+
+            static let inventoryPosition =
+                CGPoint(x: firstSection + secondSection + thirdSection / 2,
+                    y: height / 2)
+        }
     }
 }

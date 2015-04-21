@@ -27,10 +27,10 @@ class GameScene: SKScene {
     /// the players and objects on the grid.
     private let entityLayer = SKNode()
 
-    /// The button layer that consists of the main buttons for the actions.
-    private let buttonLayer = SKNode()
+    /// The bottom layer that consists of the main buttons for the actions.
+    private let bottomBoardLayer = SKNode()
 
-    private let infoLayer = SKNode()
+    private let topBoardLayer = SKNode()
 
     /// All action buttons.
     private var actionButtons = [SKActionButtonNode]()
@@ -112,13 +112,12 @@ class GameScene: SKScene {
             initializeLayers()
             initializeButtons()
 
-            initializeInventory()
             initializePreviewNodes(currentPlayerNumber)
             addTiles()
             addPlayers()
 
-            infoLayer.position = CGPoint(x: -384, y: 320)
-            gameLayer.addChild(infoLayer)
+            topBoardLayer.position = CGPoint(x: -384, y: 320)
+            gameLayer.addChild(topBoardLayer)
             initializeInformationBar()
     }
     
@@ -263,7 +262,7 @@ extension GameScene: EventListener {
             let dur = sceneUtils.getAnimDuration(item.sprite.position,
                 dest: inventoryBoxButton.position)
 
-            let inventoryPositionInGameLayer = buttonLayer.convertPoint(
+            let inventoryPositionInGameLayer = bottomBoardLayer.convertPoint(
                 inventoryBoxButton.position, toNode: gameLayer)
             let inventoryPositionInEntityLayer = gameLayer.convertPoint(
                 inventoryPositionInGameLayer, toNode: entityLayer)
@@ -319,9 +318,8 @@ private extension GameScene {
         gameLayer.addChild(entityLayer)
         
         // adds buttonLayer to the gameLayer
-        buttonLayer.position =
-            CGPoint(x: -384, y: -512)
-        gameLayer.addChild(buttonLayer)
+        bottomBoardLayer.position = CGPoint(x: -384, y: -512)
+        gameLayer.addChild(bottomBoardLayer)
     }
 
     /// Initializes the action buttons for the scene.
@@ -331,9 +329,11 @@ private extension GameScene {
             height: 192)
         bottomBoard.position = CGPoint(x: 384, y: 96)
         bottomBoard.zPosition = -10
-        buttonLayer.addChild(bottomBoard)
+        bottomBoardLayer.addChild(bottomBoard)
 
-        let buttonSpacing: CGFloat = Constants.UI.buttonSpacing
+        let buttonLayer = SKNode()
+        buttonLayer.position = Constants.UI.bottomBoard.position
+        bottomBoardLayer.addChild(buttonLayer)
 
         puiButton = SKPuiActionButtonNode(
             defaultButtonImage: "PuiButton.png",
@@ -345,7 +345,7 @@ private extension GameScene {
             getAvailableDirections: {
                 return self.gameEngine.getAvailablePuiDirections()
         })
-        puiButton.position = CGPoint(x: 384 - buttonSpacing, y: 80)
+        puiButton.position = Constants.UI.bottomBoard.puiButtonPosition
         buttonLayer.addChild(puiButton)
         actionButtons.append(puiButton)
 
@@ -354,7 +354,7 @@ private extension GameScene {
             activeButtonImage: "FartButtonPressed.png",
             buttonAction: { self.gameEngine.triggerFartButtonPressed() },
             unselectAction: { self.gameEngine.triggerClearAction() })
-        fartButton.position = CGPoint(x: 384, y: 80)
+        fartButton.position = Constants.UI.bottomBoard.fartButtonPosition
         buttonLayer.addChild(fartButton)
         actionButtons.append(fartButton)
 
@@ -366,13 +366,15 @@ private extension GameScene {
                 self.hidePoop()
                 self.gameEngine.triggerClearAction()
         })
-        poopButton.position = CGPoint(x: 384 + buttonSpacing, y: 80)
+        poopButton.position = Constants.UI.bottomBoard.poopButtonPosition
         buttonLayer.addChild(poopButton)
         actionButtons.append(poopButton)
+
+        initializeInventory(buttonLayer)
     }
     
     /// Initializes the inventory slot on game scene.
-    func initializeInventory() {
+    func initializeInventory(buttonLayer: SKNode) {
         inventoryBoxButton = SKActionButtonNode(
             defaultButtonImage: "InventoryBox.png",
             activeButtonImage: "InventoryBoxPressed.png",
@@ -382,7 +384,7 @@ private extension GameScene {
                 self.unhighlightTargetPlayers()
         })
         
-        inventoryBoxButton.position = CGPoint(x: 384, y: 140)
+        inventoryBoxButton.position = Constants.UI.bottomBoard.inventoryPosition
         actionButtons.append(inventoryBoxButton)
         buttonLayer.addChild(inventoryBoxButton)
     }
@@ -414,11 +416,11 @@ private extension GameScene {
         topBoard.size = CGSize(width: self.size.width, height: 192)
         topBoard.position = CGPoint(x: 384, y: 96)
         topBoard.zPosition = -10
-        infoLayer.addChild(topBoard)
+        topBoardLayer.addChild(topBoard)
 
         let playerInfoLayer = SKNode()
         playerInfoLayer.position = CGPoint(x: 384, y: 110)
-        infoLayer.addChild(playerInfoLayer)
+        topBoardLayer.addChild(playerInfoLayer)
 
         let playerInfoNodeSize = CGSize(width: 250, height: 64)
         let playerInfoNodePositions = [
