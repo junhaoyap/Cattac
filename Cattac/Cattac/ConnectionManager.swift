@@ -82,7 +82,7 @@ class ConnectionManager {
     }
 
     func authUser(email: String, password: String,
-        onComplete: (NSError!, AnyObject) -> ()) {
+        onComplete: (NSError!, AnyObject?) -> ()) {
             server.authUser(email, password: password, onComplete: {
                 error, authdata in
                 

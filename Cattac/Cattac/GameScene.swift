@@ -69,6 +69,9 @@ class GameScene: SKScene {
     private var timerLabel: SKLabelNode!
     private var isPlayerTurn: Bool = true
     
+    // Player Names
+    private var playerNames: [String]!
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -84,9 +87,10 @@ class GameScene: SKScene {
     /// :param: currentPlayerNumber The index/id for the current player.
     /// :param: multiplayer Whether the game is multiplayer or single player.
     init(size: CGSize, level: GameLevel, currentPlayerNumber: Int,
-        multiplayer: Bool) {
+        multiplayer: Bool, names: [String]) {
             super.init(size: size)
-
+            
+            self.playerNames = names
             self.level = level
             gameEngine = GameEngine(grid: level.grid,
                 playerNumber: currentPlayerNumber, multiplayer: multiplayer)
@@ -422,7 +426,7 @@ private extension GameScene {
 
         for (index, player) in enumerate(gameManager.players.values) {
             let playerInfoNode = SKPlayerInfoNode(player: player,
-                size: playerInfoNodeSize)
+                size: playerInfoNodeSize, playerName: playerNames[index])
             playerInfoNode.position = playerInfoNodePositions[index]
             playerInfoLayer.addChild(playerInfoNode)
         }

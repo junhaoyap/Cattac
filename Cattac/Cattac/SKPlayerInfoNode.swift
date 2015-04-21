@@ -12,7 +12,7 @@ class SKPlayerInfoNode: SKNode, HpListener {
     private var healthBarWidth: CGFloat = 190
     private var healthBarHeight: CGFloat = 25
 
-    init(player: Cat, size: CGSize) {
+    init(player: Cat, size: CGSize, playerName: String) {
         self.player = player
         self.initialHp = player.hp
         self.healthLabel = SKLabelNode(fontNamed: "BubblegumSans-Regular")
@@ -22,7 +22,7 @@ class SKPlayerInfoNode: SKNode, HpListener {
 
         self.player.hpListener = self
 
-        let name = SKLabelNode(text: player.name)
+        let name = SKLabelNode(text: playerName)
         name.fontName = "BubblegumSans-Regular"
         name.fontColor = UIColor.blackColor()
         name.fontSize = 20

@@ -146,6 +146,14 @@ struct Constants {
     struct AutoAccount {
         static let username = "b@b.com"
         static let password = "bbb"
+        static let username1 = "superman@cartoon.com"
+        static let password1 = "superman"
+        static let username2 = "wonderwoman@cartoon.com"
+        static let password2 = "wonderwoman"
+        static let username3 = "batman@cartoon.com"
+        static let password3 = "batman"
+        static let username4 = "ironman@cartoon.com"
+        static let password4 = "ironman"
     }
     
     struct Segues {

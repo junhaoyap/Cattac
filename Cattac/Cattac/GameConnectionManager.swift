@@ -16,12 +16,63 @@ class GameConnectionManager {
     }
     
     // MARK: LoginViewController
-    
-    func autoLogin(theSender: AnyObject) {
+
+    func autoLogin1(theSender: AnyObject) {
         let sender = theSender as LoginViewController
         
-        connectionManager.authUser(Constants.AutoAccount.username,
-            password: Constants.AutoAccount.password,
+        connectionManager.authUser(Constants.AutoAccount.username1,
+            password: Constants.AutoAccount.password1,
+            onComplete: {
+                error, authData in
+                if error != nil {
+                    // There was an error logging in to this account
+                } else {
+                    // We are now logged in
+                    
+                    sender.presentMenuView()
+                }
+        })
+    }
+    
+    func autoLogin2(theSender: AnyObject) {
+        let sender = theSender as LoginViewController
+        
+        connectionManager.authUser(Constants.AutoAccount.username2,
+            password: Constants.AutoAccount.password2,
+            onComplete: {
+                error, authData in
+                if error != nil {
+                    // There was an error logging in to this account
+                } else {
+                    // We are now logged in
+                    
+                    sender.presentMenuView()
+                }
+        })
+    }
+    
+    func autoLogin3(theSender: AnyObject) {
+        let sender = theSender as LoginViewController
+        
+        connectionManager.authUser(Constants.AutoAccount.username3,
+            password: Constants.AutoAccount.password3,
+            onComplete: {
+                error, authData in
+                if error != nil {
+                    // There was an error logging in to this account
+                } else {
+                    // We are now logged in
+                    
+                    sender.presentMenuView()
+                }
+        })
+    }
+    
+    func autoLogin4(theSender: AnyObject) {
+        let sender = theSender as LoginViewController
+        
+        connectionManager.authUser(Constants.AutoAccount.username4,
+            password: Constants.AutoAccount.password4,
             onComplete: {
                 error, authData in
                 if error != nil {
@@ -270,7 +321,57 @@ class GameConnectionManager {
                     for i in 0...3 {
                         let playerId = playerNames![i]
                         
-                        println(playerId)
+                        self.connectionManager.readOnce("", onComplete: {
+                            secondSnapshot in
+                            
+                            let thisSnapshot = secondSnapshot as FDataSnapshot
+                            
+                            let playerName = thisSnapshot.value.objectForKey(
+                                playerId
+                                ) as? String
+                            
+                            if playerName == "" || playerName == nil {
+                                // do nothing, let it stay as 
+                                // "awaiting player..."
+                            } else {
+                                switch i {
+                                case 0:
+                                    sender.playerNames[0] = playerName!
+                                    sender.playerOneName.text = playerName
+                                case 1:
+                                    sender.playerNames[1] = playerName!
+                                    sender.playerTwoName.text = playerName
+                                case 2:
+                                    sender.playerNames[2] = playerName!
+                                    sender.playerThreeName.text = playerName
+                                case 3:
+                                    sender.playerNames[3] = playerName!
+                                    sender.playerFourName.text = playerName
+                                default:
+                                    break
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        })
+        
+        lobbyRef.watchUpdate("", onComplete: {
+            aSnapshot in
+            
+            lobbyRef.readOnce("", onComplete: {
+                theSnapshot in
+                
+                let snapshot = theSnapshot as FDataSnapshot
+                
+                let playerNames = snapshot.value.objectForKey(
+                    Constants.Firebase.nodePlayers
+                    ) as? [String]
+                
+                if playerNames != nil {
+                    for i in 0...3 {
+                        let playerId = playerNames![i]
                         
                         self.connectionManager.readOnce("", onComplete: {
                             secondSnapshot in
@@ -281,20 +382,22 @@ class GameConnectionManager {
                                 playerId
                                 ) as? String
                             
-                            println(playerName)
-                            
                             if playerName == "" || playerName == nil {
-                                // do nothing, let it stay as 
+                                // do nothing, let it stay as
                                 // "awaiting player..."
                             } else {
                                 switch i {
                                 case 0:
+                                    sender.playerNames[0] = playerName!
                                     sender.playerOneName.text = playerName
                                 case 1:
+                                    sender.playerNames[1] = playerName!
                                     sender.playerTwoName.text = playerName
                                 case 2:
+                                    sender.playerNames[2] = playerName!
                                     sender.playerThreeName.text = playerName
                                 case 3:
+                                    sender.playerNames[3] = playerName!
                                     sender.playerFourName.text = playerName
                                 default:
                                     break

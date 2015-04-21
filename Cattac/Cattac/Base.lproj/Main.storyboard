@@ -290,8 +290,8 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRh-0x-Cui" userLabel="playerTwoName">
-                                <rect key="frame" x="534" y="166" width="200" height="73"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRh-0x-Cui" userLabel="playerTwoName">
+                                <rect key="frame" x="545" y="166" width="200" height="73"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -302,7 +302,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJM-fn-651" userLabel="playerThreeName">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJM-fn-651" userLabel="playerThreeName">
                                 <rect key="frame" x="160" y="595" width="200" height="73"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -310,12 +310,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Starring As" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P4j-3Q-cJa" userLabel="playerThreeStarring">
                                 <rect key="frame" x="105" y="660" width="200" height="73"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pi7-cT-Ua5" userLabel="playerFourName">
-                                <rect key="frame" x="534" y="595" width="200" height="73"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -328,18 +322,6 @@
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TopBoard.png" translatesAutoresizingMaskIntoConstraints="NO" id="kka-tu-YiY">
                                 <rect key="frame" x="134" y="20" width="500" height="138"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Grumpy.png" translatesAutoresizingMaskIntoConstraints="NO" id="tsK-r4-fSb" userLabel="playerOneCat">
-                                <rect key="frame" x="51" y="324" width="309" height="263"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Nyan.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZDh-Lv-Oth" userLabel="playerTwoCat">
-                                <rect key="frame" x="425" y="324" width="309" height="263"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="HelloKitty.png" translatesAutoresizingMaskIntoConstraints="NO" id="aPN-a9-yT7" userLabel="playerThreeCat">
-                                <rect key="frame" x="51" y="741" width="309" height="263"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Octocat.png" translatesAutoresizingMaskIntoConstraints="NO" id="aNY-fd-foG" userLabel="playerFourCat">
-                                <rect key="frame" x="425" y="741" width="309" height="263"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4B7-et-bxR" userLabel="backButton">
                                 <rect key="frame" x="0.0" y="30" width="145" height="117"/>
@@ -356,6 +338,48 @@
                                 <rect key="frame" x="134" y="20" width="500" height="129"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="36"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0K3-ip-Ueo" userLabel="grumpy">
+                                <rect key="frame" x="51" y="324" width="309" height="263"/>
+                                <state key="normal" backgroundImage="Grumpy.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="grumpyTapped:" destination="Cqh-hj-ZZi" eventType="touchUpInside" id="f26-c9-ZZc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fmd-ab-xoB" userLabel="nyan">
+                                <rect key="frame" x="425" y="324" width="309" height="263"/>
+                                <state key="normal" backgroundImage="Nyan.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="nyanTapped:" destination="Cqh-hj-ZZi" eventType="touchUpInside" id="5P1-IW-lrC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNd-qy-WOR" userLabel="helloKitty">
+                                <rect key="frame" x="51" y="731" width="309" height="263"/>
+                                <state key="normal" backgroundImage="HelloKitty.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="helloKittyTapped:" destination="Cqh-hj-ZZi" eventType="touchUpInside" id="Bqm-Co-nHE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAL-1U-cvw" userLabel="octoCat">
+                                <rect key="frame" x="425" y="741" width="309" height="263"/>
+                                <state key="normal" backgroundImage="Octocat.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="octoTapped:" destination="Cqh-hj-ZZi" eventType="touchUpInside" id="sDC-mX-yLc"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pi7-cT-Ua5" userLabel="playerFourName">
+                                <rect key="frame" x="545" y="595" width="200" height="73"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -427,8 +451,8 @@
         <image name="TopBoard.png" width="1536" height="384"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KHr-rR-Jep"/>
-        <segue reference="5Us-b3-nph"/>
+        <segue reference="xpq-qD-ra0"/>
+        <segue reference="l2v-Ib-U9H"/>
         <segue reference="Ioc-6a-4bE"/>
     </inferredMetricsTieBreakers>
 </document>

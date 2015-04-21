@@ -36,6 +36,7 @@ class GameViewController: UIViewController {
     var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
     var multiplayer: Bool = false
+    var playerNames: [String] = ["Grumpy", "Nyan", "Hello Kitty", "Octocat"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +50,15 @@ class GameViewController: UIViewController {
         /// improve rendering performance
         skView.ignoresSiblingOrder = true
         
+        // HACKY HACKY
+        if !multiplayer {
+            playerNames[0] = "You"
+        }
+        
         scene = GameScene(size: skView.bounds.size, level: level,
-            currentPlayerNumber: playerNumber, multiplayer: multiplayer)
+            currentPlayerNumber: playerNumber, multiplayer: multiplayer,
+            names: playerNames
+        )
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill

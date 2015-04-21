@@ -133,7 +133,7 @@ class FirebaseServer: Server {
     }
     
     func authUser(email: String, password: String,
-        onComplete: (NSError!, AnyObject) -> ()) {
+        onComplete: (NSError!, AnyObject?) -> ()) {
             ref!.authUser(email, password: password) {
                 error, authData in
                 
