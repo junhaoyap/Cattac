@@ -284,6 +284,30 @@ class Grid {
 
             return path
     }
+    
+    /// Retrieve the largest empty region from a given origin node.
+    ///
+    /// :param: origin TileNode to check from
+    /// :returns: Array of TileNodes representing the region
+    func largestEmptyRegion(origin: TileNode) -> [TileNode] {
+        var visitedNodes: [Int: TileNode] = [:]
+        var enqueuedNodes: [TileNode] = []
+        enqueuedNodes += [origin]
+        while (enqueuedNodes.count > 0) {
+            let checkNode = enqueuedNodes.removeLast()
+            visitedNodes[checkNode.hashValue] = checkNode
+            
+            for neighbour in graph.adjacentNodesFromNode(Node(checkNode)) {
+                let neighbourNode = neighbour.getLabel()
+                if neighbourNode.doodad == nil
+                    && visitedNodes[neighbourNode.hashValue] == nil
+                    && !contains(enqueuedNodes, neighbourNode) {
+                        enqueuedNodes += [neighbourNode]
+                }
+            }
+        }
+        return [TileNode] (visitedNodes.values)
+    }
 
     /// Get all the available directions of a given TileNode. Available
     /// directions being directions where another reachable TileNode exists.
