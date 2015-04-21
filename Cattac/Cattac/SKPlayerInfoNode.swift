@@ -6,6 +6,8 @@ class SKPlayerInfoNode: SKNode, HpListener {
     private var initialHp: Int
 
     private var informationLayer = SKNode()
+
+    private var healthLabel: SKLabelNode
     private var healthBar: SKSpriteNode
     private var healthBarFullWidth: CGFloat?
     private var healthBarFullHeight: CGFloat?
@@ -13,6 +15,7 @@ class SKPlayerInfoNode: SKNode, HpListener {
     init(player: Cat, size: CGSize) {
         self.player = player
         self.initialHp = player.hp
+        self.healthLabel = SKLabelNode(fontNamed: "BubblegumSans-Regular")
         self.healthBar = SKSpriteNode(imageNamed: "HealthBar.png")
 
         super.init()
@@ -39,7 +42,7 @@ class SKPlayerInfoNode: SKNode, HpListener {
         healthBarBorder.position = CGPoint(x: -70, y: -30)
         addChild(healthBarBorder)
 
-        let healthBarBorderWidth: CGFloat = 1.5
+        let healthBarBorderWidth: CGFloat = 3
         healthBarFullWidth = 190 - 2 * healthBarBorderWidth
         healthBarFullHeight = 25 - 2 * healthBarBorderWidth
 
@@ -49,6 +52,14 @@ class SKPlayerInfoNode: SKNode, HpListener {
         healthBar.position = CGPoint(x: healthBarBorderWidth,
             y: healthBarBorderWidth)
         healthBarBorder.addChild(healthBar)
+
+        healthLabel.text = "\(initialHp)/\(initialHp)"
+        healthLabel.fontColor = UIColor.blackColor()
+        healthLabel.verticalAlignmentMode = .Center
+        healthLabel.fontSize = 16
+        healthLabel.position = CGPoint(x: 190 / 2, y: 25 / 2)
+        healthLabel.zPosition = 10
+        healthBarBorder.addChild(healthLabel)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -56,8 +67,15 @@ class SKPlayerInfoNode: SKNode, HpListener {
     }
 
     func onHpUpdate(hp: Int) {
-        let newWidth = CGFloat(hp) / CGFloat(initialHp)
-        let shrink = SKAction.scaleXTo(newWidth, duration: 0.2)
-        healthBar.runAction(shrink)
+        if hp > 0 {
+            let newWidth = CGFloat(hp) / CGFloat(initialHp)
+            let shrink = SKAction.scaleXTo(newWidth, duration: 0.2)
+            healthBar.runAction(shrink)
+            healthLabel.text = "\(hp)/\(initialHp)"
+        } else {
+            let shrink = SKAction.scaleXTo(0, duration: 0.2)
+            healthBar.runAction(shrink)
+            healthLabel.text = "Dead"
+        }
     }
 }
