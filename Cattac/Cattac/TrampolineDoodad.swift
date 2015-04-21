@@ -6,7 +6,7 @@ class TrampolineDoodad: Doodad {
     
     override init() {
         super.init()
-        setSprite(SKLabelNode(text: "O"))
+        setSprite(SKSpriteNode(imageNamed: "Trampoline.png"))
         setName(Constants.Doodad.trampolineString)
     }
     
