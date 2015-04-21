@@ -317,7 +317,57 @@ class GameConnectionManager {
                     for i in 0...3 {
                         let playerId = playerNames![i]
                         
-                        println(playerId)
+                        self.connectionManager.readOnce("", onComplete: {
+                            secondSnapshot in
+                            
+                            let thisSnapshot = secondSnapshot as FDataSnapshot
+                            
+                            let playerName = thisSnapshot.value.objectForKey(
+                                playerId
+                                ) as? String
+                            
+                            if playerName == "" || playerName == nil {
+                                // do nothing, let it stay as 
+                                // "awaiting player..."
+                            } else {
+                                switch i {
+                                case 0:
+                                    sender.playerNames[0] = playerName!
+                                    sender.playerOneName.text = playerName
+                                case 1:
+                                    sender.playerNames[1] = playerName!
+                                    sender.playerTwoName.text = playerName
+                                case 2:
+                                    sender.playerNames[2] = playerName!
+                                    sender.playerThreeName.text = playerName
+                                case 3:
+                                    sender.playerNames[3] = playerName!
+                                    sender.playerFourName.text = playerName
+                                default:
+                                    break
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        })
+        
+        lobbyRef.watchUpdate("", onComplete: {
+            aSnapshot in
+            
+            lobbyRef.readOnce("", onComplete: {
+                theSnapshot in
+                
+                let snapshot = theSnapshot as FDataSnapshot
+                
+                let playerNames = snapshot.value.objectForKey(
+                    Constants.Firebase.nodePlayers
+                    ) as? [String]
+                
+                if playerNames != nil {
+                    for i in 0...3 {
+                        let playerId = playerNames![i]
                         
                         self.connectionManager.readOnce("", onComplete: {
                             secondSnapshot in
@@ -328,20 +378,22 @@ class GameConnectionManager {
                                 playerId
                                 ) as? String
                             
-                            println(playerName)
-                            
                             if playerName == "" || playerName == nil {
-                                // do nothing, let it stay as 
+                                // do nothing, let it stay as
                                 // "awaiting player..."
                             } else {
                                 switch i {
                                 case 0:
+                                    sender.playerNames[0] = playerName!
                                     sender.playerOneName.text = playerName
                                 case 1:
+                                    sender.playerNames[1] = playerName!
                                     sender.playerTwoName.text = playerName
                                 case 2:
+                                    sender.playerNames[2] = playerName!
                                     sender.playerThreeName.text = playerName
                                 case 3:
+                                    sender.playerNames[3] = playerName!
                                     sender.playerFourName.text = playerName
                                 default:
                                     break

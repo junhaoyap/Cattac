@@ -13,6 +13,7 @@ class LobbyViewController: UIViewController {
     let levelGenerator = LevelGenerator.sharedInstance
     var level: GameLevel!
     var playerNumber: Int!
+    var playerNames: [String] = ["Grumpy", "Nyan", "Hello Kitty", "Octocat"]
     
     let gameConnectionManager = GameConnectionManager(urlProvided:
         Constants.Firebase.baseUrl
@@ -42,12 +43,17 @@ class LobbyViewController: UIViewController {
                         destinationVC.level = level
                         destinationVC.playerNumber = playerNumber
                         destinationVC.multiplayer = true
+                        destinationVC.playerNames = playerNames
                 }
             }
     }
     
     func startGame() {
-        self.performSegueWithIdentifier("gameStartSegue", sender: nil)
+        NSTimer.scheduledTimerWithTimeInterval(2, target: self,
+            selector: Selector("startGameSegue"),
+            userInfo: nil,
+            repeats: false
+        )
     }
     
     func initiateGameStart() {
@@ -56,6 +62,10 @@ class LobbyViewController: UIViewController {
         gameConnectionManager.sendLevel(level)
         
         startGame()
+    }
+    
+    func startGameSegue() {
+        self.performSegueWithIdentifier("gameStartSegue", sender: nil)
     }
     
     func joinLobby() {
