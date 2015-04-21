@@ -242,12 +242,12 @@ extension GameScene: EventListener {
     func addPendingPoopAnimation(poop: Poop, target: TileNode) {
         let poopSprite = sceneUtils.getPoopNode(at: target.sprite.position)
         let action = sceneUtils.getFartAnimation(0)
-        let completion = {
-            self.showDamage(poop.damage, node: target)
-        }
 
         pendingAnimations += [AnimationEvent(poopSprite, action,
-            completion: completion)]
+            completion: {
+                poop.effect(poop.victim!)
+                self.showDamage(poop.damage, node: target)
+        })]
     }
     
     /// Animates the obtaining of an item. If item is obtained by current
@@ -729,9 +729,7 @@ private extension GameScene {
             soundPlayer.playPoop()
             event.sprite.runAction(event.action, completion: {
                 event.sprite.removeFromParent()
-                if event.completion != nil {
-                    event.completion!()
-                }
+                event.completion?()
             })
         }
         pendingAnimations.removeAll(keepCapacity: false)

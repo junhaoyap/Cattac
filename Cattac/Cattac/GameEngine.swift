@@ -239,9 +239,9 @@ class GameEngine {
             }
             
             if let poop = playerMoveToNode.poop {
-                poop.effect(player)
                 playerMoveToNode.poop = nil
                 
+                poop.victim = player
                 eventListener?.addPendingPoopAnimation(poop,
                     target: playerMoveToNode)
             }
@@ -327,6 +327,7 @@ class GameEngine {
             for player in gameManager.players.values {
                 if gameManager[moveToPositionOf: player] == node {
                     
+                    poop.victim = player
                     eventListener?.addPendingPoopAnimation(poop, target: node)
                     poopActivated = true
                 }

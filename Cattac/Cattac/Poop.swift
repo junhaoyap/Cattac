@@ -4,6 +4,7 @@ import SpriteKit
 class Poop {
     private let _pooper: Cat
     private let _damage: Int
+    var victim: Cat?
     
     var pooper: Cat {
         return _pooper
