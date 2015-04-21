@@ -194,8 +194,8 @@ extension GameScene: GameStateListener {
             movePlayers()
         case .ActionsExecution:
             hidePoop()
-            performPendingAnimations()
             performActions()
+            performPendingAnimations()
             unselectActionButtons()
         default:
             break

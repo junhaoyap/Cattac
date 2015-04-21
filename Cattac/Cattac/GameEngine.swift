@@ -320,8 +320,19 @@ class GameEngine {
     func executePlayerAction(player: Cat) -> Action? {
         let action = gameManager[actionOf: player]
         if action is PoopAction {
-            let targetNode = action!.targetNode!
-            targetNode.poop = Poop(player, player.poopDmg)
+            let node = action!.targetNode!
+            let poop = Poop(player, player.poopDmg)
+            
+            var poopActivated = false
+            for player in gameManager.players.values {
+                if gameManager[moveToPositionOf: player] == node {
+                    
+                    eventListener?.addPendingPoopAnimation(poop, target: node)
+                    poopActivated = true
+                }
+            }
+            
+            node.poop = poopActivated ? nil : poop
         } else if action is ItemAction {
             let itemAction = action as ItemAction
             if !itemAction.item.canTargetSelf() &&
