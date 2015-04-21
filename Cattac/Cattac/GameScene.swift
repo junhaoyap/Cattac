@@ -179,15 +179,13 @@ extension GameScene: GameStateListener {
             enableActionButtons()
             deleteRemovedDoodads()
             highlightReachableNodes()
+            wiggleCurrentPlayer()
             break
-        case .ServerUpdate:
+        case .ServerUpdate, .AICalculation:
             disableActionButtons()
             removeHighlights()
             unhighlightTargetPlayers()
-        case .AICalculation:
-            disableActionButtons()
-            removeHighlights()
-            unhighlightTargetPlayers()
+            unwiggleCurrentPlayer()
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:
@@ -798,6 +796,37 @@ private extension GameScene {
                 button.unselect()
             }
         }
+    }
+
+    /// Wiggles the current player's cat during the player action state so that 
+    /// the current player's cat can be easily identified.
+    func wiggleCurrentPlayer() {
+        let duration: NSTimeInterval = 0.5
+        let angle = CGFloat(M_PI_4 / Double(4))
+        let angle_2 = angle / 2
+
+        let rotateFromCenterToRight =
+            SKAction.rotateByAngle(angle_2, duration: duration / 2)
+        let rotateFromRightToLeft =
+            SKAction.rotateByAngle(-angle, duration: duration)
+        let rotateFromLeftToCenter =
+            SKAction.rotateByAngle(angle_2, duration: duration / 2)
+        let rotateSequence = SKAction.sequence([
+            rotateFromCenterToRight,
+            rotateFromRightToLeft,
+            rotateFromLeftToCenter
+        ])
+        let rotateAnimation = SKAction.repeatActionForever(rotateSequence)
+
+        gameEngine.currentPlayer.getSprite()
+            .runAction(rotateAnimation, withKey: "wiggle")
+
+    }
+
+    /// Stops wiggling the current player's cat after the player action state
+    /// has ended.
+    func unwiggleCurrentPlayer() {
+        gameEngine.currentPlayer.getSprite().removeActionForKey("wiggle")
     }
     
     /// Hides arrows indicating targetable players for item action.
