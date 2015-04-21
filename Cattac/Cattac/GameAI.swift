@@ -29,8 +29,52 @@ class GameAI {
 
             let index = Int(arc4random_uniform(UInt32(reachableNodes.count)))
             let moveToNode = Array(reachableNodes.values)[index]
+            
+            var action: Action?
+            // if has item, use item
+            if let item = gameEngine.gameManager[itemOf: player] {
+                action = aiUseItem(item, onPlayer: player)
+            } else {
+                action = getRandomAction(player)
+            }
+            
             gameEngine.triggerAIPlayerMove(player,
-                dest: moveToNode, action: nil)
+                dest: moveToNode, action: action)
+        }
+    }
+    
+    private func getRandomAction(player: Cat) -> Action? {
+        let actionNum = Int(arc4random_uniform(UInt32(3)))
+        switch actionNum {
+        case 0:
+            let directions = gameEngine.getAvailablePuiDirections(player)
+            if directions.isEmpty {
+                return nil
+            }
+            let dirNum = Int(arc4random_uniform(UInt32(directions.count)))
+            return PuiAction(direction: directions[dirNum])
+        case 1:
+            return FartAction(range: player.fartRange)
+        case 2:
+            let node = gameEngine.gameManager[moveToPositionOf: player]!
+            return PoopAction(targetNode: node)
+        default:
+            return nil
+        }
+        
+    }
+    
+    private func aiUseItem(item: Item, onPlayer player: Cat) -> ItemAction {
+        if item.canTargetOthers() {
+            let targetPlayerNum = Int(arc4random_uniform(UInt32(4))) + 1
+            let target = gameEngine.gameManager[playerWithNum: targetPlayerNum]!
+            let node = gameEngine.gameManager[moveToPositionOf: player]!
+            return ItemAction(item: item,
+                targetNode: node, targetPlayer: target)
+        } else {
+            let node = gameEngine.gameManager[moveToPositionOf: player]!
+            return ItemAction(item: item,
+                targetNode: node, targetPlayer: player)
         }
     }
 }

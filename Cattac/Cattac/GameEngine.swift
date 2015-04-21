@@ -415,8 +415,8 @@ class GameEngine {
         }
     }
     
-    func getAvailablePuiDirections() -> [Direction] {
-        var targetNode = gameManager[moveToPositionOf: currentPlayer]!
+    func getAvailablePuiDirections(player: Cat) -> [Direction] {
+        var targetNode = gameManager[moveToPositionOf: player]!
         if targetNode.doodad is WormholeDoodad {
             targetNode = (targetNode.doodad! as WormholeDoodad)
                 .getDestinationNode()

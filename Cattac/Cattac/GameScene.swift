@@ -343,7 +343,8 @@ private extension GameScene {
             },
             unselectAction: { self.gameEngine.triggerClearAction() },
             getAvailableDirections: {
-                return self.gameEngine.getAvailablePuiDirections()
+                let player = self.gameEngine.currentPlayer
+                return self.gameEngine.getAvailablePuiDirections(player)
         })
         puiButton.position = CGPoint(x: 384 - buttonSpacing, y: 80)
         buttonLayer.addChild(puiButton)
@@ -532,7 +533,7 @@ private extension GameScene {
         let action = gameManager[actionOf: currentPlayer]
         if let puiAction = action as? PuiAction {
             let moveToPosition = gameManager[moveToPositionOf: currentPlayer]
-            let directions = gameEngine.getAvailablePuiDirections()
+            let directions = gameEngine.getAvailablePuiDirections(currentPlayer)
             if contains(directions, puiAction.direction) {
                 puiButton.resetDirectionNode(puiAction.direction)
             } else {
