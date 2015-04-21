@@ -266,6 +266,8 @@ class GameConnectionManager {
                     for i in 0...3 {
                         let playerId = playerNames![i]
                         
+                        println(playerId)
+                        
                         self.connectionManager.readOnce("", onComplete: {
                             secondSnapshot in
                             
@@ -275,7 +277,9 @@ class GameConnectionManager {
                                 playerId
                                 ) as? String
                             
-                            if playerName == "" {
+                            println(playerName)
+                            
+                            if playerName == "" || playerName == nil {
                                 // do nothing, let it stay as 
                                 // "awaiting player..."
                             } else {
