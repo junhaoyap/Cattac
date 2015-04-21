@@ -7,6 +7,7 @@ enum GameState: Int {
     WaitForAll,
     StartMovesExecution,
     MovesExecution,
+    DeconflictExecution,
     StartActionsExecution,
     ActionsExecution,
     PostExecution
@@ -19,6 +20,7 @@ enum GameState: Int {
             "Wait for All",
             "Start Moves Execution",
             "Moves Execution",
+            "Deconflict Execution",
             "Start Actions Execution",
             "Actions Execution",
             "Post Execution"

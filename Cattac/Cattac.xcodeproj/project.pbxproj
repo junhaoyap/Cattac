@@ -451,10 +451,10 @@
 		342584F91AACDB03004A3CFD /* CattacTests */ = {
 			isa = PBXGroup;
 			children = (
-				768384041ADBD55B00538F5D /* GridTests.swift */,
 				342585131AACDEB3004A3CFD /* DataStructures */,
 				342585241AACDFAE004A3CFD /* Graph */,
 				342584FC1AACDB03004A3CFD /* CattacTests.swift */,
+				768384041ADBD55B00538F5D /* GridTests.swift */,
 				342584FA1AACDB03004A3CFD /* Supporting Files */,
 			);
 			path = CattacTests;

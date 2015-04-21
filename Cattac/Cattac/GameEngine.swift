@@ -119,6 +119,11 @@ class GameEngine {
             // This state waits for the movement ended event that is triggered
             // from the scene.
             break
+        case .DeconflictExecution:
+            deconflictUpdate()
+            // This state waits for the deconflict that is triggered
+            // from the scene.
+            break
         case .StartActionsExecution:
             calculationActions()
             triggerStateAdvance()
@@ -156,6 +161,8 @@ class GameEngine {
         case .StartMovesExecution:
             state = .MovesExecution
         case .MovesExecution:
+            state = .DeconflictExecution
+        case .DeconflictExecution:
             state = .StartActionsExecution
         case .StartActionsExecution:
             state = .ActionsExecution
@@ -219,10 +226,39 @@ class GameEngine {
     /// is called.
     private func calculateMovementPaths() {
         for player in gameManager.players.values {
+            var shouldContinue = false
             var playerAtNode = gameManager[positionOf: player]!
             var playerMoveToNode = gameManager[moveToPositionOf: player]!
             var path = grid.shortestPathFromNode(playerAtNode,
                 toNode: playerMoveToNode)
+            
+            for otherPlayer in gameManager.players.values {
+                if player.name == otherPlayer.name {
+                    continue
+                } else {
+                    var otherPlayerNode = gameManager[positionOf: otherPlayer]!
+                    var otherPlayerMoveToNode = gameManager[moveToPositionOf: otherPlayer]!
+                    
+                    if playerMoveToNode == otherPlayerMoveToNode {
+                        if path.count == 0 {
+                            println("a cat moving onto another cat, no backward movement")
+                        } else {
+                            var reversedPath = reverse(path)
+                            reversedPath.removeAtIndex(0)
+                            reversedPath.append(playerAtNode)
+                            
+                            gameManager[deconflictPathOf: player] = reversedPath
+                            gameManager[movementPathOf: player] = path
+                            
+                            shouldContinue = true
+                        }
+                    }
+                }
+            }
+            
+            if shouldContinue {
+                continue
+            }
             
             if let doodad = playerMoveToNode.doodad {
                 // effect non-move modifications
@@ -312,6 +348,27 @@ class GameEngine {
             return path!
         } else {
             return []
+        }
+    }
+    
+    func executePlayerDeconflict(player: Cat) -> [TileNode] {
+        let path = gameManager[deconflictPathOf: player]
+        if path != nil {
+            return path!
+        } else {
+            return []
+        }
+    }
+    
+    func deconflictUpdate() {
+        for player in gameManager.players.values {
+            let path = gameManager[deconflictPathOf: player]
+            
+            if path != nil {
+                if path!.count != 0 {
+                    gameManager[moveToPositionOf: player] = path!.last
+                }
+            }
         }
     }
     
@@ -597,6 +654,12 @@ extension GameEngine {
 
     func triggerMovementAnimationEnded() {
         if gameManager.movementsCompleted {
+            triggerStateAdvance()
+        }
+    }
+    
+    func triggerDeconflictAnimationEnded() {
+        if gameManager.deconflictsCompleted {
             triggerStateAdvance()
         }
     }
