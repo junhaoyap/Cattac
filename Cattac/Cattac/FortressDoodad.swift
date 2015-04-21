@@ -6,6 +6,7 @@ class FortressDoodad: Doodad {
     
     init() {
         super.init(sprite: SKSpriteNode(imageNamed: "Fortress.png"))
+        getSprite().zPosition = Constants.Z.frontDoodad
         setName(Constants.Doodad.fortressString)
     }
     

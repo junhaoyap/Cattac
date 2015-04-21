@@ -6,6 +6,7 @@ class WatchTowerDoodad: Doodad {
     
     init() {
         super.init(sprite: SKSpriteNode(imageNamed: "Tower.png"))
+        getSprite().zPosition = Constants.Z.frontDoodad
         setName(Constants.Doodad.watchTowerString)
     }
     

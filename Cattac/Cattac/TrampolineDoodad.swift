@@ -6,6 +6,7 @@ class TrampolineDoodad: Doodad {
     
     init() {
         super.init(sprite: SKSpriteNode(imageNamed: "Trampoline.png"))
+        getSprite().zPosition = Constants.Z.backDoodad
         setName(Constants.Doodad.trampolineString)
     }
     

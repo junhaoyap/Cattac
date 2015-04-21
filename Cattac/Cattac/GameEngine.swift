@@ -227,7 +227,12 @@ class GameEngine {
             if let doodad = playerMoveToNode.doodad {
                 // effect non-move modifications
                 doodad.postmoveEffect(player)
-                if doodad is WormholeDoodad {
+                if doodad is LandMineDoodad {
+                    let poop = Poop(nil, Constants.Doodad.landMineDamage)
+                    poop.victim = player
+                    eventListener?.addPendingPoopAnimation(poop,
+                        target: playerMoveToNode)
+                } else if doodad is WormholeDoodad {
                     let destNode = (doodad as WormholeDoodad).getDestinationNode()
                     gameManager[moveToPositionOf: player]! = destNode
                     playerMoveToNode = destNode
@@ -239,9 +244,9 @@ class GameEngine {
             }
             
             if let poop = playerMoveToNode.poop {
-                poop.effect(player)
                 playerMoveToNode.poop = nil
                 
+                poop.victim = player
                 eventListener?.addPendingPoopAnimation(poop,
                     target: playerMoveToNode)
             }
@@ -320,18 +325,35 @@ class GameEngine {
     func executePlayerAction(player: Cat) -> Action? {
         let action = gameManager[actionOf: player]
         if action is PoopAction {
-            let targetNode = action!.targetNode!
-            targetNode.poop = Poop(player, player.poopDmg)
+            let node = action!.targetNode!
+            let poop = Poop(player, player.poopDmg)
+            
+            var poopActivated = false
+            for player in gameManager.players.values {
+                if gameManager[moveToPositionOf: player] == node {
+                    poop.victim = player
+                    eventListener?.addPendingPoopAnimation(poop, target: node)
+                    poopActivated = true
+                }
+            }
+            
+            node.poop = poopActivated ? nil : poop
         } else if action is ItemAction {
             let itemAction = action as ItemAction
             if !itemAction.item.canTargetSelf() &&
                 gameManager.samePlayer(itemAction.targetPlayer, player) {
                     // invalidate action, item cannot effect self.
                     return nil
+            } else if itemAction.item.shouldTargetAll() {
+                for player in gameManager.players.values {
+                    itemAction.item.effect(player)
+                }
+            } else if itemAction.item.canTargetOthers() ||
+                itemAction.item.canTargetSelf() {
+                    itemAction.item.effect(itemAction.targetPlayer)
             }
             itemAction.targetNode =
                 gameManager[moveToPositionOf: itemAction.targetPlayer]
-            itemAction.item.effect(itemAction.targetPlayer)
             gameManager[itemOf: player] = nil
         }
         return action
@@ -398,8 +420,8 @@ class GameEngine {
         }
     }
     
-    func getAvailablePuiDirections() -> [Direction] {
-        var targetNode = gameManager[moveToPositionOf: currentPlayer]!
+    func getAvailablePuiDirections(player: Cat) -> [Direction] {
+        var targetNode = gameManager[moveToPositionOf: player]!
         if targetNode.doodad is WormholeDoodad {
             targetNode = (targetNode.doodad! as WormholeDoodad)
                 .getDestinationNode()

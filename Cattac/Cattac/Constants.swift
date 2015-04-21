@@ -165,13 +165,14 @@ struct Constants {
         
         // Tile/TileEntities/Doodads layer -10 - -1
         static let tile: CGFloat = -10
-        static let doodad: CGFloat = -9
+        static let backDoodad: CGFloat = -9
         static let items: CGFloat = -8
-        static let catPreview: CGFloat = -7
         
         static let poopPreview: CGFloat = 29
         // Cat layer 30 - 39
         static let cat: CGFloat = 30
+        static let frontDoodad: CGFloat = 31
+        static let catPreview: CGFloat = 30
         
         // Action buttons layer 40 - 49
         static let actionButtons: CGFloat = 40

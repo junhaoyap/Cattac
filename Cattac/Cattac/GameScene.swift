@@ -194,8 +194,8 @@ extension GameScene: GameStateListener {
             movePlayers()
         case .ActionsExecution:
             hidePoop()
-            performPendingAnimations()
             performActions()
+            performPendingAnimations()
             unselectActionButtons()
         default:
             break
@@ -242,12 +242,12 @@ extension GameScene: EventListener {
     func addPendingPoopAnimation(poop: Poop, target: TileNode) {
         let poopSprite = sceneUtils.getPoopNode(at: target.sprite.position)
         let action = sceneUtils.getFartAnimation(0)
-        let completion = {
-            self.showDamage(poop.damage, node: target)
-        }
 
         pendingAnimations += [AnimationEvent(poopSprite, action,
-            completion: completion)]
+            completion: {
+                poop.effect(poop.victim!)
+                self.showDamage(poop.damage, node: target)
+        })]
     }
     
     /// Animates the obtaining of an item. If item is obtained by current
@@ -343,7 +343,8 @@ private extension GameScene {
             },
             unselectAction: { self.gameEngine.triggerClearAction() },
             getAvailableDirections: {
-                return self.gameEngine.getAvailablePuiDirections()
+                let player = self.gameEngine.currentPlayer
+                return self.gameEngine.getAvailablePuiDirections(player)
         })
         puiButton.position = CGPoint(x: 384 - buttonSpacing, y: 80)
         buttonLayer.addChild(puiButton)
@@ -497,18 +498,14 @@ private extension GameScene {
     ///                    drawn.
     /// :param: tileEntity The given `TileEntity` to be drawn.
     func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
-            let entityNode = tileEntity.getSprite()
-
-            if entityNode is SKSpriteNode {
-                (entityNode as SKSpriteNode).size = spriteNode.size
-            }
-
-            if !tileEntity.isVisible() {
-                entityNode.alpha = 0.5
-            }
-
-            entityNode.position = spriteNode.position
-            entityLayer.addChild(entityNode)
+        let entityNode = tileEntity.getSprite()
+        if entityNode is SKSpriteNode {
+            (entityNode as SKSpriteNode).size = spriteNode.size
+        }
+    
+        entityNode.hidden = !tileEntity.isVisible()
+        entityNode.position = spriteNode.position
+        entityLayer.addChild(entityNode)
     }
 
     /// Sets the next position to move to for the current player.
@@ -532,7 +529,7 @@ private extension GameScene {
         let action = gameManager[actionOf: currentPlayer]
         if let puiAction = action as? PuiAction {
             let moveToPosition = gameManager[moveToPositionOf: currentPlayer]
-            let directions = gameEngine.getAvailablePuiDirections()
+            let directions = gameEngine.getAvailablePuiDirections(currentPlayer)
             if contains(directions, puiAction.direction) {
                 puiButton.resetDirectionNode(puiAction.direction)
             } else {
@@ -729,9 +726,7 @@ private extension GameScene {
             soundPlayer.playPoop()
             event.sprite.runAction(event.action, completion: {
                 event.sprite.removeFromParent()
-                if event.completion != nil {
-                    event.completion!()
-                }
+                event.completion?()
             })
         }
         pendingAnimations.removeAll(keepCapacity: false)
@@ -847,25 +842,23 @@ private extension GameScene {
         let currentPlayer = gameEngine.currentPlayer
         let item = gameManager[itemOf: currentPlayer]!
         for player in gameManager.players.values {
-            if gameManager.samePlayer(player, currentPlayer) {
-                continue
-            }
             
             let playerSprite = player.getSprite() as SKTouchSpriteNode
             let position = playerSprite.position
-            let arrowSprite = sceneUtils.getPlayerTargetableArrow(position)
-            entityLayer.addChild(arrowSprite)
-            targetPreviewNodes += [arrowSprite]
             
             if item.shouldTargetAll() {
                 let crosshairSprite = sceneUtils.getCrosshairNode()
-                crosshairSprite.position = playerSprite.position
+                crosshairSprite.position = position
                 entityLayer.addChild(crosshairSprite)
                 targetPreviewNodes += [crosshairSprite]
-            } else {
+            } else if !gameManager.samePlayer(player, currentPlayer) {
+                let arrowSprite = sceneUtils.getPlayerTargetableArrow(position)
+                entityLayer.addChild(arrowSprite)
+                
+                targetPreviewNodes += [arrowSprite]
                 playerSprite.setTouchObserver({
                     self.gameEngine.triggerTargetPlayerChanged(player)
-                    self.crosshairNode.position = playerSprite.position
+                    self.crosshairNode.position = position
                     self.crosshairNode.hidden = false
                 })
                 playerSprite.userInteractionEnabled = true
