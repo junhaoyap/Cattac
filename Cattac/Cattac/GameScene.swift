@@ -336,8 +336,7 @@ private extension GameScene {
         bottomBoardLayer.addChild(buttonLayer)
 
         puiButton = SKPuiActionButtonNode(
-            defaultButtonImage: "PuiButton.png",
-            activeButtonImage: "PuiButtonPressed.png",
+            actionText: "PUI",
             buttonAction: { (dir: Direction) in
                 self.gameEngine.triggerPuiButtonPressed(dir)
             },
@@ -350,8 +349,7 @@ private extension GameScene {
         actionButtons.append(puiButton)
 
         fartButton = SKActionButtonNode(
-            defaultButtonImage: "FartButton.png",
-            activeButtonImage: "FartButtonPressed.png",
+            actionText: "FART",
             buttonAction: { self.gameEngine.triggerFartButtonPressed() },
             unselectAction: { self.gameEngine.triggerClearAction() })
         fartButton.position = Constants.UI.bottomBoard.fartButtonPosition
@@ -359,8 +357,7 @@ private extension GameScene {
         actionButtons.append(fartButton)
 
         poopButton = SKActionButtonNode(
-            defaultButtonImage: "PoopButton.png",
-            activeButtonImage: "PoopButtonPressed.png",
+            actionText: "POOP",
             buttonAction: { self.gameEngine.triggerPoopButtonPressed() },
             unselectAction: {
                 self.hidePoop()
@@ -376,8 +373,7 @@ private extension GameScene {
     /// Initializes the inventory slot on game scene.
     func initializeInventory(buttonLayer: SKNode) {
         inventoryBoxButton = SKActionButtonNode(
-            defaultButtonImage: "InventoryBox.png",
-            activeButtonImage: "InventoryBoxPressed.png",
+            actionText: "Inventory",
             buttonAction: { self.gameEngine.triggerItemButtonPressed() },
             unselectAction: {
                 self.gameEngine.triggerClearAction()

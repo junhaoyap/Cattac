@@ -26,16 +26,14 @@ class SKPuiActionButtonNode: SKActionButtonNode {
 
     /// Hijacks the buttonAction and unselectAction from the superclass as
     /// we will be calling them under different conditions.
-    init(defaultButtonImage: String, activeButtonImage: String,
-        buttonAction: (Direction) -> Void, unselectAction: () -> Void,
-        getAvailableDirections: () -> [Direction]) {
+    init(actionText: String, buttonAction: (Direction) -> Void,
+        unselectAction: () -> Void, getAvailableDirections: () -> [Direction]) {
             self.getAvailableDirections = getAvailableDirections
             self.buttonAction = buttonAction
             self.unselectAction = unselectAction
 
             super.init(
-                defaultButtonImage: defaultButtonImage,
-                activeButtonImage: activeButtonImage,
+                actionText: actionText,
                 buttonAction: {},
                 unselectAction: {}
             )
@@ -52,9 +50,9 @@ class SKPuiActionButtonNode: SKActionButtonNode {
     func resetDirectionNode(selected: Direction?) {
         directionNode?.removeFromParent()
         directionNode = SKDirectionButtonNode(
-            defaultButtonImage: "Direction.png",
-            activeButtonImage: "DirectionSelected",
-            size: CGSize(width: 50, height: 50),
+            defaultButtonImage: "DirectionArrow.png",
+            activeButtonImage: "DirectionArrowSelected.png",
+            size: CGSize(width: 30, height: 30),
             centerSize: self.calculateAccumulatedFrame().size,
             availableDirection: getAvailableDirections())
         if selected != nil {
