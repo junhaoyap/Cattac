@@ -666,7 +666,7 @@ private extension GameScene {
                 }
             } else if let item = action.item as? MilkItem {
                 completion = {
-                    self.showDamage(-Constants.itemEffect.milkHpIncreaseEffect,
+                    self.showHeal(Constants.itemEffect.milkHpIncreaseEffect,
                         node: self.gameManager[moveToPositionOf: player]!)
                 }
             }
@@ -737,9 +737,17 @@ private extension GameScene {
         gameEngine.triggerActionAnimationEnded()
     }
 
+    /// Shows the health awarded on the TileNode of the receiving player.
+    ///
+    /// :param: health The amount of health awarded.
+    /// :param: node The TileNode of the receiving player.
+    func showHeal(health: Int, node: TileNode) {
+        showDamage(-health, node: node)
+    }
+
     /// Show the damage dealt on the TileNode of the victim player.
     ///
-    /// :param: damange The amount of damage dealt
+    /// :param: damange The amount of damage dealt.
     /// :param: node The TileNode of the victim player.
     func showDamage(damage: Int, node: TileNode) {
         let damageNode = sceneUtils.getDamageLabelNode(damage)
