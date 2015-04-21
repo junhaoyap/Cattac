@@ -9,8 +9,8 @@ class SKPlayerInfoNode: SKNode, HpListener {
 
     private var healthLabel: SKLabelNode
     private var healthBar: SKSpriteNode
-    private var healthBarFullWidth: CGFloat?
-    private var healthBarFullHeight: CGFloat?
+    private var healthBarWidth: CGFloat = 190
+    private var healthBarHeight: CGFloat = 25
 
     init(player: Cat, size: CGSize) {
         self.player = player
@@ -37,27 +37,23 @@ class SKPlayerInfoNode: SKNode, HpListener {
         addChild(playerSprite)
 
         let healthBarBorder = SKSpriteNode(imageNamed: "HealthBarBorder.png")
-        healthBarBorder.size = CGSize(width: 190, height: 25)
+        healthBarBorder.size = CGSize(width: healthBarWidth,
+            height: healthBarHeight)
         healthBarBorder.anchorPoint = CGPoint(x: 0, y: 0)
         healthBarBorder.position = CGPoint(x: -70, y: -30)
         addChild(healthBarBorder)
 
-        let healthBarBorderWidth: CGFloat = 3
-        healthBarFullWidth = 190 - 2 * healthBarBorderWidth
-        healthBarFullHeight = 25 - 2 * healthBarBorderWidth
-
-        healthBar.size = CGSize(width: healthBarFullWidth!,
-            height: healthBarFullHeight!)
+        healthBar.size = CGSize(width: healthBarWidth, height: healthBarHeight)
         healthBar.anchorPoint = CGPoint(x: 0, y: 0)
-        healthBar.position = CGPoint(x: healthBarBorderWidth,
-            y: healthBarBorderWidth)
+        healthBar.position = CGPoint(x: 0, y: 0)
         healthBarBorder.addChild(healthBar)
 
         healthLabel.text = "\(initialHp)/\(initialHp)"
         healthLabel.fontColor = UIColor.blackColor()
         healthLabel.verticalAlignmentMode = .Center
         healthLabel.fontSize = 16
-        healthLabel.position = CGPoint(x: 190 / 2, y: 25 / 2)
+        healthLabel.position = CGPoint(x: healthBarWidth / 2,
+            y: healthBarHeight / 2)
         healthLabel.zPosition = 10
         healthBarBorder.addChild(healthLabel)
     }
