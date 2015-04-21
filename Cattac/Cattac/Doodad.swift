@@ -40,6 +40,7 @@ class Doodad: TileEntity {
     
     func setSprite(sprite: SKNode) {
         self.sprite = sprite
+        self.sprite.zPosition = Constants.Z.doodad
     }
     
     func isVisible() -> Bool {

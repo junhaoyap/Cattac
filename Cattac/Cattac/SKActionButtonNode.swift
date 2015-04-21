@@ -25,6 +25,8 @@ class SKActionButtonNode: SKNode, ActionButton {
         buttonAction: () -> Void, unselectAction: () -> Void) {
             self.defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
             self.activeButton = SKSpriteNode(imageNamed: activeButtonImage)
+            self.defaultButton.zPosition = Constants.Z.actionButtons
+            self.activeButton.zPosition = Constants.Z.actionButtons
             self.action = buttonAction
             self.unselectAction = unselectAction
             self.activeButton.hidden = true
