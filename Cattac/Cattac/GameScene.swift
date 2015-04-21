@@ -226,10 +226,7 @@ extension GameScene: EventListener {
     /// :param: poop The Poop that is being activated.
     /// :param: target The target TileNode to animate at.
     func addPendingPoopAnimation(poop: Poop, target: TileNode) {
-        let poopSprite = SKSpriteNode(imageNamed: "Poop.png")
-        poopSprite.size = sceneUtils.tileSize
-        poopSprite.position = sceneUtils.pointFor(target.position)
-
+        let poopSprite = sceneUtils.getPoopNode(at: target.sprite.position)
         let action = sceneUtils.getFartAnimation(0)
         let completion = {
             self.showDamage(poop.damage, node: target)
@@ -255,6 +252,7 @@ extension GameScene: EventListener {
                 SKAction.moveTo(inventoryBoxButton.position, duration: dur),
                 SKAction.scaleTo(scale, duration: dur)
                 ])
+            item.sprite.zPosition = Constants.Z.itemActivated
             item.sprite.runAction(animAction)
         } else {
             let animAction = sceneUtils.getObtainItemAnimation()
@@ -283,7 +281,7 @@ private extension GameScene {
         let backgroundTexture = SKTexture(CGImage: tiledBackground.CGImage)
         let backgroundImage  = SKSpriteNode(texture: backgroundTexture)
         backgroundImage.yScale = -1
-        backgroundImage.zPosition = -10
+        backgroundImage.zPosition = Constants.Z.background
 
         self.addChild(backgroundImage)
     }
@@ -371,6 +369,7 @@ private extension GameScene {
         poopPreviewNode.size = sceneUtils.tileSize
         poopPreviewNode.alpha = 0.5
         poopPreviewNode.hidden = true
+        poopPreviewNode.zPosition = Constants.Z.poopPreview
         entityLayer.addChild(poopPreviewNode)
         
         /// Initializes the preview node for the crosshair.

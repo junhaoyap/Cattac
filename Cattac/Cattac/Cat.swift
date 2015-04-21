@@ -89,6 +89,8 @@ class Cat: TileEntity {
             _sprite = SKTouchSpriteNode(imageNamed: "Nala.png")
             _previewSprite = SKTouchSpriteNode(imageNamed: "Nala.png")
         }
+        _sprite.zPosition = Constants.Z.cat
+        _previewSprite.zPosition = Constants.Z.catPreview
         _previewSprite.alpha = 0.5
     }
     

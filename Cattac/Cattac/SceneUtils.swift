@@ -79,6 +79,17 @@ class SceneUtils {
         return SKAction.sequence(pathSequence)
     }
     
+    /// Generates a poop sprite node used to animate the Poop activation.
+    ///
+    /// :param: position Location to place the poop
+    /// :returns: The SKSpriteNode
+    func getPoopNode(at position: CGPoint) -> SKSpriteNode {
+        let poopNode = SKSpriteNode(imageNamed: "Poop.png")
+        poopNode.size = tileSize
+        poopNode.position = position
+        poopNode.zPosition = Constants.Z.poop
+        return poopNode
+    }
     
     /// Generates a fart sprite node used to animate the Fart attack.
     ///
@@ -89,6 +100,7 @@ class SceneUtils {
         fartNode.size = CGSize(width: tileWidth / 4,
             height: tileHeight / 4)
         fartNode.position = position
+        fartNode.zPosition = Constants.Z.fart
         fartNode.alpha = 0
         return fartNode
     }
@@ -171,10 +183,11 @@ class SceneUtils {
     /// :param: direction The direction of PuiAction
     /// :returns: The SKSpriteNode
     func getPuiNode(direction: Direction) -> SKSpriteNode {
-        let pui = SKSpriteNode(imageNamed: "Pui.png")
-        pui.size = tileSize
-        pui.zRotation = SceneUtils.zRotation(direction)
-        return pui
+        let puiNode = SKSpriteNode(imageNamed: "Pui.png")
+        puiNode.size = tileSize
+        puiNode.zRotation = SceneUtils.zRotation(direction)
+        puiNode.zPosition = Constants.Z.pui
+        return puiNode
     }
     
     /// Generates a floating text indicated the damage inflicted upon a player.
@@ -186,7 +199,7 @@ class SceneUtils {
         damageNode.alpha = 0
         damageNode.fontColor = dmg > 0 ? UIColor.redColor():UIColor.cyanColor()
         damageNode.fontName = "LuckiestGuy-Regular"
-        damageNode.zPosition = 20
+        damageNode.zPosition = Constants.Z.damage
         return damageNode
     }
     
@@ -212,6 +225,7 @@ class SceneUtils {
         let node = SKSpriteNode(imageNamed: "Crosshairs.png")
         node.size = CGSize(width: tileSize.width * 1.5,
             height: tileSize.height * 1.5)
+        node.zPosition = Constants.Z.targetCrosshair
         return node
     }
     
@@ -225,6 +239,7 @@ class SceneUtils {
         sprite.position = CGPointMake(pointAt.x, pointAt.y + offset)
         sprite.size = tileSize
         sprite.runAction(getFloatingAnimation())
+        sprite.zPosition = Constants.Z.targetArrow
         
         return sprite
     }
