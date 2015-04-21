@@ -27,6 +27,8 @@ protocol Server {
     
     func getAuthId() -> String
     
+    func getEmail() -> String
+    
     func append(childUrl: String) -> ConnectionManager
     
     func removeAllObservers()

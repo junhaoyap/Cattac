@@ -17,6 +17,8 @@ class MenuViewController: UIViewController {
         
         gameConnectionManager.getMeows(self)
         
+        gameConnectionManager.getName(self)
+        
         // TODO: Display the number of meows somewhere and maybe put it
         // as a UILabel somewhere so that gameConnectionManager can change
         // the number depending on what the number actually is
