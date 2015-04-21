@@ -52,8 +52,6 @@ class SKDirectionButtonNode: SKNode {
             buttons[direction] = button
             addChild(button)
         }
-        
-        userInteractionEnabled = true
     }
     
     required init?(coder aDecoder: NSCoder) {
