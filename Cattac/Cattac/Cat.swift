@@ -13,6 +13,7 @@ class Cat: TileEntity {
     private let _spriteImage: String
     private let _sprite: SKSpriteNode
     private let _previewSprite: SKSpriteNode
+    private let maxHp: Int
     private let baseDefence: Int
     private let baseMoveRange: Int
     private let baseFartRange: Int
@@ -79,6 +80,7 @@ class Cat: TileEntity {
     /// :param: catFartDmg Base Fart damage
     init(catName: String, catHp: Int, catDef: Int, catPuiDmg: Int, catFartDmg: Int) {
         name = catName
+        maxHp = catHp
         hp = catHp
         baseDefence = catDef
         basePuiDmg = catPuiDmg
@@ -112,19 +114,23 @@ class Cat: TileEntity {
     ///
     /// :param: damage Points to be reduced from hp
     func inflict(damage: Int) {
-        self.hp -= damage * 1/defence
-
-        hpListener?.onHpUpdate(self.hp)
+        if hp > 0 {
+            hp -= damage * 1/defence
+            hpListener?.onHpUpdate(hp)
+        }
     }
     
     /// Heals cat's HP directly.
     /// cat.hp += hp
     ///
-    /// :param: hp Points to increase the hp
-    func heal(hp: Int) {
-        self.hp += hp
+    /// :param: health Points to increase the hp
+    func heal(health: Int) {
+        hp += health
+        if hp > maxHp {
+            hp = maxHp
+        }
 
-        hpListener?.onHpUpdate(self.hp)
+        hpListener?.onHpUpdate(hp)
     }
     
     func isVisible() -> Bool {
