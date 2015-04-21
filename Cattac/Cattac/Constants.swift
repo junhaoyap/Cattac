@@ -51,6 +51,9 @@ struct Constants {
     
     // default number of meows, standalone for now
     static let defaultNumberOfMeows = "100"
+
+    // time for each turn
+    static let turnDuration = 5
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2

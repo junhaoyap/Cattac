@@ -65,7 +65,7 @@ class GameScene: SKScene {
 
     /// Timer
     private var timer: NSTimer!
-    private var currentTime: Int = 5
+    private var currentTime: Int = Constants.turnDuration
     private var timerLabel: SKLabelNode!
     private var isPlayerTurn: Bool = true
     
@@ -168,15 +168,10 @@ class GameScene: SKScene {
 
     func updateTime() {
         if currentTime == 0 {
-            if isPlayerTurn {
-                timerLabel.text = "Executing Turn"
-                gameEngine.triggerPlayerActionEnded()
-                isPlayerTurn = false
-            } else if gameEngine.state == .PlayerAction {
-                currentTime = 5
-                timerLabel.text = "\(currentTime)s"
-                isPlayerTurn = true
-            }
+            timerLabel.text = "Executing Turn"
+            gameEngine.triggerPlayerActionEnded()
+            timer.invalidate()
+            currentTime = Constants.turnDuration
         } else {
             currentTime--
             timerLabel.text = "\(currentTime)s"
@@ -194,6 +189,7 @@ extension GameScene: GameStateListener {
         // we should restrict next-state calls in game engine
         switch state {
         case .PlayerAction:
+            startTimer()
             enableActionButtons()
             deleteRemovedDoodads()
             highlightReachableNodes()
@@ -389,6 +385,17 @@ private extension GameScene {
         buttonLayer.addChild(inventoryBoxButton)
     }
 
+    func startTimer() {
+        timerLabel.text = "\(currentTime)s"
+        timer = NSTimer.scheduledTimerWithTimeInterval(
+            1,
+            target: self,
+            selector: Selector("updateTime"),
+            userInfo: nil,
+            repeats: true
+        )
+    }
+
     /// Adds the player nodes to the grid.
     func addPlayers() {
         for player in gameManager.players.values {
@@ -406,14 +413,6 @@ private extension GameScene {
         topBoard.position = CGPoint(x: 360, y: 96)
         topBoard.zPosition = -10
         infoLayer.addChild(topBoard)
-
-        timer = NSTimer.scheduledTimerWithTimeInterval(
-            1,
-            target: self,
-            selector: Selector("updateTime"),
-            userInfo: nil,
-            repeats: true
-        )
 
         timerLabel = SKLabelNode(fontNamed: "BubblegumSans-Regular")
         timerLabel.fontColor = UIColor.blackColor()
