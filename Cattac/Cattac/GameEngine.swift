@@ -247,6 +247,7 @@ class GameEngine {
                             
                             gameManager[deconflictPathOf: player] = reversedPath
                             gameManager[movementPathOf: player] = path
+                            gameManager[moveToPositionOf: player] = playerAtNode
                             
                             return
                         }
@@ -614,21 +615,18 @@ extension GameEngine {
 
     func triggerMovementAnimationEnded() {
         if gameManager.movementsCompleted {
-            println("called here 1")
             triggerStateAdvance()
         }
     }
     
     func triggerDeconflictAnimationEnded() {
         if gameManager.deconflictsCompleted {
-            println("called here 2")
             triggerStateAdvance()
         }
     }
 
     func triggerActionAnimationEnded() {
         if gameManager.actionsCompleted {
-            println("called here 3")
             triggerStateAdvance()
         }
     }
