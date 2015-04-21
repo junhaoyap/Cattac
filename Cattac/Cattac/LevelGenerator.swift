@@ -155,6 +155,11 @@ class LevelGenerator {
             if entityType == Constants.Level.valueDoodadType {
                 createDoodad(fromDict: entityData, level: level,
                     wormholeCount: wormholeCount)
+                if entityData[Constants.Level.keyEntityName]! as String
+                    == Constants.Doodad.wormholeString {
+                        wormholeCount++
+                }
+                
             } else if entityType == Constants.Level.valueItemType {
                 createItem(fromDict: entityData, level: level)
             }
