@@ -26,7 +26,7 @@ class SKPuiActionButtonNode: SKActionButtonNode {
 
     /// Hijacks the buttonAction and unselectAction from the superclass as
     /// we will be calling them under different conditions.
-    init(actionText: String, buttonAction: (Direction) -> Void,
+    init(actionText: String, size: CGSize, buttonAction: (Direction) -> Void,
         unselectAction: () -> Void, getAvailableDirections: () -> [Direction]) {
             self.getAvailableDirections = getAvailableDirections
             self.buttonAction = buttonAction
@@ -34,6 +34,7 @@ class SKPuiActionButtonNode: SKActionButtonNode {
 
             super.init(
                 actionText: actionText,
+                size: size,
                 buttonAction: {},
                 unselectAction: {}
             )

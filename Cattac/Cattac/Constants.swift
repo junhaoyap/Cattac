@@ -213,9 +213,19 @@ struct Constants {
 
             private static let thirdSection: CGFloat = 240
 
-            static let inventoryPosition =
+            private static let inventoryPosition =
                 CGPoint(x: firstSection + secondSection + thirdSection / 2,
                     y: height / 2)
+
+            static let inventoryLabelPosition = CGPoint(x: inventoryPosition.x,
+                y: inventoryPosition.y + 30)
+
+            static let milkPosition = CGPoint(x: inventoryPosition.x - 60,
+                y: inventoryPosition.y)
+            static let projectilePosition = CGPoint(x: inventoryPosition.x,
+                y: inventoryPosition.y)
+            static let nukePosition = CGPoint(x: inventoryPosition.x + 60,
+                y: inventoryPosition.y)
         }
     }
 }

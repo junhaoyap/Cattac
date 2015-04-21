@@ -169,6 +169,9 @@
 		769BB4C11AE6F87E000A6B57 /* ButtonSelect.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C01AE6F87E000A6B57 /* ButtonSelect.png */; };
 		769BB4C31AE6FD95000A6B57 /* DirectionArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C21AE6FD95000A6B57 /* DirectionArrow.png */; };
 		769BB4C51AE6FF5F000A6B57 /* DirectionArrowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C41AE6FF5F000A6B57 /* DirectionArrowSelected.png */; };
+		769BB4C91AE70514000A6B57 /* Music.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C61AE70514000A6B57 /* Music.png */; };
+		769BB4CA1AE70514000A6B57 /* Quit.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C71AE70514000A6B57 /* Quit.png */; };
+		769BB4CB1AE70514000A6B57 /* Sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4C81AE70514000A6B57 /* Sound.png */; };
 		76D0F60B1ADAF65700CB91B3 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0F60A1ADAF65700CB91B3 /* GameState.swift */; };
 		76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60C1ADB261000CB91B3 /* Fart.png */; };
 		76D0F60F1ADBA69100CB91B3 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60E1ADBA69100CB91B3 /* background.jpg */; };
@@ -314,6 +317,9 @@
 		769BB4C01AE6F87E000A6B57 /* ButtonSelect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSelect.png; path = Images.xcassets/ButtonSelect.png; sourceTree = "<group>"; };
 		769BB4C21AE6FD95000A6B57 /* DirectionArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DirectionArrow.png; path = Images.xcassets/DirectionArrow.png; sourceTree = "<group>"; };
 		769BB4C41AE6FF5F000A6B57 /* DirectionArrowSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DirectionArrowSelected.png; path = Images.xcassets/DirectionArrowSelected.png; sourceTree = "<group>"; };
+		769BB4C61AE70514000A6B57 /* Music.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Music.png; path = Images.xcassets/Music.png; sourceTree = "<group>"; };
+		769BB4C71AE70514000A6B57 /* Quit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Quit.png; path = Images.xcassets/Quit.png; sourceTree = "<group>"; };
+		769BB4C81AE70514000A6B57 /* Sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Sound.png; path = Images.xcassets/Sound.png; sourceTree = "<group>"; };
 		76D0F60A1ADAF65700CB91B3 /* GameState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		76D0F60C1ADB261000CB91B3 /* Fart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Fart.png; path = Images.xcassets/Fart.png; sourceTree = "<group>"; };
 		76D0F60E1ADBA69100CB91B3 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = background.jpg; path = Images.xcassets/background.jpg; sourceTree = "<group>"; };
@@ -677,6 +683,9 @@
 		3471CA6E1ACEB7E900B0E68D /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				769BB4C61AE70514000A6B57 /* Music.png */,
+				769BB4C71AE70514000A6B57 /* Quit.png */,
+				769BB4C81AE70514000A6B57 /* Sound.png */,
 				769BB4C41AE6FF5F000A6B57 /* DirectionArrowSelected.png */,
 				769BB4C21AE6FD95000A6B57 /* DirectionArrow.png */,
 				769BB4C01AE6F87E000A6B57 /* ButtonSelect.png */,
@@ -862,6 +871,7 @@
 				342584F11AACDB03004A3CFD /* LaunchScreen.xib in Resources */,
 				34AE22C81AE6BB3500C0EA6D /* pui.wav in Resources */,
 				76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */,
+				769BB4C91AE70514000A6B57 /* Music.png in Resources */,
 				BD0441C61AE3DFBB003B93BC /* OrangeArrow.png in Resources */,
 				34AE22C51AE6BB3500C0EA6D /* ball.aiff in Resources */,
 				76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */,
@@ -878,6 +888,7 @@
 				76656A221AE65547004A3385 /* HealthBarBorder.png in Resources */,
 				34AE22BA1AE6931400C0EA6D /* GrumpyCat.wav in Resources */,
 				76656A211AE65547004A3385 /* HealthBar.png in Resources */,
+				769BB4CA1AE70514000A6B57 /* Quit.png in Resources */,
 				327A01621AE31714005BAF06 /* Projectile.png in Resources */,
 				327A015F1AE316AA005BAF06 /* Milk.png in Resources */,
 				76656A281AE68130004A3385 /* HelloKitty.png in Resources */,
@@ -886,6 +897,7 @@
 				76D0F60F1ADBA69100CB91B3 /* background.jpg in Resources */,
 				769BB4C11AE6F87E000A6B57 /* ButtonSelect.png in Resources */,
 				34AE22B81AE6931400C0EA6D /* NyanCat.wav in Resources */,
+				769BB4CB1AE70514000A6B57 /* Sound.png in Resources */,
 				34AE22C41AE6BB3500C0EA6D /* milk.wav in Resources */,
 				769BB4C51AE6FF5F000A6B57 /* DirectionArrowSelected.png in Resources */,
 				763E71171AD1B78D00E90EF0 /* Grass.png in Resources */,

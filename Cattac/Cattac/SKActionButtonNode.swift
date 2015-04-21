@@ -21,10 +21,10 @@ class SKActionButtonNode: SKNode, ActionButton {
     var isEnabled = false
     var isSelected: Bool
     
-    init(actionText: String, buttonAction: () -> Void,
+    init(actionText: String, size: CGSize, buttonAction: () -> Void,
         unselectAction: () -> Void) {
             self.defaultButton = SKSpriteNode()
-            self.defaultButton.size = CGSize(width: 90, height: 60)
+            self.defaultButton.size = size
             self.activeButton = SKSpriteNode(imageNamed: "ButtonSelect.png")
             self.activeButton.size = self.defaultButton.size
             self.defaultButton.zPosition = Constants.Z.actionButtons
@@ -40,12 +40,31 @@ class SKActionButtonNode: SKNode, ActionButton {
             addChild(defaultButton)
             addChild(activeButton)
 
-
             let actionText = SKLabelNode(text: actionText)
             actionText.fontColor = UIColor.blackColor()
             actionText.fontName = "LuckiestGuy-Regular"
             actionText.verticalAlignmentMode = .Center
             defaultButton.addChild(actionText)
+    }
+
+    init(defaultButtonImage: String, size: CGSize, buttonAction: () -> Void,
+        unselectAction: () -> Void) {
+            self.defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
+            self.defaultButton.size = size
+            self.activeButton = SKSpriteNode(imageNamed: "ButtonSelect.png")
+            self.activeButton.size = self.defaultButton.size
+            self.defaultButton.zPosition = Constants.Z.actionButtons
+            self.activeButton.zPosition = Constants.Z.actionButtons
+            self.action = buttonAction
+            self.unselectAction = unselectAction
+            self.activeButton.hidden = true
+            self.isSelected = false
+
+            super.init()
+
+            userInteractionEnabled = true
+            addChild(defaultButton)
+            addChild(activeButton)
     }
 
     func unselect() {

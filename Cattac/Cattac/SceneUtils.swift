@@ -206,7 +206,8 @@ class SceneUtils {
     /// :param: dmg The damage inflicted upon player
     /// :returns: The SKSpriteNode
     func getDamageLabelNode(dmg: Int) -> SKLabelNode {
-        let damageNode = SKLabelNode(text: "\(-dmg)")
+        let sign = dmg > 0 ? "-" : "+"
+        let damageNode = SKLabelNode(text: "\(sign)\(abs(dmg))")
         damageNode.alpha = 0
         damageNode.fontColor = dmg > 0 ? UIColor.redColor():UIColor.cyanColor()
         damageNode.fontName = "LuckiestGuy-Regular"
@@ -214,19 +215,26 @@ class SceneUtils {
         return damageNode
     }
     
-    /// Generates a SKAction that animates floating damage label.
+    /// Generates a SKAction that animates floating number changed label.
     ///
     /// :returns: SKAction holding the sequence
-    func getDamageLabelAnim() -> SKAction {
+    func getNumberChangeAnimation(distance: CGFloat) -> SKAction {
         let actionSequence = [
             SKAction.group([
                 SKAction.fadeAlphaTo(1, duration: 0.25),
-                SKAction.moveByX(0, y: tileHeight, duration: 0.25)
+                SKAction.moveByX(0, y: distance, duration: 0.25)
             ]),
             SKAction.waitForDuration(0.5),
             SKAction.fadeAlphaTo(0, duration: 0.25)
         ]
         return SKAction.sequence(actionSequence)
+    }
+
+    /// Generates a SKAction that animates floating damage label.
+    ///
+    /// :returns: SKAction holding the sequence
+    func getDamageLabelAnimation() -> SKAction {
+        return getNumberChangeAnimation(tileHeight)
     }
     
     /// Generates a orange crosshair used for showing targeted player.
