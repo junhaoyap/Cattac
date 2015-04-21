@@ -69,6 +69,12 @@ class GameScene: SKScene {
     private var timerLabel: SKLabelNode!
     private var isPlayerTurn: Bool = true
     
+    // Player Names
+    private var playerNames: [String]!
+    
+    // Sound Player
+    let soundPlayer = SoundPlayer.sharedInstance
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -84,9 +90,10 @@ class GameScene: SKScene {
     /// :param: currentPlayerNumber The index/id for the current player.
     /// :param: multiplayer Whether the game is multiplayer or single player.
     init(size: CGSize, level: GameLevel, currentPlayerNumber: Int,
-        multiplayer: Bool) {
+        multiplayer: Bool, names: [String]) {
             super.init(size: size)
-
+            
+            self.playerNames = names
             self.level = level
             gameEngine = GameEngine(grid: level.grid,
                 playerNumber: currentPlayerNumber, multiplayer: multiplayer)
@@ -175,15 +182,13 @@ extension GameScene: GameStateListener {
             enableActionButtons()
             deleteRemovedDoodads()
             highlightReachableNodes()
+            wiggleCurrentPlayer()
             break
-        case .ServerUpdate:
+        case .ServerUpdate, .AICalculation:
             disableActionButtons()
             removeHighlights()
             unhighlightTargetPlayers()
-        case .AICalculation:
-            disableActionButtons()
-            removeHighlights()
-            unhighlightTargetPlayers()
+            unwiggleCurrentPlayer()
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:
@@ -426,7 +431,7 @@ private extension GameScene {
 
         for (index, player) in enumerate(gameManager.players.values) {
             let playerInfoNode = SKPlayerInfoNode(player: player,
-                size: playerInfoNodeSize)
+                size: playerInfoNodeSize, playerName: playerNames[index])
             playerInfoNode.position = playerInfoNodePositions[index]
             playerInfoLayer.addChild(playerInfoNode)
         }
@@ -658,6 +663,7 @@ private extension GameScene {
         if gameManager.samePlayer(player, targetPlayer) {
             animAction = sceneUtils.getPassiveItemUsedAnimation()
             if let item = action.item as? NukeItem {
+                soundPlayer.playNuke()
                 completion = {
                     for player in self.gameManager.players.values {
                         self.showDamage(Constants.itemEffect.nukeDmg,
@@ -665,6 +671,7 @@ private extension GameScene {
                     }
                 }
             } else if let item = action.item as? MilkItem {
+                soundPlayer.playMilk()
                 completion = {
                     self.showHeal(Constants.itemEffect.milkHpIncreaseEffect,
                         node: self.gameManager[moveToPositionOf: player]!)
@@ -674,6 +681,7 @@ private extension GameScene {
             let dest = action.targetNode!.sprite.position
             let v = SceneUtils.vector(tileNode.sprite.position, dest)
             animAction = sceneUtils.getAggressiveItemUsedAnimation(v)
+            soundPlayer.playBall()
             if let item = action.item as? ProjectileItem {
                 completion = {
                     self.showDamage(Constants.itemEffect.projectileDmg,
@@ -698,10 +706,13 @@ private extension GameScene {
                 case .Pui:
                     let direction = (action as PuiAction).direction
                     animatePuiAction(player, direction: direction)
+                    soundPlayer.playPui()
                 case .Fart:
                     animateFartAction(player)
+                    soundPlayer.playFart()
                 case .Poop:
                     notifyActionCompletionFor(player)
+                    soundPlayer.playPoopArm()
                 case .Item:
                     animateItemAction(player, action: action as ItemAction)
                 }
@@ -715,7 +726,8 @@ private extension GameScene {
     func performPendingAnimations() {
         for event in pendingAnimations {
             entityLayer.addChild(event.sprite)
-
+            
+            soundPlayer.playPoop()
             event.sprite.runAction(event.action, completion: {
                 event.sprite.removeFromParent()
                 if event.completion != nil {
@@ -794,6 +806,41 @@ private extension GameScene {
                 button.unselect()
             }
         }
+    }
+
+    /// Wiggles the current player's cat during the player action state so that 
+    /// the current player's cat can be easily identified.
+    func wiggleCurrentPlayer() {
+        let duration: NSTimeInterval = 0.5
+        let angle = CGFloat(M_PI_4 / Double(4))
+        let angle_2 = angle / 2
+
+        let rotateFromCenterToRight =
+            SKAction.rotateByAngle(angle_2, duration: duration / 2)
+        let rotateFromRightToLeft =
+            SKAction.rotateByAngle(-angle, duration: duration)
+        let rotateFromLeftToCenter =
+            SKAction.rotateByAngle(angle_2, duration: duration / 2)
+        let rotateSequence = SKAction.sequence([
+            rotateFromCenterToRight,
+            rotateFromRightToLeft,
+            rotateFromLeftToCenter
+        ])
+        let rotateAnimation = SKAction.repeatActionForever(rotateSequence)
+
+        gameEngine.currentPlayer.getSprite()
+            .runAction(rotateAnimation, withKey: "wiggle")
+
+    }
+
+    /// Stops wiggling the current player's cat after the player action state
+    /// has ended.
+    func unwiggleCurrentPlayer() {
+        let playerSprite = gameEngine.currentPlayer.getSprite()
+        let rotateBack = SKAction.rotateToAngle(0, duration: 0)
+
+        playerSprite.removeActionForKey("wiggle")
+        playerSprite.runAction(rotateBack)
     }
     
     /// Hides arrows indicating targetable players for item action.

@@ -13,10 +13,13 @@ class LobbyViewController: UIViewController {
     let levelGenerator = LevelGenerator.sharedInstance
     var level: GameLevel!
     var playerNumber: Int!
+    var playerNames: [String] = ["Grumpy", "Nyan", "Octocat", "Hello Kitty"]
     
     let gameConnectionManager = GameConnectionManager(urlProvided:
         Constants.Firebase.baseUrl
     )
+    
+    let soundPlayer = SoundPlayer.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,20 +43,38 @@ class LobbyViewController: UIViewController {
                         destinationVC.level = level
                         destinationVC.playerNumber = playerNumber
                         destinationVC.multiplayer = true
+                        destinationVC.playerNames = playerNames
                 }
             }
     }
     
     func startGame() {
-        self.performSegueWithIdentifier("gameStartSegue", sender: nil)
+        NSTimer.scheduledTimerWithTimeInterval(2, target: self,
+            selector: Selector("startGameSegue"),
+            userInfo: nil,
+            repeats: false
+        )
     }
     
     func initiateGameStart() {
+        NSTimer.scheduledTimerWithTimeInterval(2, target: self,
+            selector: Selector("sendLevel"),
+            userInfo: nil,
+            repeats: false
+        )
+        
+        startGame()
+    }
+    
+    func sendLevel() {
+        
         level = levelGenerator.generateBasic()
         
         gameConnectionManager.sendLevel(level)
-        
-        startGame()
+    }
+    
+    func startGameSegue() {
+        self.performSegueWithIdentifier("gameStartSegue", sender: nil)
     }
     
     func joinLobby() {
@@ -62,5 +83,21 @@ class LobbyViewController: UIViewController {
     
     func waitForGameStart() {
         gameConnectionManager.waitForGameStart(self)
+    }
+    
+    @IBAction func grumpyTapped(sender: UIButton) {
+        soundPlayer.playGrumpy()
+    }
+    
+    @IBAction func nyanTapped(sender: UIButton) {
+        soundPlayer.playNyan()
+    }
+    
+    @IBAction func helloKittyTapped(sender: UIButton) {
+        soundPlayer.playHelloKitty()
+    }
+    
+    @IBAction func octoTapped(sender: UIButton) {
+        soundPlayer.playOcto()
     }
 }

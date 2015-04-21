@@ -23,7 +23,7 @@ protocol Server {
         onComplete: (NSError!, [NSObject: AnyObject]!) -> ())
     
     func authUser(email: String, password: String,
-        onComplete: (NSError!, AnyObject) -> ())
+        onComplete: (NSError!, AnyObject?) -> ())
     
     func getAuthId() -> String
     
