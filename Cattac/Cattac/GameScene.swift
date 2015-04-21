@@ -150,10 +150,6 @@ extension GameScene: GameStateListener {
             disableActionButtons()
             removeHighlights()
             unhighlightTargetPlayers()
-        case .AICalculation:
-            disableActionButtons()
-            removeHighlights()
-            unhighlightTargetPlayers()
         case .StartMovesExecution:
             previewNode.hidden = true
         case .MovesExecution:

@@ -73,10 +73,10 @@ class GameEngine {
         
         if multiplayer {
             registerMovementWatcherExcept(playerNumber)
-        } else {
-            self.gameAI = GameAI(grid: grid, gameManager: gameManager,
-                currentPlayer: currentPlayer)
         }
+        
+        self.gameAI = GameAI(grid: grid, gameManager: gameManager,
+            currentPlayer: currentPlayer)
     }
     
     /// Called every update by gameScene (1 time per frame)
@@ -98,10 +98,8 @@ class GameEngine {
             updateServer()
             triggerStateAdvance()
         case .WaitForAll:
-            break
-        case .AICalculation:
             gameAI.calculateTurn()
-            triggerStateAdvance()
+            break
         case .StartMovesExecution:
             calculateMovementPaths()
             generateOtherPlayerMoveToNodess()
@@ -138,13 +136,11 @@ class GameEngine {
             if multiplayer {
                 state = .ServerUpdate
             } else {
-                state = .AICalculation
+                state = .WaitForAll
             }
         case .ServerUpdate:
             state = .WaitForAll
         case .WaitForAll:
-            state = .StartMovesExecution
-        case .AICalculation:
             state = .StartMovesExecution
         case .StartMovesExecution:
             state = .MovesExecution

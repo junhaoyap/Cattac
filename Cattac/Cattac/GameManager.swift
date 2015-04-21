@@ -4,6 +4,7 @@ class GameManager {
     private var _playerMoveToPositions: [String:TileNode]
     private var _playerActions: [String:Action]
     private var _players: [String:Cat]
+    private var _playerAIControlled: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
     private var _playerMovementAnimationCompleted: [String:Bool]
     private var _playerActionAnimationCompleted: [String:Bool]
@@ -15,6 +16,7 @@ class GameManager {
         _playerMoveToPositions = [:]
         _playerActions = [:]
         _players = [:]
+        _playerAIControlled = [:]
         _playerMovementPaths = [:]
         _playerMovementAnimationCompleted = [:]
         _playerActionAnimationCompleted = [:]
@@ -69,7 +71,7 @@ class GameManager {
     subscript(name: String) -> Cat? {
         return _players[name]
     }
-
+    
     subscript(movementPathOf player:Cat) -> [TileNode]? {
         set {
             _playerMovementPaths[player.name] = newValue
@@ -79,8 +81,25 @@ class GameManager {
         }
     }
     
+    subscript(aiFor player:Cat) -> Bool {
+        set {
+            if newValue {
+                _playerAIControlled[player.name] = player
+            } else {
+                _playerAIControlled.removeValueForKey(player.name)
+            }
+        }
+        get {
+            return _playerAIControlled[player.name] != nil
+        }
+    }
+    
     var players: [String:Cat] {
         return _players
+    }
+    
+    var aiPlayers: [String:Cat] {
+        return _playerAIControlled
     }
 
     var doodadsToRemove: [Int:Doodad] {

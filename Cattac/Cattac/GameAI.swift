@@ -21,11 +21,7 @@ class GameAI {
     /// Calculates the movement and action for the bots based on their current
     /// positions.
     func calculateTurn() {
-        for (playerName, player) in gameManager.players {
-            if playerName == currentPlayer.name {
-                continue
-            }
-
+        for (playerName, player) in gameManager.aiPlayers {
             let reachableNodes = grid.getNodesInRange(
                 gameManager[positionOf: player]!,
                 range: player.moveRange
