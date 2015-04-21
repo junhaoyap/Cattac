@@ -99,7 +99,7 @@ class SoundPlayer {
             contentsOfURL: poopArmSoundFile, error: nil
         )
         
-        poopArmSoundPlayer.volume = 0.05
+        poopArmSoundPlayer.volume = 0.025
         poopArmSoundPlayer.numberOfLoops = 0
         poopArmSoundPlayer.prepareToPlay()
         
@@ -111,7 +111,7 @@ class SoundPlayer {
             contentsOfURL: fartSoundFile, error: nil
         )
         
-        fartSoundPlayer.volume = 0.5
+        fartSoundPlayer.volume = 0.25
         fartSoundPlayer.numberOfLoops = 0
         fartSoundPlayer.prepareToPlay()
         
