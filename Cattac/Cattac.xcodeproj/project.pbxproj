@@ -157,6 +157,7 @@
 		7694EDD31AE3324900572818 /* BubblegumSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7694EDD11AE3324900572818 /* BubblegumSans-Regular.ttf */; };
 		7694EDD41AE3324900572818 /* LuckiestGuy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7694EDD21AE3324900572818 /* LuckiestGuy.ttf */; };
 		769BB4B71AE68D7C000A6B57 /* Tower.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4B61AE68D7C000A6B57 /* Tower.png */; };
+		769BB4B91AE692C5000A6B57 /* Fortress.png in Resources */ = {isa = PBXBuildFile; fileRef = 769BB4B81AE692C5000A6B57 /* Fortress.png */; };
 		76D0F60B1ADAF65700CB91B3 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0F60A1ADAF65700CB91B3 /* GameState.swift */; };
 		76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60C1ADB261000CB91B3 /* Fart.png */; };
 		76D0F60F1ADBA69100CB91B3 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 76D0F60E1ADBA69100CB91B3 /* background.jpg */; };
@@ -289,6 +290,7 @@
 		7694EDD11AE3324900572818 /* BubblegumSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BubblegumSans-Regular.ttf"; path = "Fonts/BubblegumSans-Regular.ttf"; sourceTree = "<group>"; };
 		7694EDD21AE3324900572818 /* LuckiestGuy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = LuckiestGuy.ttf; path = Fonts/LuckiestGuy.ttf; sourceTree = "<group>"; };
 		769BB4B61AE68D7C000A6B57 /* Tower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Tower.png; path = Images.xcassets/Tower.png; sourceTree = "<group>"; };
+		769BB4B81AE692C5000A6B57 /* Fortress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Fortress.png; path = Images.xcassets/Fortress.png; sourceTree = "<group>"; };
 		76D0F60A1ADAF65700CB91B3 /* GameState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		76D0F60C1ADB261000CB91B3 /* Fart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Fart.png; path = Images.xcassets/Fart.png; sourceTree = "<group>"; };
 		76D0F60E1ADBA69100CB91B3 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = background.jpg; path = Images.xcassets/background.jpg; sourceTree = "<group>"; };
@@ -626,6 +628,7 @@
 		3471CA6D1ACEB7D300B0E68D /* Doodads */ = {
 			isa = PBXGroup;
 			children = (
+				769BB4B81AE692C5000A6B57 /* Fortress.png */,
 				769BB4B61AE68D7C000A6B57 /* Tower.png */,
 				763E711A1AD1C45000E90EF0 /* Rock.png */,
 			);
@@ -830,6 +833,7 @@
 				342584EE1AACDB03004A3CFD /* Images.xcassets in Resources */,
 				769BB4B71AE68D7C000A6B57 /* Tower.png in Resources */,
 				327A015C1AE3163F005BAF06 /* Nuke.png in Resources */,
+				769BB4B91AE692C5000A6B57 /* Fortress.png in Resources */,
 				763E71201AD2E0EB00E90EF0 /* Direction.png in Resources */,
 				760645361AE2830E00CC0279 /* Poop.png in Resources */,
 				763E71231AD2EAB500E90EF0 /* PuiButton.png in Resources */,
