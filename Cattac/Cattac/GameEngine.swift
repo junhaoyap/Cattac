@@ -439,6 +439,7 @@ class GameEngine {
         if gameManager.allTurnsCompleted {
             countDownTimer?.invalidate()
             triggerStateAdvance()
+            println("turn all completed")
         }
     }
     
@@ -464,7 +465,7 @@ class GameEngine {
         gameConnectionManager.unregisterPlayerWatcher(playerNum)
     }
     
-    private func movementUpdate(snapshot: FDataSnapshot) {
+    private func movementUpdate(snapshot: FDataSnapshot, _ playerNum: Int) {
         let fromRow = snapshot.value.objectForKey(
             Constants.Firebase.keyMoveFromRow) as? Int
         let fromCol = snapshot.value.objectForKey(
@@ -483,12 +484,12 @@ class GameEngine {
         let attackRange = snapshot.value.objectForKey(
             Constants.Firebase.keyAttkRange) as? Int
         
-        let player = gameManager[Constants.catArray[playerNumber]]!
+        let player = gameManager[player: playerNum]!
         let dest = grid[moveToRow!, moveToCol!]!
         var action: Action?
         
         gameManager[positionOf: player] = grid[fromRow!, fromCol!]
-        println("\(getPlayer().name)[\(playerNumber)]" +
+        println("\(getPlayer().name)[\(playerNum)]" +
             " moving to \(moveToRow!),\(moveToCol!)"
         )
         

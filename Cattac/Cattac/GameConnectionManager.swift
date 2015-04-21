@@ -276,6 +276,7 @@ class GameConnectionManager {
                 self.waitPlayerName(theSender)
                 
                 sender.playerNumber = numberOfPlayers
+                println(sender.playerNumber)
                 
                 lobbyRef.update(Constants.Firebase.nodePlayers, data: [
                     "\(numberOfPlayers - 1)": uid
@@ -522,7 +523,7 @@ class GameConnectionManager {
     
     func registerPlayerWatcher(playerNum: Int,
         dropped: (Int) -> Void,
-        completion: (FDataSnapshot) -> Void) {
+        completion: (data: FDataSnapshot, playerNum: Int) -> Void) {
             
             let playerMovementWatcherRef = connectionManager
                 .append(Constants.Firebase.nodeGames)
@@ -535,7 +536,7 @@ class GameConnectionManager {
                 theSnapshot in
             
                 let snapshot = theSnapshot as FDataSnapshot
-                completion(snapshot)
+                completion(data: snapshot, playerNum: playerNum)
             })
             
             let dropWatcherRef = connectionManager
@@ -553,6 +554,7 @@ class GameConnectionManager {
     }
     
     func unregisterPlayerWatcher(playerNum: Int) {
+        println("unregistered \(playerNum)")
         observerReferences[playerNum]?.unregister()
         dropObserverReferences[playerNum]?.unregister()
     }
