@@ -365,11 +365,8 @@ private extension GameScene {
         
         
         /// Initializes the preview node for the poop action.
-        poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
-        poopPreviewNode.size = sceneUtils.tileSize
-        poopPreviewNode.alpha = 0.5
+        poopPreviewNode = sceneUtils.getPoopPreviewNode()
         poopPreviewNode.hidden = true
-        poopPreviewNode.zPosition = Constants.Z.poopPreview
         entityLayer.addChild(poopPreviewNode)
         
         /// Initializes the preview node for the crosshair.
@@ -508,7 +505,7 @@ private extension GameScene {
         let pui = sceneUtils.getPuiNode(direction)
         pui.position = startNode.sprite.position
         entityLayer.addChild(pui)
-
+        
         pui.runAction(
             sceneUtils.getTraverseAnim(path, 0.15),
             completion: {
@@ -542,21 +539,21 @@ private extension GameScene {
                 }
 
                 let fart = sceneUtils.getFartNode(at: node.sprite.position)
-
                 entityLayer.addChild(fart)
-                let action = sceneUtils.getFartAnimation(timeInterval)
-
-                fart.runAction(action, completion: {
-                    fart.removeFromParent()
-                    if victimPlayer != nil {
-                        victimPlayer!.inflict(player.fartDmg)
-                        self.showDamage(player.fartDmg, node: node)
-                        println("\(player.name) fart on \(victimPlayer!.name)" +
-                            " with \(player.fartDmg) damage.")
-                    }
-                    if i == path.count - 1 && j == nodes.count - 1 {
-                        self.notifyActionCompletionFor(player)
-                    }
+                
+                fart.runAction(
+                    sceneUtils.getFartAnimation(timeInterval),
+                    completion: {
+                        fart.removeFromParent()
+                        if victimPlayer != nil {
+                            victimPlayer!.inflict(player.fartDmg)
+                            self.showDamage(player.fartDmg, node: node)
+                            println("\(player.name) fart on \(victimPlayer!.name)" +
+                                " with \(player.fartDmg) damage.")
+                        }
+                        if i == path.count - 1 && j == nodes.count - 1 {
+                            self.notifyActionCompletionFor(player)
+                        }
                 })
             }
         }

@@ -91,6 +91,17 @@ class SceneUtils {
         return poopNode
     }
     
+    /// Generates a poop sprite node used to preview poop location.
+    ///
+    /// :returns: The SKSpriteNode
+    func getPoopPreviewNode() -> SKSpriteNode {
+        let poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
+        poopPreviewNode.size = tileSize
+        poopPreviewNode.alpha = 0.5
+        poopPreviewNode.zPosition = Constants.Z.poopPreview
+        return poopPreviewNode
+    }
+    
     /// Generates a fart sprite node used to animate the Fart attack.
     ///
     /// :param: direction The direction of PuiAction
