@@ -23,7 +23,7 @@ class MusicPlayer {
             contentsOfURL: nyanBackgroundMusic, error: nil
         )
         
-        nyanBackgroundMusicPlayer.volume = 0.05
+        nyanBackgroundMusicPlayer.volume = 0.025
         nyanBackgroundMusicPlayer.numberOfLoops = -1
         nyanBackgroundMusicPlayer.prepareToPlay()
     }
