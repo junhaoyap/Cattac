@@ -151,7 +151,7 @@ class FirebaseServer: Server {
     }
     
     func append(childUrl: String) -> ConnectionManager {
-        let appendedUrl = baseUrl + childUrl
+        let appendedUrl = baseUrl + childUrl + "/"
         
         return ConnectionManager(firebase: appendedUrl)
     }
