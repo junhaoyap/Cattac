@@ -10,6 +10,7 @@ class WormholeDoodad: Doodad {
     init() {
         _spriteNode = SKSpriteNode()
         super.init(sprite: _spriteNode)
+        _spriteNode.zPosition = Constants.Z.backDoodad
         setName(Constants.Doodad.wormholeString)
     }
 

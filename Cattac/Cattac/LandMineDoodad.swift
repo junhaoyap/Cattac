@@ -5,6 +5,7 @@ class LandMineDoodad: Doodad {
     
     init() {
         super.init(sprite: SKLabelNode(text: "M"))
+        getSprite().zPosition = Constants.Z.backDoodad
         setName(Constants.Doodad.landMineString)
     }
     
