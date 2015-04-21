@@ -72,6 +72,9 @@ class GameScene: SKScene {
     // Player Names
     private var playerNames: [String]!
     
+    // Sound Player
+    let soundPlayer = SoundPlayer.sharedInstance
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -660,6 +663,7 @@ private extension GameScene {
         if gameManager.samePlayer(player, targetPlayer) {
             animAction = sceneUtils.getPassiveItemUsedAnimation()
             if let item = action.item as? NukeItem {
+                soundPlayer.playNuke()
                 completion = {
                     for player in self.gameManager.players.values {
                         self.showDamage(Constants.itemEffect.nukeDmg,
@@ -667,6 +671,7 @@ private extension GameScene {
                     }
                 }
             } else if let item = action.item as? MilkItem {
+                soundPlayer.playMilk()
                 completion = {
                     self.showHeal(Constants.itemEffect.milkHpIncreaseEffect,
                         node: self.gameManager[moveToPositionOf: player]!)
@@ -676,6 +681,7 @@ private extension GameScene {
             let dest = action.targetNode!.sprite.position
             let v = SceneUtils.vector(tileNode.sprite.position, dest)
             animAction = sceneUtils.getAggressiveItemUsedAnimation(v)
+            soundPlayer.playBall()
             if let item = action.item as? ProjectileItem {
                 completion = {
                     self.showDamage(Constants.itemEffect.projectileDmg,
@@ -700,10 +706,13 @@ private extension GameScene {
                 case .Pui:
                     let direction = (action as PuiAction).direction
                     animatePuiAction(player, direction: direction)
+                    soundPlayer.playPui()
                 case .Fart:
                     animateFartAction(player)
+                    soundPlayer.playFart()
                 case .Poop:
                     notifyActionCompletionFor(player)
+                    soundPlayer.playPoopArm()
                 case .Item:
                     animateItemAction(player, action: action as ItemAction)
                 }
@@ -717,7 +726,8 @@ private extension GameScene {
     func performPendingAnimations() {
         for event in pendingAnimations {
             entityLayer.addChild(event.sprite)
-
+            
+            soundPlayer.playPoop()
             event.sprite.runAction(event.action, completion: {
                 event.sprite.removeFromParent()
                 if event.completion != nil {

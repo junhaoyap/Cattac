@@ -13,7 +13,7 @@ class LobbyViewController: UIViewController {
     let levelGenerator = LevelGenerator.sharedInstance
     var level: GameLevel!
     var playerNumber: Int!
-    var playerNames: [String] = ["Grumpy", "Nyan", "Hello Kitty", "Octocat"]
+    var playerNames: [String] = ["Grumpy", "Nyan", "Octocat", "Hello Kitty"]
     
     let gameConnectionManager = GameConnectionManager(urlProvided:
         Constants.Firebase.baseUrl
