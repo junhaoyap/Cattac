@@ -71,7 +71,7 @@ class GameEngine {
         
         self.playerNumber = playerNumber
         self.grid = grid
-        self.host = false
+        self.host = playerNumber == 4
         self.multiplayer = multiplayer
         
         createPlayers(playerNumber)
@@ -180,36 +180,39 @@ class GameEngine {
     }
     
     private func countDownForDrop() {
-        if !host {
+        if !host || gameManager.allTurnsCompleted {
             return
         }
+        println("Initiated drop timer \(Constants.Firebase.maxDelayBeforeDrop)")
         
         countDownTimer = NSTimer.scheduledTimerWithTimeInterval(
-            NSTimeInterval(Constants.Firebase.maxDelayBeforeDrop),
+            Constants.Firebase.maxDelayBeforeDrop,
             target: self, selector: Selector("onCountDownForDrop"),
             userInfo: nil, repeats: false)
+        
     }
     
-    private func onCountDownForDrop() {
+    @objc func onCountDownForDrop() {
+        println("Drop timer reached")
         if !gameManager.allTurnsCompleted {
             var playersToDrop: [Cat] = []
             for (name, player) in gameManager.players {
+                if gameManager.samePlayer(player, currentPlayer) {
+                    continue
+                }
                 if gameManager.playersTurnCompleted[name] == nil {
                     playersToDrop += [player]
                 }
             }
-            dropPlayers(playersToDrop)
-            gameAI.calculateTurn()
+            notifyDropPlayers(playersToDrop)
         }
     }
     
-    private func dropPlayers(players: [Cat]) {
+    private func notifyDropPlayers(players: [Cat]) {
         for player in players {
-            gameManager[aiFor: player] = true
             let playerNum = gameManager[playerNumber: player]!
             gameConnectionManager.dropPlayer(playerNum)
-            println("Drop player \(player.name)")
-            //gameConnectionManager.dropPlayers(players)
+            println("Dropped player \(player.name)")
         }
     }
 
@@ -448,8 +451,17 @@ class GameEngine {
             let currentNumber = i - 1
             
             gameConnectionManager.registerPlayerWatcher(currentNumber,
+                dropped: playerDropped,
                 completion: movementUpdate
             )
+        }
+    }
+    
+    private func playerDropped(playerNum: Int) {
+        println("Player drop received \(playerNum)")
+        if let player = gameManager[player: playerNum] {
+            gameManager[aiFor: player] = true
+            gameAI.calculateTurn()
         }
     }
     

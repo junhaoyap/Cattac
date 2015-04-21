@@ -7,10 +7,12 @@ class GameConnectionManager {
     let stringUtils = StringUtils()
     let connectionManager: ConnectionManager
     private var observerReferences: [Int: ObserverReference]
+    private var dropObserverReferences: [Int: ObserverReference]
     
     init(urlProvided: String) {
         connectionManager = ConnectionManager(firebase: urlProvided)
         observerReferences = [:]
+        dropObserverReferences = [:]
     }
     
     // MARK: LoginViewController
@@ -336,34 +338,49 @@ class GameConnectionManager {
     func dropPlayer(playerNum: Int) {
         unregisterPlayerWatcher(playerNum)
         let playerRef = connectionManager
-            .append(Constants.Firebase.nodeGames)
-            .append(Constants.Firebase.nodeGame)
-            .append(Constants.Firebase.nodePlayers)
-            .append("\(playerNum)")
-        playerRef.update("",
+            .append("/" + Constants.Firebase.nodeGames)
+            .append("/" + Constants.Firebase.nodeGame)
+            .append("/" + Constants.Firebase.nodePlayers)
+            .append("/" + "\(playerNum)")
+        playerRef.overwrite("",
             data: [Constants.Firebase.nodePlayerDropped: DateUtils.nowString()])
     }
     
     func registerPlayerWatcher(playerNum: Int,
+        dropped: (Int) -> Void,
         completion: (FDataSnapshot) -> Void) {
-        
-        let playerMovementWatcherRef = connectionManager
-            .append(Constants.Firebase.nodeGames)
-            .append(Constants.Firebase.nodeGame)
-            .append(Constants.Firebase.nodePlayers)
-            .append("\(playerNum)")
-            .append(Constants.Firebase.nodePlayerMovements)
-        
-        let obsvRef = playerMovementWatcherRef.watchNew("", onComplete: {
-            theSnapshot in
             
-            let snapshot = theSnapshot as FDataSnapshot
-            completion(snapshot)
-        })
-        observerReferences[playerNum] = obsvRef
+            let playerMovementWatcherRef = connectionManager
+                .append("/" + Constants.Firebase.nodeGames)
+                .append("/" + Constants.Firebase.nodeGame)
+                .append("/" + Constants.Firebase.nodePlayers)
+                .append("/" + "\(playerNum)")
+                .append("/" + Constants.Firebase.nodePlayerMovements)
+        
+            let obsvRef = playerMovementWatcherRef.watchNew("", onComplete: {
+                theSnapshot in
+            
+                let snapshot = theSnapshot as FDataSnapshot
+                completion(snapshot)
+            })
+            
+            let playerDropWatcherRef = connectionManager
+                .append(Constants.Firebase.nodeGames)
+                .append("/" + Constants.Firebase.nodeGame)
+                .append("/" + Constants.Firebase.nodePlayers)
+                .append("/" + "\(playerNum)")
+                .append("/" + Constants.Firebase.nodePlayerDropped)
+            
+            let dropObsvRef = playerDropWatcherRef.watchNew("", onComplete: {
+                data in
+                dropped(playerNum)
+            })
+            observerReferences[playerNum] = obsvRef
+            dropObserverReferences[playerNum] = dropObsvRef
     }
     
     func unregisterPlayerWatcher(playerNum: Int) {
         observerReferences[playerNum]?.unregister()
+        dropObserverReferences[playerNum]?.unregister()
     }
 }

@@ -45,6 +45,17 @@ class GameManager {
             return _playerNumber[player.name]
         }
     }
+    
+    subscript(player playerNum:Int) -> Cat? {
+        get {
+            for (name, num) in _playerNumber {
+                if num == playerNum {
+                    return _players[name]
+                }
+            }
+            return nil
+        }
+    }
 
     subscript(moveToPositionOf player:Cat) -> TileNode? {
         set {

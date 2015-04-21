@@ -142,7 +142,7 @@ struct Constants {
         static let keyTargetCol = "targetNodeCol"
         
         // max wait time before dropping inactive player
-        static let maxDelayBeforeDrop = 10
+        static let maxDelayBeforeDrop: NSTimeInterval = 3
     }
     
     struct AutoAccount {
