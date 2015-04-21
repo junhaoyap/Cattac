@@ -106,7 +106,7 @@ class GameEngine {
         case .PlayerAction:
             break
         case .ServerUpdate:
-            updateServer()
+            updateServer(playerNumber)
             triggerStateAdvance()
         case .WaitForAll:
             countDownForDrop()
@@ -203,15 +203,19 @@ class GameEngine {
                 if gameManager.playersTurnCompleted[name] == nil {
                     playersToDrop += [player]
                 }
+                
+                
+                let playerNum = gameManager[playerNumber: player]!
+                gameConnectionManager.dropPlayer(playerNum)
+                gameConnectionManager.unregisterPlayerWatcher(playerNum)
+                gameManager[aiFor: player] = true
             }
-            notifyDropPlayers(playersToDrop)
+            gameAI.calculateTurn()
         }
     }
     
     private func notifyDropPlayers(players: [Cat]) {
         for player in players {
-            let playerNum = gameManager[playerNumber: player]!
-            gameConnectionManager.dropPlayer(playerNum)
             println("Dropping player \(player.name)")
         }
     }
@@ -419,20 +423,25 @@ class GameEngine {
         eventListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
     }
     
-    private func updateServer() {
-        let currentPlayerNumber = playerNumber
-        let currentTile = gameManager[positionOf: currentPlayer]!
-        let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
-        let action = gameManager[actionOf: currentPlayer]
+    private func updateServer(playerNum: Int) {
+        let player = gameManager[player: playerNum]!
+        let currentTile = gameManager[positionOf: player]!
+        let moveToTile = gameManager[moveToPositionOf: player]!
+        let action = gameManager[actionOf: player]
         
-        gameConnectionManager.updateServer(playerNumber,
+        let movementNumber = playerNumber == playerNum
+            ? currentPlayerMoveNumber : currentPlayerMoveNumber - 1
+        
+        gameConnectionManager.updateServer(playerNum,
             currentTile: currentTile,
             moveToTile: moveToTile,
             action: action,
-            number: currentPlayerMoveNumber
+            number: movementNumber
         )
         
-        currentPlayerMoveNumber++
+        if playerNumber == playerNum {
+            currentPlayerMoveNumber++
+        }
     }
     
     private func checkAllTurns() {
@@ -450,19 +459,9 @@ class GameEngine {
             }
             
             gameConnectionManager.registerPlayerWatcher(i,
-                dropped: playerDropped,
                 completion: movementUpdate
             )
         }
-    }
-    
-    private func playerDropped(playerNum: Int) {
-        println("Player drop received \(playerNum)")
-        if let player = gameManager[player: playerNum] {
-            gameManager[aiFor: player] = true
-            gameAI.calculateTurn()
-        }
-        gameConnectionManager.unregisterPlayerWatcher(playerNum)
     }
     
     private func movementUpdate(snapshot: FDataSnapshot, _ playerNum: Int) {
@@ -569,7 +568,11 @@ extension GameEngine {
     
     func triggerAIPlayerMove(player: Cat, dest: TileNode, action: Action?) {
         gameManager.playerTurn(player, moveTo: dest, action: action)
-        checkAllTurns()
+        if multiplayer {
+            
+        } else {
+            checkAllTurns()
+        }
     }
     
     func triggerPlayerActionEnded() {

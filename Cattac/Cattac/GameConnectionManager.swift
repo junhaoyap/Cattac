@@ -517,12 +517,11 @@ class GameConnectionManager {
             .append(Constants.Firebase.nodeGame)
             .append(Constants.Firebase.nodePlayers)
             .append("\(playerNum)")
-        playerRef.overwrite("",
+        playerRef.update("",
             data: [Constants.Firebase.nodePlayerDropped: DateUtils.nowString()])
     }
     
     func registerPlayerWatcher(playerNum: Int,
-        dropped: (Int) -> Void,
         completion: (data: FDataSnapshot, playerNum: Int) -> Void) {
             
             let playerMovementWatcherRef = connectionManager
@@ -538,24 +537,11 @@ class GameConnectionManager {
                 let snapshot = theSnapshot as FDataSnapshot
                 completion(data: snapshot, playerNum: playerNum)
             })
-            
-            let dropWatcherRef = connectionManager
-                .append(Constants.Firebase.nodeGames)
-                .append(Constants.Firebase.nodeGame)
-                .append(Constants.Firebase.nodePlayers)
-                .append("\(playerNum)")
-            
-            let dropObsvRef = dropWatcherRef.watchRemovedOnce("", onComplete: {
-                data in
-                dropped(playerNum)
-            })
             observerReferences[playerNum] = obsvRef
-            dropObserverReferences[playerNum] = dropObsvRef
     }
     
     func unregisterPlayerWatcher(playerNum: Int) {
         println("unregistered \(playerNum)")
         observerReferences[playerNum]?.unregister()
-        dropObserverReferences[playerNum]?.unregister()
     }
 }
