@@ -201,22 +201,12 @@ class GameEngine {
                     continue
                 }
                 if gameManager.playersTurnCompleted[name] == nil {
-                    playersToDrop += [player]
+                    let playerNum = gameManager[playerNumber: player]!
+                    gameConnectionManager.dropPlayer(playerNum)
+                    gameManager[aiFor: player] = true
                 }
-                
-                
-                let playerNum = gameManager[playerNumber: player]!
-                gameConnectionManager.dropPlayer(playerNum)
-                gameConnectionManager.unregisterPlayerWatcher(playerNum)
-                gameManager[aiFor: player] = true
             }
             gameAI.calculateTurn()
-        }
-    }
-    
-    private func notifyDropPlayers(players: [Cat]) {
-        for player in players {
-            println("Dropping player \(player.name)")
         }
     }
 
@@ -488,7 +478,7 @@ class GameEngine {
         var action: Action?
         
         gameManager[positionOf: player] = grid[fromRow!, fromCol!]
-        println("\(getPlayer().name)[\(playerNum)]" +
+        println("\(player.name)[\(playerNum)]" +
             " moving to \(moveToRow!),\(moveToCol!)"
         )
         
@@ -569,7 +559,7 @@ extension GameEngine {
     func triggerAIPlayerMove(player: Cat, dest: TileNode, action: Action?) {
         gameManager.playerTurn(player, moveTo: dest, action: action)
         if multiplayer {
-            
+            updateServer(gameManager[playerNumber: player]!)
         } else {
             checkAllTurns()
         }
