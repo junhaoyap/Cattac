@@ -57,11 +57,20 @@ class LobbyViewController: UIViewController {
     }
     
     func initiateGameStart() {
+        NSTimer.scheduledTimerWithTimeInterval(2, target: self,
+            selector: Selector("sendLevel"),
+            userInfo: nil,
+            repeats: false
+        )
+        
+        startGame()
+    }
+    
+    func sendLevel() {
+        
         level = levelGenerator.generateBasic()
         
         gameConnectionManager.sendLevel(level)
-        
-        startGame()
     }
     
     func startGameSegue() {
