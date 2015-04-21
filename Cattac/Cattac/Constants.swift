@@ -124,6 +124,7 @@ struct Constants {
         static let nodeLobby = "lobby"
         static let nodePlayers = "players"
         static let nodePlayerMovements = "movements"
+        static let nodePlayerDropped = "dropped"
         
         static let keyMeows = "numberOfMeows"
         

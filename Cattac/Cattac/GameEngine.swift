@@ -207,7 +207,7 @@ class GameEngine {
         for player in players {
             gameManager[aiFor: player] = true
             let playerNum = gameManager[playerNumber: player]!
-            gameConnectionManager.unregisterPlayerWatcher(playerNum)
+            gameConnectionManager.dropPlayer(playerNum)
             println("Drop player \(player.name)")
             //gameConnectionManager.dropPlayers(players)
         }

@@ -6,6 +6,6 @@ class ObserverReference {
     }
     
     func unregister() {
-        unregisterAction()
+        unregisterAction?()
     }
 }

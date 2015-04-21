@@ -34,4 +34,8 @@ class DateUtils {
     class func isAfter(dateOne: NSDate, dateTwo: NSDate) -> Bool {
         return dateOne.compare(dateTwo) == NSComparisonResult.OrderedAscending
     }
+    
+    class func nowString() -> String {
+        return dateFormatter.stringFromDate(NSDate())
+    }
 }

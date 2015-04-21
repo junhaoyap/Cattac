@@ -295,6 +295,17 @@ class GameConnectionManager {
             )
     }
     
+    func dropPlayer(playerNum: Int) {
+        unregisterPlayerWatcher(playerNum)
+        let playerRef = connectionManager
+            .append(Constants.Firebase.nodeGames)
+            .append(Constants.Firebase.nodeGame)
+            .append(Constants.Firebase.nodePlayers)
+            .append("\(playerNum)")
+        playerRef.update("",
+            data: [Constants.Firebase.nodePlayerDropped: DateUtils.nowString()])
+    }
+    
     func registerPlayerWatcher(playerNum: Int,
         completion: (FDataSnapshot) -> Void) {
         
