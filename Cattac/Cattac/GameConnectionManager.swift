@@ -293,83 +293,22 @@ class GameConnectionManager {
             )
     }
     
-    func registerMovementWatcher(playerNumber: Int, theSender: AnyObject) {
-        let sender = theSender as GameEngine
+    func registerMovementWatcher(playerNum: Int,
+        completion: (FDataSnapshot) -> Void) {
         
         let playerMovementWatcherRef = connectionManager
             .append(Constants.Firebase.nodeGames)
             .append(Constants.Firebase.nodeGame)
             .append(Constants.Firebase.nodePlayers)
-            .append("\(playerNumber)")
+            .append("\(playerNum)")
             .append(Constants.Firebase.nodePlayerMovements)
         
         playerMovementWatcherRef.watchNew("", onComplete: {
             theSnapshot in
             
             let snapshot = theSnapshot as FDataSnapshot
-            
-            let fromRow = snapshot.value.objectForKey(
-                Constants.Firebase.keyMoveFromRow) as? Int
-            let fromCol = snapshot.value.objectForKey(
-                Constants.Firebase.keyMoveFromCol) as? Int
-            let moveToRow = snapshot.value.objectForKey(
-                Constants.Firebase.keyMoveToRow) as? Int
-            let moveToCol = snapshot.value.objectForKey(
-                Constants.Firebase.keyMoveToCol) as? Int
-            
-            let attackType = snapshot.value.objectForKey(
-                Constants.Firebase.keyAttkType) as? String
-            let attackDir = snapshot.value.objectForKey(
-                Constants.Firebase.keyAttkDir) as? String
-            let attackDmg = snapshot.value.objectForKey(
-                Constants.Firebase.keyAttkDmg) as? Int
-            let attackRange = snapshot.value.objectForKey(
-                Constants.Firebase.keyAttkRange) as? Int
-            
-            let player = sender.gameManager[Constants.catArray[playerNumber]]!
-            
-            sender.gameManager[positionOf: player] = sender.getGrid()[
-                fromRow!, fromCol!]
-            sender.gameManager[moveToPositionOf: player] = sender.getGrid()[
-                moveToRow!, moveToCol!]
-            println("\(sender.getPlayer().name)[\(playerNumber)]" +
-                " moving to \(moveToRow!),\(moveToCol!)"
-            )
-            
-            if let playerActionType = ActionType.create(attackType!) {
-                switch playerActionType {
-                case .Pui:
-                    let puiDirection = Direction.create(attackDir!)!
-                    sender.gameManager[actionOf: player] = PuiAction(direction:
-                        puiDirection)
-                case .Fart:
-                    let fartRange = attackRange!
-                    sender.gameManager[actionOf: player] = FartAction(range:
-                        fartRange)
-                case .Poop:
-                    let targetNodeRow = snapshot.value.objectForKey(
-                        Constants.Firebase.keyTargetRow) as? Int
-                    let targetNodeCol = snapshot.value.objectForKey(
-                        Constants.Firebase.keyTargetCol) as? Int
-                    let targetNode = sender.getGrid()[targetNodeRow!,
-                        targetNodeCol!]!
-                    
-                    sender.gameManager[actionOf: player] = PoopAction(
-                        targetNode: targetNode)
-                case .Item:
-                    break
-                }
-                println("\(player.name)[\(playerNumber)]" +
-                    " \(playerActionType.description)"
-                )
-            }
-            
-            sender.otherPlayersMoved++
-            
-            if sender.otherPlayersMoved == 3 {
-                sender.triggerAllPlayersMoved()
-                sender.otherPlayersMoved = 0
-            }
+            completion(snapshot)
         })
+
     }
 }

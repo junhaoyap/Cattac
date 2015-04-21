@@ -389,8 +389,71 @@ class GameEngine {
             let currentNumber = i - 1
             
             gameConnectionManager.registerMovementWatcher(currentNumber,
-                theSender: self
+                completion: movementUpdate
             )
+        }
+    }
+    
+    private func movementUpdate(snapshot: FDataSnapshot) {
+        let fromRow = snapshot.value.objectForKey(
+            Constants.Firebase.keyMoveFromRow) as? Int
+        let fromCol = snapshot.value.objectForKey(
+            Constants.Firebase.keyMoveFromCol) as? Int
+        let moveToRow = snapshot.value.objectForKey(
+            Constants.Firebase.keyMoveToRow) as? Int
+        let moveToCol = snapshot.value.objectForKey(
+            Constants.Firebase.keyMoveToCol) as? Int
+        
+        let attackType = snapshot.value.objectForKey(
+            Constants.Firebase.keyAttkType) as? String
+        let attackDir = snapshot.value.objectForKey(
+            Constants.Firebase.keyAttkDir) as? String
+        let attackDmg = snapshot.value.objectForKey(
+            Constants.Firebase.keyAttkDmg) as? Int
+        let attackRange = snapshot.value.objectForKey(
+            Constants.Firebase.keyAttkRange) as? Int
+        
+        let player = gameManager[Constants.catArray[playerNumber]]!
+        
+        gameManager[positionOf: player] = grid[fromRow!, fromCol!]
+        gameManager[moveToPositionOf: player] = grid[moveToRow!, moveToCol!]
+        println("\(getPlayer().name)[\(playerNumber)]" +
+            " moving to \(moveToRow!),\(moveToCol!)"
+        )
+        
+        if let playerActionType = ActionType.create(attackType!) {
+            switch playerActionType {
+            case .Pui:
+                let puiDirection = Direction.create(attackDir!)!
+                gameManager[actionOf: player] = PuiAction(direction:
+                    puiDirection)
+            case .Fart:
+                let fartRange = attackRange!
+                gameManager[actionOf: player] = FartAction(range:
+                    fartRange)
+            case .Poop:
+                let targetNodeRow = snapshot.value.objectForKey(
+                    Constants.Firebase.keyTargetRow) as? Int
+                let targetNodeCol = snapshot.value.objectForKey(
+                    Constants.Firebase.keyTargetCol) as? Int
+                let targetNode = grid[targetNodeRow!,
+                    targetNodeCol!]!
+                
+                gameManager[actionOf: player] = PoopAction(
+                    targetNode: targetNode)
+            case .Item:
+                break
+            }
+            println("\(player.name)[\(playerNumber)]" +
+                " \(playerActionType.description)"
+            )
+        }
+        
+        otherPlayersMoved++
+        
+        if otherPlayersMoved == 3 {
+            triggerAllPlayersMoved()
+            otherPlayersMoved = 0
         }
     }
 
