@@ -826,7 +826,11 @@ private extension GameScene {
     /// Stops wiggling the current player's cat after the player action state
     /// has ended.
     func unwiggleCurrentPlayer() {
-        gameEngine.currentPlayer.getSprite().removeActionForKey("wiggle")
+        let playerSprite = gameEngine.currentPlayer.getSprite()
+        let rotateBack = SKAction.rotateToAngle(0, duration: 0)
+
+        playerSprite.removeActionForKey("wiggle")
+        playerSprite.runAction(rotateBack)
     }
     
     /// Hides arrows indicating targetable players for item action.
