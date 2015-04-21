@@ -181,10 +181,9 @@ extension GameScene: GameStateListener {
             startTimer()
             deleteRemovedDoodads()
             wiggleCurrentPlayer()
-        case .WaitForAll:
             highlightReachableNodes()
             enableActionButtons()
-        case .ServerUpdate:
+        case .WaitForAll:
             disableActionButtons()
             removeHighlights()
             unhighlightTargetPlayers()
