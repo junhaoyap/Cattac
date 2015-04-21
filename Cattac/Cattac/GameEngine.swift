@@ -50,9 +50,15 @@ class GameEngine {
     
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
-
+    
     /// Whether the game is currently in multiplayer mode
     var multiplayer: Bool
+    
+    /// Whether the game is currently the host
+    var host: Bool
+    
+    /// For wait countdown to drop player
+    var countDownTimer: NSTimer?
     
     /// The number of players that moved that the local player is listening to
     var otherPlayersMoved = 0
@@ -64,9 +70,8 @@ class GameEngine {
         println("init GameEngine as playerNumber \(playerNumber)")
         
         self.playerNumber = playerNumber
-        
         self.grid = grid
-
+        self.host = false
         self.multiplayer = multiplayer
         
         createPlayers(playerNumber)
@@ -75,8 +80,14 @@ class GameEngine {
             registerMovementWatcherExcept(playerNumber)
         }
         
-        self.gameAI = GameAI(grid: grid, gameManager: gameManager,
+        self.gameAI = GameAI(grid: grid, gameEngine: self,
             currentPlayer: currentPlayer)
+    }
+    
+    /// Set this game as host game. Host will be incharge of dealing with player
+    /// drops.
+    func setHost() {
+        host = true
     }
     
     /// Called every update by gameScene (1 time per frame)
@@ -98,6 +109,7 @@ class GameEngine {
             updateServer()
             triggerStateAdvance()
         case .WaitForAll:
+            countDownForDrop()
             gameAI.calculateTurn()
             break
         case .StartMovesExecution:
@@ -165,6 +177,38 @@ class GameEngine {
             gameManager[positionOf: currentPlayer]!,
             range: currentPlayer.moveRange
         )
+    }
+    
+    private func countDownForDrop() {
+        if !host {
+            return
+        }
+        
+        countDownTimer = NSTimer.scheduledTimerWithTimeInterval(
+            NSTimeInterval(Constants.Firebase.maxDelayBeforeDrop),
+            target: self, selector: Selector("onCountDownForDrop"),
+            userInfo: nil, repeats: false)
+    }
+    
+    private func onCountDownForDrop() {
+        if !gameManager.allTurnsCompleted {
+            var playersToDrop: [Cat] = []
+            for (name, player) in gameManager.players {
+                if gameManager.playersTurnCompleted[name] == nil {
+                    playersToDrop += [player]
+                }
+            }
+            dropPlayers(playersToDrop)
+            gameAI.calculateTurn()
+        }
+    }
+    
+    private func dropPlayers(players: [Cat]) {
+        for player in players {
+            gameManager[aiFor: player] = true
+            println("Drop player \(player.name)")
+            //gameConnectionManager.dropPlayers(players)
+        }
     }
 
     func setCurrentPlayerMoveToPosition(node: TileNode) {
@@ -336,6 +380,12 @@ class GameEngine {
         gameManager.registerPlayer(cat4)
         gameManager[positionOf: cat4] = grid[0, grid.columns - 1]
         
+        if !multiplayer {
+            var bots = [cat1, cat2, cat3, cat4]
+            bots.removeAtIndex(playerNumber - 1)
+            gameManager.registerAIPlayers(bots)
+        }
+        
         switch playerNumber {
         case 1:
             currentPlayer = cat1
@@ -381,7 +431,10 @@ class GameEngine {
     }
     
     private func checkAllTurns() {
-        
+        if gameManager.allTurnsCompleted {
+            countDownTimer?.invalidate()
+            triggerStateAdvance()
+        }
     }
     
     private func registerMovementWatcherExcept(number: Int) {
@@ -452,6 +505,7 @@ class GameEngine {
         }
         
         gameManager.playerTurn(player, moveTo: dest, action: action)
+        checkAllTurns()
     }
 
     func getGrid() -> Grid {
@@ -501,6 +555,7 @@ extension GameEngine {
     
     func triggerAIPlayerMove(player: Cat, dest: TileNode, action: Action?) {
         gameManager.playerTurn(player, moveTo: dest, action: action)
+        checkAllTurns()
     }
     
     func triggerPlayerActionEnded() {

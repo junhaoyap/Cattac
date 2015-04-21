@@ -139,6 +139,9 @@ struct Constants {
         static let keyMoveToCol = "toCol"
         static let keyTargetRow = "targetNodeRow"
         static let keyTargetCol = "targetNodeCol"
+        
+        // max wait time before dropping inactive player
+        static let maxDelayBeforeDrop = 10
     }
     
     struct AutoAccount {

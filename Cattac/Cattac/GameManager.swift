@@ -5,7 +5,7 @@ class GameManager {
     private var _playerActions: [String:Action]
     private var _players: [String:Cat]
     private var _playerAIControlled: [String:Cat]
-    private var _playerTurnComplete: [String:Bool]
+    private var _playerTurnComplete: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
     private var _playerMovementAnimationCompleted: [String:Bool]
     private var _playerActionAnimationCompleted: [String:Bool]
@@ -103,6 +103,10 @@ class GameManager {
     var aiPlayers: [String:Cat] {
         return _playerAIControlled
     }
+    
+    var playersTurnCompleted: [String: Cat] {
+        return _playerTurnComplete
+    }
 
     var doodadsToRemove: [Int:Doodad] {
         set {
@@ -140,6 +144,12 @@ class GameManager {
     func registerPlayer(player: Cat) {
         _players[player.name] = player
     }
+    
+    func registerAIPlayers(players: [Cat]) {
+        for player in players {
+            self[aiFor: player] = true
+        }
+    }
 
     func advanceTurn() {
         _playerPositions = _playerMoveToPositions
@@ -150,7 +160,7 @@ class GameManager {
     func playerTurn(player: Cat, moveTo dest: TileNode, action: Action?) {
         self[moveToPositionOf: player] = dest
         self[actionOf: player] = action
-        _playerTurnComplete[player.name] = true
+        _playerTurnComplete[player.name] = player
     }
 
     func precalculate() {
