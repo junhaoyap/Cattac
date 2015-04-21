@@ -36,7 +36,7 @@ class GameViewController: UIViewController {
     var playerNumber: Int = 1
     let levelGenerator = LevelGenerator.sharedInstance
     var multiplayer: Bool = false
-    var playerNames: [String] = ["Grumpy", "Nyan", "Hello Kitty", "Octocat"]
+    var playerNames: [String] = ["Grumpy", "Nyan", "Octocat", "Hello Kitty"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
