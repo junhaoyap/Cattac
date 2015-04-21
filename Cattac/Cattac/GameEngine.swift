@@ -227,7 +227,12 @@ class GameEngine {
             if let doodad = playerMoveToNode.doodad {
                 // effect non-move modifications
                 doodad.postmoveEffect(player)
-                if doodad is WormholeDoodad {
+                if doodad is LandMineDoodad {
+                    let poop = Poop(nil, Constants.Doodad.landMineDamage)
+                    poop.victim = player
+                    eventListener?.addPendingPoopAnimation(poop,
+                        target: playerMoveToNode)
+                } else if doodad is WormholeDoodad {
                     let destNode = (doodad as WormholeDoodad).getDestinationNode()
                     gameManager[moveToPositionOf: player]! = destNode
                     playerMoveToNode = destNode

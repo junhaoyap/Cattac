@@ -498,18 +498,14 @@ private extension GameScene {
     ///                    drawn.
     /// :param: tileEntity The given `TileEntity` to be drawn.
     func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
-            let entityNode = tileEntity.getSprite()
-
-            if entityNode is SKSpriteNode {
-                (entityNode as SKSpriteNode).size = spriteNode.size
-            }
-
-            if !tileEntity.isVisible() {
-                entityNode.alpha = 0.5
-            }
-
-            entityNode.position = spriteNode.position
-            entityLayer.addChild(entityNode)
+        let entityNode = tileEntity.getSprite()
+        if entityNode is SKSpriteNode {
+            (entityNode as SKSpriteNode).size = spriteNode.size
+        }
+    
+        entityNode.hidden = !tileEntity.isVisible()
+        entityNode.position = spriteNode.position
+        entityLayer.addChild(entityNode)
     }
 
     /// Sets the next position to move to for the current player.

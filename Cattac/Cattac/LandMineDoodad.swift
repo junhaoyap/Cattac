@@ -4,13 +4,12 @@ import SpriteKit
 class LandMineDoodad: Doodad {
     
     init() {
-        super.init(sprite: SKLabelNode(text: "M"))
+        super.init(sprite: SKSpriteNode(imageNamed: "Poop.png"))
         getSprite().zPosition = Constants.Z.backDoodad
         setName(Constants.Doodad.landMineString)
     }
     
     override func postmoveEffect(cat: Cat) {
-        cat.inflict(Constants.Doodad.landMineDamage)
         setRemoved()
     }
     

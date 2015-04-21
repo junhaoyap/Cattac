@@ -59,7 +59,7 @@ class GameAI {
         case 1:
             return FartAction(range: player.fartRange)
         case 2:
-            let node = gameEngine.gameManager[moveToPositionOf: player]!
+            let node = gameEngine.gameManager[positionOf: player]!
             return PoopAction(targetNode: node)
         default:
             return nil
