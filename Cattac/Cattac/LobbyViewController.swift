@@ -5,6 +5,10 @@
 import UIKit
 
 class LobbyViewController: UIViewController {
+    @IBOutlet weak var playerOneName: UILabel!
+    @IBOutlet weak var playerTwoName: UILabel!
+    @IBOutlet weak var playerThreeName: UILabel!
+    @IBOutlet weak var playerFourName: UILabel!
     
     let levelGenerator = LevelGenerator.sharedInstance
     var level: GameLevel!
