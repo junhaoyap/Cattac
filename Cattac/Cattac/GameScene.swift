@@ -845,25 +845,23 @@ private extension GameScene {
         let currentPlayer = gameEngine.currentPlayer
         let item = gameManager[itemOf: currentPlayer]!
         for player in gameManager.players.values {
-            if gameManager.samePlayer(player, currentPlayer) {
-                continue
-            }
             
             let playerSprite = player.getSprite() as SKTouchSpriteNode
             let position = playerSprite.position
-            let arrowSprite = sceneUtils.getPlayerTargetableArrow(position)
-            entityLayer.addChild(arrowSprite)
-            targetPreviewNodes += [arrowSprite]
             
             if item.shouldTargetAll() {
                 let crosshairSprite = sceneUtils.getCrosshairNode()
-                crosshairSprite.position = playerSprite.position
+                crosshairSprite.position = position
                 entityLayer.addChild(crosshairSprite)
                 targetPreviewNodes += [crosshairSprite]
-            } else {
+            } else if !gameManager.samePlayer(player, currentPlayer) {
+                let arrowSprite = sceneUtils.getPlayerTargetableArrow(position)
+                entityLayer.addChild(arrowSprite)
+                
+                targetPreviewNodes += [arrowSprite]
                 playerSprite.setTouchObserver({
                     self.gameEngine.triggerTargetPlayerChanged(player)
-                    self.crosshairNode.position = playerSprite.position
+                    self.crosshairNode.position = position
                     self.crosshairNode.hidden = false
                 })
                 playerSprite.userInteractionEnabled = true

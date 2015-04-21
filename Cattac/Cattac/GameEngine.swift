@@ -326,7 +326,6 @@ class GameEngine {
             var poopActivated = false
             for player in gameManager.players.values {
                 if gameManager[moveToPositionOf: player] == node {
-                    
                     poop.victim = player
                     eventListener?.addPendingPoopAnimation(poop, target: node)
                     poopActivated = true
@@ -340,10 +339,16 @@ class GameEngine {
                 gameManager.samePlayer(itemAction.targetPlayer, player) {
                     // invalidate action, item cannot effect self.
                     return nil
+            } else if itemAction.item.shouldTargetAll() {
+                for player in gameManager.players.values {
+                    itemAction.item.effect(player)
+                }
+            } else if itemAction.item.canTargetOthers() ||
+                itemAction.item.canTargetSelf() {
+                    itemAction.item.effect(itemAction.targetPlayer)
             }
             itemAction.targetNode =
                 gameManager[moveToPositionOf: itemAction.targetPlayer]
-            itemAction.item.effect(itemAction.targetPlayer)
             gameManager[itemOf: player] = nil
         }
         return action
