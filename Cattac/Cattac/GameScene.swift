@@ -150,7 +150,7 @@ class GameScene: SKScene {
 
     func updateTime() {
         if currentTime == 0 {
-            timerLabel.text = "Executing Turn"
+            timerLabel.text = "Wait"
             gameEngine.triggerPlayerActionEnded()
             timer.invalidate()
             currentTime = Constants.turnDuration
