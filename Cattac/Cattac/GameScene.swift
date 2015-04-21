@@ -118,7 +118,7 @@ class GameScene: SKScene {
 
             // adds buttonLayer to the gameLayer
             let buttonSpacing: CGFloat = 220
-            buttonLayer.position = CGPoint(x: 0, y: -416)
+            buttonLayer.position = CGPoint(x: -360, y: -512)
             gameLayer.addChild(buttonLayer)
 
             /// Additional initialization
@@ -128,7 +128,7 @@ class GameScene: SKScene {
             addTiles()
             addPlayers()
 
-            infoLayer.position = CGPoint(x: 0, y: 416)
+            infoLayer.position = CGPoint(x: -360, y: 320)
             gameLayer.addChild(infoLayer)
             initializeInformationBar()
     }
@@ -174,12 +174,12 @@ class GameScene: SKScene {
                 isPlayerTurn = false
             } else if gameEngine.state == .PlayerAction {
                 currentTime = 5
-                timerLabel.text = "Turn Ending in\n\(currentTime)s"
+                timerLabel.text = "\(currentTime)s"
                 isPlayerTurn = true
             }
         } else {
             currentTime--
-            timerLabel.text = "Turn Ending in\n\(currentTime)s"
+            timerLabel.text = "\(currentTime)s"
         }
     }
 }
@@ -335,7 +335,8 @@ private extension GameScene {
         let bottomBoard = SKSpriteNode(imageNamed: "BottomBoard.png")
         bottomBoard.size = CGSize(width: self.size.width,
             height: 192)
-        bottomBoard.position = CGPoint(x: 0, y: 0)
+        bottomBoard.position = CGPoint(x: 360, y: 96)
+        bottomBoard.zPosition = -10
         buttonLayer.addChild(bottomBoard)
 
         puiButton = SKPuiActionButtonNode(
@@ -346,8 +347,8 @@ private extension GameScene {
             },
             unselectAction: { self.gameEngine.triggerClearAction() },
             getAvailableDirections: { return self.gameEngine.getAvailablePuiDirections() })
-        puiButton.position = CGPoint(x: -buttonSpacing, y: 0)
-        bottomBoard.addChild(puiButton)
+        puiButton.position = CGPoint(x: 360-buttonSpacing, y: 80)
+        buttonLayer.addChild(puiButton)
         actionButtons.append(puiButton)
 
         fartButton = SKActionButtonNode(
@@ -355,8 +356,8 @@ private extension GameScene {
             activeButtonImage: "FartButtonPressed.png",
             buttonAction: { self.gameEngine.triggerFartButtonPressed() },
             unselectAction: { self.gameEngine.triggerClearAction() })
-        fartButton.position = CGPoint(x: 0, y: 0)
-        bottomBoard.addChild(fartButton)
+        fartButton.position = CGPoint(x: 360, y: 80)
+        buttonLayer.addChild(fartButton)
         actionButtons.append(fartButton)
 
         poopButton = SKActionButtonNode(
@@ -367,8 +368,8 @@ private extension GameScene {
                 self.hidePoop()
                 self.gameEngine.triggerClearAction()
         })
-        poopButton.position = CGPoint(x: buttonSpacing, y: 0)
-        bottomBoard.addChild(poopButton)
+        poopButton.position = CGPoint(x: 360+buttonSpacing, y: 80)
+        buttonLayer.addChild(poopButton)
         actionButtons.append(poopButton)
     }
     
@@ -383,7 +384,7 @@ private extension GameScene {
                 self.unhighlightTargetPlayers()
         })
         
-        inventoryBoxButton.position = CGPoint(x: -310, y: 30)
+        inventoryBoxButton.position = CGPoint(x: 360, y: 140)
         actionButtons.append(inventoryBoxButton)
         buttonLayer.addChild(inventoryBoxButton)
     }
@@ -402,8 +403,9 @@ private extension GameScene {
     func initializeInformationBar() {
         let topBoard = SKSpriteNode(imageNamed: "TopBoard.png")
         topBoard.size = CGSize(width: self.size.width, height: 192)
-        topBoard.position = CGPoint(x: 0, y: 416)
-        gameLayer.addChild(topBoard)
+        topBoard.position = CGPoint(x: 360, y: 96)
+        topBoard.zPosition = -10
+        infoLayer.addChild(topBoard)
 
         timer = NSTimer.scheduledTimerWithTimeInterval(
             1,
@@ -415,7 +417,8 @@ private extension GameScene {
 
         timerLabel = SKLabelNode(fontNamed: "BubblegumSans-Regular")
         timerLabel.fontColor = UIColor.blackColor()
-        topBoard.addChild(timerLabel)
+        timerLabel.position = CGPoint(x: 360, y: 96)
+        infoLayer.addChild(timerLabel)
     }
 
     /// Initializes the preview nodes game.
