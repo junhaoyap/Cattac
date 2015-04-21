@@ -78,27 +78,19 @@ class Cat: TileEntity {
     /// :param: catDef Base defence
     /// :param: catPuiDmg Base Pui damage
     /// :param: catFartDmg Base Fart damage
-    init(catName: String, catHp: Int, catDef: Int, catPuiDmg: Int, catFartDmg: Int) {
+    init(catName: String, attributes: (hp: Int, defense: Int, puiDmg: Int,
+        fartDmg: Int, poopDmg: Int, moveRange: Int, fartRange: Int)) {
         name = catName
-        maxHp = catHp
-        hp = catHp
-        baseDefence = catDef
-        basePuiDmg = catPuiDmg
-        baseFartDmg = catFartDmg
-        basePoopDmg = Constants.catAttributes.poopDmg
-        baseMoveRange = Constants.catAttributes.moveRange
-        baseFartRange = Constants.catAttributes.fartRange
-        
-        switch catName {
-        case Constants.catName.nyanCat:
-            _spriteImage = "Nyan.png"
-        case Constants.catName.grumpyCat:
-            _spriteImage = "Grumpy.png"
-        case Constants.catName.pusheenCat:
-            _spriteImage = "Pusheen.png"
-        default:
-            _spriteImage = "Nala.png"
-        }
+        maxHp = attributes.hp
+        hp = maxHp
+        baseDefence = attributes.defense
+        basePuiDmg = attributes.puiDmg
+        baseFartDmg = attributes.fartDmg
+        basePoopDmg = attributes.poopDmg
+        baseMoveRange = attributes.moveRange
+        baseFartRange = attributes.fartRange
+
+        _spriteImage = Constants.cat.images[catName]!
 
         _sprite = SKTouchSpriteNode(imageNamed: _spriteImage)
         _previewSprite = SKTouchSpriteNode(imageNamed: _spriteImage)
