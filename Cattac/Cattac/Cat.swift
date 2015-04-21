@@ -114,7 +114,7 @@ class Cat: TileEntity {
     func inflict(damage: Int) {
         self.hp -= damage * 1/defence
 
-        hpListener?.onHpUpdate(hp)
+        hpListener?.onHpUpdate(self.hp)
     }
     
     /// Heals cat's HP directly.
@@ -124,7 +124,7 @@ class Cat: TileEntity {
     func heal(hp: Int) {
         self.hp += hp
 
-        hpListener?.onHpUpdate(hp)
+        hpListener?.onHpUpdate(self.hp)
     }
     
     func isVisible() -> Bool {
