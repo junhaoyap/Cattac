@@ -128,7 +128,7 @@ class ItemAction: Action {
     init(item: Item, targetNode: TileNode, targetPlayer: Cat) {
         self.item = item
         self.targetPlayer = targetPlayer
-        super.init(actionType: ActionType.Item)
+        super.init(actionType: .Item)
         self.targetNode = targetNode
     }
 }
