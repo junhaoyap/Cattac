@@ -604,7 +604,7 @@ private extension GameScene {
         var victimPlayer: Cat?
 
         if let node = path.last {
-            if let player = gameEngine.otherPlayerMoveToNodes[node.position] {
+            if let player = gameEngine.playerMoveToNodes[node.position] {
                 victimPlayer = player
             }
         }
@@ -641,7 +641,7 @@ private extension GameScene {
             for (j, node) in enumerate(nodes.values) {
                 var victimPlayer: Cat?
 
-                if let player = gameEngine.otherPlayerMoveToNodes[node.position] {
+                if let player = gameEngine.playerMoveToNodes[node.position] {
                     victimPlayer = player
                 }
 

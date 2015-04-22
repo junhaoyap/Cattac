@@ -64,7 +64,7 @@ class GameEngine {
     var otherPlayersMoved = 0
 
     /// The node positions mapped to the player on that node.
-    var otherPlayerMoveToNodes = [GridIndex:Cat]()
+    var playerMoveToNodes = [GridIndex:Cat]()
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
         println("init GameEngine as playerNumber \(playerNumber)")
@@ -113,7 +113,7 @@ class GameEngine {
             gameAI.calculateTurn()
         case .StartMovesExecution:
             calculateMovementPaths()
-            generateOtherPlayerMoveToNodess()
+            generatePlayerMoveToNodes()
             triggerStateAdvance()
         case .MovesExecution:
             // This state waits for the movement ended event that is triggered
@@ -327,14 +327,12 @@ class GameEngine {
         }
     }
 
-    private func generateOtherPlayerMoveToNodess() {
-        otherPlayerMoveToNodes.removeAll(keepCapacity: true)
+    private func generatePlayerMoveToNodes() {
+        playerMoveToNodes.removeAll(keepCapacity: true)
 
         for player in gameManager.players.values {
-            if player.name != currentPlayer.name {
-                let node = gameManager[moveToPositionOf: player]!
-                otherPlayerMoveToNodes[node.position] = player
-            }
+            let node = gameManager[moveToPositionOf: player]!
+            playerMoveToNodes[node.position] = player
         }
     }
     
@@ -426,7 +424,7 @@ class GameEngine {
 
             if nextNode.doodad is Wall {
                 break
-            } else if otherPlayerMoveToNodes[nextNode.position] != nil {
+            } else if playerMoveToNodes[nextNode.position] != nil {
                 break
             }
 
