@@ -17,6 +17,10 @@ struct Constants {
         static let defaultWalls: Int = 10
         static let defaultItems: Int = 2
         
+        // indicates the avg number of spawns per 10 turns
+        // if spawns on tile with doodad/item, spawn is invalid
+        static let itemSpawnProbability: Int = 3
+        
         static let invalidDoodadWallLocation: [GridIndex] = [
             GridIndex(0, 0),
             GridIndex(0, 9),
@@ -119,6 +123,7 @@ struct Constants {
         
         static let nodeGame = "game"
         static let nodeGameLevel = "gameLevel"
+        static let nodeSpawnedItems = "nodeSpawnedItems"
         static let nodeLobby = "lobby"
         static let nodePlayers = "players"
         static let nodePlayerMovements = "movements"
@@ -138,6 +143,10 @@ struct Constants {
         static let keyMoveToCol = "toCol"
         static let keyTargetRow = "targetNodeRow"
         static let keyTargetCol = "targetNodeCol"
+        
+        static let keyItemRow = "itemRow"
+        static let keyItemCol = "itemCol"
+        static let keyItemName = "itemName"
         
         // max wait time before dropping inactive player
         static let maxDelayBeforeDrop: NSTimeInterval = 8

@@ -223,6 +223,10 @@ class GameManager {
         }
     }
 
+    func clearPlayerTurns() {
+        _playerTurnComplete = [:]
+    }
+    
     func advanceTurn() {
         _playerPositions = _playerMoveToPositions
         _playerActions = [:]

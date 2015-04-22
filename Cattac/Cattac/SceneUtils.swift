@@ -79,6 +79,25 @@ class SceneUtils {
         return SKAction.sequence(pathSequence)
     }
     
+    /// Generates a SKAction that animates the spawning of an item
+    ///
+    /// :returns: SKAction holding the sequence
+    func getSpawnItemAnimation() -> SKAction {
+        var sequence = [
+            SKAction.moveByX(0, y: 200, duration: 0),
+            SKAction.moveByX(0, y: -200, duration: 0.3),
+            SKAction.moveByX(0, y: 60, duration: 0.2),
+            SKAction.moveByX(0, y: -60, duration: 0.15),
+            SKAction.moveByX(0, y: 30, duration: 0.15),
+            SKAction.moveByX(0, y: -30, duration: 0.1),
+            SKAction.moveByX(0, y: 10, duration: 0.1),
+            SKAction.moveByX(0, y: -10, duration: 0.05),
+            SKAction.moveByX(0, y: 5, duration: 0.05),
+            SKAction.moveByX(0, y: -5, duration: 0.05)
+        ]
+        return SKAction.sequence(sequence)
+    }
+    
     /// Generates a poop sprite node used to animate the Poop activation.
     ///
     /// :param: position Location to place the poop
