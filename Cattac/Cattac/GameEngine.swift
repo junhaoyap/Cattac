@@ -551,8 +551,17 @@ class GameEngine {
     
     private func updateServer(playerNum: Int) {
         if let player = gameManager[playerWithNum: playerNum] {
-            let currentTile = gameManager[positionOf: player]!
-            let moveToTile = gameManager[moveToPositionOf: player]!
+            var currentTile: TileNode
+            var moveToTile: TileNode
+
+            if player.isDead {
+                currentTile = TileNode(row: -1, column: -1)
+                moveToTile = TileNode(row: -1, column: -1)
+            } else {
+                currentTile = gameManager[positionOf: player]!
+                moveToTile = gameManager[moveToPositionOf: player]!
+            }
+
             let action = gameManager[actionOf: player]
             
             // use movementNumber - 1 for multiplayer AI movements
