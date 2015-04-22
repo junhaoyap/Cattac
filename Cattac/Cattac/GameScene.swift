@@ -266,8 +266,8 @@ extension GameScene: EventListener {
         })]
     }
     
-    /// Animates the obtaining of an item. Item shrinks into character sprite 
-    /// and disappears. If item is obtained by current player, the item number 
+    /// Animates the obtaining of an item. Item shrinks into character sprite
+    /// and disappears. If item is obtained by current player, the item number
     /// will increase in the inventory box.
     ///
     /// :param: item The item that is obtained.
@@ -276,7 +276,7 @@ extension GameScene: EventListener {
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool) {
         let animAction = sceneUtils.getObtainItemAnimation()
         item.sprite.runAction(animAction)
-
+        
         if isCurrentPlayer {
             switch item {
             case is MilkItem:
@@ -293,6 +293,20 @@ extension GameScene: EventListener {
             }
         }
         // UPDATE-INVENTORY-COUNT
+    }
+    
+    /// Animates the spawning of an item.
+    ///
+    /// :param: node The node with the spawnedItem
+    func onItemSpawned(node: TileNode) {
+        let animAction = sceneUtils.getSpawnItemAnimation()
+        let itemSprite = node.item!.sprite
+        itemSprite.size = sceneUtils.tileSize
+        itemSprite.position = node.sprite.position
+        itemSprite.runAction(animAction)
+        
+        println("Spawned \(node.item!.name)")
+        entityLayer.addChild(itemSprite)
     }
 }
 
@@ -829,6 +843,7 @@ private extension GameScene {
     ///
     /// :param: player The player that has completed its action animation.
     func notifyActionCompletionFor(player: Cat) {
+        println("\(player.name) \(gameManager[actionOf: player])")
         gameManager.completeActionOf(player)
         gameEngine.triggerActionAnimationEnded()
     }

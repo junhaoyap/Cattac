@@ -17,6 +17,10 @@ struct Constants {
         static let defaultWalls: Int = 10
         static let defaultItems: Int = 2
         
+        // indicates the avg number of spawns per 10 turns
+        // if spawns on tile with doodad/item, spawn is invalid
+        static let itemSpawnProbability: Int = 3
+        
         static let invalidDoodadWallLocation: [GridIndex] = [
             GridIndex(0, 0),
             GridIndex(0, 9),

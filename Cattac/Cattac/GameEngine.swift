@@ -6,6 +6,7 @@ protocol GameStateListener {
 
 protocol EventListener {
     func onActionUpdate(action: Action?)
+    func onItemSpawned(node: TileNode)
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool)
     func addPendingPoopAnimation(poop: Poop, target: TileNode)
 }
@@ -13,6 +14,7 @@ protocol EventListener {
 /// Game engine that does all the logic computation for the game.
 class GameEngine {
     private let catFactory = CatFactory.sharedInstance
+    private let itemFactory = ItemFactory.sharedInstance
     
     let gameConnectionManager = GameConnectionManager(urlProvided:
         Constants.Firebase.baseUrl
@@ -132,6 +134,7 @@ class GameEngine {
             // from the scene.
             break
         case .PostExecution:
+            spawnItem()
             postExecute()
             triggerStateAdvance()
         }
@@ -323,6 +326,23 @@ class GameEngine {
                 let isCurrentPlayer = currentPlayer.name == player.name
                 eventListener?.onItemObtained(item, isCurrentPlayer)
             }
+        }
+    }
+    
+    private func spawnItem() {
+        let randValue = Int(arc4random_uniform(UInt32(10))) + 1
+        if randValue >= Constants.Level.itemSpawnProbability {
+            return
+        }
+        
+        let item = itemFactory.randomItem()
+        let row = Int(arc4random_uniform(UInt32(grid.rows)))
+        let col = Int(arc4random_uniform(UInt32(grid.columns)))
+        let tileNode = grid[row, col]!
+        
+        if tileNode.item == nil && tileNode.doodad == nil {
+            tileNode.item = item
+            eventListener?.onItemSpawned(tileNode)
         }
     }
 
