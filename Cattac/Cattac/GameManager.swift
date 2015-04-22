@@ -62,7 +62,7 @@ class GameManager {
         get {
             for (name, num) in _playerNumber {
                 if num == playerNum {
-                    return _players[name]
+                    return _allPlayers[name]
                 }
             }
             return nil

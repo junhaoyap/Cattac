@@ -626,58 +626,59 @@ class GameEngine {
         let attackRange = snapshot.value.objectForKey(
             Constants.Firebase.keyAttkRange) as? Int
         
-        let player = gameManager[playerWithNum: playerNum]!
-        let dest = grid[moveToRow!, moveToCol!]!
-        var action: Action?
-        
-        gameManager[positionOf: player] = grid[fromRow!, fromCol!]
-        println("\(player.name)[\(playerNum)]" +
-            " moving to \(moveToRow!),\(moveToCol!)"
-        )
-        
-        if let playerActionType = ActionType.create(attackType!) {
-            switch playerActionType {
-            case .Pui:
-                let puiDirection = Direction.create(attackDir!)!
-                action = PuiAction(direction: puiDirection)
-            case .Fart:
-                let fartRange = attackRange!
-                action = FartAction(range: fartRange)
-            case .Poop:
-                let targetNodeRow = snapshot.value.objectForKey(
-                    Constants.Firebase.keyTargetRow) as? Int
-                let targetNodeCol = snapshot.value.objectForKey(
-                    Constants.Firebase.keyTargetCol) as? Int
-                let targetNode = grid[targetNodeRow!,
-                    targetNodeCol!]!
-                
-                action = PoopAction(targetNode: targetNode)
-            case .Item:
-                let itemRow = snapshot.value.objectForKey(
-                    Constants.Firebase.keyItemRow) as? Int
-                let itemCol = snapshot.value.objectForKey(
-                    Constants.Firebase.keyItemCol) as? Int
-                let itemName = snapshot.value.objectForKey(
-                    Constants.Firebase.keyItemName) as? String
-                let node = grid[itemRow!, itemCol!]!
-                var targetPlayer: Cat? = nil
-                for aPlayer in gameManager.players.values {
-                    if gameManager[positionOf: aPlayer]! == node {
-                        targetPlayer = aPlayer
-                        break
-                    }
-                }
-                let item = itemFactory.createItem(itemName!)
-                action = ItemAction(item: item!, targetNode: node,
-                    targetPlayer: targetPlayer!)
-            }
+        if let player = gameManager[playerWithNum: playerNum] {
+            let dest = grid[moveToRow!, moveToCol!]!
+            var action: Action?
+            
+            gameManager[positionOf: player] = grid[fromRow!, fromCol!]
             println("\(player.name)[\(playerNum)]" +
-                " \(playerActionType.description)"
+                " moving to \(moveToRow!),\(moveToCol!)"
             )
+            
+            if let playerActionType = ActionType.create(attackType!) {
+                switch playerActionType {
+                case .Pui:
+                    let puiDirection = Direction.create(attackDir!)!
+                    action = PuiAction(direction: puiDirection)
+                case .Fart:
+                    let fartRange = attackRange!
+                    action = FartAction(range: fartRange)
+                case .Poop:
+                    let targetNodeRow = snapshot.value.objectForKey(
+                        Constants.Firebase.keyTargetRow) as? Int
+                    let targetNodeCol = snapshot.value.objectForKey(
+                        Constants.Firebase.keyTargetCol) as? Int
+                    let targetNode = grid[targetNodeRow!,
+                        targetNodeCol!]!
+                    
+                    action = PoopAction(targetNode: targetNode)
+                case .Item:
+                    let itemRow = snapshot.value.objectForKey(
+                        Constants.Firebase.keyItemRow) as? Int
+                    let itemCol = snapshot.value.objectForKey(
+                        Constants.Firebase.keyItemCol) as? Int
+                    let itemName = snapshot.value.objectForKey(
+                        Constants.Firebase.keyItemName) as? String
+                    let node = grid[itemRow!, itemCol!]!
+                    var targetPlayer: Cat? = nil
+                    for aPlayer in gameManager.players.values {
+                        if gameManager[positionOf: aPlayer]! == node {
+                            targetPlayer = aPlayer
+                            break
+                        }
+                    }
+                    let item = itemFactory.createItem(itemName!)
+                    action = ItemAction(item: item!, targetNode: node,
+                        targetPlayer: targetPlayer!)
+                }
+                println("\(player.name)[\(playerNum)]" +
+                    " \(playerActionType.description)"
+                )
+            }
+            
+            gameManager.playerTurn(player, moveTo: dest, action: action)
+            checkAllTurns()
         }
-        
-        gameManager.playerTurn(player, moveTo: dest, action: action)
-        checkAllTurns()
     }
 
     func getGrid() -> Grid {
