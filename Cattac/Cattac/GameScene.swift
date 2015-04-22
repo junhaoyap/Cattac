@@ -292,6 +292,7 @@ extension GameScene: EventListener {
                 break
             }
         }
+        // UPDATE-INVENTORY-COUNT
     }
 }
 
@@ -727,6 +728,7 @@ private extension GameScene {
     /// :param: player The cat that is performing the action.
     /// :param: action ItemAction used
     func animateItemAction(player: Cat, action: ItemAction) {
+        // UPDATE-INVENTORY-COUNT
         let itemSprite = action.item.sprite
         let tileNode = gameManager[moveToPositionOf: player]!
         let targetPlayer = action.targetPlayer
