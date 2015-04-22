@@ -20,6 +20,8 @@ class SoundPlayer {
     private var poopSoundPlayer: AVAudioPlayer!
     private var nukeSoundPlayer: AVAudioPlayer!
     
+    private var shouldPlay = true
+    
     class var sharedInstance: SoundPlayer {
         return _soundPlayer
     }
@@ -151,46 +153,80 @@ class SoundPlayer {
     }
     
     func playNyan() {
-        nyanCatSoundPlayer.play()
+        if shouldPlay {
+            nyanCatSoundPlayer.play()
+        }
     }
     
     func playHelloKitty() {
-        helloKittySoundPlayer.play()
+        if shouldPlay {
+            helloKittySoundPlayer.play()
+        }
     }
     
     func playGrumpy() {
-        grumpyCatSoundPlayer.play()
+        if shouldPlay {
+            grumpyCatSoundPlayer.play()
+        }
     }
     
     func playOcto() {
-        octoCatSoundPlayer.play()
+        if shouldPlay {
+            octoCatSoundPlayer.play()
+        }
     }
     
     func playMilk() {
-        milkSoundPlayer.play()
+        if shouldPlay {
+            milkSoundPlayer.play()
+        }
     }
     
     func playBall() {
-        ballSoundPlayer.play()
+        if shouldPlay {
+            ballSoundPlayer.play()
+        }
     }
     
     func playPoopArm() {
-        poopArmSoundPlayer.play()
+        if shouldPlay {
+            poopArmSoundPlayer.play()
+        }
     }
     
     func playFart() {
-        fartSoundPlayer.play()
+        if shouldPlay {
+            fartSoundPlayer.play()
+        }
     }
     
     func playPui() {
-        puiSoundPlayer.play()
+        if shouldPlay {
+            puiSoundPlayer.play()
+        }
     }
     
     func playPoop() {
-        poopSoundPlayer.play()
+        if shouldPlay {
+            poopSoundPlayer.play()
+        }
     }
     
     func playNuke() {
-        nukeSoundPlayer.play()
+        if shouldPlay {
+            nukeSoundPlayer.play()
+        }
+    }
+    
+    func doPlaySound() {
+        shouldPlay = true
+    }
+    
+    func stopPlayingSound() {
+        shouldPlay = false
+    }
+    
+    func shouldPlaySound() -> Bool {
+        return shouldPlay
     }
 }

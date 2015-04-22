@@ -37,6 +37,8 @@ class GameViewController: UIViewController {
     let levelGenerator = LevelGenerator.sharedInstance
     var multiplayer: Bool = false
     var playerNames: [String] = ["Grumpy", "Nyan", "Octocat", "Hello Kitty"]
+    let backgroundMusicPlayer = MusicPlayer.sharedInstance
+    let soundPlayer = SoundPlayer.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +66,10 @@ class GameViewController: UIViewController {
         scene.scaleMode = .AspectFill
         
         skView.presentScene(scene)
+        
+        // TODO: Set the initial sound or music vector depending
+        // on whether sound player or music player should currently
+        // be playing
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -85,7 +91,45 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func backButtonPressed(sender: AnyObject) {
-        // TODO: confirm whether to exit game
-        self.dismissViewControllerAnimated(true, completion: nil)
+        let dismissActionHandler = {
+            (action: UIAlertAction!) in
+            
+            self.performSegueWithIdentifier("endgameSegue", sender: self)
+        }
+        
+        let quitAlert = UIAlertController(title: "Quit Game",
+            message: "Are you sure you want to leave the game?",
+            preferredStyle: .Alert
+        )
+        
+        quitAlert.addAction(UIAlertAction(title: "Yes",
+            style: .Default,
+            handler: dismissActionHandler
+            ))
+        
+        quitAlert.addAction(UIAlertAction(title: "No",
+            style: .Default,
+            handler: nil
+            ))
+        
+        presentViewController(quitAlert, animated: true, completion: nil)
+    }
+    
+    @IBAction func soundButtonPressed(sender: UIButton) {
+        if soundPlayer.shouldPlaySound() {
+            soundPlayer.stopPlayingSound()
+        } else {
+            // !soundPlayer.shouldPlaySound()
+            soundPlayer.doPlaySound()
+        }
+    }
+    
+    @IBAction func musicButtonPressed(sender: UIButton) {
+        if backgroundMusicPlayer.isCurrentlyPlaying() {
+            backgroundMusicPlayer.stopBackgroundMusic()
+        } else {
+            // !backgroundMusicPlayer.isCurrentlyPlaying()
+            backgroundMusicPlayer.playBackgroundMusic()
+        }
     }
 }
