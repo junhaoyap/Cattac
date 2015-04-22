@@ -268,7 +268,7 @@ extension GameScene: EventListener {
     
     /// Animates the obtaining of an item. Item shrinks into character sprite 
     /// and disappears. If item is obtained by current player, the item number 
-    // will increase in the inventory box.
+    /// will increase in the inventory box.
     ///
     /// :param: item The item that is obtained.
     /// :param: isCurrentPlayer true if item is picked by current player, false
@@ -281,10 +281,13 @@ extension GameScene: EventListener {
             switch item {
             case is MilkItem:
                 showInventoryItemIncrease(inventoryMilkButton)
+                inventoryMilkButton.alpha = 1
             case is ProjectileItem:
                 showInventoryItemIncrease(inventoryProjectileButton)
+                inventoryProjectileButton.alpha = 1
             case is NukeItem:
                 showInventoryItemIncrease(inventoryNukeButton)
+                inventoryNukeButton.alpha = 1
             default:
                 break
             }
@@ -397,39 +400,50 @@ private extension GameScene {
         inventoryMilkButton = SKActionButtonNode(
             defaultButtonImage: "Milk.png",
             size: CGSize(width: 60, height: 60),
-            buttonAction: { self.gameEngine.triggerItemButtonPressed() },
-            unselectAction: {
-                self.gameEngine.triggerClearAction()
-                self.unhighlightTargetPlayers()
-        })
+            buttonAction: {
+                self.inventoryButtonSelect(.Milk)
+            },
+            unselectAction: inventoryButtonUnselect)
         inventoryMilkButton.position = Constants.UI.bottomBoard.milkPosition
+        inventoryMilkButton.alpha = 0.5
         actionButtons.append(inventoryMilkButton)
         buttonLayer.addChild(inventoryMilkButton)
 
         inventoryProjectileButton = SKActionButtonNode(
             defaultButtonImage: "Projectile.png",
             size: CGSize(width: 60, height: 60),
-            buttonAction: { self.gameEngine.triggerItemButtonPressed() },
-            unselectAction: {
-                self.gameEngine.triggerClearAction()
-                self.unhighlightTargetPlayers()
-        })
+            buttonAction: {
+                self.inventoryButtonSelect(.Projectile)
+            },
+            unselectAction: inventoryButtonUnselect)
         inventoryProjectileButton.position =
             Constants.UI.bottomBoard.projectilePosition
+        inventoryProjectileButton.alpha = 0.5
         actionButtons.append(inventoryProjectileButton)
         buttonLayer.addChild(inventoryProjectileButton)
 
         inventoryNukeButton = SKActionButtonNode(
             defaultButtonImage: "Nuke.png",
             size: CGSize(width: 60, height: 60),
-            buttonAction: { self.gameEngine.triggerItemButtonPressed() },
-            unselectAction: {
-                self.gameEngine.triggerClearAction()
-                self.unhighlightTargetPlayers()
-        })
+            buttonAction: {
+                self.inventoryButtonSelect(.Nuke)
+            },
+            unselectAction: inventoryButtonUnselect)
         inventoryNukeButton.position = Constants.UI.bottomBoard.nukePosition
+        inventoryNukeButton.alpha = 0.5
         actionButtons.append(inventoryNukeButton)
         buttonLayer.addChild(inventoryNukeButton)
+    }
+    
+    func inventoryButtonSelect(type: ItemType) {
+        self.gameManager[inventoryOf: self.gameEngine.currentPlayer]!.selectedItem = type
+        self.gameEngine.triggerItemButtonPressed()
+    }
+    
+    func inventoryButtonUnselect() {
+        self.gameManager[inventoryOf: self.gameEngine.currentPlayer]!.selectedItem = nil
+        self.gameEngine.triggerClearAction()
+        self.unhighlightTargetPlayers()
     }
 
     func startTimer() {
@@ -717,6 +731,7 @@ private extension GameScene {
         let tileNode = gameManager[moveToPositionOf: player]!
         let targetPlayer = action.targetPlayer
         itemSprite.size = tileNode.sprite.size
+        itemSprite.zPosition = Constants.Z.itemActivated
         itemSprite.position = tileNode.sprite.position
         var completion: (() -> Void)?
         
@@ -752,6 +767,7 @@ private extension GameScene {
             }
         }
         
+        entityLayer.addChild(itemSprite)
         itemSprite.runAction(animAction, completion: {
             self.notifyActionCompletionFor(player)
             itemSprite.removeFromParent()
@@ -857,8 +873,18 @@ private extension GameScene {
         for button in actionButtons {
             button.isEnabled = true
         }
-        if gameManager[itemOf: gameEngine.currentPlayer] == nil {
-            inventoryBoxButton.isEnabled = false
+        let player = gameEngine.currentPlayer
+        if gameManager[inventoryOf: player]?.count(.Milk) == 0 {
+            inventoryMilkButton.isEnabled = false
+            inventoryMilkButton.alpha = 0.5
+        }
+        if gameManager[inventoryOf: player]?.count(.Projectile) == 0 {
+            inventoryProjectileButton.isEnabled = false
+            inventoryProjectileButton.alpha = 0.5
+        }
+        if gameManager[inventoryOf: player]?.count(.Nuke)  == 0 {
+            inventoryNukeButton.isEnabled = false
+            inventoryNukeButton.alpha = 0.5
         }
     }
 
@@ -927,7 +953,8 @@ private extension GameScene {
     /// Hides arrows indicating targetable players for item action.
     func highlightTargetPlayers() {
         let currentPlayer = gameEngine.currentPlayer
-        let item = gameManager[itemOf: currentPlayer]!
+        let inventory = gameManager[inventoryOf: currentPlayer]!
+        let item = inventory.getItem(inventory.selectedItem!)
         for player in gameManager.players.values {
             
             let playerSprite = player.getSprite() as SKTouchSpriteNode

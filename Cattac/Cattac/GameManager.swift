@@ -189,6 +189,7 @@ class GameManager {
     func registerPlayer(player: Cat, playerNum: Int) {
         _players[player.name] = player
         _playerNumber[player.name] = playerNum
+        _playerItems[player.name] = Inventory()
     }
     
     func registerAIPlayers(players: [Cat]) {
