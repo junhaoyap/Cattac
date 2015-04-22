@@ -206,6 +206,10 @@ class GameManager {
         return _players.count <= 1
     }
 
+    var playerRanks: [String:Int] {
+        return _playerRanks
+    }
+
     func registerPlayer(player: Cat, playerNum: Int) {
         _allPlayers[player.name] = player
         _players[player.name] = player
@@ -234,6 +238,16 @@ class GameManager {
                     _playerMoveToPositions.removeValueForKey(playerName)
                     _dyingPlayers.append(player)
                 }
+            }
+        }
+
+        for player in _dyingPlayers {
+            _playerRanks[player.name] = _players.count + 1
+        }
+
+        if _players.count == 1 {
+            for (playerName, player) in _players {
+                _playerRanks[playerName] = 1
             }
         }
     }

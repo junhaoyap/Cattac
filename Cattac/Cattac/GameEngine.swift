@@ -136,7 +136,7 @@ class GameEngine {
             postExecute()
             triggerStateAdvance()
         case .GameEnded:
-            break
+            println(gameManager.playerRanks)
         }
     }
     
