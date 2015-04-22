@@ -30,6 +30,8 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
+    @IBOutlet weak var musicImage: UIButton!
+    @IBOutlet weak var soundImage: UIButton!
     
     var scene: GameScene!
     var level: GameLevel!
@@ -37,6 +39,13 @@ class GameViewController: UIViewController {
     let levelGenerator = LevelGenerator.sharedInstance
     var multiplayer: Bool = false
     var playerNames: [String] = ["Grumpy", "Nyan", "Octocat", "Hello Kitty"]
+    let backgroundMusicPlayer = MusicPlayer.sharedInstance
+    let soundPlayer = SoundPlayer.sharedInstance
+    
+    let soundViewImage = UIImage(named: "Sound")
+    let soundCrossedImage = UIImage(named: "SoundCrossed")
+    let musicViewImage = UIImage(named: "Music")
+    let musicCrossedImage = UIImage(named: "MusicCrossed")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +73,14 @@ class GameViewController: UIViewController {
         scene.scaleMode = .AspectFill
         
         skView.presentScene(scene)
+        
+        if !soundPlayer.shouldPlaySound() {
+            soundImage.setImage(soundCrossedImage, forState: .Normal)
+        }
+        
+        if !backgroundMusicPlayer.isCurrentlyPlaying() {
+            musicImage.setImage(musicCrossedImage, forState: .Normal)
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -85,7 +102,49 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func backButtonPressed(sender: AnyObject) {
-        // TODO: confirm whether to exit game
-        self.dismissViewControllerAnimated(true, completion: nil)
+        let dismissActionHandler = {
+            (action: UIAlertAction!) in
+            
+            self.performSegueWithIdentifier("endgameSegue", sender: self)
+        }
+        
+        let quitAlert = UIAlertController(title: "Quit Game",
+            message: "Are you sure you want to leave the game?",
+            preferredStyle: .Alert
+        )
+        
+        quitAlert.addAction(UIAlertAction(title: "Yes",
+            style: .Default,
+            handler: dismissActionHandler
+            ))
+        
+        quitAlert.addAction(UIAlertAction(title: "No",
+            style: .Default,
+            handler: nil
+            ))
+        
+        presentViewController(quitAlert, animated: true, completion: nil)
+    }
+    
+    @IBAction func soundButtonPressed(sender: UIButton) {
+        if soundPlayer.shouldPlaySound() {
+            soundPlayer.stopPlayingSound()
+            soundImage.setImage(soundCrossedImage, forState: .Normal)
+        } else {
+            // !soundPlayer.shouldPlaySound()
+            soundPlayer.doPlaySound()
+            soundImage.setImage(soundViewImage, forState: .Normal)
+        }
+    }
+    
+    @IBAction func musicButtonPressed(sender: UIButton) {
+        if backgroundMusicPlayer.isCurrentlyPlaying() {
+            backgroundMusicPlayer.stopBackgroundMusic()
+            musicImage.setImage(musicCrossedImage, forState: .Normal)
+        } else {
+            // !backgroundMusicPlayer.isCurrentlyPlaying()
+            backgroundMusicPlayer.playBackgroundMusic()
+            musicImage.setImage(musicViewImage, forState: .Normal)
+        }
     }
 }
