@@ -1,7 +1,3 @@
-protocol InventoryListener {
-    func onItemAdded(Item)
-}
-
 class Inventory {
     private var _milkItemCount: Int = 0
     private var _projectileItemCount: Int = 0
