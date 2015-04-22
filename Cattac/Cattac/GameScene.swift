@@ -47,9 +47,9 @@ class GameScene: SKScene {
     private var poopButton: SKActionButtonNode!
     
     /// Inventory slots for all the items.
-    private var inventoryMilkButton: SKActionButtonNode!
-    private var inventoryProjectileButton: SKActionButtonNode!
-    private var inventoryNukeButton: SKActionButtonNode!
+    private var inventoryMilkButton: SKInventoryItemNode!
+    private var inventoryProjectileButton: SKInventoryItemNode!
+    private var inventoryNukeButton: SKInventoryItemNode!
     
     /// Preview of the next position of the current player when setting the
     /// next tile to move to.
@@ -281,18 +281,20 @@ extension GameScene: EventListener {
             switch item {
             case is MilkItem:
                 showInventoryItemIncrease(inventoryMilkButton)
+                inventoryMilkButton.increase()
                 inventoryMilkButton.alpha = 1
             case is ProjectileItem:
                 showInventoryItemIncrease(inventoryProjectileButton)
+                inventoryProjectileButton.increase()
                 inventoryProjectileButton.alpha = 1
             case is NukeItem:
                 showInventoryItemIncrease(inventoryNukeButton)
+                inventoryNukeButton.increase()
                 inventoryNukeButton.alpha = 1
             default:
                 break
             }
         }
-        // UPDATE-INVENTORY-COUNT
     }
     
     /// Animates the spawning of an item.
@@ -412,7 +414,7 @@ private extension GameScene {
         inventoryLabel.verticalAlignmentMode = .Bottom
         buttonLayer.addChild(inventoryLabel)
 
-        inventoryMilkButton = SKActionButtonNode(
+        inventoryMilkButton = SKInventoryItemNode(
             defaultButtonImage: "Milk.png",
             size: CGSize(width: 60, height: 60),
             buttonAction: {
@@ -424,7 +426,7 @@ private extension GameScene {
         actionButtons.append(inventoryMilkButton)
         buttonLayer.addChild(inventoryMilkButton)
 
-        inventoryProjectileButton = SKActionButtonNode(
+        inventoryProjectileButton = SKInventoryItemNode(
             defaultButtonImage: "Projectile.png",
             size: CGSize(width: 60, height: 60),
             buttonAction: {
@@ -437,7 +439,7 @@ private extension GameScene {
         actionButtons.append(inventoryProjectileButton)
         buttonLayer.addChild(inventoryProjectileButton)
 
-        inventoryNukeButton = SKActionButtonNode(
+        inventoryNukeButton = SKInventoryItemNode(
             defaultButtonImage: "Nuke.png",
             size: CGSize(width: 60, height: 60),
             buttonAction: {
@@ -742,7 +744,19 @@ private extension GameScene {
     /// :param: player The cat that is performing the action.
     /// :param: action ItemAction used
     func animateItemAction(player: Cat, action: ItemAction) {
-        // UPDATE-INVENTORY-COUNT
+        if player.name == gameEngine.currentPlayer.name {
+            switch action.item {
+            case is MilkItem:
+                inventoryMilkButton.decrease()
+            case is ProjectileItem:
+                inventoryProjectileButton.decrease()
+            case is NukeItem:
+                inventoryNukeButton.decrease()
+            default:
+                break
+            }
+        }
+
         let itemSprite = action.item.sprite
         let tileNode = gameManager[moveToPositionOf: player]!
         let targetPlayer = action.targetPlayer

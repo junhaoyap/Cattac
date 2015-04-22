@@ -10,6 +10,7 @@ private let _musicPlayer: MusicPlayer = MusicPlayer()
 
 class MusicPlayer {
     private var nyanBackgroundMusicPlayer: AVAudioPlayer!
+    private var isPlaying = false
     
     class var sharedInstance: MusicPlayer {
         return _musicPlayer
@@ -30,9 +31,15 @@ class MusicPlayer {
     
     func playBackgroundMusic() {
         nyanBackgroundMusicPlayer.play()
+        isPlaying = true
     }
     
     func stopBackgroundMusic() {
         nyanBackgroundMusicPlayer.stop()
+        isPlaying = false
+    }
+    
+    func isCurrentlyPlaying() -> Bool {
+        return isPlaying
     }
 }
