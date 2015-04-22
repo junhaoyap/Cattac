@@ -634,8 +634,10 @@ class GameEngine {
             Constants.Firebase.keyAttkDmg) as? Int
         let attackRange = snapshot.value.objectForKey(
             Constants.Firebase.keyAttkRange) as? Int
-        
-        if let player = gameManager[playerWithNum: playerNum] {
+
+        if fromRow == -1 && fromCol == -1 {
+            return
+        } else if let player = gameManager[playerWithNum: playerNum] {
             let dest = grid[moveToRow!, moveToCol!]!
             var action: Action?
             
