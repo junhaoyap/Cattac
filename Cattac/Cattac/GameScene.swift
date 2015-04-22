@@ -305,7 +305,10 @@ extension GameScene: EventListener {
         let itemSprite = node.item!.sprite
         itemSprite.size = sceneUtils.tileSize
         itemSprite.position = node.sprite.position
-        itemSprite.runAction(animAction)
+        itemSprite.zPosition = Constants.Z.itemActivated
+        itemSprite.runAction(animAction, completion: {
+            itemSprite.zPosition = Constants.Z.items
+        })
         
         println("Spawned \(node.item!.name)")
         entityLayer.addChild(itemSprite)

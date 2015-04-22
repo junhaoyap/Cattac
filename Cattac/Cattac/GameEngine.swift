@@ -50,6 +50,12 @@ class GameEngine {
     /// currentPlayer's movement index, for backend use.
     var currentPlayerMoveNumber: Int = 1
     
+    /// item spawn index, for backend use.
+    var itemSpawned: Int = 0
+    
+    /// item spawned, pending addition to game in PostExecute
+    var pendingItemSpawned: [TileNode: String] = [:]
+    
     /// Calculated reachable nodes for currentPlayer.
     var reachableNodes: [Int:TileNode] = [:]
     
@@ -80,6 +86,7 @@ class GameEngine {
         
         if multiplayer {
             registerMovementWatcherExcept(playerNumber)
+            registerSpawnedItemWatcher()
         }
         
         self.gameAI = GameAI(grid: grid, gameEngine: self,
@@ -113,6 +120,7 @@ class GameEngine {
         case .WaitForAll:
             countDownForDrop()
             gameAI.calculateTurn()
+            spawnItem()
         case .StartMovesExecution:
             calculateMovementPaths()
             generatePlayerMoveToNodes()
@@ -134,7 +142,7 @@ class GameEngine {
             // from the scene.
             break
         case .PostExecution:
-            spawnItem()
+            checkItemSpawned()
             postExecute()
             triggerStateAdvance()
         }
@@ -309,6 +317,7 @@ class GameEngine {
                     break
                 }
             }
+            println("\(player.name) \(gameManager[actionOf: player])")
         }
     }
     
@@ -330,6 +339,10 @@ class GameEngine {
     }
     
     private func spawnItem() {
+        if multiplayer && !host {
+            return
+        }
+        
         let randValue = Int(arc4random_uniform(UInt32(10))) + 1
         if randValue >= Constants.Level.itemSpawnProbability {
             return
@@ -342,7 +355,20 @@ class GameEngine {
         
         if tileNode.item == nil && tileNode.doodad == nil {
             tileNode.item = item
-            eventListener?.onItemSpawned(tileNode)
+            if multiplayer {
+                gameConnectionManager.sendSpawnedItem(itemSpawned++,
+                    item: item, node: tileNode)
+            } else {
+                pendingItemSpawned[tileNode] = item.name
+            }
+        }
+    }
+    
+    private func checkItemSpawned() {
+        if let node = pendingItemSpawned.keys.first {
+            node.item = itemFactory.createItem(pendingItemSpawned[node]!)
+            eventListener?.onItemSpawned(node)
+            pendingItemSpawned.removeAll(keepCapacity: false)
         }
     }
 
@@ -535,6 +561,7 @@ class GameEngine {
             countDownTimer?.invalidate()
             triggerStateAdvance()
             println("turn all completed")
+            gameManager.clearPlayerTurns()
         }
     }
     
@@ -548,6 +575,20 @@ class GameEngine {
                 completion: movementUpdate
             )
         }
+    }
+    
+    private func registerSpawnedItemWatcher() {
+        gameConnectionManager.registerSpawnedItemWatcher({
+            (snapshot) in
+            let nodeRow = snapshot.value.objectForKey(
+                Constants.Firebase.keyItemRow) as? Int
+            let nodeCol = snapshot.value.objectForKey(
+                Constants.Firebase.keyItemCol) as? Int
+            let itemName = snapshot.value.objectForKey(
+                Constants.Firebase.keyItemName) as? String
+            let node = self.grid[nodeRow!, nodeCol!]!
+            self.pendingItemSpawned[node] = itemName!
+        })
     }
     
     private func movementUpdate(snapshot: FDataSnapshot, _ playerNum: Int) {

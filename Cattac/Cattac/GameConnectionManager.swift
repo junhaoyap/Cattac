@@ -426,6 +426,7 @@ class GameConnectionManager {
             [
                 "hasGameStarted": 1,
                 Constants.Firebase.nodeGameLevel: aLevel.compress(),
+                Constants.Firebase.nodeSpawnedItems: "",
                 Constants.Firebase.nodePlayers: [
                     "1": playerTurnInfo,
                     "2": playerTurnInfo,
@@ -521,6 +522,19 @@ class GameConnectionManager {
             data: [Constants.Firebase.nodePlayerDropped: DateUtils.nowString()])
     }
     
+    func sendSpawnedItem(itemNum: Int, item: Item, node: TileNode) {
+        let playerRef = connectionManager
+            .append(Constants.Firebase.nodeGames)
+            .append(Constants.Firebase.nodeGame)
+            .append(Constants.Firebase.nodeSpawnedItems)
+        playerRef.update("",
+            data: ["\(itemNum)": [
+                Constants.Firebase.keyItemRow: node.position.row,
+                Constants.Firebase.keyItemCol: node.position.col,
+                Constants.Firebase.keyItemName: item.name
+            ]])
+    }
+    
     func registerPlayerWatcher(playerNum: Int,
         completion: (data: FDataSnapshot, playerNum: Int) -> Void) {
             
@@ -530,14 +544,29 @@ class GameConnectionManager {
                 .append(Constants.Firebase.nodePlayers)
                 .append("\(playerNum)")
                 .append(Constants.Firebase.nodePlayerMovements)
-        
+            
             let obsvRef = playerMovementWatcherRef.watchNew("", onComplete: {
                 theSnapshot in
-            
+                
                 let snapshot = theSnapshot as FDataSnapshot
                 completion(data: snapshot, playerNum: playerNum)
             })
             observerReferences[playerNum] = obsvRef
+    }
+    
+    func registerSpawnedItemWatcher(completion: (FDataSnapshot) -> Void) {
+            
+            let playerMovementWatcherRef = connectionManager
+                .append(Constants.Firebase.nodeGames)
+                .append(Constants.Firebase.nodeGame)
+                .append(Constants.Firebase.nodeSpawnedItems)
+            
+            playerMovementWatcherRef.watchNew("", onComplete: {
+                theSnapshot in
+                
+                let snapshot = theSnapshot as FDataSnapshot
+                completion(snapshot)
+            })
     }
     
     func unregisterPlayerWatcher(playerNum: Int) {

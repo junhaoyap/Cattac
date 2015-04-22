@@ -123,6 +123,7 @@ struct Constants {
         
         static let nodeGame = "game"
         static let nodeGameLevel = "gameLevel"
+        static let nodeSpawnedItems = "nodeSpawnedItems"
         static let nodeLobby = "lobby"
         static let nodePlayers = "players"
         static let nodePlayerMovements = "movements"
@@ -142,6 +143,10 @@ struct Constants {
         static let keyMoveToCol = "toCol"
         static let keyTargetRow = "targetNodeRow"
         static let keyTargetCol = "targetNodeCol"
+        
+        static let keyItemRow = "itemRow"
+        static let keyItemCol = "itemCol"
+        static let keyItemName = "itemName"
         
         // max wait time before dropping inactive player
         static let maxDelayBeforeDrop: NSTimeInterval = 8
