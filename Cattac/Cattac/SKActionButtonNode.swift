@@ -47,7 +47,7 @@ class SKActionButtonNode: SKNode, ActionButton {
             defaultButton.addChild(actionText)
     }
 
-    init(defaultButtonImage: String, size: CGSize, buttonAction: () -> Void,
+    private init(defaultButtonImage: String, size: CGSize, buttonAction: () -> Void,
         unselectAction: () -> Void) {
             self.defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
             self.defaultButton.size = size
@@ -118,5 +118,46 @@ class SKActionButtonNode: SKNode, ActionButton {
         } else {
             activeButton.hidden = true ^ isSelected
         }
+    }
+}
+
+
+class SKInventoryItemNode: SKActionButtonNode {
+    private var itemCount: Int
+    private var itemCountLabel: SKLabelNode
+
+    override init(defaultButtonImage: String, size: CGSize, buttonAction: () -> Void,
+        unselectAction: () -> Void) {
+            itemCount = 0
+            itemCountLabel = SKLabelNode(text: "x\(itemCount)")
+            itemCountLabel.fontName = "BubblegumSans-Regular"
+            itemCountLabel.fontColor = UIColor.blackColor()
+            itemCountLabel.fontSize = 12
+            itemCountLabel.verticalAlignmentMode = .Bottom
+            itemCountLabel.horizontalAlignmentMode = .Left
+            itemCountLabel.position = CGPoint(x: 20, y: -20)
+
+            super.init(
+                defaultButtonImage: defaultButtonImage,
+                size: size, buttonAction:
+                buttonAction,
+                unselectAction: unselectAction
+            )
+
+            addChild(itemCountLabel)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func decrease() {
+        itemCount--
+        itemCountLabel.text = "x\(itemCount)"
+    }
+
+    func increase() {
+        itemCount++
+        itemCountLabel.text = "x\(itemCount)"
     }
 }
