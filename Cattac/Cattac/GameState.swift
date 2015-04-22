@@ -10,7 +10,8 @@ enum GameState: Int {
     DeconflictExecution,
     StartActionsExecution,
     ActionsExecution,
-    PostExecution
+    PostExecution,
+    GameEnded
 
     private var name: String {
         let names = [
@@ -23,7 +24,8 @@ enum GameState: Int {
             "Deconflict Execution",
             "Start Actions Execution",
             "Actions Execution",
-            "Post Execution"
+            "Post Execution",
+            "Game Ended"
         ]
 
         return names[rawValue]

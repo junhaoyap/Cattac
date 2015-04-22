@@ -296,6 +296,12 @@ extension GameScene: EventListener {
             }
         }
     }
+
+    func onPlayerDied(players: [Cat]) {
+        for player in players {
+            player.getSprite().removeFromParent()
+        }
+    }
 }
 
 

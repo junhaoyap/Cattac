@@ -7,6 +7,7 @@ protocol GameStateListener {
 protocol EventListener {
     func onActionUpdate(action: Action?)
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool)
+    func onPlayerDied(players: [Cat])
     func addPendingPoopAnimation(poop: Poop, target: TileNode)
 }
 
@@ -134,6 +135,8 @@ class GameEngine {
         case .PostExecution:
             postExecute()
             triggerStateAdvance()
+        case .GameEnded:
+            break
         }
     }
     
@@ -169,7 +172,13 @@ class GameEngine {
         case .ActionsExecution:
             state = .PostExecution
         case .PostExecution:
-            state = .Precalculation
+            if gameManager.gameEnded {
+                state = .GameEnded
+            } else {
+                state = .Precalculation
+            }
+        case .GameEnded:
+            break
         }
         
         println(state.description)
@@ -311,6 +320,10 @@ class GameEngine {
     
     private func postExecute() {
         gameManager.advanceTurn()
+
+        if !gameManager.dyingPlayers.isEmpty {
+            eventListener?.onPlayerDied(gameManager.dyingPlayers)
+        }
         
         for player in gameManager.players.values {
             player.postExecute()
