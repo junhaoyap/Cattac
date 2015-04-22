@@ -30,6 +30,8 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
+    @IBOutlet weak var musicImage: UIButton!
+    @IBOutlet weak var soundImage: UIButton!
     
     var scene: GameScene!
     var level: GameLevel!
@@ -39,6 +41,11 @@ class GameViewController: UIViewController {
     var playerNames: [String] = ["Grumpy", "Nyan", "Octocat", "Hello Kitty"]
     let backgroundMusicPlayer = MusicPlayer.sharedInstance
     let soundPlayer = SoundPlayer.sharedInstance
+    
+    let soundViewImage = UIImage(named: "Sound")
+    let soundCrossedImage = UIImage(named: "SoundCrossed")
+    let musicViewImage = UIImage(named: "Music")
+    let musicCrossedImage = UIImage(named: "MusicCrossed")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,9 +74,13 @@ class GameViewController: UIViewController {
         
         skView.presentScene(scene)
         
-        // TODO: Set the initial sound or music vector depending
-        // on whether sound player or music player should currently
-        // be playing
+        if !soundPlayer.shouldPlaySound() {
+            soundImage.setImage(soundCrossedImage, forState: .Normal)
+        }
+        
+        if !backgroundMusicPlayer.isCurrentlyPlaying() {
+            musicImage.setImage(musicCrossedImage, forState: .Normal)
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -118,18 +129,22 @@ class GameViewController: UIViewController {
     @IBAction func soundButtonPressed(sender: UIButton) {
         if soundPlayer.shouldPlaySound() {
             soundPlayer.stopPlayingSound()
+            soundImage.setImage(soundCrossedImage, forState: .Normal)
         } else {
             // !soundPlayer.shouldPlaySound()
             soundPlayer.doPlaySound()
+            soundImage.setImage(soundViewImage, forState: .Normal)
         }
     }
     
     @IBAction func musicButtonPressed(sender: UIButton) {
         if backgroundMusicPlayer.isCurrentlyPlaying() {
             backgroundMusicPlayer.stopBackgroundMusic()
+            musicImage.setImage(musicCrossedImage, forState: .Normal)
         } else {
             // !backgroundMusicPlayer.isCurrentlyPlaying()
             backgroundMusicPlayer.playBackgroundMusic()
+            musicImage.setImage(musicViewImage, forState: .Normal)
         }
     }
 }
