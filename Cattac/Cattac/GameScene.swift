@@ -127,24 +127,28 @@ class GameScene: SKScene {
     
     /// When player tries to perform movement actions
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        for touch: AnyObject in touches {
-            let location = touch.locationInNode(gameLayer)
-            
-            if let node = sceneUtils.nodeForLocation(location,
-                grid: level.grid) {
-                    registerPlayerMovement(node)
+        if !gameEngine.currentPlayer.isDead {
+            for touch: AnyObject in touches {
+                let location = touch.locationInNode(gameLayer)
+                
+                if let node = sceneUtils.nodeForLocation(location,
+                    grid: level.grid) {
+                        registerPlayerMovement(node)
+                }
             }
         }
     }
     
     /// When player tries to change their movement actions
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
-        for touch: AnyObject in touches {
-            let location = touch.locationInNode(gameLayer)
+        if !gameEngine.currentPlayer.isDead {
+            for touch: AnyObject in touches {
+                let location = touch.locationInNode(gameLayer)
 
-            if let node = sceneUtils.nodeForLocation(location,
-                grid: level.grid) {
-                    registerPlayerMovement(node)
+                if let node = sceneUtils.nodeForLocation(location,
+                    grid: level.grid) {
+                        registerPlayerMovement(node)
+                }
             }
         }
     }
@@ -183,9 +187,13 @@ extension GameScene: GameStateListener {
         case .PlayerAction:
             startTimer()
             deleteRemovedDoodads()
-            wiggleCurrentPlayer()
-            highlightReachableNodes()
-            enableActionButtons()
+            if !gameEngine.currentPlayer.isDead {
+                wiggleCurrentPlayer()
+                highlightReachableNodes()
+                enableActionButtons()
+            } else {
+                previewNode.hidden = true
+            }
         case .WaitForAll:
             disableActionButtons()
             removeHighlights()
