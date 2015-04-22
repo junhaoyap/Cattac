@@ -9,6 +9,16 @@ enum ItemType: Int {
     static var count: Int {
         return ItemType.Nuke.hashValue + 1
     }
+    var name: String {
+        switch self {
+        case .Milk:
+            return Constants.itemName.milk
+        case .Projectile:
+            return Constants.itemName.projectile
+        case .Nuke:
+            return Constants.itemName.nuke
+        }
+    }
 }
 
 private let _itemFactorySharedInstance: ItemFactory = ItemFactory()

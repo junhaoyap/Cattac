@@ -172,6 +172,7 @@ class GameEngine {
             state = .Precalculation
         }
         
+        println(state.description)
         gameStateListener?.onStateUpdate(state)
         statesToAdvance--
     }
@@ -316,9 +317,7 @@ class GameEngine {
             let tileNode = gameManager[positionOf: player]!
             
             if let item = tileNode.item {
-                gameManager[itemOf: player]?.sprite.removeFromParent()
-                
-                gameManager[itemOf: player] = item
+                gameManager[inventoryOf: player]!.addItem(item)
                 tileNode.item = nil
                 
                 let isCurrentPlayer = currentPlayer.name == player.name
@@ -409,7 +408,7 @@ class GameEngine {
             }
             itemAction.targetNode =
                 gameManager[moveToPositionOf: itemAction.targetPlayer]
-            gameManager[itemOf: player] = nil
+            gameManager[inventoryOf: player]!.useItem(itemAction.item)
         }
         return action
     }
@@ -619,7 +618,8 @@ extension GameEngine {
     
     func triggerItemButtonPressed() {
         let targetNode = gameManager[positionOf: currentPlayer]!
-        let item = gameManager[itemOf: currentPlayer]!
+        let inventory = gameManager[inventoryOf: currentPlayer]!
+        let item = inventory.getItem(inventory.selectedItem!)
         gameManager[actionOf: currentPlayer] =
             ItemAction(item: item, targetNode: targetNode,
                 targetPlayer: currentPlayer)

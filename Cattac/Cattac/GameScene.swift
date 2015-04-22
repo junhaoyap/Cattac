@@ -27,10 +27,12 @@ class GameScene: SKScene {
     /// the players and objects on the grid.
     private let entityLayer = SKNode()
 
-    /// The button layer that consists of the main buttons for the actions.
+    /// The bottom layer that consists of the main buttons for the actions.
+    private let bottomBoardLayer = SKNode()
+
     private let buttonLayer = SKNode()
 
-    private let infoLayer = SKNode()
+    private let topBoardLayer = SKNode()
 
     /// All action buttons.
     private var actionButtons = [SKActionButtonNode]()
@@ -44,8 +46,10 @@ class GameScene: SKScene {
     /// Button that sets the action of the player to Poop.
     private var poopButton: SKActionButtonNode!
     
-    /// Inventory slot showing player's held item
-    private var inventoryBoxButton: SKActionButtonNode!
+    /// Inventory slots for all the items.
+    private var inventoryMilkButton: SKActionButtonNode!
+    private var inventoryProjectileButton: SKActionButtonNode!
+    private var inventoryNukeButton: SKActionButtonNode!
     
     /// Preview of the next position of the current player when setting the
     /// next tile to move to.
@@ -112,13 +116,12 @@ class GameScene: SKScene {
             initializeLayers()
             initializeButtons()
 
-            initializeInventory()
             initializePreviewNodes(currentPlayerNumber)
             addTiles()
             addPlayers()
 
-            infoLayer.position = CGPoint(x: -384, y: 320)
-            gameLayer.addChild(infoLayer)
+            topBoardLayer.position = CGPoint(x: -384, y: 320)
+            gameLayer.addChild(topBoardLayer)
             initializeInformationBar()
     }
     
@@ -228,7 +231,18 @@ extension GameScene: EventListener {
                 unhighlightTargetPlayers()
             case .Item:
                 hidePoop()
-                unselectActionButtonsExcept(inventoryBoxButton)
+
+                switch (action as ItemAction).item {
+                case is MilkItem:
+                    unselectActionButtonsExcept(inventoryMilkButton)
+                case is ProjectileItem:
+                    unselectActionButtonsExcept(inventoryProjectileButton)
+                case is NukeItem:
+                    unselectActionButtonsExcept(inventoryNukeButton)
+                default:
+                    break
+                }
+
                 if (action as ItemAction).item.canTargetOthers() {
                     highlightTargetPlayers()
                 }
@@ -252,35 +266,33 @@ extension GameScene: EventListener {
         })]
     }
     
-    /// Animates the obtaining of an item. If item is obtained by current
-    /// player, the item sprite is flown to the inventory box, but if its not
-    /// the current player, item shrinks into character sprite and disappears.
+    /// Animates the obtaining of an item. Item shrinks into character sprite 
+    /// and disappears. If item is obtained by current player, the item number 
+    /// will increase in the inventory box.
     ///
     /// :param: item The item that is obtained.
     /// :param: isCurrentPlayer true if item is picked by current player, false
     ///         otherwise.
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool) {
+        let animAction = sceneUtils.getObtainItemAnimation()
+        item.sprite.runAction(animAction)
+
         if isCurrentPlayer {
-            let scale = 64 / item.sprite.size.height
-            let dur = sceneUtils.getAnimDuration(item.sprite.position,
-                dest: inventoryBoxButton.position)
-
-            let inventoryPositionInGameLayer = buttonLayer.convertPoint(
-                inventoryBoxButton.position, toNode: gameLayer)
-            let inventoryPositionInEntityLayer = gameLayer.convertPoint(
-                inventoryPositionInGameLayer, toNode: entityLayer)
-
-            let animAction = SKAction.group([
-                SKAction.moveTo(inventoryPositionInEntityLayer, duration: dur),
-                SKAction.scaleTo(scale, duration: dur)
-            ])
-
-            item.sprite.zPosition = Constants.Z.itemActivated
-            item.sprite.runAction(animAction)
-        } else {
-            let animAction = sceneUtils.getObtainItemAnimation()
-            item.sprite.runAction(animAction)
+            switch item {
+            case is MilkItem:
+                showInventoryItemIncrease(inventoryMilkButton)
+                inventoryMilkButton.alpha = 1
+            case is ProjectileItem:
+                showInventoryItemIncrease(inventoryProjectileButton)
+                inventoryProjectileButton.alpha = 1
+            case is NukeItem:
+                showInventoryItemIncrease(inventoryNukeButton)
+                inventoryNukeButton.alpha = 1
+            default:
+                break
+            }
         }
+        // UPDATE-INVENTORY-COUNT
     }
 }
 
@@ -321,9 +333,8 @@ private extension GameScene {
         gameLayer.addChild(entityLayer)
         
         // adds buttonLayer to the gameLayer
-        buttonLayer.position =
-            CGPoint(x: -384, y: -512)
-        gameLayer.addChild(buttonLayer)
+        bottomBoardLayer.position = CGPoint(x: -384, y: -512)
+        gameLayer.addChild(bottomBoardLayer)
     }
 
     /// Initializes the action buttons for the scene.
@@ -333,13 +344,14 @@ private extension GameScene {
             height: 192)
         bottomBoard.position = CGPoint(x: 384, y: 96)
         bottomBoard.zPosition = -10
-        buttonLayer.addChild(bottomBoard)
+        bottomBoardLayer.addChild(bottomBoard)
 
-        let buttonSpacing: CGFloat = Constants.UI.buttonSpacing
+        buttonLayer.position = Constants.UI.bottomBoard.position
+        bottomBoardLayer.addChild(buttonLayer)
 
         puiButton = SKPuiActionButtonNode(
-            defaultButtonImage: "PuiButton.png",
-            activeButtonImage: "PuiButtonPressed.png",
+            actionText: "PUI",
+            size: CGSize(width: 90, height: 60),
             buttonAction: { (dir: Direction) in
                 self.gameEngine.triggerPuiButtonPressed(dir)
             },
@@ -348,46 +360,91 @@ private extension GameScene {
                 let player = self.gameEngine.currentPlayer
                 return self.gameEngine.getAvailablePuiDirections(player)
         })
-        puiButton.position = CGPoint(x: 384 - buttonSpacing, y: 80)
+        puiButton.position = Constants.UI.bottomBoard.puiButtonPosition
         buttonLayer.addChild(puiButton)
         actionButtons.append(puiButton)
 
         fartButton = SKActionButtonNode(
-            defaultButtonImage: "FartButton.png",
-            activeButtonImage: "FartButtonPressed.png",
+            actionText: "FART",
+            size: CGSize(width: 90, height: 60),
             buttonAction: { self.gameEngine.triggerFartButtonPressed() },
             unselectAction: { self.gameEngine.triggerClearAction() })
-        fartButton.position = CGPoint(x: 384, y: 80)
+        fartButton.position = Constants.UI.bottomBoard.fartButtonPosition
         buttonLayer.addChild(fartButton)
         actionButtons.append(fartButton)
 
         poopButton = SKActionButtonNode(
-            defaultButtonImage: "PoopButton.png",
-            activeButtonImage: "PoopButtonPressed.png",
+            actionText: "POOP",
+            size: CGSize(width: 90, height: 60),
             buttonAction: { self.gameEngine.triggerPoopButtonPressed() },
             unselectAction: {
                 self.hidePoop()
                 self.gameEngine.triggerClearAction()
         })
-        poopButton.position = CGPoint(x: 384 + buttonSpacing, y: 80)
+        poopButton.position = Constants.UI.bottomBoard.poopButtonPosition
         buttonLayer.addChild(poopButton)
         actionButtons.append(poopButton)
+
+        initializeInventory(buttonLayer)
     }
     
     /// Initializes the inventory slot on game scene.
-    func initializeInventory() {
-        inventoryBoxButton = SKActionButtonNode(
-            defaultButtonImage: "InventoryBox.png",
-            activeButtonImage: "InventoryBoxPressed.png",
-            buttonAction: { self.gameEngine.triggerItemButtonPressed() },
-            unselectAction: {
-                self.gameEngine.triggerClearAction()
-                self.unhighlightTargetPlayers()
-        })
-        
-        inventoryBoxButton.position = CGPoint(x: 384, y: 140)
-        actionButtons.append(inventoryBoxButton)
-        buttonLayer.addChild(inventoryBoxButton)
+    func initializeInventory(buttonLayer: SKNode) {
+        let inventoryLabel = SKLabelNode(text: "Inventory")
+        inventoryLabel.fontName = "BubblegumSans-Regular"
+        inventoryLabel.fontColor = UIColor.blackColor()
+        inventoryLabel.position =
+            Constants.UI.bottomBoard.inventoryLabelPosition
+        inventoryLabel.verticalAlignmentMode = .Bottom
+        buttonLayer.addChild(inventoryLabel)
+
+        inventoryMilkButton = SKActionButtonNode(
+            defaultButtonImage: "Milk.png",
+            size: CGSize(width: 60, height: 60),
+            buttonAction: {
+                self.inventoryButtonSelect(.Milk)
+            },
+            unselectAction: inventoryButtonUnselect)
+        inventoryMilkButton.position = Constants.UI.bottomBoard.milkPosition
+        inventoryMilkButton.alpha = 0.5
+        actionButtons.append(inventoryMilkButton)
+        buttonLayer.addChild(inventoryMilkButton)
+
+        inventoryProjectileButton = SKActionButtonNode(
+            defaultButtonImage: "Projectile.png",
+            size: CGSize(width: 60, height: 60),
+            buttonAction: {
+                self.inventoryButtonSelect(.Projectile)
+            },
+            unselectAction: inventoryButtonUnselect)
+        inventoryProjectileButton.position =
+            Constants.UI.bottomBoard.projectilePosition
+        inventoryProjectileButton.alpha = 0.5
+        actionButtons.append(inventoryProjectileButton)
+        buttonLayer.addChild(inventoryProjectileButton)
+
+        inventoryNukeButton = SKActionButtonNode(
+            defaultButtonImage: "Nuke.png",
+            size: CGSize(width: 60, height: 60),
+            buttonAction: {
+                self.inventoryButtonSelect(.Nuke)
+            },
+            unselectAction: inventoryButtonUnselect)
+        inventoryNukeButton.position = Constants.UI.bottomBoard.nukePosition
+        inventoryNukeButton.alpha = 0.5
+        actionButtons.append(inventoryNukeButton)
+        buttonLayer.addChild(inventoryNukeButton)
+    }
+    
+    func inventoryButtonSelect(type: ItemType) {
+        self.gameManager[inventoryOf: self.gameEngine.currentPlayer]!.selectedItem = type
+        self.gameEngine.triggerItemButtonPressed()
+    }
+    
+    func inventoryButtonUnselect() {
+        self.gameManager[inventoryOf: self.gameEngine.currentPlayer]!.selectedItem = nil
+        self.gameEngine.triggerClearAction()
+        self.unhighlightTargetPlayers()
     }
 
     func startTimer() {
@@ -417,11 +474,11 @@ private extension GameScene {
         topBoard.size = CGSize(width: self.size.width, height: 192)
         topBoard.position = CGPoint(x: 384, y: 96)
         topBoard.zPosition = -10
-        infoLayer.addChild(topBoard)
+        topBoardLayer.addChild(topBoard)
 
         let playerInfoLayer = SKNode()
         playerInfoLayer.position = CGPoint(x: 384, y: 110)
-        infoLayer.addChild(playerInfoLayer)
+        topBoardLayer.addChild(playerInfoLayer)
 
         let playerInfoNodeSize = CGSize(width: 250, height: 64)
         let playerInfoNodePositions = [
@@ -671,10 +728,12 @@ private extension GameScene {
     /// :param: player The cat that is performing the action.
     /// :param: action ItemAction used
     func animateItemAction(player: Cat, action: ItemAction) {
+        // UPDATE-INVENTORY-COUNT
         let itemSprite = action.item.sprite
         let tileNode = gameManager[moveToPositionOf: player]!
         let targetPlayer = action.targetPlayer
         itemSprite.size = tileNode.sprite.size
+        itemSprite.zPosition = Constants.Z.itemActivated
         itemSprite.position = tileNode.sprite.position
         var completion: (() -> Void)?
         
@@ -710,6 +769,7 @@ private extension GameScene {
             }
         }
         
+        entityLayer.addChild(itemSprite)
         itemSprite.runAction(animAction, completion: {
             self.notifyActionCompletionFor(player)
             itemSprite.removeFromParent()
@@ -790,9 +850,24 @@ private extension GameScene {
         damageNode.position = node.sprite.position
         entityLayer.addChild(damageNode)
 
-        damageNode.runAction(sceneUtils.getDamageLabelAnim(), completion: {
+        damageNode.runAction(sceneUtils.getDamageLabelAnimation(), completion: {
             damageNode.removeFromParent()
         })
+    }
+
+    /// Show an increase in inventory for that item.
+    ///
+    /// :param: inventory The inventory of the item.
+    func showInventoryItemIncrease(inventory: SKNode) {
+        let additionNode = sceneUtils.getDamageLabelNode(-1)
+        additionNode.position = inventory.position
+        buttonLayer.addChild(additionNode)
+
+        additionNode.runAction(sceneUtils.getNumberChangeAnimation(30),
+            completion: {
+                additionNode.removeFromParent()
+        })
+
     }
 
     /// Enables all the action buttons.
@@ -800,8 +875,18 @@ private extension GameScene {
         for button in actionButtons {
             button.isEnabled = true
         }
-        if gameManager[itemOf: gameEngine.currentPlayer] == nil {
-            inventoryBoxButton.isEnabled = false
+        let player = gameEngine.currentPlayer
+        if gameManager[inventoryOf: player]?.count(.Milk) == 0 {
+            inventoryMilkButton.isEnabled = false
+            inventoryMilkButton.alpha = 0.5
+        }
+        if gameManager[inventoryOf: player]?.count(.Projectile) == 0 {
+            inventoryProjectileButton.isEnabled = false
+            inventoryProjectileButton.alpha = 0.5
+        }
+        if gameManager[inventoryOf: player]?.count(.Nuke)  == 0 {
+            inventoryNukeButton.isEnabled = false
+            inventoryNukeButton.alpha = 0.5
         }
     }
 
@@ -870,7 +955,8 @@ private extension GameScene {
     /// Hides arrows indicating targetable players for item action.
     func highlightTargetPlayers() {
         let currentPlayer = gameEngine.currentPlayer
-        let item = gameManager[itemOf: currentPlayer]!
+        let inventory = gameManager[inventoryOf: currentPlayer]!
+        let item = inventory.getItem(inventory.selectedItem!)
         for player in gameManager.players.values {
             
             let playerSprite = player.getSprite() as SKTouchSpriteNode

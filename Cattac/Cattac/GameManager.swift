@@ -12,7 +12,7 @@ class GameManager {
     private var _playerDeconflictAnimationCompleted: [String:Bool]
     private var _playerMovementAnimationCompleted: [String:Bool]
     private var _playerActionAnimationCompleted: [String:Bool]
-    private var _playerItems: [String:Item]
+    private var _playerItems: [String:Inventory]
     private var _doodadsToRemove: [Int: Doodad]
 
     init() {
@@ -83,7 +83,7 @@ class GameManager {
         }
     }
     
-    subscript(itemOf player:Cat) -> Item? {
+    subscript(inventoryOf player:Cat) -> Inventory? {
         set {
             if newValue == nil {
                 _playerItems.removeValueForKey(player.name)
@@ -189,6 +189,7 @@ class GameManager {
     func registerPlayer(player: Cat, playerNum: Int) {
         _players[player.name] = player
         _playerNumber[player.name] = playerNum
+        _playerItems[player.name] = Inventory()
     }
     
     func registerAIPlayers(players: [Cat]) {

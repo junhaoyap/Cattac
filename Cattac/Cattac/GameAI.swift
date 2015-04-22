@@ -35,7 +35,9 @@ class GameAI {
             
             var action: Action?
             // if has item, use item
-            if let item = gameEngine.gameManager[itemOf: player] {
+            let inventory = gameEngine.gameManager[inventoryOf: player]!
+            if let itemType = inventory.firstItem {
+                let item = inventory.getItem(itemType)
                 action = aiUseItem(item, onPlayer: player)
             } else {
                 action = getRandomAction(player)
