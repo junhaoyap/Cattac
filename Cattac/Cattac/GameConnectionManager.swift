@@ -488,6 +488,7 @@ class GameConnectionManager {
                 ]
             } else {
                 let targetNode = action?.targetNode
+                let item = (action as? ItemAction)?.item
                 
                 moveData = [
                     Constants.Firebase.keyMoveFromRow: currentTile.position.row,
@@ -502,7 +503,13 @@ class GameConnectionManager {
                     Constants.Firebase.keyTargetRow:
                         targetNode != nil ? targetNode!.position.row : 0,
                     Constants.Firebase.keyTargetCol:
-                        targetNode != nil ? targetNode!.position.col : 0
+                        targetNode != nil ? targetNode!.position.col : 0,
+                    Constants.Firebase.keyItemRow:
+                        targetNode != nil ? targetNode!.position.row : 0,
+                    Constants.Firebase.keyItemCol:
+                        targetNode != nil ? targetNode!.position.col : 0,
+                    Constants.Firebase.keyItemName:
+                        item != nil ? item!.name : ""
                 ]
             }
             

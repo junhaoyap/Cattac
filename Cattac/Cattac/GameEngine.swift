@@ -637,9 +637,25 @@ class GameEngine {
                 
                 action = PoopAction(targetNode: targetNode)
             case .Item:
-                break
+                let itemRow = snapshot.value.objectForKey(
+                    Constants.Firebase.keyItemRow) as? Int
+                let itemCol = snapshot.value.objectForKey(
+                    Constants.Firebase.keyItemCol) as? Int
+                let itemName = snapshot.value.objectForKey(
+                    Constants.Firebase.keyItemName) as? String
+                let node = grid[itemRow!, itemCol!]!
+                var targetPlayer: Cat? = nil
+                for aPlayer in gameManager.players.values {
+                    if gameManager[positionOf: aPlayer]! == node {
+                        targetPlayer = aPlayer
+                        break
+                    }
+                }
+                let item = itemFactory.createItem(itemName!)
+                action = ItemAction(item: item!, targetNode: node,
+                    targetPlayer: targetPlayer!)
             }
-            println("\(player.name)[\(playerNumber)]" +
+            println("\(player.name)[\(playerNum)]" +
                 " \(playerActionType.description)"
             )
         }
