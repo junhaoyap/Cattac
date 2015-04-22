@@ -199,11 +199,13 @@ class GameEngine {
     
     private func precalculate() {
         gameManager.precalculate()
-        
-        reachableNodes = grid.getNodesInRange(
-            gameManager[positionOf: currentPlayer]!,
-            range: currentPlayer.moveRange
-        )
+
+        if !currentPlayer.isDead {
+            reachableNodes = grid.getNodesInRange(
+                gameManager[positionOf: currentPlayer]!,
+                range: currentPlayer.moveRange
+            )
+        }
     }
     
     private func countDownForDrop() {
@@ -548,24 +550,25 @@ class GameEngine {
     }
     
     private func updateServer(playerNum: Int) {
-        let player = gameManager[playerWithNum: playerNum]!
-        let currentTile = gameManager[positionOf: player]!
-        let moveToTile = gameManager[moveToPositionOf: player]!
-        let action = gameManager[actionOf: player]
-        
-        // use movementNumber - 1 for multiplayer AI movements
-        let movementNumber = playerNumber == playerNum
-            ? currentPlayerMoveNumber : currentPlayerMoveNumber - 1
-        
-        gameConnectionManager.updateServer(playerNum,
-            currentTile: currentTile,
-            moveToTile: moveToTile,
-            action: action,
-            number: movementNumber
-        )
-        
-        if playerNumber == playerNum {
-            currentPlayerMoveNumber++
+        if let player = gameManager[playerWithNum: playerNum] {
+            let currentTile = gameManager[positionOf: player]!
+            let moveToTile = gameManager[moveToPositionOf: player]!
+            let action = gameManager[actionOf: player]
+            
+            // use movementNumber - 1 for multiplayer AI movements
+            let movementNumber = playerNumber == playerNum
+                ? currentPlayerMoveNumber : currentPlayerMoveNumber - 1
+            
+            gameConnectionManager.updateServer(playerNum,
+                currentTile: currentTile,
+                moveToTile: moveToTile,
+                action: action,
+                number: movementNumber
+            )
+            
+            if playerNumber == playerNum {
+                currentPlayerMoveNumber++
+            }
         }
     }
     
