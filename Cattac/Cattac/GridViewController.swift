@@ -111,6 +111,9 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     // Used to register single tap on grid
     func collectionView(collectionView: UICollectionView,
         didSelectItemAtIndexPath indexPath: NSIndexPath) {
+            if isPlayerLocation(indexPath) {
+                return
+            }
             let cell = collectionView.cellForItemAtIndexPath(indexPath)
             tileAction(cell!, toggle: true, indexPath: indexPath)
     }
@@ -138,6 +141,16 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         }
     }
 
+    private func isPlayerLocation(indexPath: NSIndexPath) -> Bool {
+        let selectedRow = indexPath.section
+        let selectedColumn = indexPath.row
+
+        return selectedRow == 0 && selectedColumn == 0 ||
+            selectedRow == 0 && selectedColumn == columns - 1 ||
+            selectedRow == rows - 1 && selectedColumn == columns - 1 ||
+            selectedRow == rows - 1 && selectedColumn == 0
+    }
+
     private func tileAction(cell: UICollectionViewCell, toggle: Bool,
         indexPath: NSIndexPath) {
             if let actionTitle = currentAction {
@@ -151,6 +164,10 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     private func addTileEntity(cell: UICollectionViewCell, entity: String,
         indexPath: NSIndexPath) {
+            if isPlayerLocation(indexPath) {
+                return
+            }
+
             let entityImage = UIImage(named: Constants.Entities.getImage(entity)!)
             let entityImageView = UIImageView(image: entityImage)
             entityImageView.frame = CGRectMake(0, 0,
@@ -174,14 +191,16 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     private func removeTileEntity(cell: UICollectionViewCell,
         indexPath: NSIndexPath) {
-            cell.viewWithTag(tileEntityTag)?.removeFromSuperview()
+            if let entityImage = cell.viewWithTag(tileEntityTag) {
+                entityImage.removeFromSuperview()
 
-            let gridIndex = Grid.convert(indexPath, totalRows: rows)
-            let tileNode = grid[rows - indexPath.section, indexPath.row]!
-            tileNode.doodad = nil
-            tileNode.item = nil
+                let gridIndex = Grid.convert(indexPath, totalRows: rows)
+                let tileNode = grid[gridIndex]!
+                tileNode.doodad = nil
+                tileNode.item = nil
 
-            wallLocations.removeValueForKey(gridIndex)
+                wallLocations.removeValueForKey(gridIndex)
+            }
     }
 
     private func changeTileEntity(cell: UICollectionViewCell, toggle: Bool,
