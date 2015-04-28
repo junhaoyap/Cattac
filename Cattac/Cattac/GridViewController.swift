@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 let gridCellIdentifier = "gridCellIdentifier"
+let tileEntityTag = 20
 
 class GridViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -86,8 +87,8 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     // Used to register single tap on grid
     func collectionView(collectionView: UICollectionView,
         didSelectItemAtIndexPath indexPath: NSIndexPath) {
-            let cell = collectionView.cellForItemAtIndexPath(indexPath)!
-            println("select \(cell) at \(indexPath)")
+            let cell = collectionView.cellForItemAtIndexPath(indexPath)
+            tileAction(cell!, toggle: true, indexPath: indexPath)
     }
 
     func setCurrentAction(action: String) {
@@ -100,7 +101,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         let point: CGPoint = sender.locationInView(self.view)
         if let indexPath = collectionView.indexPathForItemAtPoint(point) {
             let cell = collectionView.cellForItemAtIndexPath(indexPath)
-            println("long select \(cell) at \(indexPath)")
+            removeTileEntity(cell!, indexPath: indexPath)
         }
     }
 
@@ -109,7 +110,43 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         let point: CGPoint = sender.locationInView(collectionView)
         if let indexPath = collectionView.indexPathForItemAtPoint(point) {
             let cell = collectionView.cellForItemAtIndexPath(indexPath)
-            println("pan select \(cell) at \(indexPath)")
+            tileAction(cell!, toggle: false, indexPath: indexPath)
         }
+    }
+
+    private func tileAction(cell: UICollectionViewCell, toggle: Bool,
+        indexPath: NSIndexPath) {
+            if let actionTitle = currentAction {
+                if actionTitle == "Eraser" {
+                    removeTileEntity(cell, indexPath: indexPath)
+                } else {
+                    changeTileEntity(cell, toggle: toggle, indexPath: indexPath)
+                }
+            }
+    }
+
+    private func addTileEntity(cell: UICollectionViewCell, entity: String,
+        indexPath: NSIndexPath) {
+            let entityImage = UIImage(named: Constants.Entities.getImage(entity)!)
+            let entityImageView = UIImageView(image: entityImage)
+            entityImageView.frame = CGRectMake(0, 0,
+                cell.frame.width, cell.frame.height)
+            entityImageView.tag = tileEntityTag
+            cell.addSubview(entityImageView)
+    }
+
+    private func removeTileEntity(cell: UICollectionViewCell,
+        indexPath: NSIndexPath) {
+            cell.viewWithTag(tileEntityTag)?.removeFromSuperview()
+    }
+
+    private func changeTileEntity(cell: UICollectionViewCell, toggle: Bool,
+        indexPath: NSIndexPath) {
+            if cell.viewWithTag(tileEntityTag) == nil {
+                addTileEntity(cell, entity: currentAction!, indexPath: indexPath)
+            } else if toggle {
+//                removeTileEntity(cell, indexPath: indexPath)
+//                addTileEntity(cell, color: nextColor!, indexPath: indexPath)
+            }
     }
 }

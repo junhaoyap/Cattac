@@ -58,6 +58,58 @@ struct Constants {
 
     // time for each turn
     static let turnDuration = 5
+
+    struct Images {
+        static let fortress = "Fortress.png"
+        static let tower = "Tower.png"
+        static let trampoline = "Trampoline.png"
+        static let wormholeBlue = "WormholeBlue.png"
+        static let wormholeOrange = "WormholeOrange.png"
+        static let milk = "Milk.png"
+        static let nuke = "Nuke.png"
+        static let projectile = "Projectile.png"
+        static let wall = "Rock.png"
+    }
+
+    struct Entities {
+        struct Title {
+            static let fortress = "Fortress"
+            static let tower = "Tower"
+            static let trampoline = "Trampoline"
+            static let wormholeBlue = "WormholeBlue"
+            static let wormholeOrange = "WormholeOrange"
+            static let milk = "Milk"
+            static let nuke = "Nuke"
+            static let projectile = "Projectile"
+            static let wall = "Wall"
+            static let eraser = "Eraser"
+        }
+
+        static func getImage(title: String) -> String? {
+            switch title {
+            case Title.fortress:
+                return Images.fortress
+            case Title.tower:
+                return Images.tower
+            case Title.trampoline:
+                return Images.trampoline
+            case Title.wormholeBlue:
+                return Images.wormholeBlue
+            case Title.wormholeOrange:
+                return Images.wormholeOrange
+            case Title.milk:
+                return Images.milk
+            case Title.nuke:
+                return Images.nuke
+            case Title.wall:
+                return Images.wall
+            case Title.projectile:
+                return Images.projectile
+            default:
+                return nil
+            }
+        }
+    }
     
     struct Doodad {
         static let watchTowerActionRangeModification = 2
