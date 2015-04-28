@@ -543,12 +543,17 @@ class GameEngine {
         // use movementNumber - 1 for multiplayer AI movements
         let movementNumber = playerNumber == playerNum
             ? currentPlayerMoveNumber : currentPlayerMoveNumber - 1
+        var targetNum = 0
+        if let itemAction = action as? ItemAction {
+            targetNum = gameManager[playerNumFor: itemAction.targetPlayer]!
+        }
         
         gameConnectionManager.updateServer(playerNum,
             currentTile: currentTile,
             moveToTile: moveToTile,
             action: action,
-            number: movementNumber
+            number: movementNumber,
+            targetNum: targetNum
         )
         
         if playerNumber == playerNum {
@@ -644,16 +649,14 @@ class GameEngine {
                 let itemName = snapshot.value.objectForKey(
                     Constants.Firebase.keyItemName) as? String
                 let node = grid[itemRow!, itemCol!]!
-                var targetPlayer: Cat? = nil
-                for aPlayer in gameManager.players.values {
-                    if gameManager[positionOf: aPlayer]! == node {
-                        targetPlayer = aPlayer
-                        break
-                    }
-                }
+                let itemPlayerNum = snapshot.value.objectForKey(
+                    Constants.Firebase.keyItemVictim) as? Int
+                let targetPlayer = gameManager[playerWithNum: itemPlayerNum!]!
+                
+                
                 let item = itemFactory.createItem(itemName!)
                 action = ItemAction(item: item!, targetNode: node,
-                    targetPlayer: targetPlayer!)
+                    targetPlayer: targetPlayer)
             }
             println("\(player.name)[\(playerNum)]" +
                 " \(playerActionType.description)"

@@ -261,8 +261,8 @@ extension GameScene: EventListener {
 
         pendingAnimations += [AnimationEvent(poopSprite, action,
             completion: {
-                poop.effect(poop.victim!)
-                self.showDamage(poop.damage, node: target)
+                let dmg = poop.victim!.inflict(poop.damage)
+                self.showDamage(dmg, node: target)
         })]
     }
     
@@ -729,8 +729,8 @@ private extension GameScene {
                     completion: {
                         fart.removeFromParent()
                         if victimPlayer != nil {
-                            victimPlayer!.inflict(player.fartDmg)
-                            self.showDamage(player.fartDmg, node: node)
+                            let dmg = victimPlayer!.inflict(player.fartDmg)
+                            self.showDamage(dmg, node: node)
                             println("\(player.name) fart on \(victimPlayer!.name)" +
                                 " with \(player.fartDmg) damage.")
                         }
@@ -860,7 +860,7 @@ private extension GameScene {
     ///
     /// :param: player The player that has completed its action animation.
     func notifyActionCompletionFor(player: Cat) {
-        println("\(player.name) \(gameManager[actionOf: player])")
+        println("anim complete \(player.name) \(gameManager[actionOf: player])")
         gameManager.completeActionOf(player)
         gameEngine.triggerActionAnimationEnded()
     }
