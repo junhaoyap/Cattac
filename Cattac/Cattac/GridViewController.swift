@@ -216,14 +216,21 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
 
     private func removeTileEntity(cell: UICollectionViewCell,
-        indexPath: NSIndexPath) {
+        indexPath: NSIndexPath) -> TileEntity? {
+            var currentTileEntity: TileEntity?
+
             if let entityImage = cell.viewWithTag(tileEntityTag) {
                 entityImage.removeFromSuperview()
 
                 let gridIndex = Grid.convert(indexPath, totalRows: rows)
                 let tileNode = grid[gridIndex]!
-                tileNode.doodad = nil
-                tileNode.item = nil
+                if tileNode.doodad != nil {
+                    currentTileEntity = tileNode.doodad
+                    tileNode.doodad = nil
+                } else if tileNode.item != nil {
+                    currentTileEntity = tileNode.item
+                    tileNode.item = nil
+                }
 
                 if let button = wormholeLocations[gridIndex] {
                     button.enabled = true
@@ -233,6 +240,8 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
 
                 wallLocations.removeValueForKey(gridIndex)
             }
+
+            return currentTileEntity
     }
 
     private func changeTileEntity(cell: UICollectionViewCell, toggle: Bool,
@@ -240,8 +249,41 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
             if cell.viewWithTag(tileEntityTag) == nil {
                 addTileEntity(cell, entity: currentAction!, indexPath: indexPath)
             } else if toggle {
-//                removeTileEntity(cell, indexPath: indexPath)
-//                addTileEntity(cell, color: nextColor!, indexPath: indexPath)
+                if let prevEntity = removeTileEntity(cell,
+                    indexPath: indexPath) {
+                        let nextEntity = getNextEntityName(prevEntity)
+                        addTileEntity(cell, entity: nextEntity,
+                            indexPath: indexPath)
+                }
             }
+    }
+
+    private func getNextEntityName(entity: TileEntity) -> String {
+        let entities = Constants.Entities.Title.self
+
+        switch entity {
+        case is FortressDoodad:
+            return entities.tower
+        case is WatchTowerDoodad:
+            return entities.trampoline
+        case is TrampolineDoodad:
+            if wormholeBlueButton.enabled {
+                return entities.wormholeBlue
+            } else if wormholeOrangeButton.enabled {
+                return entities.wormholeOrange
+            } else {
+                return entities.milk
+            }
+        case is WormholeDoodad:
+            return entities.milk
+        case is MilkItem:
+            return entities.nuke
+        case is NukeItem:
+            return entities.projectile
+        case is ProjectileItem:
+            return entities.wall
+        default:
+            return entities.fortress
+        }
     }
 }
