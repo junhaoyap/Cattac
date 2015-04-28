@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="TEk-2s-IZx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="TEk-2s-IZx">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="BubblegumSans-Regular.ttf">
+            <string>BubblegumSans-Regular</string>
+            <string>BubblegumSans-Regular</string>
+            <string>BubblegumSans-Regular</string>
+            <string>BubblegumSans-Regular</string>
+            <string>BubblegumSans-Regular</string>
             <string>BubblegumSans-Regular</string>
             <string>BubblegumSans-Regular</string>
             <string>BubblegumSans-Regular</string>
@@ -127,13 +132,13 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJu-W8-WX6">
                                 <rect key="frame" x="300" y="342" width="169" height="46"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ncl-Jc-pyE">
                                 <rect key="frame" x="300" y="226" width="169" height="46"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BHI-Xf-HdU" userLabel="loginPassword">
@@ -192,19 +197,29 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b1K-pV-KQ0" userLabel="playButton">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b1K-pV-KQ0" userLabel="playButton">
                                 <rect key="frame" x="134" y="243" width="500" height="138"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
                                 <state key="normal" title="Play Game" backgroundImage="TopBoard.png">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <segue destination="BkA-v6-0HU" kind="show" id="5Us-b3-nph"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dW6-tQ-LEV" userLabel="designButton">
+                                <rect key="frame" x="134" y="389" width="500" height="138"/>
+                                <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
+                                <state key="normal" title="Design Levels" backgroundImage="TopBoard.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="vGh-5f-nri" kind="show" id="APu-No-1xX"/>
+                                </connections>
+                            </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ya-kL-aqa" userLabel="shopButton">
-                                <rect key="frame" x="134" y="443" width="500" height="138"/>
+                                <rect key="frame" x="134" y="535" width="500" height="138"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Shop" backgroundImage="TopBoard.png">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -283,7 +298,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dj0-EK-Bv7" userLabel="easyButton">
                                 <rect key="frame" x="134" y="450" width="500" height="138"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <state key="normal" title="Easy - Multiplayer" backgroundImage="TopBoard.png">
+                                <state key="normal" title="Multiplayer" backgroundImage="TopBoard.png">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -325,13 +340,13 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Player 1:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gi0-fT-8Hy">
                                 <rect key="frame" x="0.0" y="166" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pi7-cT-Ua5" userLabel="playerFourName">
                                 <rect key="frame" x="545" y="595" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAL-1U-cvw" userLabel="octoCat">
@@ -361,21 +376,18 @@
                                     <action selector="nyanTapped:" destination="Cqh-hj-ZZi" eventType="touchUpInside" id="5P1-IW-lrC"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0K3-ip-Ueo" userLabel="grumpy">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0K3-ip-Ueo" userLabel="grumpy">
                                 <rect key="frame" x="51" y="324" width="309" height="263"/>
-                                <state key="normal" backgroundImage="Grumpy.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                                <state key="normal" backgroundImage="Grumpy.png"/>
                                 <connections>
                                     <action selector="grumpyTapped:" destination="Cqh-hj-ZZi" eventType="touchUpInside" id="f26-c9-ZZc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4B7-et-bxR" userLabel="backButton">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4B7-et-bxR" userLabel="backButton">
                                 <rect key="frame" x="0.0" y="30" width="145" height="117"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
                                 <state key="normal" title="Back" backgroundImage="TopBoard.png">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <segue destination="BkA-v6-0HU" kind="show" id="xpq-qD-ra0"/>
@@ -393,61 +405,61 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Starring As" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Edo-ti-Q4g" userLabel="playerFourStarring">
                                 <rect key="frame" x="479" y="660" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Starring As" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P4j-3Q-cJa" userLabel="playerThreeStarring">
                                 <rect key="frame" x="105" y="660" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJM-fn-651" userLabel="playerThreeName">
                                 <rect key="frame" x="160" y="595" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Starring As" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Psd-Pr-bWb" userLabel="playerTwoStarring">
                                 <rect key="frame" x="479" y="231" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRh-0x-Cui" userLabel="playerTwoName">
                                 <rect key="frame" x="545" y="166" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Starring As" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gAW-Iu-PXB" userLabel="playerOneStarring">
                                 <rect key="frame" x="105" y="231" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Awaiting Player..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AvJ-AU-sgI" userLabel="playerOneName">
                                 <rect key="frame" x="160" y="166" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Player 4:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnB-KI-WeK">
                                 <rect key="frame" x="384" y="595" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Player 3:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sO0-I5-zWj">
                                 <rect key="frame" x="0.0" y="595" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Player 2:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P6a-JM-W3G">
                                 <rect key="frame" x="384" y="166" width="200" height="73"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -510,21 +522,211 @@
             </objects>
             <point key="canvasLocation" x="500" y="895"/>
         </scene>
+        <!--Grid View Controller-->
+        <scene sceneID="egd-xU-Gs6">
+            <objects>
+                <viewController id="pqy-Bj-Yqb" customClass="GridViewController" customModule="Cattac" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="obO-j6-lrW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-522" y="2346"/>
+        </scene>
+        <!--Level Designer View Controller-->
+        <scene sceneID="jNq-fw-hBF">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="vGh-5f-nri" customClass="LevelDesignerViewController" customModule="Cattac" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3PG-M7-kvB"/>
+                        <viewControllerLayoutGuide type="bottom" id="f2J-22-Oiy"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="OyN-JP-9S6">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Background.png" translatesAutoresizingMaskIntoConstraints="NO" id="wd8-rU-xT9">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BottomBoard.png" translatesAutoresizingMaskIntoConstraints="NO" id="wPv-ez-FbL">
+                                <rect key="frame" x="-5" y="840" width="773" height="184"/>
+                            </imageView>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Cq-nZ-EjH" userLabel="fortressButton">
+                                <rect key="frame" x="32" y="896" width="60" height="60"/>
+                                <state key="normal" title="Fortress" image="Fortress.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="01N-pP-uDB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6i-5c-uHv" userLabel="towerButton">
+                                <rect key="frame" x="100" y="896" width="60" height="60"/>
+                                <state key="normal" title="Tower" image="Tower.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="8zk-p4-JTh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qR1-fL-w7p" userLabel="tramponlineButton">
+                                <rect key="frame" x="168" y="896" width="60" height="60"/>
+                                <state key="normal" title="Trampoline" image="Trampoline.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="Zmf-Fp-4BQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pbZ-3n-4zk" userLabel="wormholeBlueButton">
+                                <rect key="frame" x="236" y="896" width="60" height="60"/>
+                                <state key="normal" title="WormholeBlue" image="WormholeBlue.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="X7W-4B-e0a"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-aF-7Gu" userLabel="wormholeOrangeButton">
+                                <rect key="frame" x="304" y="896" width="60" height="60"/>
+                                <state key="normal" title="WormholeOrange" image="WormholeOrange.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="0Ir-az-IKY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CuP-Ll-bnr" userLabel="milkButton">
+                                <rect key="frame" x="372" y="896" width="60" height="60"/>
+                                <state key="normal" title="Milk" image="Milk.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="tTJ-dG-8U0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjh-vJ-CoZ" userLabel="nukeButton">
+                                <rect key="frame" x="440" y="896" width="60" height="60"/>
+                                <state key="normal" title="Nuke" image="Nuke.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="oyi-dm-4Cs"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQR-1X-ywu" userLabel="projectileButton">
+                                <rect key="frame" x="508" y="896" width="60" height="60"/>
+                                <state key="normal" title="Projectile" image="Projectile.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="ixF-s1-pfM"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="9" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9rr-wS-chX" userLabel="rockButton">
+                                <rect key="frame" x="576" y="896" width="60" height="60"/>
+                                <state key="normal" title="Wall" image="Rock.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="po4-78-Zh2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vOI-Cm-D5v" userLabel="eraserButton">
+                                <rect key="frame" x="644" y="896" width="60" height="60"/>
+                                <state key="normal" title="Eraser" image="Eraser.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="Uml-xb-AWI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ewb-bM-uZb">
+                                <rect key="frame" x="32" y="20" width="145" height="117"/>
+                                <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
+                                <state key="normal" title="Back" backgroundImage="BottomBoard.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="l9H-8g-f4a" kind="show" id="496-sq-RJE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Igb-F1-FjT">
+                                <rect key="frame" x="219" y="20" width="145" height="117"/>
+                                <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
+                                <state key="normal" title="Save" backgroundImage="BottomBoard.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="savePressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="Wgo-jl-gwK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UvD-mI-Zyk">
+                                <rect key="frame" x="607" y="20" width="145" height="117"/>
+                                <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
+                                <state key="normal" title="Play" backgroundImage="BottomBoard.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="DoM-gb-dAh"/>
+                                </connections>
+                            </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zjJ-aM-a4D">
+                                <rect key="frame" x="64" y="192" width="640" height="640"/>
+                                <connections>
+                                    <segue destination="pqy-Bj-Yqb" kind="embed" identifier="gridContainer" id="99q-OV-tI9"/>
+                                </connections>
+                            </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="raQ-fq-CYF">
+                                <rect key="frame" x="414" y="20" width="145" height="117"/>
+                                <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
+                                <state key="normal" title="Load" backgroundImage="BottomBoard.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loadPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="o4b-XQ-0xw"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="designGameStartSegue" id="S06-7r-Xuc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pQH-9w-MeI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-522" y="1368"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Background.png" width="768" height="1024"/>
+        <image name="BottomBoard.png" width="1536" height="384"/>
+        <image name="Eraser.png" width="254" height="152"/>
+        <image name="Fortress.png" width="1000" height="1000"/>
         <image name="Grumpy.png" width="400" height="400"/>
         <image name="HelloKitty.png" width="400" height="400"/>
+        <image name="Milk.png" width="400" height="491"/>
         <image name="Music.png" width="400" height="400"/>
+        <image name="Nuke.png" width="400" height="408"/>
         <image name="Nyan.png" width="400" height="400"/>
         <image name="Octocat.png" width="400" height="400"/>
+        <image name="Projectile.png" width="400" height="400"/>
         <image name="Quit.png" width="400" height="400"/>
+        <image name="Rock.png" width="400" height="400"/>
         <image name="Sound.png" width="400" height="400"/>
         <image name="TopBoard.png" width="1536" height="384"/>
+        <image name="Tower.png" width="400" height="400"/>
+        <image name="Trampoline.png" width="400" height="400"/>
+        <image name="WormholeBlue.png" width="400" height="400"/>
+        <image name="WormholeOrange.png" width="400" height="400"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xpq-qD-ra0"/>
-        <segue reference="KHr-rR-Jep"/>
-        <segue reference="Ioc-6a-4bE"/>
+        <segue reference="S06-7r-Xuc"/>
+        <segue reference="496-sq-RJE"/>
+        <segue reference="5Us-b3-nph"/>
     </inferredMetricsTieBreakers>
 </document>

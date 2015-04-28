@@ -61,6 +61,8 @@
 		342585531AACE392004A3CFD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
 		342585551AACE406004A3CFD /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
 		3459ABC81ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */; };
+		346D4CFD1AEF5951005FDDE6 /* Eraser.png in Resources */ = {isa = PBXBuildFile; fileRef = 346D4CFC1AEF5951005FDDE6 /* Eraser.png */; };
+		346D4CFE1AEF5951005FDDE6 /* Eraser.png in Resources */ = {isa = PBXBuildFile; fileRef = 346D4CFC1AEF5951005FDDE6 /* Eraser.png */; };
 		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
 		3471CA591ACDAE6500B0E68D /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA581ACDAE6500B0E68D /* libicucore.dylib */; };
 		3471CA5B1ACDAE7300B0E68D /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5A1ACDAE7300B0E68D /* libc++.dylib */; };
@@ -113,6 +115,8 @@
 		34ED9F231AE29F41006DDA50 /* FirebaseServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */; };
 		760645361AE2830E00CC0279 /* Poop.png in Resources */ = {isa = PBXBuildFile; fileRef = 760645351AE2830E00CC0279 /* Poop.png */; };
 		761BB59E1AD04348007C31C1 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761BB59D1AD04348007C31C1 /* Action.swift */; };
+		76344EE01AEF8F9000848789 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76344EDE1AEF8F9000848789 /* GridViewController.swift */; };
+		76344EE11AEF8F9000848789 /* LevelDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76344EDF1AEF8F9000848789 /* LevelDesignerViewController.swift */; };
 		763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763D97B71ADA7CDB0064B73C /* SceneUtils.swift */; };
 		763E71171AD1B78D00E90EF0 /* Grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71161AD1B78D00E90EF0 /* Grass.png */; };
 		763E71191AD1B87C00E90EF0 /* GrassPreview.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71181AD1B87C00E90EF0 /* GrassPreview.png */; };
@@ -261,6 +265,7 @@
 		342585521AACE392004A3CFD /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = NyanBackgroundMusic.mp3; sourceTree = "<group>"; };
+		346D4CFC1AEF5951005FDDE6 /* Eraser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Eraser.png; sourceTree = "<group>"; };
 		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
 		3471CA581ACDAE6500B0E68D /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		3471CA5A1ACDAE7300B0E68D /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
@@ -295,6 +300,8 @@
 		34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseServer.swift; sourceTree = "<group>"; };
 		760645351AE2830E00CC0279 /* Poop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poop.png; path = Images.xcassets/Poop.png; sourceTree = "<group>"; };
 		761BB59D1AD04348007C31C1 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		76344EDE1AEF8F9000848789 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
+		76344EDF1AEF8F9000848789 /* LevelDesignerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerViewController.swift; sourceTree = "<group>"; };
 		763D97B71ADA7CDB0064B73C /* SceneUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneUtils.swift; sourceTree = "<group>"; };
 		763E71161AD1B78D00E90EF0 /* Grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grass.png; path = Images.xcassets/Grass.png; sourceTree = "<group>"; };
 		763E71181AD1B87C00E90EF0 /* GrassPreview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GrassPreview.png; path = Images.xcassets/GrassPreview.png; sourceTree = "<group>"; };
@@ -476,6 +483,8 @@
 		342585061AACDB82004A3CFD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				76344EDE1AEF8F9000848789 /* GridViewController.swift */,
+				76344EDF1AEF8F9000848789 /* LevelDesignerViewController.swift */,
 				3471CA651ACEA01500B0E68D /* LoginViewController.swift */,
 				342585521AACE392004A3CFD /* MenuViewController.swift */,
 				342585541AACE406004A3CFD /* ShopViewController.swift */,
@@ -694,6 +703,7 @@
 		3471CA6E1ACEB7E900B0E68D /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				346D4CFC1AEF5951005FDDE6 /* Eraser.png */,
 				769BB4C61AE70514000A6B57 /* Music.png */,
 				769BB4C71AE70514000A6B57 /* Quit.png */,
 				769BB4C81AE70514000A6B57 /* Sound.png */,
@@ -916,6 +926,7 @@
 				769BB4C51AE6FF5F000A6B57 /* DirectionArrowSelected.png in Resources */,
 				34AE22D01AE733DD00C0EA6D /* Background.png in Resources */,
 				763E71171AD1B78D00E90EF0 /* Grass.png in Resources */,
+				346D4CFD1AEF5951005FDDE6 /* Eraser.png in Resources */,
 				769BB4C31AE6FD95000A6B57 /* DirectionArrow.png in Resources */,
 				767C41071AE4B0CC00D28EB4 /* TopBoard.png in Resources */,
 				76656A261AE67D76004A3385 /* Octocat.png in Resources */,
@@ -946,6 +957,7 @@
 				327A015D1AE3163F005BAF06 /* Nuke.png in Resources */,
 				327A01631AE31714005BAF06 /* Projectile.png in Resources */,
 				BD0441C71AE3DFBB003B93BC /* OrangeArrow.png in Resources */,
+				346D4CFE1AEF5951005FDDE6 /* Eraser.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -975,6 +987,7 @@
 				7661CF4A1AD4336C0004B0FD /* Direction.swift in Sources */,
 				BD0441C31ADD3899003B93BC /* DateUtils.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
+				76344EE01AEF8F9000848789 /* GridViewController.swift in Sources */,
 				BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */,
 				763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */,
 				34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */,
@@ -1013,6 +1026,7 @@
 				342585211AACDF7A004A3CFD /* Edge.swift in Sources */,
 				3425854C1AACE288004A3CFD /* MediumLevel.swift in Sources */,
 				BDA19AA61AC556D200B7E9D4 /* TileEntity.swift in Sources */,
+				76344EE11AEF8F9000848789 /* LevelDesignerViewController.swift in Sources */,
 				342585551AACE406004A3CFD /* ShopViewController.swift in Sources */,
 				342585371AACE0D8004A3CFD /* CatFactory.swift in Sources */,
 				BDA19ABA1AD0382900B7E9D4 /* StatModification.swift in Sources */,
