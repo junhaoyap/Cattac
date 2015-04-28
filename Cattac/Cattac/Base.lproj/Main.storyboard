@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="TEk-2s-IZx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="TEk-2s-IZx">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="BubblegumSans-Regular.ttf">
@@ -669,7 +669,6 @@
                                 </state>
                                 <connections>
                                     <action selector="playPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="DoM-gb-dAh"/>
-                                    <segue destination="BV1-FR-VrT" kind="show" identifier="designGameStartSegue" id="Cdt-ut-Ugc"/>
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zjJ-aM-a4D">
@@ -694,6 +693,9 @@
                     </view>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="designGameStartSegue" id="S06-7r-Xuc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pQH-9w-MeI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -723,8 +725,8 @@
         <image name="WormholeOrange.png" width="400" height="400"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ioc-6a-4bE"/>
+        <segue reference="S06-7r-Xuc"/>
+        <segue reference="496-sq-RJE"/>
         <segue reference="5Us-b3-nph"/>
-        <segue reference="KHr-rR-Jep"/>
     </inferredMetricsTieBreakers>
 </document>
