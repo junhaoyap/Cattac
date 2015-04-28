@@ -15,10 +15,6 @@
 		327A01601AE316AA005BAF06 /* Milk.png in Resources */ = {isa = PBXBuildFile; fileRef = 327A015E1AE316AA005BAF06 /* Milk.png */; };
 		327A01621AE31714005BAF06 /* Projectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 327A01611AE31714005BAF06 /* Projectile.png */; };
 		327A01631AE31714005BAF06 /* Projectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 327A01611AE31714005BAF06 /* Projectile.png */; };
-		32B621071AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */; };
-		32B621081AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */; };
-		32B6210A1AE32D85001A6AB5 /* InventoryBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621091AE32D85001A6AB5 /* InventoryBox.png */; };
-		32B6210B1AE32D85001A6AB5 /* InventoryBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 32B621091AE32D85001A6AB5 /* InventoryBox.png */; };
 		32B6210D1AE34326001A6AB5 /* SKTouchSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */; };
 		32B6210E1AE34326001A6AB5 /* SKTouchSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */; };
 		342584E31AACDB03004A3CFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342584E21AACDB03004A3CFD /* AppDelegate.swift */; };
@@ -60,7 +56,6 @@
 		342585511AACE30F004A3CFD /* LevelGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585501AACE30F004A3CFD /* LevelGenerator.swift */; };
 		342585531AACE392004A3CFD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
 		342585551AACE406004A3CFD /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
-		3459ABC81ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */; };
 		346D4CFD1AEF5951005FDDE6 /* Eraser.png in Resources */ = {isa = PBXBuildFile; fileRef = 346D4CFC1AEF5951005FDDE6 /* Eraser.png */; };
 		346D4CFE1AEF5951005FDDE6 /* Eraser.png in Resources */ = {isa = PBXBuildFile; fileRef = 346D4CFC1AEF5951005FDDE6 /* Eraser.png */; };
 		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
@@ -87,19 +82,7 @@
 		34AE22AF1AE4F8FF00C0EA6D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342584E61AACDB03004A3CFD /* GameScene.swift */; };
 		34AE22B01AE4F90100C0EA6D /* SKActionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763E71281AD2F26500E90EF0 /* SKActionButtonNode.swift */; };
 		34AE22B11AE4F92200C0EA6D /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585181AACDEFF004A3CFD /* MusicPlayer.swift */; };
-		34AE22B71AE6931400C0EA6D /* ShantyTownBackgroundMusic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22B21AE6931400C0EA6D /* ShantyTownBackgroundMusic.wav */; };
-		34AE22B81AE6931400C0EA6D /* NyanCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22B31AE6931400C0EA6D /* NyanCat.wav */; };
-		34AE22B91AE6931400C0EA6D /* HelloKitty.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22B41AE6931400C0EA6D /* HelloKitty.wav */; };
-		34AE22BA1AE6931400C0EA6D /* GrumpyCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22B51AE6931400C0EA6D /* GrumpyCat.wav */; };
-		34AE22BB1AE6931400C0EA6D /* OctoCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22B61AE6931400C0EA6D /* OctoCat.wav */; };
 		34AE22BC1AE696F300C0EA6D /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425851C1AACDF40004A3CFD /* SoundPlayer.swift */; };
-		34AE22C41AE6BB3500C0EA6D /* milk.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22BD1AE6BB3500C0EA6D /* milk.wav */; };
-		34AE22C51AE6BB3500C0EA6D /* ball.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22BE1AE6BB3500C0EA6D /* ball.aiff */; };
-		34AE22C61AE6BB3500C0EA6D /* poopArm.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22BF1AE6BB3500C0EA6D /* poopArm.wav */; };
-		34AE22C81AE6BB3500C0EA6D /* pui.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22C11AE6BB3500C0EA6D /* pui.wav */; };
-		34AE22C91AE6BB3500C0EA6D /* poop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22C21AE6BB3500C0EA6D /* poop.wav */; };
-		34AE22CA1AE6BB3500C0EA6D /* nuke.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22C31AE6BB3500C0EA6D /* nuke.wav */; };
-		34AE22CC1AE6BF5100C0EA6D /* fart.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22CB1AE6BF5100C0EA6D /* fart.wav */; };
 		34AE22D01AE733DD00C0EA6D /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22CD1AE733DD00C0EA6D /* Background.png */; };
 		34AE22D11AE733DD00C0EA6D /* MusicCrossed.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22CE1AE733DD00C0EA6D /* MusicCrossed.png */; };
 		34AE22D21AE733DD00C0EA6D /* SoundCrossed.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AE22CF1AE733DD00C0EA6D /* SoundCrossed.png */; };
@@ -115,6 +98,19 @@
 		34ED9F231AE29F41006DDA50 /* FirebaseServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */; };
 		760645361AE2830E00CC0279 /* Poop.png in Resources */ = {isa = PBXBuildFile; fileRef = 760645351AE2830E00CC0279 /* Poop.png */; };
 		761BB59E1AD04348007C31C1 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761BB59D1AD04348007C31C1 /* Action.swift */; };
+		76229AF51AEFDB2400F66335 /* ball.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 76229AE81AEFDB2400F66335 /* ball.aiff */; };
+		76229AF61AEFDB2400F66335 /* fart.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AE91AEFDB2400F66335 /* fart.wav */; };
+		76229AF71AEFDB2400F66335 /* GrumpyCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AEA1AEFDB2400F66335 /* GrumpyCat.wav */; };
+		76229AF81AEFDB2400F66335 /* HelloKitty.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AEB1AEFDB2400F66335 /* HelloKitty.wav */; };
+		76229AF91AEFDB2400F66335 /* milk.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AEC1AEFDB2400F66335 /* milk.wav */; };
+		76229AFA1AEFDB2400F66335 /* nuke.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AED1AEFDB2400F66335 /* nuke.wav */; };
+		76229AFB1AEFDB2400F66335 /* NyanBackgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 76229AEE1AEFDB2400F66335 /* NyanBackgroundMusic.mp3 */; };
+		76229AFC1AEFDB2400F66335 /* NyanCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AEF1AEFDB2400F66335 /* NyanCat.wav */; };
+		76229AFD1AEFDB2400F66335 /* OctoCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AF01AEFDB2400F66335 /* OctoCat.wav */; };
+		76229AFE1AEFDB2400F66335 /* poop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AF11AEFDB2400F66335 /* poop.wav */; };
+		76229AFF1AEFDB2400F66335 /* poopArm.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AF21AEFDB2400F66335 /* poopArm.wav */; };
+		76229B001AEFDB2400F66335 /* pui.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AF31AEFDB2400F66335 /* pui.wav */; };
+		76229B011AEFDB2400F66335 /* ShantyTownBackgroundMusic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76229AF41AEFDB2400F66335 /* ShantyTownBackgroundMusic.wav */; };
 		76344EE01AEF8F9000848789 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76344EDE1AEF8F9000848789 /* GridViewController.swift */; };
 		76344EE11AEF8F9000848789 /* LevelDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76344EDF1AEF8F9000848789 /* LevelDesignerViewController.swift */; };
 		763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763D97B71ADA7CDB0064B73C /* SceneUtils.swift */; };
@@ -223,8 +219,6 @@
 		327A015B1AE3163F005BAF06 /* Nuke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Nuke.png; sourceTree = "<group>"; };
 		327A015E1AE316AA005BAF06 /* Milk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Milk.png; sourceTree = "<group>"; };
 		327A01611AE31714005BAF06 /* Projectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Projectile.png; sourceTree = "<group>"; };
-		32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InventoryBoxPressed.png; sourceTree = "<group>"; };
-		32B621091AE32D85001A6AB5 /* InventoryBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InventoryBox.png; sourceTree = "<group>"; };
 		32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTouchSpriteNode.swift; sourceTree = "<group>"; };
 		342584DD1AACDB02004A3CFD /* Cattac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cattac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		342584E11AACDB02004A3CFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -264,7 +258,6 @@
 		342585501AACE30F004A3CFD /* LevelGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelGenerator.swift; sourceTree = "<group>"; };
 		342585521AACE392004A3CFD /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
-		3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = NyanBackgroundMusic.mp3; sourceTree = "<group>"; };
 		346D4CFC1AEF5951005FDDE6 /* Eraser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Eraser.png; sourceTree = "<group>"; };
 		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
 		3471CA581ACDAE6500B0E68D /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
@@ -277,18 +270,6 @@
 		3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDifficultyViewController.swift; sourceTree = "<group>"; };
 		3471CA691ACEAB3800B0E68D /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		34A356351AD1896000299049 /* Wall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wall.swift; sourceTree = "<group>"; };
-		34AE22B21AE6931400C0EA6D /* ShantyTownBackgroundMusic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ShantyTownBackgroundMusic.wav; sourceTree = "<group>"; };
-		34AE22B31AE6931400C0EA6D /* NyanCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = NyanCat.wav; sourceTree = "<group>"; };
-		34AE22B41AE6931400C0EA6D /* HelloKitty.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = HelloKitty.wav; sourceTree = "<group>"; };
-		34AE22B51AE6931400C0EA6D /* GrumpyCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = GrumpyCat.wav; sourceTree = "<group>"; };
-		34AE22B61AE6931400C0EA6D /* OctoCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = OctoCat.wav; sourceTree = "<group>"; };
-		34AE22BD1AE6BB3500C0EA6D /* milk.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = milk.wav; sourceTree = "<group>"; };
-		34AE22BE1AE6BB3500C0EA6D /* ball.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = ball.aiff; sourceTree = "<group>"; };
-		34AE22BF1AE6BB3500C0EA6D /* poopArm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = poopArm.wav; sourceTree = "<group>"; };
-		34AE22C11AE6BB3500C0EA6D /* pui.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pui.wav; sourceTree = "<group>"; };
-		34AE22C21AE6BB3500C0EA6D /* poop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = poop.wav; sourceTree = "<group>"; };
-		34AE22C31AE6BB3500C0EA6D /* nuke.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = nuke.wav; sourceTree = "<group>"; };
-		34AE22CB1AE6BF5100C0EA6D /* fart.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fart.wav; sourceTree = "<group>"; };
 		34AE22CD1AE733DD00C0EA6D /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
 		34AE22CE1AE733DD00C0EA6D /* MusicCrossed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MusicCrossed.png; sourceTree = "<group>"; };
 		34AE22CF1AE733DD00C0EA6D /* SoundCrossed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SoundCrossed.png; sourceTree = "<group>"; };
@@ -300,6 +281,19 @@
 		34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseServer.swift; sourceTree = "<group>"; };
 		760645351AE2830E00CC0279 /* Poop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poop.png; path = Images.xcassets/Poop.png; sourceTree = "<group>"; };
 		761BB59D1AD04348007C31C1 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		76229AE81AEFDB2400F66335 /* ball.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = ball.aiff; path = Sounds/ball.aiff; sourceTree = "<group>"; };
+		76229AE91AEFDB2400F66335 /* fart.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = fart.wav; path = Sounds/fart.wav; sourceTree = "<group>"; };
+		76229AEA1AEFDB2400F66335 /* GrumpyCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = GrumpyCat.wav; path = Sounds/GrumpyCat.wav; sourceTree = "<group>"; };
+		76229AEB1AEFDB2400F66335 /* HelloKitty.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = HelloKitty.wav; path = Sounds/HelloKitty.wav; sourceTree = "<group>"; };
+		76229AEC1AEFDB2400F66335 /* milk.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = milk.wav; path = Sounds/milk.wav; sourceTree = "<group>"; };
+		76229AED1AEFDB2400F66335 /* nuke.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = nuke.wav; path = Sounds/nuke.wav; sourceTree = "<group>"; };
+		76229AEE1AEFDB2400F66335 /* NyanBackgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = NyanBackgroundMusic.mp3; path = Sounds/NyanBackgroundMusic.mp3; sourceTree = "<group>"; };
+		76229AEF1AEFDB2400F66335 /* NyanCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = NyanCat.wav; path = Sounds/NyanCat.wav; sourceTree = "<group>"; };
+		76229AF01AEFDB2400F66335 /* OctoCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = OctoCat.wav; path = Sounds/OctoCat.wav; sourceTree = "<group>"; };
+		76229AF11AEFDB2400F66335 /* poop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = poop.wav; path = Sounds/poop.wav; sourceTree = "<group>"; };
+		76229AF21AEFDB2400F66335 /* poopArm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = poopArm.wav; path = Sounds/poopArm.wav; sourceTree = "<group>"; };
+		76229AF31AEFDB2400F66335 /* pui.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = pui.wav; path = Sounds/pui.wav; sourceTree = "<group>"; };
+		76229AF41AEFDB2400F66335 /* ShantyTownBackgroundMusic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ShantyTownBackgroundMusic.wav; path = Sounds/ShantyTownBackgroundMusic.wav; sourceTree = "<group>"; };
 		76344EDE1AEF8F9000848789 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		76344EDF1AEF8F9000848789 /* LevelDesignerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerViewController.swift; sourceTree = "<group>"; };
 		763D97B71ADA7CDB0064B73C /* SceneUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneUtils.swift; sourceTree = "<group>"; };
@@ -386,8 +380,6 @@
 		327A014E1AE30E3D005BAF06 /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				32B621091AE32D85001A6AB5 /* InventoryBox.png */,
-				32B621041AE32C5C001A6AB5 /* InventoryBoxPressed.png */,
 				327A01611AE31714005BAF06 /* Projectile.png */,
 				327A015E1AE316AA005BAF06 /* Milk.png */,
 				327A015B1AE3163F005BAF06 /* Nuke.png */,
@@ -532,17 +524,17 @@
 		3425850A1AACDCBA004A3CFD /* SoundFiles */ = {
 			isa = PBXGroup;
 			children = (
-				34AE22BD1AE6BB3500C0EA6D /* milk.wav */,
-				34AE22BE1AE6BB3500C0EA6D /* ball.aiff */,
-				34AE22CB1AE6BF5100C0EA6D /* fart.wav */,
-				34AE22BF1AE6BB3500C0EA6D /* poopArm.wav */,
-				34AE22C11AE6BB3500C0EA6D /* pui.wav */,
-				34AE22C21AE6BB3500C0EA6D /* poop.wav */,
-				34AE22C31AE6BB3500C0EA6D /* nuke.wav */,
-				34AE22B31AE6931400C0EA6D /* NyanCat.wav */,
-				34AE22B41AE6931400C0EA6D /* HelloKitty.wav */,
-				34AE22B51AE6931400C0EA6D /* GrumpyCat.wav */,
-				34AE22B61AE6931400C0EA6D /* OctoCat.wav */,
+				76229AE81AEFDB2400F66335 /* ball.aiff */,
+				76229AE91AEFDB2400F66335 /* fart.wav */,
+				76229AEA1AEFDB2400F66335 /* GrumpyCat.wav */,
+				76229AEB1AEFDB2400F66335 /* HelloKitty.wav */,
+				76229AEC1AEFDB2400F66335 /* milk.wav */,
+				76229AED1AEFDB2400F66335 /* nuke.wav */,
+				76229AEF1AEFDB2400F66335 /* NyanCat.wav */,
+				76229AF01AEFDB2400F66335 /* OctoCat.wav */,
+				76229AF11AEFDB2400F66335 /* poop.wav */,
+				76229AF21AEFDB2400F66335 /* poopArm.wav */,
+				76229AF31AEFDB2400F66335 /* pui.wav */,
 			);
 			name = SoundFiles;
 			sourceTree = "<group>";
@@ -550,8 +542,8 @@
 		3425850B1AACDCD1004A3CFD /* MusicFiles */ = {
 			isa = PBXGroup;
 			children = (
-				34AE22B21AE6931400C0EA6D /* ShantyTownBackgroundMusic.wav */,
-				3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */,
+				76229AEE1AEFDB2400F66335 /* NyanBackgroundMusic.mp3 */,
+				76229AF41AEFDB2400F66335 /* ShantyTownBackgroundMusic.wav */,
 			);
 			name = MusicFiles;
 			sourceTree = "<group>";
@@ -887,60 +879,58 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76229AF61AEFDB2400F66335 /* fart.wav in Resources */,
 				769BB4BC1AE6A7BB000A6B57 /* WormholeBlue.png in Resources */,
 				763E711B1AD1C45000E90EF0 /* Rock.png in Resources */,
+				76229AF91AEFDB2400F66335 /* milk.wav in Resources */,
 				7694EDD31AE3324900572818 /* BubblegumSans-Regular.ttf in Resources */,
-				32B6210A1AE32D85001A6AB5 /* InventoryBox.png in Resources */,
 				342584F11AACDB03004A3CFD /* LaunchScreen.xib in Resources */,
-				34AE22C81AE6BB3500C0EA6D /* pui.wav in Resources */,
+				76229AFD1AEFDB2400F66335 /* OctoCat.wav in Resources */,
+				76229AF71AEFDB2400F66335 /* GrumpyCat.wav in Resources */,
 				76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */,
 				769BB4C91AE70514000A6B57 /* Music.png in Resources */,
 				BD0441C61AE3DFBB003B93BC /* OrangeArrow.png in Resources */,
-				34AE22C51AE6BB3500C0EA6D /* ball.aiff in Resources */,
 				76D0F60D1ADB261000CB91B3 /* Fart.png in Resources */,
-				32B621071AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */,
 				342584EE1AACDB03004A3CFD /* Images.xcassets in Resources */,
 				769BB4B71AE68D7C000A6B57 /* Tower.png in Resources */,
 				327A015C1AE3163F005BAF06 /* Nuke.png in Resources */,
+				76229B011AEFDB2400F66335 /* ShantyTownBackgroundMusic.wav in Resources */,
 				769BB4B91AE692C5000A6B57 /* Fortress.png in Resources */,
+				76229AFA1AEFDB2400F66335 /* nuke.wav in Resources */,
 				760645361AE2830E00CC0279 /* Poop.png in Resources */,
-				34AE22B71AE6931400C0EA6D /* ShantyTownBackgroundMusic.wav in Resources */,
 				769BB4BF1AE6B49C000A6B57 /* Trampoline.png in Resources */,
 				769BB4BD1AE6A7BB000A6B57 /* WormholeOrange.png in Resources */,
 				BDFF7EFC1AE3EB7D00F2E942 /* Crosshairs.png in Resources */,
 				76656A221AE65547004A3385 /* HealthBarBorder.png in Resources */,
 				34AE22D21AE733DD00C0EA6D /* SoundCrossed.png in Resources */,
-				34AE22BA1AE6931400C0EA6D /* GrumpyCat.wav in Resources */,
 				76656A211AE65547004A3385 /* HealthBar.png in Resources */,
 				769BB4CA1AE70514000A6B57 /* Quit.png in Resources */,
+				76229AFF1AEFDB2400F66335 /* poopArm.wav in Resources */,
 				327A01621AE31714005BAF06 /* Projectile.png in Resources */,
 				327A015F1AE316AA005BAF06 /* Milk.png in Resources */,
 				76656A281AE68130004A3385 /* HelloKitty.png in Resources */,
+				76229AF81AEFDB2400F66335 /* HelloKitty.wav in Resources */,
+				76229AFC1AEFDB2400F66335 /* NyanCat.wav in Resources */,
+				76229AFE1AEFDB2400F66335 /* poop.wav in Resources */,
+				76229AFB1AEFDB2400F66335 /* NyanBackgroundMusic.mp3 in Resources */,
 				763E71191AD1B87C00E90EF0 /* GrassPreview.png in Resources */,
-				34AE22C91AE6BB3500C0EA6D /* poop.wav in Resources */,
 				76D0F60F1ADBA69100CB91B3 /* background.jpg in Resources */,
 				769BB4C11AE6F87E000A6B57 /* ButtonSelect.png in Resources */,
-				34AE22B81AE6931400C0EA6D /* NyanCat.wav in Resources */,
 				769BB4CB1AE70514000A6B57 /* Sound.png in Resources */,
-				34AE22C41AE6BB3500C0EA6D /* milk.wav in Resources */,
 				769BB4C51AE6FF5F000A6B57 /* DirectionArrowSelected.png in Resources */,
 				34AE22D01AE733DD00C0EA6D /* Background.png in Resources */,
 				763E71171AD1B78D00E90EF0 /* Grass.png in Resources */,
 				346D4CFD1AEF5951005FDDE6 /* Eraser.png in Resources */,
+				76229B001AEFDB2400F66335 /* pui.wav in Resources */,
 				769BB4C31AE6FD95000A6B57 /* DirectionArrow.png in Resources */,
 				767C41071AE4B0CC00D28EB4 /* TopBoard.png in Resources */,
 				76656A261AE67D76004A3385 /* Octocat.png in Resources */,
-				34AE22BB1AE6931400C0EA6D /* OctoCat.wav in Resources */,
-				3459ABC81ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 in Resources */,
 				342584E51AACDB03004A3CFD /* GameScene.sks in Resources */,
 				342584EC1AACDB03004A3CFD /* Main.storyboard in Resources */,
-				34AE22B91AE6931400C0EA6D /* HelloKitty.wav in Resources */,
-				34AE22C61AE6BB3500C0EA6D /* poopArm.wav in Resources */,
+				76229AF51AEFDB2400F66335 /* ball.aiff in Resources */,
 				34AE22D11AE733DD00C0EA6D /* MusicCrossed.png in Resources */,
 				763E71211AD2E0EB00E90EF0 /* Pui.png in Resources */,
 				767C41051AE4B0C100D28EB4 /* BottomBoard.png in Resources */,
-				34AE22CA1AE6BB3500C0EA6D /* nuke.wav in Resources */,
-				34AE22CC1AE6BF5100C0EA6D /* fart.wav in Resources */,
 				7694EDD41AE3324900572818 /* LuckiestGuy.ttf in Resources */,
 				76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */,
 			);
@@ -950,9 +940,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32B6210B1AE32D85001A6AB5 /* InventoryBox.png in Resources */,
 				BDFF7EFD1AE3EB7D00F2E942 /* Crosshairs.png in Resources */,
-				32B621081AE32C5C001A6AB5 /* InventoryBoxPressed.png in Resources */,
 				327A01601AE316AA005BAF06 /* Milk.png in Resources */,
 				327A015D1AE3163F005BAF06 /* Nuke.png in Resources */,
 				327A01631AE31714005BAF06 /* Projectile.png in Resources */,
