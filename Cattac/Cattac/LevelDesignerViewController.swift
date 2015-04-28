@@ -9,6 +9,11 @@ class LevelDesignerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        gridViewController.wormholeBlueButton =
+            self.view.viewWithTag(4) as UIButton
+        gridViewController.wormholeOrangeButton =
+            self.view.viewWithTag(5) as UIButton
+
         let fortressButton: UIButton = self.view.viewWithTag(1) as UIButton
         setPaletteButton(fortressButton)
 
@@ -34,6 +39,27 @@ class LevelDesignerViewController: UIViewController {
                     for gridIndex in gridViewController.wallLocations.keys {
                         let tileNodeToRemove = level.grid[gridIndex]!
                         level.grid.removeNodeFromGraph(tileNodeToRemove)
+                    }
+
+                    let wormholes = gridViewController.wormholeLocations.keys.array
+
+                    if wormholes.count == 2 {
+                        let firstWormholeTileNode = level.grid[wormholes[0]]!
+                        let secondWormholeTileNode = level.grid[wormholes[1]]!
+                        let firstWormhole = firstWormholeTileNode.doodad
+                            as WormholeDoodad
+                        let secondWormhole = secondWormholeTileNode.doodad
+                            as WormholeDoodad
+
+                        firstWormhole.setDestination(secondWormholeTileNode)
+                        secondWormhole.setDestination(firstWormholeTileNode)
+
+                        firstWormhole.setColor(0)
+                        secondWormhole.setColor(1)
+                    } else if wormholes.count == 1 {
+                        let wormholeTileNode = level.grid[wormholes[0]]!
+
+                        wormholeTileNode.doodad = nil
                     }
 
                     destinationVC.level = level
@@ -63,7 +89,7 @@ class LevelDesignerViewController: UIViewController {
     }
 
     private func setPaletteButton(button: UIButton) {
-        gridViewController?.setCurrentAction(button.currentTitle!)
+        gridViewController.setCurrentAction(button.currentTitle!)
 
         currentPaletteButton?.alpha = 0.5
         currentPaletteButton = button

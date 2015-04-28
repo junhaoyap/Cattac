@@ -27,8 +27,13 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     private let rows = Constants.Level.basicRows
     private let columns = Constants.Level.basicColumns
     private var sceneUtils: SceneUtils!
+
     var wallLocations: [GridIndex:UICollectionViewCell] = [:]
+    var wormholeLocations: [GridIndex:UIButton] = [:]
     var grid: Grid!
+
+    var wormholeBlueButton: UIButton!
+    var wormholeOrangeButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,6 +156,26 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
             selectedRow == rows - 1 && selectedColumn == 0
     }
 
+    private func isInvalidWormhole(entity: String, _ gridIndex: GridIndex) -> Bool {
+        if entity == Constants.Entities.Title.wormholeBlue {
+            if wormholeBlueButton.enabled {
+                wormholeBlueButton.enabled = false
+                wormholeLocations[gridIndex] = wormholeBlueButton
+            } else {
+                return true
+            }
+        } else if entity == Constants.Entities.Title.wormholeOrange {
+            if wormholeOrangeButton.enabled {
+                wormholeOrangeButton.enabled = false
+                wormholeLocations[gridIndex] = wormholeOrangeButton
+            } else {
+                return true
+            }
+        }
+
+        return false
+    }
+
     private func tileAction(cell: UICollectionViewCell, toggle: Bool,
         indexPath: NSIndexPath) {
             if let actionTitle = currentAction {
@@ -164,7 +189,9 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     private func addTileEntity(cell: UICollectionViewCell, entity: String,
         indexPath: NSIndexPath) {
-            if isPlayerLocation(indexPath) {
+            let gridIndex = Grid.convert(indexPath, totalRows: rows)
+
+            if isPlayerLocation(indexPath) || isInvalidWormhole(entity, gridIndex) {
                 return
             }
 
@@ -175,7 +202,6 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
             entityImageView.tag = tileEntityTag
             cell.addSubview(entityImageView)
 
-            let gridIndex = Grid.convert(indexPath, totalRows: rows)
             let tileNode = grid[gridIndex]!
             let entityObject = Constants.Entities.getObject(entity)
             if entityObject is Doodad {
@@ -198,6 +224,12 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
                 let tileNode = grid[gridIndex]!
                 tileNode.doodad = nil
                 tileNode.item = nil
+
+                if let button = wormholeLocations[gridIndex] {
+                    button.enabled = true
+                    button.alpha = 1
+                    wormholeLocations.removeValueForKey(gridIndex)
+                }
 
                 wallLocations.removeValueForKey(gridIndex)
             }
