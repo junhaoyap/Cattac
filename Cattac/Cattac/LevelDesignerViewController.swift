@@ -45,6 +45,8 @@ class LevelDesignerViewController: UIViewController {
         gameLevel = createLevel()
         if isValidLevel(gameLevel!.grid) {
             self.performSegueWithIdentifier("designGameStartSegue", sender: self)
+        } else {
+            showInvalidLevelAlert()
         }
     }
 
@@ -75,6 +77,20 @@ class LevelDesignerViewController: UIViewController {
             button.frame.width + 20,
             button.frame.height + 20
         )
+    }
+
+    private func showInvalidLevelAlert() {
+        let title = "Oops!"
+        let message = "It seems like the players cannot reach each other."
+        let dismissButton = "Back"
+        let alert = UIAlertController(title: title, message: message,
+            preferredStyle: UIAlertControllerStyle.Alert)
+
+        alert.addAction(UIAlertAction(title: dismissButton,
+            style: UIAlertActionStyle.Default, handler: nil))
+
+        self.presentViewController(alert, animated: true, completion: nil)
+
     }
 
     private func createLevel() -> GameLevel {
