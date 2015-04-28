@@ -1,10 +1,7 @@
 import Foundation
 
-protocol GameStateListener {
-    func onStateUpdate(state: GameState)
-}
-
 protocol EventListener {
+    func onStateUpdate(state: GameState)
     func onActionUpdate(action: Action?)
     func onItemSpawned(node: TileNode)
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool)
@@ -38,9 +35,6 @@ class GameEngine {
     
     // The initial game state is to be set at PostExecution
     var state: GameState = .PostExecution
-    
-    /// GameState listener, listens for update on state change.
-    var gameStateListener: GameStateListener?
     
     /// Action listener, listens for action change on currentPlayer.
     var eventListener: EventListener?
@@ -198,7 +192,7 @@ class GameEngine {
         }
         
         println(state.description)
-        gameStateListener?.onStateUpdate(state)
+        eventListener?.onStateUpdate(state)
         statesToAdvance--
     }
     
@@ -576,7 +570,12 @@ class GameEngine {
         
         if playerNumber == playerNum {
             currentPlayerMoveNumber++
+            if !currentPlayer.isDead {
+                gameManager.playerTurn(currentPlayer,
+                    moveTo: moveToTile, action: action)
+            }
         }
+        
     }
     
     private func checkAllTurns() {

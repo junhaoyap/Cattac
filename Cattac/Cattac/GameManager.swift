@@ -159,8 +159,7 @@ class GameManager {
     }
     
     var allTurnsCompleted: Bool {
-        println("End: \(_playerTurnComplete.count), \(_players.count)")
-        return _playerTurnComplete.count == _players.count - 1
+        return _playerTurnComplete.count == _players.count
     }
 
     var dyingPlayers: [Cat] {

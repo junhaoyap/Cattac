@@ -70,10 +70,11 @@ class GameAI {
     }
     
     private func aiUseItem(item: Item, onPlayer player: Cat) -> ItemAction {
-        let players = gameEngine.gameManager.players.count
+        let playersLeft = Array(gameEngine.gameManager.players.values)
+        let players = playersLeft.count
         if item.canTargetOthers() && !item.shouldTargetAll() {
-            let targetPlayerNum = Int(arc4random_uniform(UInt32(players))) + 1
-            let target = gameEngine.gameManager[playerWithNum: targetPlayerNum]!
+            let targetPlayerIndex = Int(arc4random_uniform(UInt32(players)))
+            let target = playersLeft[targetPlayerIndex]
             let node = gameEngine.gameManager[moveToPositionOf: player]!
             return ItemAction(item: item,
                 targetNode: node, targetPlayer: target)

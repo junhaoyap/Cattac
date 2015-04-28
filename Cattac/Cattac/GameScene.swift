@@ -110,7 +110,6 @@ class GameScene: SKScene {
             self.level = level
             gameEngine = GameEngine(grid: level.grid,
                 playerNumber: currentPlayerNumber, multiplayer: multiplayer)
-            gameEngine.gameStateListener = self
             gameEngine.eventListener = self
 
             gameManager = gameEngine.gameManager
@@ -189,8 +188,8 @@ class GameScene: SKScene {
 }
 
 
-
-extension GameScene: GameStateListener {
+extension GameScene: EventListener {
+    
     /// Updates the scene whenever the game state updates.
     ///
     /// :param: state The update game state.
@@ -219,10 +218,12 @@ extension GameScene: GameStateListener {
             deconflictPlayer()
         case .MovesExecution:
             movePlayers()
+            runDummyAnimation()
         case .ActionsExecution:
             hidePoop()
             performActions()
             performPendingAnimations()
+            runDummyAnimation()
             unselectActionButtons()
         case .GameEnded:
             endGame()
@@ -230,10 +231,7 @@ extension GameScene: GameStateListener {
             break
         }
     }
-}
-
-
-extension GameScene: EventListener {
+    
     /// Updates the scene based on the current action selected.
     ///
     /// :param: action The current selected action.
