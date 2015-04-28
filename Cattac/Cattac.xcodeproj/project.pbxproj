@@ -61,6 +61,12 @@
 		342585531AACE392004A3CFD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
 		342585551AACE406004A3CFD /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
 		3459ABC81ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */; };
+		346D4CF71AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4CF61AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift */; };
+		346D4CF81AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4CF61AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift */; };
+		346D4CFA1AEF5333005FDDE6 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4CF91AEF5333005FDDE6 /* PaletteViewController.swift */; };
+		346D4CFB1AEF5333005FDDE6 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4CF91AEF5333005FDDE6 /* PaletteViewController.swift */; };
+		346D4CFD1AEF5951005FDDE6 /* Eraser.png in Resources */ = {isa = PBXBuildFile; fileRef = 346D4CFC1AEF5951005FDDE6 /* Eraser.png */; };
+		346D4CFE1AEF5951005FDDE6 /* Eraser.png in Resources */ = {isa = PBXBuildFile; fileRef = 346D4CFC1AEF5951005FDDE6 /* Eraser.png */; };
 		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
 		3471CA591ACDAE6500B0E68D /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA581ACDAE6500B0E68D /* libicucore.dylib */; };
 		3471CA5B1ACDAE7300B0E68D /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5A1ACDAE7300B0E68D /* libc++.dylib */; };
@@ -261,6 +267,9 @@
 		342585521AACE392004A3CFD /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = NyanBackgroundMusic.mp3; sourceTree = "<group>"; };
+		346D4CF61AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerCollectionViewController.swift; sourceTree = "<group>"; };
+		346D4CF91AEF5333005FDDE6 /* PaletteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
+		346D4CFC1AEF5951005FDDE6 /* Eraser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Eraser.png; sourceTree = "<group>"; };
 		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
 		3471CA581ACDAE6500B0E68D /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		3471CA5A1ACDAE7300B0E68D /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
@@ -482,6 +491,8 @@
 				3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */,
 				34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */,
 				342584E81AACDB03004A3CFD /* GameViewController.swift */,
+				346D4CF61AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift */,
+				346D4CF91AEF5333005FDDE6 /* PaletteViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -694,6 +705,7 @@
 		3471CA6E1ACEB7E900B0E68D /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				346D4CFC1AEF5951005FDDE6 /* Eraser.png */,
 				769BB4C61AE70514000A6B57 /* Music.png */,
 				769BB4C71AE70514000A6B57 /* Quit.png */,
 				769BB4C81AE70514000A6B57 /* Sound.png */,
@@ -916,6 +928,7 @@
 				769BB4C51AE6FF5F000A6B57 /* DirectionArrowSelected.png in Resources */,
 				34AE22D01AE733DD00C0EA6D /* Background.png in Resources */,
 				763E71171AD1B78D00E90EF0 /* Grass.png in Resources */,
+				346D4CFD1AEF5951005FDDE6 /* Eraser.png in Resources */,
 				769BB4C31AE6FD95000A6B57 /* DirectionArrow.png in Resources */,
 				767C41071AE4B0CC00D28EB4 /* TopBoard.png in Resources */,
 				76656A261AE67D76004A3385 /* Octocat.png in Resources */,
@@ -946,6 +959,7 @@
 				327A015D1AE3163F005BAF06 /* Nuke.png in Resources */,
 				327A01631AE31714005BAF06 /* Projectile.png in Resources */,
 				BD0441C71AE3DFBB003B93BC /* OrangeArrow.png in Resources */,
+				346D4CFE1AEF5951005FDDE6 /* Eraser.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -975,6 +989,7 @@
 				7661CF4A1AD4336C0004B0FD /* Direction.swift in Sources */,
 				BD0441C31ADD3899003B93BC /* DateUtils.swift in Sources */,
 				342585451AACE22C004A3CFD /* Item.swift in Sources */,
+				346D4CF71AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift in Sources */,
 				BDA19AC01AD0609200B7E9D4 /* WatchTowerDoodad.swift in Sources */,
 				763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */,
 				34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */,
@@ -983,6 +998,7 @@
 				342585411AACE196004A3CFD /* Cat.swift in Sources */,
 				763E71331AD2FFB200E90EF0 /* SKDirectionButtonNode.swift in Sources */,
 				34A356361AD1896000299049 /* Wall.swift in Sources */,
+				346D4CFA1AEF5333005FDDE6 /* PaletteViewController.swift in Sources */,
 				3425851D1AACDF40004A3CFD /* SoundPlayer.swift in Sources */,
 				BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */,
 				342585511AACE30F004A3CFD /* LevelGenerator.swift in Sources */,
@@ -1025,6 +1041,7 @@
 			files = (
 				76656A1E1AE64605004A3385 /* SKPlayerInfoNode.swift in Sources */,
 				768384091ADBD77500538F5D /* StringUtils.swift in Sources */,
+				346D4CF81AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift in Sources */,
 				768383E21ADBD44900538F5D /* Grid.swift in Sources */,
 				768383E31ADBD44900538F5D /* GridIndex.swift in Sources */,
 				768383E41ADBD44900538F5D /* Direction.swift in Sources */,
@@ -1050,6 +1067,7 @@
 				34AE22AA1AE4F6A700C0EA6D /* GameViewController.swift in Sources */,
 				768383F21ADBD44900538F5D /* WormholeDoodad.swift in Sources */,
 				768383F31ADBD44900538F5D /* LandMineDoodad.swift in Sources */,
+				346D4CFB1AEF5333005FDDE6 /* PaletteViewController.swift in Sources */,
 				768383F41ADBD44900538F5D /* FortressDoodad.swift in Sources */,
 				768384051ADBD55B00538F5D /* GridTests.swift in Sources */,
 				34AE22AB1AE4F8EC00C0EA6D /* DateUtils.swift in Sources */,
