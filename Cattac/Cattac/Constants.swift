@@ -19,7 +19,7 @@ struct Constants {
         
         // indicates the avg number of spawns per 10 turns
         // if spawns on tile with doodad/item, spawn is invalid
-        static let itemSpawnProbability: Int = 3
+        static let itemSpawnProbability: Int = 8
         
         static let invalidDoodadWallLocation: [GridIndex] = [
             GridIndex(0, 0),
@@ -147,6 +147,7 @@ struct Constants {
         static let keyItemRow = "itemRow"
         static let keyItemCol = "itemCol"
         static let keyItemName = "itemName"
+        static let keyItemVictim = "itemVictim"
         
         // max wait time before dropping inactive player
         static let maxDelayBeforeDrop: NSTimeInterval = 8

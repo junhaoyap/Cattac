@@ -550,34 +550,37 @@ class GameEngine {
     }
     
     private func updateServer(playerNum: Int) {
-        if let player = gameManager[playerWithNum: playerNum] {
-            var currentTile: TileNode
-            var moveToTile: TileNode
+        let player = gameManager[playerWithNum: playerNum]!
+        var currentTile: TileNode
+        var moveToTile: TileNode
+        let action = gameManager[actionOf: player]
 
-            if player.isDead {
-                currentTile = TileNode(row: -1, column: -1)
-                moveToTile = TileNode(row: -1, column: -1)
-            } else {
-                currentTile = gameManager[positionOf: player]!
-                moveToTile = gameManager[moveToPositionOf: player]!
-            }
-
-            let action = gameManager[actionOf: player]
-            
-            // use movementNumber - 1 for multiplayer AI movements
-            let movementNumber = playerNumber == playerNum
-                ? currentPlayerMoveNumber : currentPlayerMoveNumber - 1
-            
-            gameConnectionManager.updateServer(playerNum,
-                currentTile: currentTile,
-                moveToTile: moveToTile,
-                action: action,
-                number: movementNumber
-            )
-            
-            if playerNumber == playerNum {
-                currentPlayerMoveNumber++
-            }
+        if player.isDead {
+            currentTile = TileNode(row: -1, column: -1)
+            moveToTile = TileNode(row: -1, column: -1)
+        } else {
+            currentTile = gameManager[positionOf: player]!
+            moveToTile = gameManager[moveToPositionOf: player]!
+        }
+        
+        // use movementNumber - 1 for multiplayer AI movements
+        let movementNumber = playerNumber == playerNum
+            ? currentPlayerMoveNumber : currentPlayerMoveNumber - 1
+        var targetNum = 0
+        if let itemAction = action as? ItemAction {
+            targetNum = gameManager[playerNumFor: itemAction.targetPlayer]!
+        }
+        
+        gameConnectionManager.updateServer(playerNum,
+            currentTile: currentTile,
+            moveToTile: moveToTile,
+            action: action,
+            number: movementNumber,
+            targetNum: targetNum
+        )
+        
+        if playerNumber == playerNum {
+            currentPlayerMoveNumber++
         }
     }
     
@@ -635,56 +638,53 @@ class GameEngine {
         let attackRange = snapshot.value.objectForKey(
             Constants.Firebase.keyAttkRange) as? Int
 
+
         if fromRow == -1 && fromCol == -1 {
             return
-        } else if let player = gameManager[playerWithNum: playerNum] {
-            let dest = grid[moveToRow!, moveToCol!]!
-            var action: Action?
-            
-            gameManager[positionOf: player] = grid[fromRow!, fromCol!]
-            println("\(player.name)[\(playerNum)]" +
-                " moving to \(moveToRow!),\(moveToCol!)"
-            )
-            
-            if let playerActionType = ActionType.create(attackType!) {
-                switch playerActionType {
-                case .Pui:
-                    let puiDirection = Direction.create(attackDir!)!
-                    action = PuiAction(direction: puiDirection)
-                case .Fart:
-                    let fartRange = attackRange!
-                    action = FartAction(range: fartRange)
-                case .Poop:
-                    let targetNodeRow = snapshot.value.objectForKey(
-                        Constants.Firebase.keyTargetRow) as? Int
-                    let targetNodeCol = snapshot.value.objectForKey(
-                        Constants.Firebase.keyTargetCol) as? Int
-                    let targetNode = grid[targetNodeRow!,
-                        targetNodeCol!]!
-                    
-                    action = PoopAction(targetNode: targetNode)
-                case .Item:
-                    let itemRow = snapshot.value.objectForKey(
-                        Constants.Firebase.keyItemRow) as? Int
-                    let itemCol = snapshot.value.objectForKey(
-                        Constants.Firebase.keyItemCol) as? Int
-                    let itemName = snapshot.value.objectForKey(
-                        Constants.Firebase.keyItemName) as? String
-                    let node = grid[itemRow!, itemCol!]!
-                    var targetPlayer: Cat? = nil
-                    for aPlayer in gameManager.players.values {
-                        if gameManager[positionOf: aPlayer]! == node {
-                            targetPlayer = aPlayer
-                            break
-                        }
-                    }
-                    let item = itemFactory.createItem(itemName!)
-                    action = ItemAction(item: item!, targetNode: node,
-                        targetPlayer: targetPlayer!)
-                }
-                println("\(player.name)[\(playerNum)]" +
-                    " \(playerActionType.description)"
-                )
+        }
+
+        let player = gameManager[playerWithNum: playerNum]!
+        let dest = grid[moveToRow!, moveToCol!]!
+        var action: Action?
+        
+        gameManager[positionOf: player] = grid[fromRow!, fromCol!]
+        println("\(player.name)[\(playerNum)]" +
+            " moving to \(moveToRow!),\(moveToCol!)"
+        )
+        
+        if let playerActionType = ActionType.create(attackType!) {
+            switch playerActionType {
+            case .Pui:
+                let puiDirection = Direction.create(attackDir!)!
+                action = PuiAction(direction: puiDirection)
+            case .Fart:
+                let fartRange = attackRange!
+                action = FartAction(range: fartRange)
+            case .Poop:
+                let targetNodeRow = snapshot.value.objectForKey(
+                    Constants.Firebase.keyTargetRow) as? Int
+                let targetNodeCol = snapshot.value.objectForKey(
+                    Constants.Firebase.keyTargetCol) as? Int
+                let targetNode = grid[targetNodeRow!,
+                    targetNodeCol!]!
+                
+                action = PoopAction(targetNode: targetNode)
+            case .Item:
+                let itemRow = snapshot.value.objectForKey(
+                    Constants.Firebase.keyItemRow) as? Int
+                let itemCol = snapshot.value.objectForKey(
+                    Constants.Firebase.keyItemCol) as? Int
+                let itemName = snapshot.value.objectForKey(
+                    Constants.Firebase.keyItemName) as? String
+                let node = grid[itemRow!, itemCol!]!
+                let itemPlayerNum = snapshot.value.objectForKey(
+                    Constants.Firebase.keyItemVictim) as? Int
+                let targetPlayer = gameManager[playerWithNum: itemPlayerNum!]!
+                
+                
+                let item = itemFactory.createItem(itemName!)
+                action = ItemAction(item: item!, targetNode: node,
+                    targetPlayer: targetPlayer)
             }
             
             gameManager.playerTurn(player, moveTo: dest, action: action)

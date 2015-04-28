@@ -109,11 +109,14 @@ class Cat: TileEntity {
     /// cat.hp -= damage * 1/defence
     ///
     /// :param: damage Points to be reduced from hp
-    func inflict(damage: Int) {
+    func inflict(damage: Int) -> Int {
         if hp > 0 {
-            hp -= damage * 1/defence
+            var realDamage = damage * 1/defence
+            hp -= realDamage
             hpListener?.onHpUpdate(hp)
+            return realDamage
         }
+        return 0
     }
     
     /// Heals cat's HP directly.
