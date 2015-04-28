@@ -405,22 +405,12 @@ class GameEngine {
     /// and player position can be updated
     ///
     /// :param: cat The player's move to execute
-    func executePlayerMove(player: Cat) -> [TileNode] {
-        let path = gameManager[movementPathOf: player]
-        if path != nil {
-            return path!
-        } else {
-            return []
-        }
+    func executePlayerMove(player: Cat) -> [TileNode]? {
+        return gameManager[movementPathOf: player]
     }
     
-    func executePlayerDeconflict(player: Cat) -> [TileNode] {
-        let path = gameManager[deconflictPathOf: player]
-        if path != nil {
-            return path!
-        } else {
-            return []
-        }
+    func executePlayerDeconflict(player: Cat) -> [TileNode]? {
+        return gameManager[deconflictPathOf: player]
     }
     
     func deconflictUpdate() {
@@ -759,22 +749,12 @@ extension GameEngine {
     func triggerClearAction() {
         gameManager[actionOf: currentPlayer] = nil
     }
-
-    func triggerMovementAnimationEnded() {
-        if gameManager.movementsCompleted {
-            triggerStateAdvance()
-        }
-    }
     
-    func triggerDeconflictAnimationEnded() {
-        if gameManager.deconflictsCompleted {
-            triggerStateAdvance()
-        }
-    }
-
-    func triggerActionAnimationEnded() {
-        if gameManager.actionsCompleted {
-            triggerStateAdvance()
+    func triggerAnimationEnded() {
+        if state == .MovesExecution
+            || state == .ActionsExecution
+            || state == .DeconflictExecution {
+                triggerStateAdvance()
         }
     }
 }

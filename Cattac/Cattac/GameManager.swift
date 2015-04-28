@@ -10,9 +10,6 @@ class GameManager {
     private var _playerTurnComplete: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
     private var _deconflictMovementPaths: [String:[TileNode]]
-    private var _playerDeconflictAnimationCompleted: [String:Bool]
-    private var _playerMovementAnimationCompleted: [String:Bool]
-    private var _playerActionAnimationCompleted: [String:Bool]
     private var _playerItems: [String:Inventory]
     private var _doodadsToRemove: [Int: Doodad]
     private var _playerRanks: [String:Int]
@@ -30,9 +27,6 @@ class GameManager {
         _playerTurnComplete = [:]
         _playerMovementPaths = [:]
         _deconflictMovementPaths = [:]
-        _playerDeconflictAnimationCompleted = [:]
-        _playerMovementAnimationCompleted = [:]
-        _playerActionAnimationCompleted = [:]
         _playerItems = [:]
         _doodadsToRemove = [:]
         _playerRanks = [:]
@@ -163,40 +157,10 @@ class GameManager {
             return _doodadsToRemove
         }
     }
-
-    var movementsCompleted: Bool {
-        var allCompleted = true
-        
-        for completed in _playerMovementAnimationCompleted.values {
-            allCompleted = allCompleted && completed
-        }
-        
-        return allCompleted
-    }
-    
-    var deconflictsCompleted: Bool {
-        var allCompleted = true
-        
-        for completed in _playerDeconflictAnimationCompleted.values {
-            allCompleted = allCompleted && completed
-        }
-        
-        return allCompleted
-    }
     
     var allTurnsCompleted: Bool {
         println("End: \(_playerTurnComplete.count), \(_players.count)")
         return _playerTurnComplete.count == _players.count - 1
-    }
-
-    var actionsCompleted: Bool {
-        var allCompleted = true
-
-        for completed in _playerActionAnimationCompleted.values {
-            allCompleted = allCompleted && completed
-        }
-
-        return allCompleted
     }
 
     var dyingPlayers: [Cat] {
@@ -281,23 +245,7 @@ class GameManager {
                     _doodadsToRemove[doodad.getSprite().hashValue] = doodad
                 }
             }
-            
-            _playerMovementAnimationCompleted[playerName] = false
-            _playerDeconflictAnimationCompleted[playerName] = false
-            _playerActionAnimationCompleted[playerName] = false
         }
-    }
-
-    func completeMovementOf(player: Cat) {
-        _playerMovementAnimationCompleted[player.name] = true
-    }
-    
-    func completeDeconflictOf(player: Cat) {
-        _playerDeconflictAnimationCompleted[player.name] = true
-    }
-
-    func completeActionOf(player: Cat) {
-        _playerActionAnimationCompleted[player.name] = true
     }
     
     func samePlayer(playerA: Cat, _ playerB: Cat) -> Bool {
