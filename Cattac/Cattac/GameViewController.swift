@@ -46,6 +46,8 @@ class GameViewController: UIViewController {
     let soundCrossedImage = UIImage(named: "SoundCrossed")
     let musicViewImage = UIImage(named: "Music")
     let musicCrossedImage = UIImage(named: "MusicCrossed")
+
+    var unwindIdentifer: String = "endgameToGameDifficultyViewSegue"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,7 +107,7 @@ class GameViewController: UIViewController {
         let dismissActionHandler = {
             (action: UIAlertAction!) in
             
-            self.performSegueWithIdentifier("endgameSegue", sender: self)
+            self.performSegueWithIdentifier(self.unwindIdentifer, sender: self)
         }
         
         let quitAlert = UIAlertController(title: "Quit Game",

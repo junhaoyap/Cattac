@@ -92,7 +92,8 @@
                     <connections>
                         <outlet property="musicImage" destination="rFv-6P-9hN" id="AZg-Jq-WyL"/>
                         <outlet property="soundImage" destination="DzI-CS-bpV" id="LOj-Zo-tpt"/>
-                        <segue destination="pTF-sf-3PO" kind="unwind" identifier="endgameSegue" unwindAction="unwind:" id="yJ5-4f-lC3"/>
+                        <segue destination="pTF-sf-3PO" kind="unwind" identifier="endgameToGameDifficultyViewSegue" unwindAction="unwindToGameDifficultyView:" id="yJ5-4f-lC3"/>
+                        <segue destination="pTF-sf-3PO" kind="unwind" identifier="endgameToLevelDesignerViewSegue" unwindAction="unwindToLevelDesignerView:" id="rUU-Ez-xfY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
@@ -725,8 +726,8 @@
         <image name="WormholeOrange.png" width="400" height="400"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S06-7r-Xuc"/>
-        <segue reference="496-sq-RJE"/>
-        <segue reference="5Us-b3-nph"/>
+        <segue reference="xpq-qD-ra0"/>
+        <segue reference="Ioc-6a-4bE"/>
+        <segue reference="l2v-Ib-U9H"/>
     </inferredMetricsTieBreakers>
 </document>

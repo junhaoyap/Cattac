@@ -34,11 +34,16 @@ class LevelDesignerViewController: UIViewController {
             if let destinationVC = segue.destinationViewController
                 as? GameViewController {
                     destinationVC.level = gameLevel!
+                    destinationVC.unwindIdentifer =
+                        "endgameToLevelDesignerViewSegue"
             }
         } else if segue.identifier == "gridContainer" {
             self.gridViewController = segue.destinationViewController
                 as GridViewController
         }
+    }
+
+    @IBAction func unwindToLevelDesignerView(segue: UIStoryboardSegue) {
     }
 
     @IBAction func playPressed(sender: UIButton) {

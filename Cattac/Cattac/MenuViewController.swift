@@ -32,9 +32,4 @@ class MenuViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-    
-    @IBAction func unwind(segue: UIStoryboardSegue) {
-        // This is the view controller that the game will unwind to
-        // when the game has ended or when the player quits the game
-    }
 }
