@@ -176,6 +176,40 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         }
     }
 
+    func load(levelData: [String:AnyObject]) {
+        func add(entity: TileEntity, to gridIndex: GridIndex) {
+            let indexPath = NSIndexPath(forRow: gridIndex.col,
+                inSection: rows - gridIndex.row - 1)
+            let cell = (self.view as UICollectionView)
+                .cellForItemAtIndexPath(indexPath)
+
+            addTileEntity(cell!, entityObject: entity, indexPath: indexPath)
+        }
+
+        let level = LevelGenerator.sharedInstance.createGame(fromDict: levelData)
+
+        for tileNode in level.grid {
+            if let doodad = tileNode.doodad {
+                let gridIndex = tileNode.position
+                grid[gridIndex]!.doodad = doodad
+                add(doodad, to: gridIndex)
+            } else if let item = tileNode.item {
+                let gridIndex = tileNode.position
+                grid[gridIndex]!.item = item
+                add(item, to: gridIndex)
+            }
+        }
+    }
+
+    func reset() {
+        let collectionView = self.view as UICollectionView
+        for indexPath in collectionView.indexPathsForVisibleItems() {
+            let cell = collectionView.cellForItemAtIndexPath(
+                indexPath as NSIndexPath)
+            removeTileEntity(cell!, indexPath: indexPath as NSIndexPath)
+        }
+    }
+
     private func isPlayerLocation(indexPath: NSIndexPath) -> Bool {
         let selectedRow = indexPath.section
         let selectedColumn = indexPath.row
@@ -225,24 +259,52 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
                 return
             }
 
-            let entityImage = UIImage(named: Constants.Entities.getImage(entity)!)
-            let entityImageView = UIImageView(image: entityImage)
-            entityImageView.frame = CGRectMake(0, 0,
-                cell.frame.width, cell.frame.height)
-            entityImageView.tag = tileEntityTag
-            cell.addSubview(entityImageView)
+            let entityObject = Constants.Entities.getObject(entity)!
 
-            let tileNode = grid[gridIndex]!
-            let entityObject = Constants.Entities.getObject(entity)
-            if entityObject is Doodad {
-                tileNode.doodad = (entityObject as Doodad)
-            } else if entityObject is Item {
-                tileNode.item = (entityObject as Item)
-            }
+            add(entity: entity, to: cell)
+            add(entityObject: entityObject, to: gridIndex)
 
             if entity == Constants.Entities.Title.wall {
                 wallLocations[gridIndex] = cell
             }
+    }
+
+    private func addTileEntity(cell: UICollectionViewCell,
+        entityObject: TileEntity, indexPath: NSIndexPath) {
+            let gridIndex = Grid.convert(indexPath, totalRows: rows)
+            let entity = getEntity(entityObject)
+
+            if isPlayerLocation(indexPath) || isInvalidWormhole(entity, gridIndex) {
+                return
+            }
+
+            add(entity: entity, to: cell)
+            add(entityObject: entityObject, to: gridIndex)
+
+            if entity == Constants.Entities.Title.wall {
+                wallLocations[gridIndex] = cell
+            }
+    }
+
+    private func add(# entity: String, to cell: UICollectionViewCell) {
+        let entityImage =
+            UIImage(named: Constants.Entities.getImage(entity)!)
+        let entityImageView = UIImageView(image: entityImage)
+
+        entityImageView.frame = CGRectMake(0, 0,
+            cell.frame.width, cell.frame.height)
+        entityImageView.tag = tileEntityTag
+        cell.addSubview(entityImageView)
+    }
+
+    private func add(# entityObject: TileEntity, to gridIndex: GridIndex) {
+        let tileNode = grid[gridIndex]!
+        if entityObject is Doodad {
+            tileNode.doodad = (entityObject as Doodad)
+        } else if entityObject is Item {
+            tileNode.item = (entityObject as Item)
+        }
+
     }
 
     private func removeTileEntity(cell: UICollectionViewCell,
@@ -314,6 +376,33 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
             return entities.wall
         default:
             return entities.fortress
+        }
+    }
+
+    private func getEntity(entity: TileEntity) -> String {
+        let entities = Constants.Entities.Title.self
+
+        switch entity {
+        case is FortressDoodad:
+            return entities.fortress
+        case is WatchTowerDoodad:
+            return entities.tower
+        case is TrampolineDoodad:
+            return entities.trampoline
+        case is WormholeDoodad:
+            if wormholeBlueButton.enabled {
+                return entities.wormholeBlue
+            } else {
+                return entities.wormholeOrange
+            }
+        case is MilkItem:
+            return entities.milk
+        case is NukeItem:
+            return entities.nuke
+        case is ProjectileItem:
+            return entities.projectile
+        default:
+            return entities.wall
         }
     }
 }
