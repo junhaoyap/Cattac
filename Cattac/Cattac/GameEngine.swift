@@ -183,7 +183,7 @@ class GameEngine {
         case .ActionsExecution:
             state = .PostExecution
         case .PostExecution:
-            if gameManager.gameEnded {
+            if gameManager.gameEnded || currentPlayer.isDead {
                 state = .GameEnded
             } else {
                 state = .Precalculation
