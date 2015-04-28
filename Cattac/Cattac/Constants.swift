@@ -90,7 +90,7 @@ struct Constants {
             grumpyCat: (400, 1, 55, 30, 15, 2, 2),
             nyanCat:   (500, 1, 50, 25, 15, 2, 2),
             kittyCat:  (600, 1, 45, 20, 15, 2, 2),
-            octoCat:   (500, 1, 40, 30, 15, 2, 2)
+            octoCat:   (1, 1, 40, 30, 15, 2, 2)
         ]
 
         static let images = [

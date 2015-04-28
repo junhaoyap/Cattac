@@ -185,6 +185,7 @@ class GameManager {
     }
     
     var allTurnsCompleted: Bool {
+        println("End: \(_playerTurnComplete.count), \(_players.count)")
         return _playerTurnComplete.count == _players.count - 1
     }
 

@@ -161,7 +161,11 @@ class GameEngine {
     private func advanceState() {
         switch state {
         case .Precalculation:
-            state = .PlayerAction
+            if currentPlayer.isDead {
+                state = .ServerUpdate
+            } else {
+                state = .PlayerAction
+            }
         case .PlayerAction:
             if multiplayer {
                 state = .ServerUpdate
@@ -183,7 +187,8 @@ class GameEngine {
         case .ActionsExecution:
             state = .PostExecution
         case .PostExecution:
-            if gameManager.gameEnded || currentPlayer.isDead {
+            let singlePlayerEnd = !multiplayer && currentPlayer.isDead
+            if gameManager.gameEnded || singlePlayerEnd {
                 state = .GameEnded
             } else {
                 state = .Precalculation
