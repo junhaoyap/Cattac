@@ -110,6 +110,16 @@ class LevelDesignerViewController: UIViewController {
 
         for tileNode in designerGrid {
             level.grid[tileNode.position] = tileNode
+
+            // Removes reference to parent as we are not doing a deep copy of
+            // the grid. So the sprite nodes may still be attached to the 
+            // parent nodes.
+            tileNode.sprite.removeFromParent()
+            if let doodad = tileNode.doodad {
+                doodad.getSprite().removeFromParent()
+            } else if let item = tileNode.item {
+                item.getSprite().removeFromParent()
+            }
         }
 
         level.grid.constructGraph()
