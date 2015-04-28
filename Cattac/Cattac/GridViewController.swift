@@ -110,7 +110,37 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
             let tileSize = sceneUtils.tileSize
             tile.frame = CGRectMake(0, 0, tileSize.width, tileSize.height)
             cell.addSubview(tile)
+
+            if isPlayerLocation(indexPath) {
+                addPlayer(cell,
+                    gridIndex: Grid.convert(indexPath, totalRows: rows))
+            }
+
             return cell
+    }
+
+    private func addPlayer(cell: UICollectionViewCell, gridIndex: GridIndex) {
+        func addImage(# named: String) {
+            let image = UIImage(named: named)
+            let imageView = UIImageView(image: image)
+            let tileSize = cell.frame.size
+            imageView.frame = CGRectMake(0, 0, tileSize.width, tileSize.height)
+            cell.addSubview(imageView)
+        }
+
+        if gridIndex.row == 0 {
+            if gridIndex.col == 0 {
+                addImage(named: "Grumpy.png")
+            } else if gridIndex.col == columns - 1 {
+                addImage(named: "Octocat.png")
+            }
+        } else if gridIndex.row == rows - 1 {
+            if gridIndex.col == 0 {
+                addImage(named: "Nyan.png")
+            } else if gridIndex.col == columns - 1 {
+                addImage(named: "HelloKitty.png")
+            }
+        }
     }
 
     // Used to register single tap on grid
