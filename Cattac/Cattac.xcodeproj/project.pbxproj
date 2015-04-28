@@ -188,6 +188,10 @@
 		BD0441C61AE3DFBB003B93BC /* OrangeArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BD0441C51AE3DFBB003B93BC /* OrangeArrow.png */; };
 		BD0441C71AE3DFBB003B93BC /* OrangeArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BD0441C51AE3DFBB003B93BC /* OrangeArrow.png */; };
 		BD29ED731ADBF03D0090B934 /* Poop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD29ED721ADBF03D0090B934 /* Poop.swift */; };
+		BD2F4C411AEFC97800CDDC2A /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4C401AEFC97800CDDC2A /* AlertBuilder.swift */; };
+		BD2F4C421AEFC97800CDDC2A /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4C401AEFC97800CDDC2A /* AlertBuilder.swift */; };
+		BD2F4C441AEFC9E100CDDC2A /* AlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4C431AEFC9E100CDDC2A /* AlertAction.swift */; };
+		BD2F4C451AEFC9E100CDDC2A /* AlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4C431AEFC9E100CDDC2A /* AlertAction.swift */; };
 		BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */; };
 		BDA19AA61AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
 		BDA19AA71AC556D200B7E9D4 /* TileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */; };
@@ -338,6 +342,8 @@
 		BD0441C21ADD3899003B93BC /* DateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		BD0441C51AE3DFBB003B93BC /* OrangeArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrangeArrow.png; sourceTree = "<group>"; };
 		BD29ED721ADBF03D0090B934 /* Poop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Poop.swift; sourceTree = "<group>"; };
+		BD2F4C401AEFC97800CDDC2A /* AlertBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
+		BD2F4C431AEFC9E100CDDC2A /* AlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertAction.swift; sourceTree = "<group>"; };
 		BDA19AA21AC54D4500B7E9D4 /* TileNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileNode.swift; sourceTree = "<group>"; };
 		BDA19AA51AC556D200B7E9D4 /* TileEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileEntity.swift; sourceTree = "<group>"; };
 		BDA19AB31AD029FF00B7E9D4 /* GameLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
@@ -727,6 +733,8 @@
 			isa = PBXGroup;
 			children = (
 				34BA89CA1ADA7CC500413C1B /* StringUtils.swift */,
+				BD2F4C401AEFC97800CDDC2A /* AlertBuilder.swift */,
+				BD2F4C431AEFC9E100CDDC2A /* AlertAction.swift */,
 				BD0441C21ADD3899003B93BC /* DateUtils.swift */,
 				763D97B71ADA7CDB0064B73C /* SceneUtils.swift */,
 			);
@@ -958,8 +966,10 @@
 			files = (
 				7661CF481AD4333E0004B0FD /* GridIndex.swift in Sources */,
 				342585391AACE0E6004A3CFD /* DoodadFactory.swift in Sources */,
+				BD2F4C441AEFC9E100CDDC2A /* AlertAction.swift in Sources */,
 				763E71291AD2F26500E90EF0 /* SKActionButtonNode.swift in Sources */,
 				3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */,
+				BD2F4C411AEFC97800CDDC2A /* AlertBuilder.swift in Sources */,
 				BDA19AB81AD034BF00B7E9D4 /* LandMineDoodad.swift in Sources */,
 				3425854E1AACE291004A3CFD /* HardLevel.swift in Sources */,
 				342584E71AACDB03004A3CFD /* GameScene.swift in Sources */,
@@ -1025,6 +1035,7 @@
 			files = (
 				76656A1E1AE64605004A3385 /* SKPlayerInfoNode.swift in Sources */,
 				768384091ADBD77500538F5D /* StringUtils.swift in Sources */,
+				BD2F4C451AEFC9E100CDDC2A /* AlertAction.swift in Sources */,
 				768383E21ADBD44900538F5D /* Grid.swift in Sources */,
 				768383E31ADBD44900538F5D /* GridIndex.swift in Sources */,
 				768383E41ADBD44900538F5D /* Direction.swift in Sources */,
@@ -1045,6 +1056,7 @@
 				768383EF1ADBD44900538F5D /* GameManager.swift in Sources */,
 				BDFF7F001AE648C000F2E942 /* ObserverReference.swift in Sources */,
 				768383F01ADBD44900538F5D /* GameAI.swift in Sources */,
+				BD2F4C421AEFC97800CDDC2A /* AlertBuilder.swift in Sources */,
 				768383F11ADBD44900538F5D /* Wall.swift in Sources */,
 				348213B11AE27CC40079BA49 /* HardLevel.swift in Sources */,
 				34AE22AA1AE4F6A700C0EA6D /* GameViewController.swift in Sources */,

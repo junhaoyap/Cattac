@@ -103,25 +103,13 @@ class GameViewController: UIViewController {
     
     @IBAction func backButtonPressed(sender: AnyObject) {
         let dismissActionHandler = {
-            (action: UIAlertAction!) in
-            
             self.performSegueWithIdentifier("endgameSegue", sender: self)
         }
         
-        let quitAlert = UIAlertController(title: "Quit Game",
-            message: "Are you sure you want to leave the game?",
-            preferredStyle: .Alert
-        )
-        
-        quitAlert.addAction(UIAlertAction(title: "Yes",
-            style: .Default,
-            handler: dismissActionHandler
-            ))
-        
-        quitAlert.addAction(UIAlertAction(title: "No",
-            style: .Default,
-            handler: nil
-            ))
+        let quitAlert = AlertBuilder("Quit Game",
+            "Are you sure you want to leave the game?",
+            AlertAction("Yes", dismissActionHandler),
+            AlertAction("No", nil))
         
         presentViewController(quitAlert, animated: true, completion: nil)
     }
