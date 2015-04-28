@@ -585,6 +585,7 @@ class GameEngine {
             if !currentPlayer.isDead {
                 gameManager.playerTurn(currentPlayer,
                     moveTo: moveToTile, action: action)
+                checkAllTurns()
             }
         }
         
@@ -692,10 +693,10 @@ class GameEngine {
                 action = ItemAction(item: item!, targetNode: node,
                     targetPlayer: targetPlayer)
             }
-            
-            gameManager.playerTurn(player, moveTo: dest, action: action)
-            checkAllTurns()
         }
+        
+        gameManager.playerTurn(player, moveTo: dest, action: action)
+        checkAllTurns()
     }
 
     func getGrid() -> Grid {
