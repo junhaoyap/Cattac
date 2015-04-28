@@ -263,6 +263,10 @@ class Grid {
                     }
                 }
             }
+                
+            while nodes.last != nil && nodes.last!.isEmpty {
+                nodes.removeLast()
+            }
 
             return nodes
     }
