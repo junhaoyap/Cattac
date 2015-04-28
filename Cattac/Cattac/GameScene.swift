@@ -230,7 +230,6 @@ extension GameScene: GameStateListener {
 }
 
 
-
 extension GameScene: EventListener {
     /// Updates the scene based on the current action selected.
     ///
@@ -615,8 +614,14 @@ private extension GameScene {
     }
     
     func endGame() {
-        let endGameAlert = AlertBuilder("Game End",
-        "The game has ended.\nScore: \(gameManager.playerRanks)",
+        var message: String!
+        if gameEngine.currentPlayer.isDead {
+            message = "You lost!"
+        } else {
+            message = "The game has ended.\nScore: \(gameManager.playerRanks)"
+        }
+        
+        let endGameAlert = AlertBuilder("Game End", message,
             AlertAction("Exit", {
                 (alertAction) in
                 self.applicationUIListener?.endGame()
