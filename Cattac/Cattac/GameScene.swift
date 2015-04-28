@@ -1,5 +1,10 @@
 import SpriteKit
 
+protocol ApplicationUIListener {
+    func presentAlert(alert: UIAlertController)
+    func endGame()
+}
+
 /// The spritekit scene for the game, in charge of drawing and animating all 
 /// entities of the game.
 class GameScene: SKScene {
@@ -10,6 +15,8 @@ class GameScene: SKScene {
     /// Game Manager that contains all the information for the current state of
     /// the game.
     let gameManager: GameManager!
+    
+    private var applicationUIListener: ApplicationUIListener?
 
     /// Current level for the game.
     private let level: GameLevel!
@@ -161,6 +168,10 @@ class GameScene: SKScene {
     override func willMoveFromView(view: SKView) {
         timer.invalidate()
     }
+    
+    func setUIListener(listener: ApplicationUIListener) {
+        applicationUIListener = listener
+    }
 
     func updateTime() {
         if currentTime == 0 {
@@ -210,6 +221,8 @@ extension GameScene: GameStateListener {
             performActions()
             performPendingAnimations()
             unselectActionButtons()
+        case .GameEnded:
+            endGame()
         default:
             break
         }
@@ -599,6 +612,17 @@ private extension GameScene {
         entityNode.hidden = !tileEntity.isVisible()
         entityNode.position = spriteNode.position
         entityLayer.addChild(entityNode)
+    }
+    
+    func endGame() {
+        let endGameAlert = AlertBuilder("Game End",
+        "The game has ended.\nScore: \(gameManager.playerRanks)",
+            AlertAction("Exit", {
+                (alertAction) in
+                self.applicationUIListener?.endGame()
+                return
+            }))
+        applicationUIListener?.presentAlert(endGameAlert.controller)
     }
 
     /// Sets the next position to move to for the current player.

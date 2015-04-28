@@ -17,21 +17,24 @@ struct AlertBuilder {
         self.defaultAction = defaultAction
     }
     
-    init(_ title: String, _ message: String, _ defaultAction: AlertAction, _ cancelAction: AlertAction) {
-        self.title = title
-        self.message = message
-        self.defaultAction = defaultAction
-        self.cancelAction = cancelAction
+    init(_ title: String, _ message: String, _ defaultAction: AlertAction,
+        _ cancelAction: AlertAction) {
+            self.title = title
+            self.message = message
+            self.defaultAction = defaultAction
+            self.cancelAction = cancelAction
     }
     
     var controller: UIAlertController {
         let alert = UIAlertController(title: title, message: message,
             preferredStyle: UIAlertControllerStyle.Alert)
         if defaultAction != nil {
-            alert.addAction(UIAlertAction(title: defaultAction!.text, style: .Default, handler: defaultAction!.action))
+            alert.addAction(UIAlertAction(title: defaultAction!.text,
+                style: .Default, handler: defaultAction!.action))
         }
         if cancelAction != nil {
-            alert.addAction(UIAlertAction(title: cancelAction!.text, style: .Cancel, handler: cancelAction!.action))
+            alert.addAction(UIAlertAction(title: cancelAction!.text,
+                style: .Cancel, handler: cancelAction!.action))
         }
         return alert
     }

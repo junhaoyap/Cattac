@@ -29,7 +29,7 @@ extension SKNode {
     }
 }
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, ApplicationUIListener {
     @IBOutlet weak var musicImage: UIButton!
     @IBOutlet weak var soundImage: UIButton!
     
@@ -68,6 +68,7 @@ class GameViewController: UIViewController {
             currentPlayerNumber: playerNumber, multiplayer: multiplayer,
             names: playerNames
         )
+        scene.setUIListener(self)
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
@@ -101,17 +102,26 @@ class GameViewController: UIViewController {
         return true
     }
     
+    func presentAlert(alert: UIAlertController) {
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func endGame() {
+        exitGame(nil)
+    }
+    
+    private func exitGame(action: UIAlertAction!) {
+        self.performSegueWithIdentifier("endgameSegue", sender: self)
+    }
+    
     @IBAction func backButtonPressed(sender: AnyObject) {
-        let dismissActionHandler = {
-            self.performSegueWithIdentifier("endgameSegue", sender: self)
-        }
-        
         let quitAlert = AlertBuilder("Quit Game",
             "Are you sure you want to leave the game?",
-            AlertAction("Yes", dismissActionHandler),
+            AlertAction("Yes", exitGame),
             AlertAction("No", nil))
         
-        presentViewController(quitAlert, animated: true, completion: nil)
+        presentViewController(quitAlert.controller, animated: true,
+            completion: nil)
     }
     
     @IBAction func soundButtonPressed(sender: UIButton) {
