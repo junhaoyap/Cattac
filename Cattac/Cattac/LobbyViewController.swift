@@ -44,6 +44,8 @@ class LobbyViewController: UIViewController {
                         destinationVC.playerNumber = playerNumber
                         destinationVC.multiplayer = true
                         destinationVC.playerNames = playerNames
+                        destinationVC.unwindIdentifer =
+                            "endgameToGameDifficultyViewSegue"
                 }
             }
     }

@@ -120,7 +120,6 @@ class GameScene: SKScene {
             // Sets the anchorpoint for the scene to be the center of the screen
             anchorPoint = CGPoint(x: 0.5, y: 0.5)
 
-            initializeBackground()
             initializeLayers()
             initializeButtons()
 
@@ -344,29 +343,14 @@ extension GameScene: EventListener {
 
 
 
-
 private extension GameScene {
-    /// Sets the game background image.
-    func initializeBackground() {
-        let image = UIImage(named: "background.jpg")!
-        let backgroundCGImage = image.CGImage
-        let textureSize = CGRectMake(0, 0, image.size.width, image.size.height)
-
-        UIGraphicsBeginImageContext(size)
-        let context = UIGraphicsGetCurrentContext()
-        CGContextDrawTiledImage(context, textureSize, backgroundCGImage)
-        let tiledBackground = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        let backgroundTexture = SKTexture(CGImage: tiledBackground.CGImage)
-        let backgroundImage  = SKSpriteNode(texture: backgroundTexture)
-        backgroundImage.yScale = -1
-        backgroundImage.zPosition = Constants.Z.background
-
-        self.addChild(backgroundImage)
-    }
     
     func initializeLayers() {
+        let background = SKSpriteNode(imageNamed: "Background.png")
+        background.size = self.size
+        background.zPosition = Constants.Z.background
+        self.addChild(background)
+
         self.addChild(gameLayer)
         // position of the general game layer
         let layerPosition = sceneUtils.getLayerPosition()
