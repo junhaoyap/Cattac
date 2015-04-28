@@ -63,8 +63,6 @@
 		3459ABC81ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */; };
 		346D4CF71AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4CF61AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift */; };
 		346D4CF81AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4CF61AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift */; };
-		346D4CFA1AEF5333005FDDE6 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4CF91AEF5333005FDDE6 /* PaletteViewController.swift */; };
-		346D4CFB1AEF5333005FDDE6 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4CF91AEF5333005FDDE6 /* PaletteViewController.swift */; };
 		346D4CFD1AEF5951005FDDE6 /* Eraser.png in Resources */ = {isa = PBXBuildFile; fileRef = 346D4CFC1AEF5951005FDDE6 /* Eraser.png */; };
 		346D4CFE1AEF5951005FDDE6 /* Eraser.png in Resources */ = {isa = PBXBuildFile; fileRef = 346D4CFC1AEF5951005FDDE6 /* Eraser.png */; };
 		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
@@ -119,6 +117,7 @@
 		34ED9F231AE29F41006DDA50 /* FirebaseServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */; };
 		760645361AE2830E00CC0279 /* Poop.png in Resources */ = {isa = PBXBuildFile; fileRef = 760645351AE2830E00CC0279 /* Poop.png */; };
 		761BB59E1AD04348007C31C1 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761BB59D1AD04348007C31C1 /* Action.swift */; };
+		76344EDD1AEF834800848789 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76344EDC1AEF834800848789 /* GridViewController.swift */; };
 		763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763D97B71ADA7CDB0064B73C /* SceneUtils.swift */; };
 		763E71171AD1B78D00E90EF0 /* Grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71161AD1B78D00E90EF0 /* Grass.png */; };
 		763E71191AD1B87C00E90EF0 /* GrassPreview.png in Resources */ = {isa = PBXBuildFile; fileRef = 763E71181AD1B87C00E90EF0 /* GrassPreview.png */; };
@@ -268,7 +267,6 @@
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		3459ABC71ADB7AEA00B31247 /* NyanBackgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = NyanBackgroundMusic.mp3; sourceTree = "<group>"; };
 		346D4CF61AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerCollectionViewController.swift; sourceTree = "<group>"; };
-		346D4CF91AEF5333005FDDE6 /* PaletteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
 		346D4CFC1AEF5951005FDDE6 /* Eraser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Eraser.png; sourceTree = "<group>"; };
 		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
 		3471CA581ACDAE6500B0E68D /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
@@ -304,6 +302,7 @@
 		34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseServer.swift; sourceTree = "<group>"; };
 		760645351AE2830E00CC0279 /* Poop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poop.png; path = Images.xcassets/Poop.png; sourceTree = "<group>"; };
 		761BB59D1AD04348007C31C1 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		76344EDC1AEF834800848789 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		763D97B71ADA7CDB0064B73C /* SceneUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneUtils.swift; sourceTree = "<group>"; };
 		763E71161AD1B78D00E90EF0 /* Grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Grass.png; path = Images.xcassets/Grass.png; sourceTree = "<group>"; };
 		763E71181AD1B87C00E90EF0 /* GrassPreview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GrassPreview.png; path = Images.xcassets/GrassPreview.png; sourceTree = "<group>"; };
@@ -492,7 +491,7 @@
 				34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */,
 				342584E81AACDB03004A3CFD /* GameViewController.swift */,
 				346D4CF61AEF5192005FDDE6 /* LevelDesignerCollectionViewController.swift */,
-				346D4CF91AEF5333005FDDE6 /* PaletteViewController.swift */,
+				76344EDC1AEF834800848789 /* GridViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -994,11 +993,11 @@
 				763D97B81ADA7CDB0064B73C /* SceneUtils.swift in Sources */,
 				34DFC1541ACEF5B400B9073C /* LoginViewController.swift in Sources */,
 				BDFF7EFF1AE648C000F2E942 /* ObserverReference.swift in Sources */,
+				76344EDD1AEF834800848789 /* GridViewController.swift in Sources */,
 				3425854A1AACE27D004A3CFD /* BasicLevel.swift in Sources */,
 				342585411AACE196004A3CFD /* Cat.swift in Sources */,
 				763E71331AD2FFB200E90EF0 /* SKDirectionButtonNode.swift in Sources */,
 				34A356361AD1896000299049 /* Wall.swift in Sources */,
-				346D4CFA1AEF5333005FDDE6 /* PaletteViewController.swift in Sources */,
 				3425851D1AACDF40004A3CFD /* SoundPlayer.swift in Sources */,
 				BDA19AA31AC54D4500B7E9D4 /* TileNode.swift in Sources */,
 				342585511AACE30F004A3CFD /* LevelGenerator.swift in Sources */,
@@ -1067,7 +1066,6 @@
 				34AE22AA1AE4F6A700C0EA6D /* GameViewController.swift in Sources */,
 				768383F21ADBD44900538F5D /* WormholeDoodad.swift in Sources */,
 				768383F31ADBD44900538F5D /* LandMineDoodad.swift in Sources */,
-				346D4CFB1AEF5333005FDDE6 /* PaletteViewController.swift in Sources */,
 				768383F41ADBD44900538F5D /* FortressDoodad.swift in Sources */,
 				768384051ADBD55B00538F5D /* GridTests.swift in Sources */,
 				34AE22AB1AE4F8EC00C0EA6D /* DateUtils.swift in Sources */,
