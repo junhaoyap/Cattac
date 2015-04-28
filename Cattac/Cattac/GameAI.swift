@@ -70,7 +70,7 @@ class GameAI {
     }
     
     private func aiUseItem(item: Item, onPlayer player: Cat) -> ItemAction {
-        if item.canTargetOthers() {
+        if item.canTargetOthers() && !item.shouldTargetAll() {
             let targetPlayerNum = Int(arc4random_uniform(UInt32(4))) + 1
             let target = gameEngine.gameManager[playerWithNum: targetPlayerNum]!
             let node = gameEngine.gameManager[moveToPositionOf: player]!
