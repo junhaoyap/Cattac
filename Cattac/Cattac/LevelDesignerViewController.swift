@@ -1,11 +1,18 @@
-
-
 import UIKit
 
 class LevelDesignerViewController: UIViewController {
 
+    private var gridViewController: GridViewController!
+    private var currentPaletteButton: UIButton!
+    private let selection = UIImageView(image: UIImage(named: "ButtonSelect.png"))
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let fortressButton: UIButton = self.view.viewWithTag(1) as UIButton
+        setPaletteButton(fortressButton)
+
+        self.view.addSubview(selection)
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,6 +32,9 @@ class LevelDesignerViewController: UIViewController {
                     // let level = levelGenerator.generateBasic()
                     // destinationVC.level = level
             }
+        } else if segue.identifier == "gridContainer" {
+            self.gridViewController = segue.destinationViewController
+                as GridViewController
         }
     }
 
@@ -43,8 +53,21 @@ class LevelDesignerViewController: UIViewController {
     }
 
     @IBAction func controlPressed(sender: UIButton) {
-        // TODO: Can be any of the buttons, check which one is pressed
+        setPaletteButton(sender)
+    }
 
-        println("control pressed")
+    private func setPaletteButton(button: UIButton) {
+        gridViewController?.setCurrentAction(button.currentTitle!)
+
+        currentPaletteButton?.alpha = 0.5
+        currentPaletteButton = button
+        currentPaletteButton?.alpha = 1
+
+        selection.frame = CGRectMake(
+            button.frame.minX - 10,
+            button.frame.minY - 10,
+            button.frame.width + 20,
+            button.frame.height + 20
+        )
     }
 }

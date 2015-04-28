@@ -549,94 +549,93 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Background.png" translatesAutoresizingMaskIntoConstraints="NO" id="wd8-rU-xT9">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" alpha="0.64999999999999969" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pvk-2H-J6g" userLabel="blackBar">
-                                <rect key="frame" x="0.0" y="924" width="768" height="100"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BottomBoard.png" translatesAutoresizingMaskIntoConstraints="NO" id="wPv-ez-FbL">
+                                <rect key="frame" x="-5" y="840" width="773" height="184"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Cq-nZ-EjH" userLabel="fortressButton">
-                                <rect key="frame" x="16" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="Fortress.png">
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Cq-nZ-EjH" userLabel="fortressButton">
+                                <rect key="frame" x="32" y="896" width="60" height="60"/>
+                                <state key="normal" title="Fortress" image="Fortress.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="01N-pP-uDB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6i-5c-uHv" userLabel="towerButton">
-                                <rect key="frame" x="84" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="Tower.png">
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6i-5c-uHv" userLabel="towerButton">
+                                <rect key="frame" x="100" y="896" width="60" height="60"/>
+                                <state key="normal" title="Tower" image="Tower.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="8zk-p4-JTh"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qR1-fL-w7p" userLabel="tramponlineButton">
-                                <rect key="frame" x="152" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="Trampoline.png">
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qR1-fL-w7p" userLabel="tramponlineButton">
+                                <rect key="frame" x="168" y="896" width="60" height="60"/>
+                                <state key="normal" title="Trampoline" image="Trampoline.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="Zmf-Fp-4BQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pbZ-3n-4zk" userLabel="wormholeBlueButton">
-                                <rect key="frame" x="220" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="WormholeBlue.png">
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pbZ-3n-4zk" userLabel="wormholeBlueButton">
+                                <rect key="frame" x="236" y="896" width="60" height="60"/>
+                                <state key="normal" title="WormholeBlue" image="WormholeBlue.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="X7W-4B-e0a"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-aF-7Gu" userLabel="wormholeOrangeButton">
-                                <rect key="frame" x="288" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="WormholeOrange.png">
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-aF-7Gu" userLabel="wormholeOrangeButton">
+                                <rect key="frame" x="304" y="896" width="60" height="60"/>
+                                <state key="normal" title="WormholeOrange" image="WormholeOrange.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="0Ir-az-IKY"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CuP-Ll-bnr" userLabel="milkButton">
-                                <rect key="frame" x="356" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="Milk.png">
+                            <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CuP-Ll-bnr" userLabel="milkButton">
+                                <rect key="frame" x="372" y="896" width="60" height="60"/>
+                                <state key="normal" title="Milk" image="Milk.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="tTJ-dG-8U0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjh-vJ-CoZ" userLabel="nukeButton">
-                                <rect key="frame" x="424" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="Nuke.png">
+                            <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjh-vJ-CoZ" userLabel="nukeButton">
+                                <rect key="frame" x="440" y="896" width="60" height="60"/>
+                                <state key="normal" title="Nuke" image="Nuke.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="oyi-dm-4Cs"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQR-1X-ywu" userLabel="projectileButton">
-                                <rect key="frame" x="492" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="Projectile.png">
+                            <button opaque="NO" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQR-1X-ywu" userLabel="projectileButton">
+                                <rect key="frame" x="508" y="896" width="60" height="60"/>
+                                <state key="normal" title="Projectile" image="Projectile.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="ixF-s1-pfM"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9rr-wS-chX" userLabel="rockButton">
-                                <rect key="frame" x="560" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="Rock.png">
+                            <button opaque="NO" tag="9" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9rr-wS-chX" userLabel="rockButton">
+                                <rect key="frame" x="576" y="896" width="60" height="60"/>
+                                <state key="normal" title="Wall" image="Rock.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="controlPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="po4-78-Zh2"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vOI-Cm-D5v" userLabel="eraserButton">
-                                <rect key="frame" x="628" y="944" width="60" height="60"/>
-                                <state key="normal" title="Button" image="Eraser.png">
+                            <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vOI-Cm-D5v" userLabel="eraserButton">
+                                <rect key="frame" x="644" y="896" width="60" height="60"/>
+                                <state key="normal" title="Eraser" image="Eraser.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -644,7 +643,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ewb-bM-uZb">
-                                <rect key="frame" x="607" y="799" width="145" height="117"/>
+                                <rect key="frame" x="32" y="20" width="145" height="117"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
                                 <state key="normal" title="Back" backgroundImage="BottomBoard.png">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -654,19 +653,8 @@
                                     <segue destination="l9H-8g-f4a" kind="show" id="496-sq-RJE"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="raQ-fq-CYF">
-                                <rect key="frame" x="404" y="799" width="145" height="117"/>
-                                <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
-                                <state key="normal" title="Load" backgroundImage="BottomBoard.png">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="loadPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="o4b-XQ-0xw"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Igb-F1-FjT">
-                                <rect key="frame" x="204" y="799" width="145" height="117"/>
+                                <rect key="frame" x="219" y="20" width="145" height="117"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
                                 <state key="normal" title="Save" backgroundImage="BottomBoard.png">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -677,7 +665,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UvD-mI-Zyk">
-                                <rect key="frame" x="16" y="799" width="145" height="117"/>
+                                <rect key="frame" x="607" y="20" width="145" height="117"/>
                                 <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
                                 <state key="normal" title="Play" backgroundImage="BottomBoard.png">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -689,11 +677,22 @@
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zjJ-aM-a4D">
-                                <rect key="frame" x="64" y="64" width="640" height="640"/>
+                                <rect key="frame" x="64" y="192" width="640" height="640"/>
                                 <connections>
-                                    <segue destination="pqy-Bj-Yqb" kind="embed" id="99q-OV-tI9"/>
+                                    <segue destination="pqy-Bj-Yqb" kind="embed" identifier="gridContainer" id="99q-OV-tI9"/>
                                 </connections>
                             </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="raQ-fq-CYF">
+                                <rect key="frame" x="414" y="20" width="145" height="117"/>
+                                <fontDescription key="fontDescription" name="BubblegumSans-Regular" family="Bubblegum Sans" pointSize="24"/>
+                                <state key="normal" title="Load" backgroundImage="BottomBoard.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loadPressed:" destination="vGh-5f-nri" eventType="touchUpInside" id="o4b-XQ-0xw"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
