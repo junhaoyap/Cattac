@@ -113,6 +113,7 @@ class GameEngine {
             updateServer(playerNumber)
             triggerStateAdvance()
         case .WaitForAll:
+            updateTurns()
             countDownForDrop()
             gameAI.calculateTurn()
             spawnItem()
@@ -155,8 +156,10 @@ class GameEngine {
     private func advanceState() {
         switch state {
         case .Precalculation:
-            if currentPlayer.isDead {
+            if currentPlayer.isDead && multiplayer {
                 state = .ServerUpdate
+            } else if currentPlayer.isDead {
+                state = .WaitForAll
             } else {
                 state = .PlayerAction
             }
@@ -223,13 +226,13 @@ class GameEngine {
     @objc func onCountDownForDrop() {
         println("Initiate drop inactive players")
         if !gameManager.allTurnsCompleted {
-            var playersToDrop: [Cat] = []
             for (name, player) in gameManager.players {
                 if gameManager.samePlayer(player, currentPlayer) {
                     continue
                 }
                 if gameManager.playersTurnCompleted[name] == nil {
                     let playerNum = gameManager[playerNumFor: player]!
+                    println("drop \(player.name)")
                     gameConnectionManager.dropPlayer(playerNum)
                     gameManager[aiFor: player] = true
                 }
@@ -536,6 +539,15 @@ class GameEngine {
     
     private func notifyAction() {
         eventListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
+    }
+    
+    private func updateTurns() {
+        if !multiplayer {
+            let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
+            let action = gameManager[actionOf: currentPlayer]
+            gameManager.playerTurn(currentPlayer,
+                moveTo: moveToTile, action: action)
+        }
     }
     
     private func updateServer(playerNum: Int) {

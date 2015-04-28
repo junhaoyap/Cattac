@@ -113,7 +113,7 @@ class GameViewController: UIViewController, ApplicationUIListener {
     }
     
     private func exitGame(action: UIAlertAction!) {
-        self.performSegueWithIdentifier("endgameSegue", sender: self)
+        self.performSegueWithIdentifier(self.unwindIdentifer, sender: self)
     }
     
     @IBAction func backButtonPressed(sender: AnyObject) {
