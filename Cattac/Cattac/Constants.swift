@@ -101,10 +101,33 @@ struct Constants {
                 return Images.milk
             case Title.nuke:
                 return Images.nuke
-            case Title.wall:
-                return Images.wall
             case Title.projectile:
                 return Images.projectile
+            case Title.wall:
+                return Images.wall
+            default:
+                return nil
+            }
+        }
+
+        static func getObject(title: String) -> TileEntity? {
+            switch title {
+            case Title.fortress:
+                return FortressDoodad()
+            case Title.tower:
+                return WatchTowerDoodad()
+            case Title.trampoline:
+                return TrampolineDoodad()
+            case Title.wormholeBlue, Title.wormholeOrange:
+                return WormholeDoodad()
+            case Title.milk:
+                return MilkItem()
+            case Title.nuke:
+                return NukeItem()
+            case Title.projectile:
+                return ProjectileItem()
+            case Title.wall:
+                return Wall()
             default:
                 return nil
             }

@@ -27,10 +27,17 @@ class LevelDesignerViewController: UIViewController {
         if segue.identifier == "designGameStartSegue" {
             if let destinationVC = segue.destinationViewController
                 as? GameViewController {
-                    // TODO: Make a level with the collection view controller
-                    // and send it via segue and as single player
-                    // let level = levelGenerator.generateBasic()
-                    // destinationVC.level = level
+                    let level = BasicLevel()
+                    level.grid = gridViewController.grid
+                    level.grid.constructGraph()
+
+                    for indexPath in gridViewController.wallLocations.keys {
+                        let tileNodeToRemove = level.grid[indexPath.section,
+                                                          indexPath.row]!
+                        level.grid.removeNodeFromGraph(tileNodeToRemove)
+                    }
+
+                    destinationVC.level = level
             }
         } else if segue.identifier == "gridContainer" {
             self.gridViewController = segue.destinationViewController

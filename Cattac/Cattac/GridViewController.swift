@@ -12,6 +12,8 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     private let rows = Constants.Level.basicRows
     private let columns = Constants.Level.basicColumns
     private var sceneUtils: SceneUtils!
+    var wallLocations: [NSIndexPath:UICollectionViewCell] = [:]
+    var grid: Grid!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,13 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
 
         sceneUtils = SceneUtils(windowWidth: gridViewWidth, numRows: rows,
             numColumns: columns)
+        grid = Grid(rows: rows, columns: columns)
+        for row in 0..<rows {
+            for column in 0..<columns {
+                let tileNode = TileNode(row: row, column: column)
+                grid[row, column] = tileNode
+            }
+        }
 
         // Defines the layout for the UICollectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -133,11 +142,29 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
                 cell.frame.width, cell.frame.height)
             entityImageView.tag = tileEntityTag
             cell.addSubview(entityImageView)
+
+            let tileNode = grid[indexPath.section, indexPath.row]!
+            let entityObject = Constants.Entities.getObject(entity)
+            if entityObject is Doodad {
+                tileNode.doodad = (entityObject as Doodad)
+            } else if entityObject is Item {
+                tileNode.item = (entityObject as Item)
+            }
+
+            if entity == Constants.Entities.Title.wall {
+                wallLocations[indexPath] = cell
+            }
     }
 
     private func removeTileEntity(cell: UICollectionViewCell,
         indexPath: NSIndexPath) {
             cell.viewWithTag(tileEntityTag)?.removeFromSuperview()
+
+            let tileNode = grid[indexPath.section, indexPath.row]!
+            tileNode.doodad = nil
+            tileNode.item = nil
+
+            wallLocations.removeValueForKey(indexPath)
     }
 
     private func changeTileEntity(cell: UICollectionViewCell, toggle: Bool,
