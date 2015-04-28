@@ -31,9 +31,8 @@ class LevelDesignerViewController: UIViewController {
                     level.grid = gridViewController.grid
                     level.grid.constructGraph()
 
-                    for indexPath in gridViewController.wallLocations.keys {
-                        let tileNodeToRemove = level.grid[indexPath.section,
-                                                          indexPath.row]!
+                    for gridIndex in gridViewController.wallLocations.keys {
+                        let tileNodeToRemove = level.grid[gridIndex]!
                         level.grid.removeNodeFromGraph(tileNodeToRemove)
                     }
 

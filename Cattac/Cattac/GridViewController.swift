@@ -1,6 +1,21 @@
 import Foundation
 import UIKit
 
+private extension Grid {
+    subscript(indexPath: NSIndexPath) -> TileNode? {
+        get {
+            return self[Grid.convert(indexPath, totalRows: rows)]
+        }
+        set {
+            self[Grid.convert(indexPath, totalRows: rows)] = newValue
+        }
+    }
+
+    class func convert(indexPath: NSIndexPath, totalRows: Int) -> GridIndex {
+        return GridIndex(totalRows - indexPath.section - 1, indexPath.row)
+    }
+}
+
 let gridCellIdentifier = "gridCellIdentifier"
 let tileEntityTag = 20
 
@@ -12,7 +27,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     private let rows = Constants.Level.basicRows
     private let columns = Constants.Level.basicColumns
     private var sceneUtils: SceneUtils!
-    var wallLocations: [NSIndexPath:UICollectionViewCell] = [:]
+    var wallLocations: [GridIndex:UICollectionViewCell] = [:]
     var grid: Grid!
 
     override func viewDidLoad() {
@@ -143,7 +158,8 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
             entityImageView.tag = tileEntityTag
             cell.addSubview(entityImageView)
 
-            let tileNode = grid[indexPath.section, indexPath.row]!
+            let gridIndex = Grid.convert(indexPath, totalRows: rows)
+            let tileNode = grid[gridIndex]!
             let entityObject = Constants.Entities.getObject(entity)
             if entityObject is Doodad {
                 tileNode.doodad = (entityObject as Doodad)
@@ -152,7 +168,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
             }
 
             if entity == Constants.Entities.Title.wall {
-                wallLocations[indexPath] = cell
+                wallLocations[gridIndex] = cell
             }
     }
 
@@ -160,11 +176,12 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         indexPath: NSIndexPath) {
             cell.viewWithTag(tileEntityTag)?.removeFromSuperview()
 
-            let tileNode = grid[indexPath.section, indexPath.row]!
+            let gridIndex = Grid.convert(indexPath, totalRows: rows)
+            let tileNode = grid[rows - indexPath.section, indexPath.row]!
             tileNode.doodad = nil
             tileNode.item = nil
 
-            wallLocations.removeValueForKey(indexPath)
+            wallLocations.removeValueForKey(gridIndex)
     }
 
     private func changeTileEntity(cell: UICollectionViewCell, toggle: Bool,
