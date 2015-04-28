@@ -463,7 +463,7 @@ class GameConnectionManager {
     // MARK: GameEngine
     
     func updateServer(playerNumber: Int, currentTile: TileNode,
-        moveToTile: TileNode, action: Action?, number: Int) {
+        moveToTile: TileNode, action: Action?, number: Int, targetNum: Int) {
             let playerMoveUpdateRef = connectionManager.append(
                 Constants.Firebase.nodeGames + "/" +
                 Constants.Firebase.nodeGame + "/" +
@@ -488,7 +488,7 @@ class GameConnectionManager {
                 ]
             } else {
                 let targetNode = action?.targetNode
-                let item = (action as? ItemAction)?.item
+                let itemAction = action as? ItemAction
                 
                 moveData = [
                     Constants.Firebase.keyMoveFromRow: currentTile.position.row,
@@ -509,7 +509,8 @@ class GameConnectionManager {
                     Constants.Firebase.keyItemCol:
                         targetNode != nil ? targetNode!.position.col : 0,
                     Constants.Firebase.keyItemName:
-                        item != nil ? item!.name : ""
+                        itemAction != nil ? itemAction!.item.name : "",
+                    Constants.Firebase.keyItemVictim: targetNum
                 ]
             }
             

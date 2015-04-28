@@ -147,6 +147,7 @@ struct Constants {
         static let keyItemRow = "itemRow"
         static let keyItemCol = "itemCol"
         static let keyItemName = "itemName"
+        static let keyItemVictim = "itemVictim"
         
         // max wait time before dropping inactive player
         static let maxDelayBeforeDrop: NSTimeInterval = 8
