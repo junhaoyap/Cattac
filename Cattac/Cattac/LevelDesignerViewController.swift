@@ -1,6 +1,7 @@
 import UIKit
 
 class LevelDesignerViewController: UIViewController {
+    @IBOutlet weak var currentFile: UILabel!
 
     private var gridViewController: GridViewController!
     private var currentPaletteButton: UIButton!
@@ -58,13 +59,13 @@ class LevelDesignerViewController: UIViewController {
 
     @IBAction func savePressed(sender: UIButton) {
         var title: String = "Save Level"
-        var message: String = ""
+        var message: String = "Please enter a level name:"
 
         if currentLevelName != nil {
-            message = "Replace current level."
+            message = "Replace current level?"
         }
 
-        var alert = UIAlertController(title: title, message: nil,
+        var alert = UIAlertController(title: title, message: message,
             preferredStyle: UIAlertControllerStyle.Alert)
 
         alert.addTextFieldWithConfigurationHandler(
@@ -87,7 +88,7 @@ class LevelDesignerViewController: UIViewController {
                 var textField = alert.textFields!.first! as UITextField
                 Storage.saveLevel(textField.text,
                     levelData: self.createLevel().compress())
-                //self.currentFile.text = textField.text
+                self.currentFile.text = textField.text
         }))
 
         if self.currentLevelName == nil {
@@ -111,7 +112,7 @@ class LevelDesignerViewController: UIViewController {
                         self.gridViewController.load(data)
                     }
                     self.currentLevelName = action.title
-                    //self.currentFile.text = action.title
+                    self.currentFile.text = action.title
             }))
         }
         alert.addAction(UIAlertAction(title: "New Level",
@@ -119,7 +120,7 @@ class LevelDesignerViewController: UIViewController {
             { (action: UIAlertAction!) -> Void in
                 self.currentLevelName = nil
                 self.gridViewController.reset()
-                //self.currentFile.text = "*unsaved level*"
+                self.currentFile.text = "*unsaved level*"
         }))
 
         alert.addAction(UIAlertAction(title: "Cancel",
@@ -147,9 +148,9 @@ class LevelDesignerViewController: UIViewController {
         }
 
         if currentLevelName != nil && text == currentLevelName! {
-            alert.message = "Replace current level."
+            alert.message = "Replace current level?"
         } else {
-            alert.message = ""
+            alert.message = "Please enter a level name:"
         }
 
         (alert.actions[1] as UIAlertAction).enabled = enableSave
