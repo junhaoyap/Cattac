@@ -88,13 +88,12 @@ class LevelDesignerViewController: UIViewController {
         let title = "Oops!"
         let message = "It seems like the players cannot reach each other."
         let dismissButton = "Back"
-        let alert = UIAlertController(title: title, message: message,
-            preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let alert = AlertBuilder(title, message,
+            AlertAction(dismissButton, nil))
 
-        alert.addAction(UIAlertAction(title: dismissButton,
-            style: UIAlertActionStyle.Default, handler: nil))
-
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.presentViewController(alert.controller,
+            animated: true, completion: nil)
 
     }
 
