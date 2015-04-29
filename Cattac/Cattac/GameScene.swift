@@ -784,7 +784,9 @@ private extension GameScene {
             } else if let item = action.item as? MilkItem {
                 soundPlayer.playMilk()
                 completion = {
-                    self.showHeal(Constants.itemEffect.milkHpIncreaseEffect,
+                    let heal = self.gameEngine.currentPlayer!.heal(
+                        Constants.itemEffect.milkHpIncreaseEffect)
+                    self.showHeal(heal,
                         node: self.gameManager[moveToPositionOf: player]!)
                 }
             }

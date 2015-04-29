@@ -33,10 +33,6 @@ class Item: TileEntity {
     func shouldTargetAll() -> Bool {
         return false
     }
-    
-    func effect(cat: Cat) {
-        assertionFailure("Item.effect() not implemented!")
-    }
 }
 
 class MilkItem: Item {
@@ -44,20 +40,12 @@ class MilkItem: Item {
         super.init(itemName: Constants.itemName.milk,
             SKSpriteNode(imageNamed: "Milk.png"))
     }
-    
-    override func effect(cat: Cat) {
-        cat.heal(Constants.itemEffect.milkHpIncreaseEffect)
-    }
 }
 
 class ProjectileItem: Item {
     init() {
         super.init(itemName: Constants.itemName.projectile,
             SKSpriteNode(imageNamed: "Projectile.png"))
-    }
-    
-    override func effect(cat: Cat) {
-        cat.inflict(Constants.itemEffect.projectileDmg)
     }
     
     override func canTargetSelf() -> Bool {
@@ -73,10 +61,6 @@ class NukeItem: Item {
     init() {
         super.init(itemName: Constants.itemName.nuke,
             SKSpriteNode(imageNamed: "Nuke.png"))
-    }
-    
-    override func effect(cat: Cat) {
-        cat.inflict(Constants.itemEffect.nukeDmg)
     }
     
     override func canTargetSelf() -> Bool {

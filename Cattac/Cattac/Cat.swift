@@ -109,6 +109,7 @@ class Cat: TileEntity {
     /// cat.hp -= damage * 1/defence
     ///
     /// :param: damage Points to be reduced from hp
+    /// :returns: The amount of actual damage inflicted
     func inflict(damage: Int) -> Int {
         if hp > 0 {
             var realDamage = damage * 1/defence
@@ -123,13 +124,19 @@ class Cat: TileEntity {
     /// cat.hp += hp
     ///
     /// :param: health Points to increase the hp
-    func heal(health: Int) {
-        hp += health
-        if hp > maxHp {
-            hp = maxHp
-        }
+    /// :returns: The amount of health restored
+    func heal(health: Int) -> Int {
+        let diff = maxHp - hp
 
-        hpListener?.onHpUpdate(hp)
+        if diff > health {
+            hp += health
+            hpListener?.onHpUpdate(hp)
+            return health
+        } else {
+            hp = maxHp
+            hpListener?.onHpUpdate(hp)
+            return diff
+        }
     }
     
     func isVisible() -> Bool {

@@ -447,18 +447,6 @@ class GameEngine {
             node.poop = poopActivated ? nil : poop
         } else if action is ItemAction {
             let itemAction = action as ItemAction
-            if !itemAction.item.canTargetSelf() &&
-                gameManager.samePlayer(itemAction.targetPlayer, player) {
-                    // invalidate action, item cannot effect self.
-                    return nil
-            } else if itemAction.item.shouldTargetAll() {
-                for player in gameManager.players.values {
-                    itemAction.item.effect(player)
-                }
-            } else if itemAction.item.canTargetOthers() ||
-                itemAction.item.canTargetSelf() {
-                    itemAction.item.effect(itemAction.targetPlayer)
-            }
             itemAction.targetNode =
                 gameManager[moveToPositionOf: itemAction.targetPlayer]
             gameManager[inventoryOf: player]!.useItem(itemAction.item)
