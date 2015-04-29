@@ -29,7 +29,7 @@ extension SKNode {
     }
 }
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, ApplicationUIListener {
     @IBOutlet weak var musicImage: UIButton!
     @IBOutlet weak var soundImage: UIButton!
     
@@ -70,6 +70,7 @@ class GameViewController: UIViewController {
             currentPlayerNumber: playerNumber, multiplayer: multiplayer,
             names: playerNames
         )
+        scene.setUIListener(self)
         
         /* Set the scale mode to scale to fit the window */
         scene.scaleMode = .AspectFill
@@ -103,29 +104,26 @@ class GameViewController: UIViewController {
         return true
     }
     
+    func presentAlert(alert: UIAlertController) {
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func endGame() {
+        exitGame(nil)
+    }
+    
+    private func exitGame(action: UIAlertAction!) {
+        self.performSegueWithIdentifier(unwindIdentifer, sender: self)
+    }
+    
     @IBAction func backButtonPressed(sender: AnyObject) {
-        let dismissActionHandler = {
-            (action: UIAlertAction!) in
-            
-            self.performSegueWithIdentifier(self.unwindIdentifer, sender: self)
-        }
+        let quitAlert = AlertBuilder("Quit Game",
+            "Are you sure you want to leave the game?",
+            AlertAction("Yes", exitGame),
+            AlertAction("No", nil))
         
-        let quitAlert = UIAlertController(title: "Quit Game",
-            message: "Are you sure you want to leave the game?",
-            preferredStyle: .Alert
-        )
-        
-        quitAlert.addAction(UIAlertAction(title: "Yes",
-            style: .Default,
-            handler: dismissActionHandler
-            ))
-        
-        quitAlert.addAction(UIAlertAction(title: "No",
-            style: .Default,
-            handler: nil
-            ))
-        
-        presentViewController(quitAlert, animated: true, completion: nil)
+        presentViewController(quitAlert.controller, animated: true,
+            completion: nil)
     }
     
     @IBAction func soundButtonPressed(sender: UIButton) {

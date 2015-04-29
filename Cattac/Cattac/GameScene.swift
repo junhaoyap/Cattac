@@ -1,5 +1,10 @@
 import SpriteKit
 
+protocol ApplicationUIListener {
+    func presentAlert(alert: UIAlertController)
+    func endGame()
+}
+
 /// The spritekit scene for the game, in charge of drawing and animating all 
 /// entities of the game.
 class GameScene: SKScene {
@@ -10,6 +15,8 @@ class GameScene: SKScene {
     /// Game Manager that contains all the information for the current state of
     /// the game.
     let gameManager: GameManager!
+    
+    private var applicationUIListener: ApplicationUIListener?
 
     /// Current level for the game.
     private let level: GameLevel!
@@ -76,6 +83,8 @@ class GameScene: SKScene {
     // Player Names
     private var playerNames: [String]!
     
+    private var animationCount: Int = 0
+    
     // Sound Player
     let soundPlayer = SoundPlayer.sharedInstance
     
@@ -101,7 +110,6 @@ class GameScene: SKScene {
             self.level = level
             gameEngine = GameEngine(grid: level.grid,
                 playerNumber: currentPlayerNumber, multiplayer: multiplayer)
-            gameEngine.gameStateListener = self
             gameEngine.eventListener = self
 
             gameManager = gameEngine.gameManager
@@ -126,24 +134,28 @@ class GameScene: SKScene {
     
     /// When player tries to perform movement actions
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        for touch: AnyObject in touches {
-            let location = touch.locationInNode(gameLayer)
-            
-            if let node = sceneUtils.nodeForLocation(location,
-                grid: level.grid) {
-                    registerPlayerMovement(node)
+        if !gameEngine.currentPlayer.isDead {
+            for touch: AnyObject in touches {
+                let location = touch.locationInNode(gameLayer)
+                
+                if let node = sceneUtils.nodeForLocation(location,
+                    grid: level.grid) {
+                        registerPlayerMovement(node)
+                }
             }
         }
     }
     
     /// When player tries to change their movement actions
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
-        for touch: AnyObject in touches {
-            let location = touch.locationInNode(gameLayer)
+        if !gameEngine.currentPlayer.isDead {
+            for touch: AnyObject in touches {
+                let location = touch.locationInNode(gameLayer)
 
-            if let node = sceneUtils.nodeForLocation(location,
-                grid: level.grid) {
-                    registerPlayerMovement(node)
+                if let node = sceneUtils.nodeForLocation(location,
+                    grid: level.grid) {
+                        registerPlayerMovement(node)
+                }
             }
         }
     }
@@ -155,6 +167,10 @@ class GameScene: SKScene {
 
     override func willMoveFromView(view: SKView) {
         timer.invalidate()
+    }
+    
+    func setUIListener(listener: ApplicationUIListener) {
+        applicationUIListener = listener
     }
 
     func updateTime() {
@@ -171,8 +187,8 @@ class GameScene: SKScene {
 }
 
 
-
-extension GameScene: GameStateListener {
+extension GameScene: EventListener {
+    
     /// Updates the scene whenever the game state updates.
     ///
     /// :param: state The update game state.
@@ -182,9 +198,13 @@ extension GameScene: GameStateListener {
         case .PlayerAction:
             startTimer()
             deleteRemovedDoodads()
-            wiggleCurrentPlayer()
-            highlightReachableNodes()
-            enableActionButtons()
+            if !gameEngine.currentPlayer.isDead {
+                wiggleCurrentPlayer()
+                highlightReachableNodes()
+                enableActionButtons()
+            } else {
+                previewNode.hidden = true
+            }
         case .WaitForAll:
             disableActionButtons()
             removeHighlights()
@@ -193,23 +213,24 @@ extension GameScene: GameStateListener {
         case .StartMovesExecution:
             previewNode.hidden = true
         case .DeconflictExecution:
+            runDummyAnimation()
             deconflictPlayer()
         case .MovesExecution:
             movePlayers()
+            runDummyAnimation()
         case .ActionsExecution:
             hidePoop()
             performActions()
             performPendingAnimations()
+            runDummyAnimation()
             unselectActionButtons()
+        case .GameEnded:
+            endGame()
         default:
             break
         }
     }
-}
-
-
-
-extension GameScene: EventListener {
+    
     /// Updates the scene based on the current action selected.
     ///
     /// :param: action The current selected action.
@@ -312,11 +333,18 @@ extension GameScene: EventListener {
         println("Spawned \(node.item!.name)")
         entityLayer.addChild(itemSprite)
     }
+
+    func onPlayerDied(players: [Cat]) {
+        for player in players {
+            player.getSprite().removeFromParent()
+        }
+    }
 }
 
 
 
-private extension GameScene {    
+private extension GameScene {
+    
     func initializeLayers() {
         let background = SKSpriteNode(imageNamed: "Background.png")
         background.size = self.size
@@ -569,6 +597,27 @@ private extension GameScene {
         entityNode.position = spriteNode.position
         entityLayer.addChild(entityNode)
     }
+    
+    func endGame() {
+        var title: String!
+        var message: String!
+        if gameEngine.currentPlayer.isDead {
+            title = "You lost!"
+            message = "Better luck next time!"
+        } else {
+            title = "You Win!"
+            message = "Congratulations! Time for a harder challenge."
+            message = message + "\n\(gameManager.playerRanks)"
+        }
+        
+        let endGameAlert = AlertBuilder(title, message,
+            AlertAction("Okay", {
+                (alertAction) in
+                self.applicationUIListener?.endGame()
+                return
+            }))
+        applicationUIListener?.presentAlert(endGameAlert.controller)
+    }
 
     /// Sets the next position to move to for the current player.
     ///
@@ -606,52 +655,25 @@ private extension GameScene {
     /// Notifies the game manager and game engine of movement completion.
     func movePlayers() {
         for (playerName, player) in gameManager.players {
-            let path = gameEngine.executePlayerMove(player)
-            
-            if path.count == 0 {
-                notifyMovementCompletionFor(player)
-                continue
-            }
-            
-            player.getSprite().runAction(sceneUtils.getTraverseAnim(path, 0.25),
-                completion: {
-                    self.notifyMovementCompletionFor(player)
+            if let path = gameEngine.executePlayerMove(player) {
+                if path.count == 0 {
+                    continue
                 }
-            )
+                runAnimation(player.getSprite(),
+                    action: sceneUtils.getTraverseAnim(path, 0.25),
+                    completion: nil)
+            }
         }
-    }
-
-    /// Sets the completion flag of the player movement in the game manager.
-    ///
-    /// Triggers the `movementAnimationEnded` event of the game engine so as to
-    /// advance to the next game state to animation the player actions.
-    ///
-    /// :param: player The player that has completed its movement animation.
-    func notifyMovementCompletionFor(player: Cat) {
-        gameManager.completeMovementOf(player)
-        gameEngine.triggerMovementAnimationEnded()
     }
     
     func deconflictPlayer() {
         for (playerName, player) in gameManager.players {
-            let path = gameEngine.executePlayerDeconflict(player)
-            
-            if path.count == 0 {
-                notifyDeconflictCompletionFor(player)
-                continue
+            if let path = gameEngine.executePlayerDeconflict(player) {
+                runAnimation(player.getSprite(),
+                    action: sceneUtils.getTraverseAnim(path, 0.25),
+                    completion: nil)
             }
-            
-            player.getSprite().runAction(sceneUtils.getTraverseAnim(path, 0.25),
-                completion: {
-                    self.notifyDeconflictCompletionFor(player)
-                }
-            )
         }
-    }
-    
-    func notifyDeconflictCompletionFor(player: Cat) {
-        gameManager.completeDeconflictOf(player)
-        gameEngine.triggerDeconflictAnimationEnded()
     }
 
     /// Animates the pui action of the given player in the given direction.
@@ -670,22 +692,18 @@ private extension GameScene {
         }
 
         let pui = sceneUtils.getPuiNode(direction)
+        let action = sceneUtils.getTraverseAnim(path, 0.15)
         pui.position = startNode.sprite.position
         entityLayer.addChild(pui)
-        
-        pui.runAction(
-            sceneUtils.getTraverseAnim(path, 0.15),
-            completion: {
-                pui.removeFromParent()
-                if victimPlayer != nil {
-                    victimPlayer!.inflict(player.puiDmg)
-                    self.showDamage(player.puiDmg, node: path.last!)
-                    println("\(player.name) pui on \(victimPlayer!.name) with" +
-                        "\(player.puiDmg) damage.")
-                }
-                self.notifyActionCompletionFor(player)
+        runAnimation(pui, action: action, completion: {
+            pui.removeFromParent()
+            if victimPlayer != nil {
+                victimPlayer!.inflict(player.puiDmg)
+                self.showDamage(player.puiDmg, node: path.last!)
+                println("\(player.name) pui on \(victimPlayer!.name) with" +
+                    "\(player.puiDmg) damage.")
             }
-        )
+        })
     }
 
     /// Animates the fart action of the given player.
@@ -706,21 +724,17 @@ private extension GameScene {
                 }
 
                 let fart = sceneUtils.getFartNode(at: node.sprite.position)
+                let action = sceneUtils.getFartAnimation(timeInterval)
                 entityLayer.addChild(fart)
                 
-                fart.runAction(
-                    sceneUtils.getFartAnimation(timeInterval),
-                    completion: {
-                        fart.removeFromParent()
-                        if victimPlayer != nil {
-                            let dmg = victimPlayer!.inflict(player.fartDmg)
-                            self.showDamage(dmg, node: node)
-                            println("\(player.name) fart on \(victimPlayer!.name)" +
-                                " with \(player.fartDmg) damage.")
-                        }
-                        if i == path.count - 1 && j == nodes.count - 1 {
-                            self.notifyActionCompletionFor(player)
-                        }
+                runAnimation(fart, action: action, completion: {
+                    fart.removeFromParent()
+                    if victimPlayer != nil {
+                        let dmg = victimPlayer!.inflict(player.fartDmg)
+                        self.showDamage(dmg, node: node)
+                        println("\(player.name) fart on \(victimPlayer!.name)" +
+                            " with \(player.fartDmg) damage.")
+                    }
                 })
             }
         }
@@ -760,7 +774,8 @@ private extension GameScene {
                 soundPlayer.playNuke()
                 completion = {
                     for player in self.gameManager.players.values {
-                        self.showDamage(Constants.itemEffect.nukeDmg,
+                        let dmg = player.inflict(Constants.itemEffect.nukeDmg)
+                        self.showDamage(dmg,
                             node: self.gameManager[moveToPositionOf: player]!)
                     }
                 }
@@ -778,15 +793,15 @@ private extension GameScene {
             soundPlayer.playBall()
             if let item = action.item as? ProjectileItem {
                 completion = {
-                    self.showDamage(Constants.itemEffect.projectileDmg,
+                    let dmg = targetPlayer.inflict(Constants.itemEffect.projectileDmg)
+                    self.showDamage(dmg,
                         node: self.gameManager[moveToPositionOf: targetPlayer]!)
                 }
             }
         }
-        
         entityLayer.addChild(itemSprite)
-        itemSprite.runAction(animAction, completion: {
-            self.notifyActionCompletionFor(player)
+        
+        runAnimation(itemSprite, action: animAction, completion: {
             itemSprite.removeFromParent()
             completion?()
         })
@@ -796,29 +811,23 @@ private extension GameScene {
     func performActions() {
         for (playerName, player) in gameManager.players {
             let path = gameEngine.executePlayerDeconflict(player)
+            let action = gameEngine.executePlayerAction(player)
             
-            if path.count == 0 {
-                if let action = gameEngine.executePlayerAction(player) {
-                    println(action)
-                    switch action.actionType {
-                    case .Pui:
-                        let direction = (action as PuiAction).direction
-                        animatePuiAction(player, direction: direction)
-                        soundPlayer.playPui()
-                    case .Fart:
-                        animateFartAction(player)
-                        soundPlayer.playFart()
-                    case .Poop:
-                        notifyActionCompletionFor(player)
-                        soundPlayer.playPoopArm()
-                    case .Item:
-                        animateItemAction(player, action: action as ItemAction)
-                    }
-                } else {
-                    notifyActionCompletionFor(player)
+            if path == nil && action != nil  {
+                println(action)
+                switch action!.actionType {
+                case .Pui:
+                    let direction = (action! as PuiAction).direction
+                    animatePuiAction(player, direction: direction)
+                    soundPlayer.playPui()
+                case .Fart:
+                    animateFartAction(player)
+                    soundPlayer.playFart()
+                case .Poop:
+                    soundPlayer.playPoopArm()
+                case .Item:
+                    animateItemAction(player, action: action! as ItemAction)
                 }
-            } else {
-                notifyActionCompletionFor(player)
             }
         }
     }
@@ -829,24 +838,40 @@ private extension GameScene {
             entityLayer.addChild(event.sprite)
             
             soundPlayer.playPoop()
-            event.sprite.runAction(event.action, completion: {
-                event.sprite.removeFromParent()
-                event.completion?()
+            runAnimation(event.sprite,
+                action: event.action,
+                completion: {
+                    event.sprite.removeFromParent()
+                    event.completion?()
             })
         }
         pendingAnimations.removeAll(keepCapacity: false)
     }
-
-    /// Sets the completion flag of the player action in the game manager.
-    ///
-    /// Triggers the `actionAnimationEnded` event of the game engine so as to
-    /// advance to the next game state to post execution.
-    ///
-    /// :param: player The player that has completed its action animation.
-    func notifyActionCompletionFor(player: Cat) {
-        println("anim complete \(player.name) \(gameManager[actionOf: player])")
-        gameManager.completeActionOf(player)
-        gameEngine.triggerActionAnimationEnded()
+    
+    func runDummyAnimation() {
+        let node = SKLabelNode(text: "")
+        entityLayer.addChild(node)
+        runAnimation(node,
+            action: SKAction.moveByX(1, y: 1, duration: 0.25),
+            completion: {
+                node.removeFromParent()
+        })
+    }
+    
+    /// Central method for running state-sensitive animations
+    func runAnimation(sprite: SKNode, action: SKAction,
+        completion: (() -> ())?) {
+            sprite.runAction(action, completion: {
+                completion?()
+                self.animationEnded()
+            })
+            animationCount++
+    }
+    
+    func animationEnded() {
+        if --animationCount == 0 {
+            gameEngine.triggerAnimationEnded()
+        }
     }
 
     /// Shows the health awarded on the TileNode of the receiving player.
@@ -866,8 +891,10 @@ private extension GameScene {
         damageNode.position = node.sprite.position
         entityLayer.addChild(damageNode)
 
-        damageNode.runAction(sceneUtils.getDamageLabelAnimation(), completion: {
-            damageNode.removeFromParent()
+        runAnimation(damageNode,
+            action: sceneUtils.getDamageLabelAnimation(),
+            completion: {
+                damageNode.removeFromParent()
         })
     }
 
@@ -878,12 +905,12 @@ private extension GameScene {
         let additionNode = sceneUtils.getDamageLabelNode(-1)
         additionNode.position = inventory.position
         buttonLayer.addChild(additionNode)
-
-        additionNode.runAction(sceneUtils.getNumberChangeAnimation(30),
+        
+        runAnimation(additionNode,
+            action: sceneUtils.getNumberChangeAnimation(30),
             completion: {
                 additionNode.removeFromParent()
         })
-
     }
 
     /// Enables all the action buttons.

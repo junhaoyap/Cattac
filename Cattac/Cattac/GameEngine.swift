@@ -1,13 +1,11 @@
 import Foundation
 
-protocol GameStateListener {
-    func onStateUpdate(state: GameState)
-}
-
 protocol EventListener {
+    func onStateUpdate(state: GameState)
     func onActionUpdate(action: Action?)
     func onItemSpawned(node: TileNode)
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool)
+    func onPlayerDied(players: [Cat])
     func addPendingPoopAnimation(poop: Poop, target: TileNode)
 }
 
@@ -37,9 +35,6 @@ class GameEngine {
     
     // The initial game state is to be set at PostExecution
     var state: GameState = .PostExecution
-    
-    /// GameState listener, listens for update on state change.
-    var gameStateListener: GameStateListener?
     
     /// Action listener, listens for action change on currentPlayer.
     var eventListener: EventListener?
@@ -118,6 +113,7 @@ class GameEngine {
             updateServer(playerNumber)
             triggerStateAdvance()
         case .WaitForAll:
+            updateTurns()
             countDownForDrop()
             gameAI.calculateTurn()
             spawnItem()
@@ -145,6 +141,8 @@ class GameEngine {
             checkItemSpawned()
             postExecute()
             triggerStateAdvance()
+        case .GameEnded:
+            println(gameManager.playerRanks)
         }
     }
     
@@ -158,7 +156,13 @@ class GameEngine {
     private func advanceState() {
         switch state {
         case .Precalculation:
-            state = .PlayerAction
+            if currentPlayer.isDead && multiplayer {
+                state = .ServerUpdate
+            } else if currentPlayer.isDead {
+                state = .WaitForAll
+            } else {
+                state = .PlayerAction
+            }
         case .PlayerAction:
             if multiplayer {
                 state = .ServerUpdate
@@ -180,21 +184,30 @@ class GameEngine {
         case .ActionsExecution:
             state = .PostExecution
         case .PostExecution:
-            state = .Precalculation
+            let singlePlayerEnd = !multiplayer && currentPlayer.isDead
+            if gameManager.gameEnded || singlePlayerEnd {
+                state = .GameEnded
+            } else {
+                state = .Precalculation
+            }
+        case .GameEnded:
+            break
         }
         
         println(state.description)
-        gameStateListener?.onStateUpdate(state)
+        eventListener?.onStateUpdate(state)
         statesToAdvance--
     }
     
     private func precalculate() {
         gameManager.precalculate()
-        
-        reachableNodes = grid.getNodesInRange(
-            gameManager[positionOf: currentPlayer]!,
-            range: currentPlayer.moveRange
-        )
+
+        if !currentPlayer.isDead {
+            reachableNodes = grid.getNodesInRange(
+                gameManager[positionOf: currentPlayer]!,
+                range: currentPlayer.moveRange
+            )
+        }
     }
     
     private func countDownForDrop() {
@@ -213,13 +226,13 @@ class GameEngine {
     @objc func onCountDownForDrop() {
         println("Initiate drop inactive players")
         if !gameManager.allTurnsCompleted {
-            var playersToDrop: [Cat] = []
             for (name, player) in gameManager.players {
                 if gameManager.samePlayer(player, currentPlayer) {
                     continue
                 }
                 if gameManager.playersTurnCompleted[name] == nil {
                     let playerNum = gameManager[playerNumFor: player]!
+                    println("drop \(player.name)")
                     gameConnectionManager.dropPlayer(playerNum)
                     gameManager[aiFor: player] = true
                 }
@@ -323,6 +336,10 @@ class GameEngine {
     
     private func postExecute() {
         gameManager.advanceTurn()
+
+        if !gameManager.dyingPlayers.isEmpty {
+            eventListener?.onPlayerDied(gameManager.dyingPlayers)
+        }
         
         for player in gameManager.players.values {
             player.postExecute()
@@ -385,22 +402,12 @@ class GameEngine {
     /// and player position can be updated
     ///
     /// :param: cat The player's move to execute
-    func executePlayerMove(player: Cat) -> [TileNode] {
-        let path = gameManager[movementPathOf: player]
-        if path != nil {
-            return path!
-        } else {
-            return []
-        }
+    func executePlayerMove(player: Cat) -> [TileNode]? {
+        return gameManager[movementPathOf: player]
     }
     
-    func executePlayerDeconflict(player: Cat) -> [TileNode] {
-        let path = gameManager[deconflictPathOf: player]
-        if path != nil {
-            return path!
-        } else {
-            return []
-        }
+    func executePlayerDeconflict(player: Cat) -> [TileNode]? {
+        return gameManager[deconflictPathOf: player]
     }
     
     func deconflictUpdate() {
@@ -534,11 +541,28 @@ class GameEngine {
         eventListener?.onActionUpdate(gameManager[actionOf: currentPlayer])
     }
     
+    private func updateTurns() {
+        if !multiplayer {
+            let moveToTile = gameManager[moveToPositionOf: currentPlayer]!
+            let action = gameManager[actionOf: currentPlayer]
+            gameManager.playerTurn(currentPlayer,
+                moveTo: moveToTile, action: action)
+        }
+    }
+    
     private func updateServer(playerNum: Int) {
         let player = gameManager[playerWithNum: playerNum]!
-        let currentTile = gameManager[positionOf: player]!
-        let moveToTile = gameManager[moveToPositionOf: player]!
+        var currentTile: TileNode
+        var moveToTile: TileNode
         let action = gameManager[actionOf: player]
+
+        if player.isDead {
+            currentTile = TileNode(row: -1, column: -1)
+            moveToTile = TileNode(row: -1, column: -1)
+        } else {
+            currentTile = gameManager[positionOf: player]!
+            moveToTile = gameManager[moveToPositionOf: player]!
+        }
         
         // use movementNumber - 1 for multiplayer AI movements
         let movementNumber = playerNumber == playerNum
@@ -558,7 +582,13 @@ class GameEngine {
         
         if playerNumber == playerNum {
             currentPlayerMoveNumber++
+            if !currentPlayer.isDead {
+                gameManager.playerTurn(currentPlayer,
+                    moveTo: moveToTile, action: action)
+                checkAllTurns()
+            }
         }
+        
     }
     
     private func checkAllTurns() {
@@ -614,7 +644,12 @@ class GameEngine {
             Constants.Firebase.keyAttkDmg) as? Int
         let attackRange = snapshot.value.objectForKey(
             Constants.Firebase.keyAttkRange) as? Int
-        
+
+
+        if fromRow == -1 && fromCol == -1 {
+            return
+        }
+
         let player = gameManager[playerWithNum: playerNum]!
         let dest = grid[moveToRow!, moveToCol!]!
         var action: Action?
@@ -658,9 +693,6 @@ class GameEngine {
                 action = ItemAction(item: item!, targetNode: node,
                     targetPlayer: targetPlayer)
             }
-            println("\(player.name)[\(playerNum)]" +
-                " \(playerActionType.description)"
-            )
         }
         
         gameManager.playerTurn(player, moveTo: dest, action: action)
@@ -729,22 +761,12 @@ extension GameEngine {
     func triggerClearAction() {
         gameManager[actionOf: currentPlayer] = nil
     }
-
-    func triggerMovementAnimationEnded() {
-        if gameManager.movementsCompleted {
-            triggerStateAdvance()
-        }
-    }
     
-    func triggerDeconflictAnimationEnded() {
-        if gameManager.deconflictsCompleted {
-            triggerStateAdvance()
-        }
-    }
-
-    func triggerActionAnimationEnded() {
-        if gameManager.actionsCompleted {
-            triggerStateAdvance()
+    func triggerAnimationEnded() {
+        if state == .MovesExecution
+            || state == .ActionsExecution
+            || state == .DeconflictExecution {
+                triggerStateAdvance()
         }
     }
 }

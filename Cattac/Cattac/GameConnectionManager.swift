@@ -25,6 +25,7 @@ class GameConnectionManager {
             onComplete: {
                 error, authData in
                 if error != nil {
+                    println(error)
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
@@ -42,6 +43,7 @@ class GameConnectionManager {
             onComplete: {
                 error, authData in
                 if error != nil {
+                    println(error)
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
@@ -59,6 +61,7 @@ class GameConnectionManager {
             onComplete: {
                 error, authData in
                 if error != nil {
+                    println(error)
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
@@ -76,6 +79,7 @@ class GameConnectionManager {
             onComplete: {
                 error, authData in
                 if error != nil {
+                    println(error)
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in

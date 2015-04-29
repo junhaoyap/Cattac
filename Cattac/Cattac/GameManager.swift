@@ -1,5 +1,6 @@
 class GameManager {
 
+    private var _allPlayers: [String:Cat]
     private var _playerPositions: [String:TileNode]
     private var _playerMoveToPositions: [String:TileNode]
     private var _playerActions: [String:Action]
@@ -9,13 +10,14 @@ class GameManager {
     private var _playerTurnComplete: [String:Cat]
     private var _playerMovementPaths: [String:[TileNode]]
     private var _deconflictMovementPaths: [String:[TileNode]]
-    private var _playerDeconflictAnimationCompleted: [String:Bool]
-    private var _playerMovementAnimationCompleted: [String:Bool]
-    private var _playerActionAnimationCompleted: [String:Bool]
     private var _playerItems: [String:Inventory]
     private var _doodadsToRemove: [Int: Doodad]
+    private var _playerRanks: [String:Int]
+    private var _playersDead: [String:Cat]
+    private var _dyingPlayers: [Cat]
 
     init() {
+        _allPlayers = [:]
         _playerPositions = [:]
         _playerMoveToPositions = [:]
         _playerActions = [:]
@@ -25,11 +27,11 @@ class GameManager {
         _playerTurnComplete = [:]
         _playerMovementPaths = [:]
         _deconflictMovementPaths = [:]
-        _playerDeconflictAnimationCompleted = [:]
-        _playerMovementAnimationCompleted = [:]
-        _playerActionAnimationCompleted = [:]
         _playerItems = [:]
         _doodadsToRemove = [:]
+        _playerRanks = [:]
+        _playersDead = [:]
+        _dyingPlayers = []
     }
     
     subscript(positionOf player:Cat) -> TileNode? {
@@ -54,7 +56,7 @@ class GameManager {
         get {
             for (name, num) in _playerNumber {
                 if num == playerNum {
-                    return _players[name]
+                    return _allPlayers[name]
                 }
             }
             return nil
@@ -130,6 +132,10 @@ class GameManager {
             return _playerAIControlled[player.name] != nil
         }
     }
+
+    var allPlayers: [String:Cat] {
+        return _allPlayers
+    }
     
     var players: [String:Cat] {
         return _players
@@ -151,42 +157,25 @@ class GameManager {
             return _doodadsToRemove
         }
     }
-
-    var movementsCompleted: Bool {
-        var allCompleted = true
-        
-        for completed in _playerMovementAnimationCompleted.values {
-            allCompleted = allCompleted && completed
-        }
-        
-        return allCompleted
-    }
-    
-    var deconflictsCompleted: Bool {
-        var allCompleted = true
-        
-        for completed in _playerDeconflictAnimationCompleted.values {
-            allCompleted = allCompleted && completed
-        }
-        
-        return allCompleted
-    }
     
     var allTurnsCompleted: Bool {
-        return _playerTurnComplete.count == 3
+        return _playerTurnComplete.count == _players.count
     }
 
-    var actionsCompleted: Bool {
-        var allCompleted = true
+    var dyingPlayers: [Cat] {
+        return _dyingPlayers
+    }
 
-        for completed in _playerActionAnimationCompleted.values {
-            allCompleted = allCompleted && completed
-        }
+    var gameEnded: Bool {
+        return _players.count <= 1
+    }
 
-        return allCompleted
+    var playerRanks: [String:Int] {
+        return _playerRanks
     }
 
     func registerPlayer(player: Cat, playerNum: Int) {
+        _allPlayers[player.name] = player
         _players[player.name] = player
         _playerNumber[player.name] = playerNum
         _playerItems[player.name] = Inventory()
@@ -206,6 +195,29 @@ class GameManager {
         _playerPositions = _playerMoveToPositions
         _playerActions = [:]
         _playerTurnComplete = [:]
+
+        for (playerName, player) in _allPlayers {
+            if _playersDead[playerName] == nil {
+                if player.isDead {
+                    _playersDead[playerName] = player
+                    _players.removeValueForKey(playerName)
+                    _playerAIControlled.removeValueForKey(playerName)
+                    _playerPositions.removeValueForKey(playerName)
+                    _playerMoveToPositions.removeValueForKey(playerName)
+                    _dyingPlayers.append(player)
+                }
+            }
+        }
+
+        for player in _dyingPlayers {
+            _playerRanks[player.name] = _players.count + 1
+        }
+
+        if _players.count == 1 {
+            for (playerName, player) in _players {
+                _playerRanks[playerName] = 1
+            }
+        }
     }
     
     func playerTurn(player: Cat, moveTo dest: TileNode, action: Action?) {
@@ -218,6 +230,7 @@ class GameManager {
         _playerMoveToPositions = _playerPositions
         _deconflictMovementPaths = [:]
         _playerMovementPaths = [:]
+        _dyingPlayers = []
 
         for (playerName, tileNode) in _playerPositions {
             var player = _players[playerName]!
@@ -231,23 +244,7 @@ class GameManager {
                     _doodadsToRemove[doodad.getSprite().hashValue] = doodad
                 }
             }
-            
-            _playerMovementAnimationCompleted[playerName] = false
-            _playerDeconflictAnimationCompleted[playerName] = false
-            _playerActionAnimationCompleted[playerName] = false
         }
-    }
-
-    func completeMovementOf(player: Cat) {
-        _playerMovementAnimationCompleted[player.name] = true
-    }
-    
-    func completeDeconflictOf(player: Cat) {
-        _playerDeconflictAnimationCompleted[player.name] = true
-    }
-
-    func completeActionOf(player: Cat) {
-        _playerActionAnimationCompleted[player.name] = true
     }
     
     func samePlayer(playerA: Cat, _ playerB: Cat) -> Bool {

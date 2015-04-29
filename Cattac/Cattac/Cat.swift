@@ -70,6 +70,10 @@ class Cat: TileEntity {
     var previewSprite: SKSpriteNode {
         return _previewSprite
     }
+
+    var isDead: Bool {
+        return hp <= 0
+    }
     
     /// Constructs a cat with its base attributes
     ///
