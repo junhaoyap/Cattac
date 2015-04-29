@@ -192,23 +192,56 @@ class LevelDesignerViewController: UIViewController {
         let level = BasicLevel()
         let designerGrid = gridViewController.grid
 
-        // Perform a copy of the grid in grid view controller.
+        // Perform a deep copy of the grid in grid view controller.
         // This is done as we do not want to call construct graph/remove nodes
-        // on that grid.
+        // on that grid. Also we do not want the sprites to be attached to the
+        // parent nodes after going into and exiting the game play.
         level.grid = Grid(rows: designerGrid.rows,
             columns: designerGrid.columns)
 
         for tileNode in designerGrid {
-            level.grid[tileNode.position] = tileNode
+            let position = tileNode.position
+            let newTileNode = TileNode(row: position.row, column: position.col)
+            level.grid[position] = newTileNode
 
-            // Removes reference to parent as we are not doing a deep copy of
-            // the grid. So the sprite nodes may still be attached to the 
-            // parent nodes.
-            tileNode.sprite.removeFromParent()
             if let doodad = tileNode.doodad {
-                doodad.getSprite().removeFromParent()
+                var newDoodad: Doodad?
+
+                switch doodad {
+                case is FortressDoodad:
+                    newDoodad = FortressDoodad()
+                case is WatchTowerDoodad:
+                    newDoodad = WatchTowerDoodad()
+                case is TrampolineDoodad:
+                    newDoodad = TrampolineDoodad()
+                case is Wall:
+                    newDoodad = Wall()
+                case is WormholeDoodad:
+                    newDoodad = WormholeDoodad()
+                default:
+                    break
+                }
+
+                if newDoodad != nil {
+                    newTileNode.doodad = newDoodad
+                }
             } else if let item = tileNode.item {
-                item.getSprite().removeFromParent()
+                var newItem: Item?
+
+                switch item {
+                case is MilkItem:
+                    newItem = MilkItem()
+                case is NukeItem:
+                    newItem = NukeItem()
+                case is ProjectileItem:
+                    newItem = ProjectileItem()
+                default:
+                    break
+                }
+
+                if newItem != nil {
+                    newTileNode.item = newItem
+                }
             }
         }
 
