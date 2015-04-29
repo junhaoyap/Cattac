@@ -264,6 +264,7 @@ extension GameScene: EventListener {
                 }
 
                 if (action as ItemAction).item.canTargetOthers() {
+                    unhighlightTargetPlayers()
                     highlightTargetPlayers()
                 }
             }
