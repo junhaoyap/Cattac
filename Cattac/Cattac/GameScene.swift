@@ -167,6 +167,7 @@ class GameScene: SKScene {
 
     override func willMoveFromView(view: SKView) {
         timer.invalidate()
+        applicationUIListener = nil
     }
     
     func setUIListener(listener: ApplicationUIListener) {
