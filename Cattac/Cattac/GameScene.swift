@@ -774,7 +774,8 @@ private extension GameScene {
                 soundPlayer.playNuke()
                 completion = {
                     for player in self.gameManager.players.values {
-                        self.showDamage(Constants.itemEffect.nukeDmg,
+                        let dmg = player.inflict(Constants.itemEffect.nukeDmg)
+                        self.showDamage(dmg,
                             node: self.gameManager[moveToPositionOf: player]!)
                     }
                 }
@@ -792,7 +793,8 @@ private extension GameScene {
             soundPlayer.playBall()
             if let item = action.item as? ProjectileItem {
                 completion = {
-                    self.showDamage(Constants.itemEffect.projectileDmg,
+                    let dmg = targetPlayer.inflict(Constants.itemEffect.projectileDmg)
+                    self.showDamage(dmg,
                         node: self.gameManager[moveToPositionOf: targetPlayer]!)
                 }
             }
