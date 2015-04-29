@@ -87,9 +87,9 @@ class GameViewController: UIViewController {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        self.scene?.removeAllChildren()
-        self.scene?.removeFromParent()
+
+        self.scene.removeAllChildren()
+        self.scene.removeFromParent()
         (self.view as SKView).presentScene(nil)
         self.scene = nil
         self.view.removeFromSuperview()

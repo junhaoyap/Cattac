@@ -167,6 +167,44 @@ class LevelGenerator {
         
         return level
     }
+
+    func createGame(fromDict data: [String: AnyObject]) -> GameLevel {
+        var level: GameLevel!
+        let rows = data[Constants.Level.keyRows] as Int
+        let cols = data[Constants.Level.keyCols] as Int
+        let type = data[Constants.Level.keyType] as String
+
+        if type == Constants.Level.valueTypeBasic {
+            level = BasicLevel(rows: rows, columns: cols)
+        } else if type == Constants.Level.valueTypeMedium {
+            level = MediumLevel(rows: rows, columns: cols)
+        } else {
+            level = HardLevel(rows: rows, columns: cols)
+        }
+
+        constructLevel(level)
+
+        let entitiesData = data[Constants.Level.keyEntities] as [[String: AnyObject]]
+
+        var wormholeCount = 0
+
+        for entityData in entitiesData {
+            let entityType = entityData[Constants.Level.keyEntityType]! as String
+            if entityType == Constants.Level.valueDoodadType {
+                createDoodad(fromDict: entityData, level: level,
+                    wormholeCount: wormholeCount)
+                if entityData[Constants.Level.keyEntityName]! as String
+                    == Constants.Doodad.wormholeString {
+                        wormholeCount++
+                }
+
+            } else if entityType == Constants.Level.valueItemType {
+                createItem(fromDict: entityData, level: level)
+            }
+        }
+
+        return level
+    }
     
     func createItem(fromDict data: [String: AnyObject], level: GameLevel) {
         let itemName = data[Constants.Level.keyEntityName]! as String

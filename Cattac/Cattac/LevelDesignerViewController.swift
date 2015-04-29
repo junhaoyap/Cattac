@@ -1,11 +1,13 @@
 import UIKit
 
 class LevelDesignerViewController: UIViewController {
+    @IBOutlet weak var currentFile: UILabel!
 
     private var gridViewController: GridViewController!
     private var currentPaletteButton: UIButton!
     private let selection = UIImageView(image: UIImage(named: "ButtonSelect.png"))
     private var gameLevel: GameLevel?
+    private var currentLevelName: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,13 +58,102 @@ class LevelDesignerViewController: UIViewController {
     }
 
     @IBAction func savePressed(sender: UIButton) {
-        // TODO: Deal with saving
-        println("save")
+        var title: String = "Save Level"
+        var message: String = "Please enter a level name:"
+
+        if currentLevelName != nil {
+            message = "Replace current level?"
+        }
+
+        var alert = UIAlertController(title: title, message: message,
+            preferredStyle: UIAlertControllerStyle.Alert)
+
+        alert.addTextFieldWithConfigurationHandler(
+            { (textField: UITextField!) -> Void in
+                if let name = self.currentLevelName {
+                    textField.text = name
+                } else {
+                    textField.placeholder = "😸😹😺😻😼😽😿🙀😾"
+                }
+                textField.addTarget(self, action: "textChanged:",
+                    forControlEvents: .EditingChanged)
+        })
+
+        alert.addAction(UIAlertAction(title: "Cancel",
+            style: UIAlertActionStyle.Cancel, handler: nil))
+
+        alert.addAction(UIAlertAction(title: "Save",
+            style: UIAlertActionStyle.Default, handler:
+            { (action: UIAlertAction!) -> Void in
+                var textField = alert.textFields!.first! as UITextField
+                Storage.saveLevel(textField.text,
+                    levelData: self.createLevel().compress())
+                self.currentFile.text = textField.text
+        }))
+
+        if self.currentLevelName == nil {
+            (alert.actions[1] as UIAlertAction).enabled = false
+        }
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 
     @IBAction func loadPressed(sender: UIButton) {
-        // TODO: Deal with loading
-        println("load")
+        let savedItems = Storage.getSavedLevels()
+
+        let alert = UIAlertController(title: "Load Level", message: nil,
+            preferredStyle: UIAlertControllerStyle.Alert)
+
+        for item in savedItems {
+            alert.addAction(UIAlertAction(title: item,
+                style: UIAlertActionStyle.Default, handler: {
+                    (action: UIAlertAction!) -> Void in
+                    self.gridViewController.reset()
+                    if let data = Storage.getLevelData(action.title) {
+                        self.gridViewController.load(data)
+                    }
+                    self.currentLevelName = action.title
+                    self.currentFile.text = action.title
+            }))
+        }
+        alert.addAction(UIAlertAction(title: "New Level",
+            style: UIAlertActionStyle.Default, handler:
+            { (action: UIAlertAction!) -> Void in
+                self.currentLevelName = nil
+                self.gridViewController.reset()
+                self.currentFile.text = "*unsaved level*"
+        }))
+
+        alert.addAction(UIAlertAction(title: "Cancel",
+            style: UIAlertActionStyle.Cancel, handler: nil))
+
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+
+    // Watcher to check the level name is empty, enable save button if a
+    // non-empty string is entered
+    func textChanged(sender: UITextField) {
+        let textField = sender
+        var responder : UIResponder! = textField
+        while !(responder is UIAlertController) {
+            responder = responder.nextResponder()
+        }
+        let alert = responder as UIAlertController
+        let text: NSString = textField.text
+        var enableSave = !text.isEqual("")
+
+        // checks for invalid file name
+        if text.containsString("/") || text.containsString(":") ||
+            text.rangeOfString(".").location == 0 {
+                enableSave = false
+        }
+
+        if currentLevelName != nil && text == currentLevelName! {
+            alert.message = "Replace current level?"
+        } else {
+            alert.message = "Please enter a level name:"
+        }
+
+        (alert.actions[1] as UIAlertAction).enabled = enableSave
     }
 
     @IBAction func controlPressed(sender: UIButton) {
@@ -110,6 +201,16 @@ class LevelDesignerViewController: UIViewController {
 
         for tileNode in designerGrid {
             level.grid[tileNode.position] = tileNode
+
+            // Removes reference to parent as we are not doing a deep copy of
+            // the grid. So the sprite nodes may still be attached to the 
+            // parent nodes.
+            tileNode.sprite.removeFromParent()
+            if let doodad = tileNode.doodad {
+                doodad.getSprite().removeFromParent()
+            } else if let item = tileNode.item {
+                item.getSprite().removeFromParent()
+            }
         }
 
         level.grid.constructGraph()

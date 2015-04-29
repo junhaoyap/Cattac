@@ -126,6 +126,7 @@
 		76656A221AE65547004A3385 /* HealthBarBorder.png in Resources */ = {isa = PBXBuildFile; fileRef = 76656A201AE65547004A3385 /* HealthBarBorder.png */; };
 		76656A261AE67D76004A3385 /* Octocat.png in Resources */ = {isa = PBXBuildFile; fileRef = 76656A241AE67D76004A3385 /* Octocat.png */; };
 		76656A281AE68130004A3385 /* HelloKitty.png in Resources */ = {isa = PBXBuildFile; fileRef = 76656A271AE68130004A3385 /* HelloKitty.png */; };
+		7674E09B1AF009BB00C5D6CC /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7674E09A1AF009BB00C5D6CC /* Storage.swift */; };
 		7676FEB91AE29400008FDC9D /* SKPuiActionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */; };
 		767C41031AE3B79000D28EB4 /* SKPlayerInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767C41021AE3B79000D28EB4 /* SKPlayerInfoNode.swift */; };
 		767C41051AE4B0C100D28EB4 /* BottomBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = 767C41041AE4B0C100D28EB4 /* BottomBoard.png */; };
@@ -305,6 +306,7 @@
 		76656A201AE65547004A3385 /* HealthBarBorder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HealthBarBorder.png; path = Images.xcassets/HealthBarBorder.png; sourceTree = "<group>"; };
 		76656A241AE67D76004A3385 /* Octocat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Octocat.png; path = Images.xcassets/Octocat.png; sourceTree = "<group>"; };
 		76656A271AE68130004A3385 /* HelloKitty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HelloKitty.png; path = Images.xcassets/HelloKitty.png; sourceTree = "<group>"; };
+		7674E09A1AF009BB00C5D6CC /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPuiActionButtonNode.swift; sourceTree = "<group>"; };
 		767C41021AE3B79000D28EB4 /* SKPlayerInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPlayerInfoNode.swift; sourceTree = "<group>"; };
 		767C41041AE4B0C100D28EB4 /* BottomBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BottomBoard.png; path = Images.xcassets/BottomBoard.png; sourceTree = "<group>"; };
@@ -722,6 +724,7 @@
 				34BA89CA1ADA7CC500413C1B /* StringUtils.swift */,
 				BD0441C21ADD3899003B93BC /* DateUtils.swift */,
 				763D97B71ADA7CDB0064B73C /* SceneUtils.swift */,
+				7674E09A1AF009BB00C5D6CC /* Storage.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1002,6 +1005,7 @@
 				342585551AACE406004A3CFD /* ShopViewController.swift in Sources */,
 				342585371AACE0D8004A3CFD /* CatFactory.swift in Sources */,
 				BDA19ABA1AD0382900B7E9D4 /* StatModification.swift in Sources */,
+				7674E09B1AF009BB00C5D6CC /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
