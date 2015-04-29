@@ -105,7 +105,7 @@ class GameViewController: UIViewController, ApplicationUIListener {
     }
     
     func presentAlert(alert: UIAlertController) {
-        self.performSegueWithIdentifier(self.unwindIdentifer, sender: self)
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func endGame() {
