@@ -272,6 +272,7 @@ struct Constants {
         static let poop: CGFloat = 72
         static let targetArrow: CGFloat = 73
         static let targetCrosshair: CGFloat = 74
+        static let targetTouchOverlay: CGFloat = 75
         
         // Damage layer 90 - 99
         static let damage: CGFloat = 90

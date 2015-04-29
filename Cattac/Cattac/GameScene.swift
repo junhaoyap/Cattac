@@ -1001,17 +1001,23 @@ private extension GameScene {
         let currentPlayer = gameEngine.currentPlayer
         let inventory = gameManager[inventoryOf: currentPlayer]!
         let item = inventory.getItem(inventory.selectedItem!)
+
         for player in gameManager.players.values {
-            
-            let playerSprite = player.getSprite() as SKTouchSpriteNode
-            let position = playerSprite.position
-            
+            let position = player.getSprite().position
+
             if item.shouldTargetAll() {
                 let crosshairSprite = sceneUtils.getCrosshairNode()
                 crosshairSprite.position = position
                 entityLayer.addChild(crosshairSprite)
                 targetPreviewNodes += [crosshairSprite]
             } else if !gameManager.samePlayer(player, currentPlayer) {
+                let playerSprite = SKTouchSpriteNode(imageNamed: "DummyTouchTile.png")
+                playerSprite.size = (player.getSprite() as SKSpriteNode).size
+                playerSprite.position = position
+                playerSprite.zPosition = Constants.Z.targetTouchOverlay
+                targetPreviewNodes.append(playerSprite)
+                entityLayer.addChild(playerSprite)
+
                 let arrowSprite = sceneUtils.getPlayerTargetableArrow(position)
                 entityLayer.addChild(arrowSprite)
                 

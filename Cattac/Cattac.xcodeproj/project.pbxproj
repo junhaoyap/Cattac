@@ -127,6 +127,7 @@
 		76656A261AE67D76004A3385 /* Octocat.png in Resources */ = {isa = PBXBuildFile; fileRef = 76656A241AE67D76004A3385 /* Octocat.png */; };
 		76656A281AE68130004A3385 /* HelloKitty.png in Resources */ = {isa = PBXBuildFile; fileRef = 76656A271AE68130004A3385 /* HelloKitty.png */; };
 		7674E09B1AF009BB00C5D6CC /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7674E09A1AF009BB00C5D6CC /* Storage.swift */; };
+		7674E09F1AF0ABE000C5D6CC /* DummyTouchTile.png in Resources */ = {isa = PBXBuildFile; fileRef = 7674E09E1AF0ABE000C5D6CC /* DummyTouchTile.png */; };
 		7676FEB91AE29400008FDC9D /* SKPuiActionButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */; };
 		767C41031AE3B79000D28EB4 /* SKPlayerInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767C41021AE3B79000D28EB4 /* SKPlayerInfoNode.swift */; };
 		767C41051AE4B0C100D28EB4 /* BottomBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = 767C41041AE4B0C100D28EB4 /* BottomBoard.png */; };
@@ -311,6 +312,7 @@
 		76656A241AE67D76004A3385 /* Octocat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Octocat.png; path = Images.xcassets/Octocat.png; sourceTree = "<group>"; };
 		76656A271AE68130004A3385 /* HelloKitty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HelloKitty.png; path = Images.xcassets/HelloKitty.png; sourceTree = "<group>"; };
 		7674E09A1AF009BB00C5D6CC /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		7674E09E1AF0ABE000C5D6CC /* DummyTouchTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DummyTouchTile.png; path = Images.xcassets/DummyTouchTile.png; sourceTree = "<group>"; };
 		7676FEB81AE29400008FDC9D /* SKPuiActionButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPuiActionButtonNode.swift; sourceTree = "<group>"; };
 		767C41021AE3B79000D28EB4 /* SKPlayerInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPlayerInfoNode.swift; sourceTree = "<group>"; };
 		767C41041AE4B0C100D28EB4 /* BottomBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BottomBoard.png; path = Images.xcassets/BottomBoard.png; sourceTree = "<group>"; };
@@ -668,6 +670,7 @@
 		3471CA6C1ACEB7C400B0E68D /* Arena */ = {
 			isa = PBXGroup;
 			children = (
+				7674E09E1AF0ABE000C5D6CC /* DummyTouchTile.png */,
 				76656A1F1AE65547004A3385 /* HealthBar.png */,
 				76656A201AE65547004A3385 /* HealthBarBorder.png */,
 				767C41061AE4B0CC00D28EB4 /* TopBoard.png */,
@@ -931,6 +934,7 @@
 				76229AF51AEFDB2400F66335 /* ball.aiff in Resources */,
 				76229B0D1AEFDC4400F66335 /* Eraser.png in Resources */,
 				763E71211AD2E0EB00E90EF0 /* Pui.png in Resources */,
+				7674E09F1AF0ABE000C5D6CC /* DummyTouchTile.png in Resources */,
 				767C41051AE4B0C100D28EB4 /* BottomBoard.png in Resources */,
 				7694EDD41AE3324900572818 /* LuckiestGuy.ttf in Resources */,
 				76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */,
