@@ -3,7 +3,7 @@ import UIKit
 struct Storage {
 
     private static let directoryPath = NSSearchPathForDirectoriesInDomains(
-        .DocumentDirectory, .UserDomainMask, true)[0] as String
+        .DocumentDirectory, .UserDomainMask, true)[0] as! String
     private static let levelsFolder: String = "levels/"
     private static let levelsPath =
     directoryPath.stringByAppendingPathComponent(levelsFolder)
@@ -13,13 +13,13 @@ struct Storage {
     static func getSavedLevels() -> [String] {
         checkLevelsFolder()
         return fileManager.contentsOfDirectoryAtPath(levelsPath, error: nil)
-            as [String]
+            as! [String]
     }
 
     static func getLevelData(fileName: String) -> [String:AnyObject]? {
         let filePath = levelsPath.stringByAppendingPathComponent(fileName)
         if fileManager.fileExistsAtPath(filePath) {
-            return NSDictionary(contentsOfFile: filePath) as [String:AnyObject]?
+            return NSDictionary(contentsOfFile: filePath) as! [String:AnyObject]?
         } else {
             return nil
         }

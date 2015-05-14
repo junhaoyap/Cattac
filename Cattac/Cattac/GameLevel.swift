@@ -53,7 +53,7 @@ class GameLevel {
                     doodadData[Constants.Level.keyGridCol] = col
                     
                     if doodad is WormholeDoodad {
-                        let destTileNode = (doodad as WormholeDoodad).getDestinationNode()
+                        let destTileNode = (doodad as! WormholeDoodad).getDestinationNode()
                         doodadData[Constants.Level.keyWormholeDestNode] = [
                             Constants.Level.keyGridRow: destTileNode.position.row,
                             Constants.Level.keyGridCol: destTileNode.position.col

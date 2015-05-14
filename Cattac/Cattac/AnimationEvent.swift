@@ -4,7 +4,7 @@ import SpriteKit
 struct AnimationEvent {
     let sprite: SKNode
     let action: SKAction
-    let completion: (()->())?
+    var completion: (()->())?
     
     init(_ sprite: SKNode, _ action: SKAction) {
         self.sprite = sprite

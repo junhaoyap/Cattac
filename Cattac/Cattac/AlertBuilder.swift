@@ -3,8 +3,8 @@ import UIKit
 struct AlertBuilder {
     let title: String
     let message: String
-    let defaultAction: AlertAction?
-    let cancelAction: AlertAction?
+    var defaultAction: AlertAction?
+    var cancelAction: AlertAction?
     
     init(_ title: String, _ message: String) {
         self.title = title

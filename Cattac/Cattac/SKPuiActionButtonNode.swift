@@ -71,7 +71,7 @@ class SKPuiActionButtonNode: SKActionButtonNode {
         }
     }
 
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         if !isEnabled {
             return
         }
@@ -79,7 +79,7 @@ class SKPuiActionButtonNode: SKActionButtonNode {
         super.touchesBegan(touches, withEvent: event)
 
         /// Register the inital touch point to calculate swipe direction later
-        var touch = touches.allObjects[0] as UITouch
+        var touch = touches.first as! UITouch
         initialTouchLocation = touch.locationInNode(self)
 
         /// Resets the direction on touch begin or create the direction arrows
@@ -92,14 +92,14 @@ class SKPuiActionButtonNode: SKActionButtonNode {
         }
     }
 
-    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         /// directionNode will be cleared when the gameState changes, so we
         /// need to disable all touchesMoved operations
         if !isEnabled || directionNode == nil {
             return
         }
 
-        var touch = touches.allObjects[0] as UITouch
+        var touch = touches.first as! UITouch
         var location = touch.locationInNode(self)
 
         /// If the minimumTriggerDistance is met, selects the arrow in that 
@@ -134,7 +134,7 @@ class SKPuiActionButtonNode: SKActionButtonNode {
         }
     }
 
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         /// directionNode will be cleared when the gameState changes, so we
         /// need to disable touchesEnded operation
         if !isEnabled || directionNode == nil {

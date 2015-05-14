@@ -16,7 +16,7 @@ class SKTouchSpriteNode: SKSpriteNode {
         touchBeganClosure = touchesBegan
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         touchBeganClosure?()
     }
 }

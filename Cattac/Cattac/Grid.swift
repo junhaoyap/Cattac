@@ -116,7 +116,7 @@ class Grid {
     }
 
     /// Removes a TileNode from the inner graph data structure, basically 
-    /// TileNodes that you do not want to be reachable from the rest of the 
+    /// TileNodes that you do not want to be reachable from the rest of the
     /// TileNodes (stuff like TileNodes with walls)
     ///
     /// :param: removedNode The TileNode to be removed.

@@ -13,11 +13,11 @@ class LevelDesignerViewController: UIViewController {
         super.viewDidLoad()
 
         gridViewController.wormholeBlueButton =
-            self.view.viewWithTag(4) as UIButton
+            self.view.viewWithTag(4) as! UIButton
         gridViewController.wormholeOrangeButton =
-            self.view.viewWithTag(5) as UIButton
+            self.view.viewWithTag(5) as! UIButton
 
-        let fortressButton: UIButton = self.view.viewWithTag(1) as UIButton
+        let fortressButton: UIButton = self.view.viewWithTag(1) as! UIButton
         setPaletteButton(fortressButton)
 
         self.view.addSubview(selection)
@@ -41,7 +41,7 @@ class LevelDesignerViewController: UIViewController {
             }
         } else if segue.identifier == "gridContainer" {
             self.gridViewController = segue.destinationViewController
-                as GridViewController
+                as! GridViewController
         }
     }
 
@@ -85,14 +85,14 @@ class LevelDesignerViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Save",
             style: UIAlertActionStyle.Default, handler:
             { (action: UIAlertAction!) -> Void in
-                var textField = alert.textFields!.first! as UITextField
+                var textField = alert.textFields!.first! as! UITextField
                 Storage.saveLevel(textField.text,
                     levelData: self.createLevel().compress())
                 self.currentFile.text = textField.text
         }))
 
         if self.currentLevelName == nil {
-            (alert.actions[1] as UIAlertAction).enabled = false
+            (alert.actions[1] as! UIAlertAction).enabled = false
         }
         self.presentViewController(alert, animated: true, completion: nil)
     }
@@ -137,7 +137,7 @@ class LevelDesignerViewController: UIViewController {
         while !(responder is UIAlertController) {
             responder = responder.nextResponder()
         }
-        let alert = responder as UIAlertController
+        let alert = responder as! UIAlertController
         let text: NSString = textField.text
         var enableSave = !text.isEqual("")
 
@@ -153,7 +153,7 @@ class LevelDesignerViewController: UIViewController {
             alert.message = "Please enter a level name:"
         }
 
-        (alert.actions[1] as UIAlertAction).enabled = enableSave
+        (alert.actions[1] as! UIAlertAction).enabled = enableSave
     }
 
     @IBAction func controlPressed(sender: UIButton) {
@@ -258,9 +258,9 @@ class LevelDesignerViewController: UIViewController {
             let firstWormholeTileNode = level.grid[wormholes[0]]!
             let secondWormholeTileNode = level.grid[wormholes[1]]!
             let firstWormhole = firstWormholeTileNode.doodad
-                as WormholeDoodad
+                as! WormholeDoodad
             let secondWormhole = secondWormholeTileNode.doodad
-                as WormholeDoodad
+                as! WormholeDoodad
 
             firstWormhole.setDestination(secondWormholeTileNode)
             secondWormhole.setDestination(firstWormholeTileNode)

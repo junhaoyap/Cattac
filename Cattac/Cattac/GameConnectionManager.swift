@@ -18,7 +18,7 @@ class GameConnectionManager {
     // MARK: LoginViewController
 
     func autoLogin1(theSender: AnyObject) {
-        let sender = theSender as LoginViewController
+        let sender = theSender as! LoginViewController
         
         connectionManager.authUser(Constants.AutoAccount.username1,
             password: Constants.AutoAccount.password1,
@@ -36,7 +36,7 @@ class GameConnectionManager {
     }
     
     func autoLogin2(theSender: AnyObject) {
-        let sender = theSender as LoginViewController
+        let sender = theSender as! LoginViewController
         
         connectionManager.authUser(Constants.AutoAccount.username2,
             password: Constants.AutoAccount.password2,
@@ -54,7 +54,7 @@ class GameConnectionManager {
     }
     
     func autoLogin3(theSender: AnyObject) {
-        let sender = theSender as LoginViewController
+        let sender = theSender as! LoginViewController
         
         connectionManager.authUser(Constants.AutoAccount.username3,
             password: Constants.AutoAccount.password3,
@@ -72,7 +72,7 @@ class GameConnectionManager {
     }
     
     func autoLogin4(theSender: AnyObject) {
-        let sender = theSender as LoginViewController
+        let sender = theSender as! LoginViewController
         
         connectionManager.authUser(Constants.AutoAccount.username4,
             password: Constants.AutoAccount.password4,
@@ -90,7 +90,7 @@ class GameConnectionManager {
     }
     
     func login(email: String, password: String, theSender: AnyObject) {
-        let sender = theSender as LoginViewController
+        let sender = theSender as! LoginViewController
         
         connectionManager.authUser(email, password: password) {
             error, authData in
@@ -175,7 +175,7 @@ class GameConnectionManager {
     // MARK: MenuViewController
     
     func getMeows(theSender: AnyObject) {
-        let sender = theSender as MenuViewController
+        let sender = theSender as! MenuViewController
         
         let uid = connectionManager.getAuthId()
         
@@ -183,7 +183,7 @@ class GameConnectionManager {
             onComplete: {
                 theSnapshot in
                 
-                let snapshot = theSnapshot as FDataSnapshot
+                let snapshot = theSnapshot as! FDataSnapshot
                 
                 let myNumberOfMeows = snapshot.value.objectForKey(
                     Constants.Firebase.keyMeows) as? Int
@@ -199,14 +199,14 @@ class GameConnectionManager {
     }
     
     func getName(theSender: AnyObject) {
-        let sender = theSender as MenuViewController
+        let sender = theSender as! MenuViewController
         
         let uid = connectionManager.getAuthId()
         
         connectionManager.readOnce("", onComplete: {
             theSnapshot in
             
-            let snapshot = theSnapshot as FDataSnapshot
+            let snapshot = theSnapshot as! FDataSnapshot
             
             let myUsername = snapshot.value.objectForKey(uid) as? String
             
@@ -227,7 +227,7 @@ class GameConnectionManager {
     // MARK: LobbyViewController
     
     func joinLobby(theSender: AnyObject) {
-        let sender = theSender as LobbyViewController
+        let sender = theSender as! LobbyViewController
         
         let lobbyRef = connectionManager.append(
             Constants.Firebase.nodeGames + "/" +
@@ -240,10 +240,10 @@ class GameConnectionManager {
         lobbyRef.readOnce("", onComplete: {
             theSnapshot in
             
-            let snapshot = theSnapshot as FDataSnapshot
+            let snapshot = theSnapshot as! FDataSnapshot
             
-            let lastActiveTimeString = snapshot.value[
-                Constants.Firebase.keyTime] as? String
+            let lastActiveTimeString = snapshot.value.objectForKey(
+                Constants.Firebase.keyTime) as? String
             
             let lastActiveTime = lastActiveTimeString == nil ?
                 nil : DateUtils.dateFormatter.dateFromString(
@@ -267,7 +267,7 @@ class GameConnectionManager {
                 var numberOfPlayers = 1
                 
                 let players = snapshot.value.objectForKey(
-                    Constants.Firebase.nodePlayers)! as [String]
+                    Constants.Firebase.nodePlayers)! as! [String]
                 
                 for player in players {
                     if !player.isEmpty {
@@ -302,7 +302,7 @@ class GameConnectionManager {
     }
     
     func waitPlayerName(theSender: AnyObject) {
-        let sender = theSender as LobbyViewController
+        let sender = theSender as! LobbyViewController
         
         let lobbyRef = connectionManager.append(
             Constants.Firebase.nodeGames + "/" +
@@ -316,7 +316,7 @@ class GameConnectionManager {
             lobbyRef.readOnce("", onComplete: {
                 theSnapshot in
                 
-                let snapshot = theSnapshot as FDataSnapshot
+                let snapshot = theSnapshot as! FDataSnapshot
                 
                 let playerNames = snapshot.value.objectForKey(
                     Constants.Firebase.nodePlayers
@@ -329,7 +329,7 @@ class GameConnectionManager {
                         self.connectionManager.readOnce("", onComplete: {
                             secondSnapshot in
                             
-                            let thisSnapshot = secondSnapshot as FDataSnapshot
+                            let thisSnapshot = secondSnapshot as! FDataSnapshot
                             
                             let playerName = thisSnapshot.value.objectForKey(
                                 playerId
@@ -368,7 +368,7 @@ class GameConnectionManager {
             lobbyRef.readOnce("", onComplete: {
                 theSnapshot in
                 
-                let snapshot = theSnapshot as FDataSnapshot
+                let snapshot = theSnapshot as! FDataSnapshot
                 
                 let playerNames = snapshot.value.objectForKey(
                     Constants.Firebase.nodePlayers
@@ -381,7 +381,7 @@ class GameConnectionManager {
                         self.connectionManager.readOnce("", onComplete: {
                             secondSnapshot in
                             
-                            let thisSnapshot = secondSnapshot as FDataSnapshot
+                            let thisSnapshot = secondSnapshot as! FDataSnapshot
                             
                             let playerName = thisSnapshot.value.objectForKey(
                                 playerId
@@ -442,7 +442,7 @@ class GameConnectionManager {
     }
     
     func waitForGameStart(theSender: AnyObject) {
-        let sender = theSender as LobbyViewController
+        let sender = theSender as! LobbyViewController
         
         let gameRef = connectionManager.append(
             Constants.Firebase.nodeGames + "/" +
@@ -457,7 +457,7 @@ class GameConnectionManager {
                     gameSnapshot in
                     
                     sender.level = sender.levelGenerator
-                        .createGame(fromSnapshot: gameSnapshot as FDataSnapshot)
+                        .createGame(fromSnapshot: gameSnapshot as! FDataSnapshot)
                     
                     sender.startGame()
             })
@@ -560,7 +560,7 @@ class GameConnectionManager {
             let obsvRef = playerMovementWatcherRef.watchNew("", onComplete: {
                 theSnapshot in
                 
-                let snapshot = theSnapshot as FDataSnapshot
+                let snapshot = theSnapshot as! FDataSnapshot
                 completion(data: snapshot, playerNum: playerNum)
             })
             observerReferences[playerNum] = obsvRef
@@ -576,7 +576,7 @@ class GameConnectionManager {
             playerMovementWatcherRef.watchNew("", onComplete: {
                 theSnapshot in
                 
-                let snapshot = theSnapshot as FDataSnapshot
+                let snapshot = theSnapshot as! FDataSnapshot
                 completion(snapshot)
             })
     }

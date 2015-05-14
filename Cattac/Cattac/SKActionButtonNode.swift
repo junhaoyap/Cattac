@@ -76,35 +76,35 @@ class SKActionButtonNode: SKNode, ActionButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         if !isEnabled {
             return
         }
 
-        activeButton.hidden = false ^ isSelected
+        activeButton.hidden = false != isSelected
     }
     
-    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         if !isEnabled {
             return
         }
 
-        var touch = touches.allObjects[0] as UITouch
+        var touch = touches.first as! UITouch
         var location = touch.locationInNode(self)
 
         if defaultButton.containsPoint(location) {
-            activeButton.hidden = false ^ isSelected
+            activeButton.hidden = false != isSelected
         } else {
-            activeButton.hidden = true ^ isSelected
+            activeButton.hidden = true != isSelected
         }
     }
     
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         if !isEnabled {
             return
         }
 
-        let touch = touches.allObjects[0] as UITouch
+        let touch = touches.first as! UITouch
         let location = touch.locationInNode(self)
 
         if defaultButton.containsPoint(location) {
@@ -116,7 +116,7 @@ class SKActionButtonNode: SKNode, ActionButton {
                 unselect()
             }
         } else {
-            activeButton.hidden = true ^ isSelected
+            activeButton.hidden = true != isSelected
         }
     }
 }

@@ -91,10 +91,6 @@ class GameScene: SKScene {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override init(size: CGSize) {
-        assertionFailure("Should not call this init, init with game level!")
-    }
 
     /// Initializes the game scene.
     ///
@@ -104,18 +100,17 @@ class GameScene: SKScene {
     /// :param: multiplayer Whether the game is multiplayer or single player.
     init(size: CGSize, level: GameLevel, currentPlayerNumber: Int,
         multiplayer: Bool, names: [String]) {
-            super.init(size: size)
-            
             self.playerNames = names
             self.level = level
             gameEngine = GameEngine(grid: level.grid,
                 playerNumber: currentPlayerNumber, multiplayer: multiplayer)
-            gameEngine.eventListener = self
-
             gameManager = gameEngine.gameManager
-
             sceneUtils = SceneUtils(windowWidth: size.width,
                 numRows: level.numRows, numColumns: level.numColumns)
+
+            super.init(size: size)
+
+            gameEngine.eventListener = self
             
             // Sets the anchorpoint for the scene to be the center of the screen
             anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -133,7 +128,7 @@ class GameScene: SKScene {
     }
     
     /// When player tries to perform movement actions
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         if !gameEngine.currentPlayer.isDead {
             for touch: AnyObject in touches {
                 let location = touch.locationInNode(gameLayer)
@@ -147,7 +142,7 @@ class GameScene: SKScene {
     }
     
     /// When player tries to change their movement actions
-    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         if !gameEngine.currentPlayer.isDead {
             for touch: AnyObject in touches {
                 let location = touch.locationInNode(gameLayer)
@@ -247,13 +242,13 @@ extension GameScene: EventListener {
                 unselectActionButtonsExcept(fartButton)
                 unhighlightTargetPlayers()
             case .Poop:
-                drawPoop(action as PoopAction)
+                drawPoop(action as! PoopAction)
                 unselectActionButtonsExcept(poopButton)
                 unhighlightTargetPlayers()
             case .Item:
                 hidePoop()
 
-                switch (action as ItemAction).item {
+                switch (action as! ItemAction).item {
                 case is MilkItem:
                     unselectActionButtonsExcept(inventoryMilkButton)
                 case is ProjectileItem:
@@ -264,7 +259,7 @@ extension GameScene: EventListener {
                     break
                 }
 
-                if (action as ItemAction).item.canTargetOthers() {
+                if (action as! ItemAction).item.canTargetOthers() {
                     unhighlightTargetPlayers()
                     highlightTargetPlayers()
                 }
@@ -495,7 +490,7 @@ private extension GameScene {
     func addPlayers() {
         for player in gameManager.players.values {
             let spriteNode = gameEngine.gameManager[positionOf: player]!.sprite
-            let playerNode = player.getSprite() as SKSpriteNode
+            let playerNode = player.getSprite() as! SKSpriteNode
             playerNode.size = spriteNode.size
             playerNode.position = spriteNode.position
             entityLayer.addChild(playerNode)
@@ -592,7 +587,7 @@ private extension GameScene {
     func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
         let entityNode = tileEntity.getSprite()
         if entityNode is SKSpriteNode {
-            (entityNode as SKSpriteNode).size = spriteNode.size
+            (entityNode as! SKSpriteNode).size = spriteNode.size
         }
     
         entityNode.hidden = !tileEntity.isVisible()
@@ -821,7 +816,7 @@ private extension GameScene {
                 println(action)
                 switch action!.actionType {
                 case .Pui:
-                    let direction = (action! as PuiAction).direction
+                    let direction = (action! as! PuiAction).direction
                     animatePuiAction(player, direction: direction)
                     soundPlayer.playPui()
                 case .Fart:
@@ -830,7 +825,7 @@ private extension GameScene {
                 case .Poop:
                     soundPlayer.playPoopArm()
                 case .Item:
-                    animateItemAction(player, action: action! as ItemAction)
+                    animateItemAction(player, action: action! as! ItemAction)
                 }
             }
         }
@@ -1015,7 +1010,7 @@ private extension GameScene {
                 targetPreviewNodes += [crosshairSprite]
             } else if !gameManager.samePlayer(player, currentPlayer) {
                 let playerSprite = SKTouchSpriteNode(imageNamed: "DummyTouchTile.png")
-                playerSprite.size = (player.getSprite() as SKSpriteNode).size
+                playerSprite.size = (player.getSprite() as! SKSpriteNode).size
                 playerSprite.position = position
                 playerSprite.zPosition = Constants.Z.targetTouchOverlay
                 targetPreviewNodes.append(playerSprite)
@@ -1041,7 +1036,7 @@ private extension GameScene {
             if gameManager.samePlayer(player, gameEngine.currentPlayer) {
                 continue
             }
-            let playerSprite = player.getSprite() as SKTouchSpriteNode
+            let playerSprite = player.getSprite() as! SKTouchSpriteNode
             if playerSprite.userInteractionEnabled {
                 playerSprite.setTouchObserver(nil)
                 playerSprite.userInteractionEnabled = false

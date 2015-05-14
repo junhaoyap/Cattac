@@ -103,7 +103,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
                 gridCellIdentifier, forIndexPath: indexPath)
-                as UICollectionViewCell
+                as! UICollectionViewCell
 
             let tileImage = UIImage(named: "Grass.png")!
             let tile = UIImageView(image: tileImage)
@@ -159,7 +159,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
 
     func longPressGestureHandler(sender: UILongPressGestureRecognizer) {
-        let collectionView = self.view as UICollectionView
+        let collectionView = self.view as! UICollectionView
         let point: CGPoint = sender.locationInView(self.view)
         if let indexPath = collectionView.indexPathForItemAtPoint(point) {
             let cell = collectionView.cellForItemAtIndexPath(indexPath)
@@ -168,7 +168,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
 
     func panGestureHandler(sender: UIPanGestureRecognizer) {
-        let collectionView = self.view as UICollectionView
+        let collectionView = self.view as! UICollectionView
         let point: CGPoint = sender.locationInView(collectionView)
         if let indexPath = collectionView.indexPathForItemAtPoint(point) {
             let cell = collectionView.cellForItemAtIndexPath(indexPath)
@@ -180,7 +180,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         func add(entity: TileEntity, to gridIndex: GridIndex) {
             let indexPath = NSIndexPath(forRow: gridIndex.col,
                 inSection: rows - gridIndex.row - 1)
-            let cell = (self.view as UICollectionView)
+            let cell = (self.view as! UICollectionView)
                 .cellForItemAtIndexPath(indexPath)
 
             addTileEntity(cell!, entityObject: entity, indexPath: indexPath)
@@ -202,11 +202,11 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
 
     func reset() {
-        let collectionView = self.view as UICollectionView
+        let collectionView = self.view as! UICollectionView
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(
-                indexPath as NSIndexPath)
-            removeTileEntity(cell!, indexPath: indexPath as NSIndexPath)
+                indexPath as! NSIndexPath)
+            removeTileEntity(cell!, indexPath: indexPath as! NSIndexPath)
         }
     }
 
@@ -300,9 +300,9 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     private func add(# entityObject: TileEntity, to gridIndex: GridIndex) {
         let tileNode = grid[gridIndex]!
         if entityObject is Doodad {
-            tileNode.doodad = (entityObject as Doodad)
+            tileNode.doodad = (entityObject as! Doodad)
         } else if entityObject is Item {
-            tileNode.item = (entityObject as Item)
+            tileNode.item = (entityObject as! Item)
         }
 
     }

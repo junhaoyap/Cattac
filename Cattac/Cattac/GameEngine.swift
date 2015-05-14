@@ -294,7 +294,7 @@ class GameEngine {
                     eventListener?.addPendingPoopAnimation(poop,
                         target: playerMoveToNode)
                 } else if doodad is WormholeDoodad {
-                    let destNode = (doodad as WormholeDoodad).getDestinationNode()
+                    let destNode = (doodad as! WormholeDoodad).getDestinationNode()
                     gameManager[moveToPositionOf: player]! = destNode
                     playerMoveToNode = destNode
                     path += [destNode]
@@ -323,7 +323,7 @@ class GameEngine {
                 case .Pui:
                     break
                 case .Fart:
-                    (action as FartAction).resetRange(player.fartRange)
+                    (action as! FartAction).resetRange(player.fartRange)
                 case .Poop:
                     break
                 case .Item:
@@ -443,10 +443,10 @@ class GameEngine {
                     poopActivated = true
                 }
             }
-            
+
             node.poop = poopActivated ? nil : poop
         } else if action is ItemAction {
-            let itemAction = action as ItemAction
+            let itemAction = action as! ItemAction
             itemAction.targetNode =
                 gameManager[moveToPositionOf: itemAction.targetPlayer]
             gameManager[inventoryOf: player]!.useItem(itemAction.item)
@@ -518,7 +518,7 @@ class GameEngine {
     func getAvailablePuiDirections(player: Cat) -> [Direction] {
         var targetNode = gameManager[moveToPositionOf: player]!
         if targetNode.doodad is WormholeDoodad {
-            targetNode = (targetNode.doodad! as WormholeDoodad)
+            targetNode = (targetNode.doodad! as! WormholeDoodad)
                 .getDestinationNode()
             
         }
