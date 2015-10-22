@@ -1,6 +1,7 @@
 /*
     The packaged firebase server that contains the Firebase methods
 */
+import Firebase
 
 class FirebaseServer: Server {
     

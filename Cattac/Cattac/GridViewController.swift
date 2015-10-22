@@ -103,7 +103,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
                 gridCellIdentifier, forIndexPath: indexPath)
-                as! UICollectionViewCell
+                
 
             let tileImage = UIImage(named: "Grass.png")!
             let tile = UIImageView(image: tileImage)
@@ -120,7 +120,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
 
     private func addPlayer(cell: UICollectionViewCell, gridIndex: GridIndex) {
-        func addImage(# named: String) {
+        func addImage(named  named: String) {
             let image = UIImage(named: named)
             let imageView = UIImageView(image: image)
             let tileSize = cell.frame.size
@@ -155,7 +155,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     func setCurrentAction(action: String) {
         self.currentAction = action
-        println("\(action) button selected")
+        print("\(action) button selected")
     }
 
     func longPressGestureHandler(sender: UILongPressGestureRecognizer) {
@@ -205,8 +205,8 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         let collectionView = self.view as! UICollectionView
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(
-                indexPath as! NSIndexPath)
-            removeTileEntity(cell!, indexPath: indexPath as! NSIndexPath)
+                indexPath )
+            removeTileEntity(cell!, indexPath: indexPath )
         }
     }
 
@@ -286,7 +286,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
             }
     }
 
-    private func add(# entity: String, to cell: UICollectionViewCell) {
+    private func add(entity  entity: String, to cell: UICollectionViewCell) {
         let entityImage =
             UIImage(named: Constants.Entities.getImage(entity)!)
         let entityImageView = UIImageView(image: entityImage)
@@ -297,7 +297,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, UICollec
         cell.addSubview(entityImageView)
     }
 
-    private func add(# entityObject: TileEntity, to gridIndex: GridIndex) {
+    private func add(entityObject  entityObject: TileEntity, to gridIndex: GridIndex) {
         let tileNode = grid[gridIndex]!
         if entityObject is Doodad {
             tileNode.doodad = (entityObject as! Doodad)

@@ -43,7 +43,7 @@ class Graph<T: Hashable> {
     
     /// Constructs a directed or undirected graph.
     ///
-    /// :param: isDirected Whether to construct a directed or undirected graph.
+    /// - parameter isDirected: Whether to construct a directed or undirected graph.
     init(isDirected: Bool) {
         self.isDirected = isDirected
         self.dictionaryOfNodes = [:]
@@ -55,7 +55,7 @@ class Graph<T: Hashable> {
 
     /// Adds a node into the graph.
     ///
-    /// :param: addedNode The node to be added.
+    /// - parameter addedNode: The node to be added.
     func addNode(addedNode: N) {
         _checkRep()
         
@@ -70,7 +70,7 @@ class Graph<T: Hashable> {
 
     /// Removes a node from the graph and all its incoming and outgoing edges.
     ///
-    /// :param: removedNode The node to be removed.
+    /// - parameter removedNode: The node to be removed.
     func removeNode(removedNode: N) {
         _checkRep()
         
@@ -105,8 +105,8 @@ class Graph<T: Hashable> {
 
     /// Checks whether the node exists in the graph.
     ///
-    /// :param: targetNode The node to check.
-    /// :returns: true if it exists, false if it doesn't.
+    /// - parameter targetNode: The node to check.
+    /// - returns: true if it exists, false if it doesn't.
     func containsNode(targetNode: N) -> Bool {
         _checkRep()
         
@@ -120,7 +120,7 @@ class Graph<T: Hashable> {
     /// Adds an edge into the graph. Creates the source and destination nodes
     /// if they do not exist.
     ///
-    /// :param: addedEdge The edge to be added.
+    /// - parameter addedEdge: The edge to be added.
     func addEdge(addedEdge: E) {
         _checkRep()
 
@@ -154,12 +154,12 @@ class Graph<T: Hashable> {
             }
             
             dictionaryOfEdges[addedEdge.hashValue] = addedEdge
-            addDirectedEdge(addedEdge, sourceNodeHash, destNodeHash)
+            addDirectedEdge(addedEdge, sourceNodeHash: sourceNodeHash, destNodeHash: destNodeHash)
             
             if !self.isDirected {
                 let reversedEdge = addedEdge.reverse()
                 dictionaryOfEdges[reversedEdge.hashValue] = reversedEdge
-                addDirectedEdge(reversedEdge, destNodeHash, sourceNodeHash)
+                addDirectedEdge(reversedEdge, sourceNodeHash: destNodeHash, destNodeHash: sourceNodeHash)
             }
         }
         
@@ -168,7 +168,7 @@ class Graph<T: Hashable> {
 
     /// Removes an edge from the graph.
     ///
-    /// :param: removedEdge The edge to be removed.
+    /// - parameter removedEdge: The edge to be removed.
     func removeEdge(removedEdge: E) {
         _checkRep()
 
@@ -196,12 +196,12 @@ class Graph<T: Hashable> {
             let destNodeHash = destNode.hashValue
             
             dictionaryOfEdges.removeValueForKey(removedEdge.hashValue)
-            removeDirectedEdge(removedEdge, sourceNodeHash, destNodeHash)
+            removeDirectedEdge(removedEdge, source: sourceNodeHash, dest: destNodeHash)
             
             if !self.isDirected {
                 let reversedEdge = removedEdge.reverse()
                 dictionaryOfEdges.removeValueForKey(reversedEdge.hashValue)
-                removeDirectedEdge(reversedEdge, destNodeHash, sourceNodeHash)
+                removeDirectedEdge(reversedEdge, source: destNodeHash, dest: sourceNodeHash)
             }
         }
         
@@ -210,8 +210,8 @@ class Graph<T: Hashable> {
 
     /// Checks whether the edge exists in the graph.
     ///
-    /// :param: targetEdge The edge to check.
-    /// :returns: true if it exists, false if it doesn't.
+    /// - parameter targetEdge: The edge to check.
+    /// - returns: true if it exists, false if it doesn't.
     func containsEdge(targetEdge: E) -> Bool {
         _checkRep()
         
@@ -224,9 +224,9 @@ class Graph<T: Hashable> {
 
     /// Retrieves all edges that points from the fromNode to toNode.
     ///
-    /// :param: fromNode The source node of the edges.
-    /// :param: toNode The destination node of the edges.
-    /// :returns: An array of edges, empty if none found.
+    /// - parameter fromNode: The source node of the edges.
+    /// - parameter toNode: The destination node of the edges.
+    /// - returns: An array of edges, empty if none found.
     func edgesFromNode(fromNode: N, toNode: N) -> [E] {
         _checkRep()
 
@@ -243,8 +243,8 @@ class Graph<T: Hashable> {
 
     /// Retrieves all neighbours of the given node.
     ///
-    /// :param: fromNode The node to grab neighbours from.
-    /// :returns: An array of nodes, empty if none found.
+    /// - parameter fromNode: The node to grab neighbours from.
+    /// - returns: An array of nodes, empty if none found.
     func adjacentNodesFromNode(fromNode: N) -> [N] {
         _checkRep()
         
@@ -284,10 +284,10 @@ class Graph<T: Hashable> {
     }
     
     func isLabelAllUnique() -> Bool {
-        var numberOfNodes: Int = nodes.count
+        let numberOfNodes: Int = nodes.count
         
         for var index = 0; index < numberOfNodes; index++ {
-            var labelToCheck = nodes[index]
+            let labelToCheck = nodes[index]
             
             for var innerIndex = index + 1; innerIndex < numberOfNodes;
                 innerIndex++ {
@@ -301,10 +301,10 @@ class Graph<T: Hashable> {
     }
     
     func isEdgesAllUnique() -> Bool {
-        var numberOfEdges: Int = self.dictionaryOfEdges.count
+        let numberOfEdges: Int = self.dictionaryOfEdges.count
         
         for var index = 0; index < numberOfEdges; index++ {
-            var edgeToCheck = edges[index]
+            let edgeToCheck = edges[index]
             
             for var innerIndex = index + 1; innerIndex < numberOfEdges;
                 innerIndex++ {
@@ -319,9 +319,9 @@ class Graph<T: Hashable> {
 
     /// Find the shortest path from fromNode to toNode.
     ///
-    /// :param: fromNode The starting node for the path.
-    /// :param: toNode The ending node for the path.
-    /// :returns: An array of edges that forms the shortest path, empty if path
+    /// - parameter fromNode: The starting node for the path.
+    /// - parameter toNode: The ending node for the path.
+    /// - returns: An array of edges that forms the shortest path, empty if path
     ///           not found.
     func shortestPathFromNode(fromNode: N, toNode: N) -> [E] {
         _checkRep()
@@ -353,8 +353,8 @@ class Graph<T: Hashable> {
                     
                     // Updates the existing queue entry by finding the queue
                     // index
-                    if let nodeIndex = find(queue.map( { (node,_) -> N in
-                        return node} ), destNode) {
+                    if let nodeIndex = queue.map( { (node,_) -> N in
+                        return node} ).indexOf(destNode) {
                         queue[nodeIndex].distance = estimateDistance
                     }
                 }
@@ -370,18 +370,18 @@ class Graph<T: Hashable> {
             // The priority queue must be sorted at all times.
             // It is in descending order to make it easy to extract the
             // smallest element by removing from the end
-            queue.sort() { (T1, T2) -> Bool in
+            queue.sortInPlace() { (T1, T2) -> Bool in
                 return T1.distance > T2.distance
             }
         }
         
         // Dijkstra's algorithm
         while !queue.isEmpty {
-            var (node, distance) = queue.removeLast()
+            let (node, distance) = queue.removeLast()
             if let edgesFromSourceNode = matrix[node.hashValue] {
                 for (_, edges) in edgesFromSourceNode {
                     for edge in edges {
-                        relax(edge, distance)
+                        relax(edge, sourceNodeDistance: distance)
                     }
                 }
             }
@@ -398,6 +398,6 @@ class Graph<T: Hashable> {
             }
         }
         
-        return arrayToReturn.reverse()
+        return Array(arrayToReturn.reverse())
     }
 }

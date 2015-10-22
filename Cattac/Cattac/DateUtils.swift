@@ -27,7 +27,7 @@ class DateUtils {
         comps.minute = minutes
         
         let refDate = calendar.dateByAddingComponents(comps,
-            toDate: time, options: NSCalendarOptions.allZeros)
+            toDate: time, options: NSCalendarOptions())
         return isAfter(refDate!, dateTwo: NSDate())
     }
     

@@ -5,7 +5,7 @@ class SKTouchSpriteNode: SKSpriteNode {
 
     init(imageNamed: String) {
         let texture = SKTexture(imageNamed: imageNamed)
-        super.init(texture: texture, color: nil, size: texture.size())
+        super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -16,7 +16,7 @@ class SKTouchSpriteNode: SKSpriteNode {
         touchBeganClosure = touchesBegan
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         touchBeganClosure?()
     }
 }

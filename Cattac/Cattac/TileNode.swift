@@ -39,7 +39,7 @@ class TileNode {
     }
 }
 
-extension TileNode: Printable {
+extension TileNode: CustomStringConvertible {
     var description: String {
         return "square:(\(position.row),\(position.col))"
     }

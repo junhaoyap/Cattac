@@ -15,7 +15,7 @@ class CatFactory {
     
     func createCat(nameOfCatToCreate: String) -> Cat? {
         var catToReturn: Cat?
-        var catAttributes = Constants.cat.attributes[nameOfCatToCreate]
+        let catAttributes = Constants.cat.attributes[nameOfCatToCreate]
         
         if let attr = catAttributes {
             catToReturn = Cat(catName: nameOfCatToCreate, attributes: attr)

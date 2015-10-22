@@ -18,7 +18,7 @@ class Doodad: TileEntity {
     /// effected by destination tile
     /// after player move has been calculated.
     ///
-    /// :param: player Player to apply effect on
+    /// - parameter player: Player to apply effect on
     func postmoveEffect(cat: Cat) {
     }
     
@@ -26,7 +26,7 @@ class Doodad: TileEntity {
     /// effected by position tile
     /// before player move has been calculated.
     ///
-    /// :param: player Player to apply effect on
+    /// - parameter player: Player to apply effect on
     func premoveEffect(cat: Cat) {
     }
     

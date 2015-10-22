@@ -24,7 +24,6 @@
 		342585151AACDECA004A3CFD /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585141AACDECA004A3CFD /* QueueTests.swift */; };
 		342585171AACDEDC004A3CFD /* StackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585161AACDEDC004A3CFD /* StackTests.swift */; };
 		342585191AACDEFF004A3CFD /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585181AACDEFF004A3CFD /* MusicPlayer.swift */; };
-		3425851B1AACDF11004A3CFD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3425851A1AACDF11004A3CFD /* AVFoundation.framework */; };
 		3425851D1AACDF40004A3CFD /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425851C1AACDF40004A3CFD /* SoundPlayer.swift */; };
 		3425851F1AACDF61004A3CFD /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425851E1AACDF61004A3CFD /* Node.swift */; };
 		342585211AACDF7A004A3CFD /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585201AACDF7A004A3CFD /* Edge.swift */; };
@@ -51,13 +50,7 @@
 		342585531AACE392004A3CFD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585521AACE392004A3CFD /* MenuViewController.swift */; };
 		342585551AACE406004A3CFD /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342585541AACE406004A3CFD /* ShopViewController.swift */; };
 		3471CA551ACDA11400B0E68D /* ItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA541ACDA11400B0E68D /* ItemFactory.swift */; };
-		3471CA591ACDAE6500B0E68D /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA581ACDAE6500B0E68D /* libicucore.dylib */; };
-		3471CA5B1ACDAE7300B0E68D /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5A1ACDAE7300B0E68D /* libc++.dylib */; };
-		3471CA5D1ACDAE7D00B0E68D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */; };
-		3471CA5F1ACDAE8500B0E68D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA5E1ACDAE8500B0E68D /* Security.framework */; };
-		3471CA611ACDAE8F00B0E68D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */; };
 		3471CA681ACEA02300B0E68D /* GameDifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */; };
-		3471CA6A1ACEAB3800B0E68D /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471CA691ACEAB3800B0E68D /* Firebase.framework */; };
 		348213B01AE27CC20079BA49 /* MediumLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425854B1AACE288004A3CFD /* MediumLevel.swift */; };
 		348213B11AE27CC40079BA49 /* HardLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425854D1AACE291004A3CFD /* HardLevel.swift */; };
 		34A356361AD1896000299049 /* Wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A356351AD1896000299049 /* Wall.swift */; };
@@ -182,6 +175,7 @@
 		76FC46E21ABFE6190056B5F5 /* Grumpy.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DD1ABFE6190056B5F5 /* Grumpy.png */; };
 		76FC46E41ABFE6190056B5F5 /* Nyan.png in Resources */ = {isa = PBXBuildFile; fileRef = 76FC46DF1ABFE6190056B5F5 /* Nyan.png */; };
 		76FC46EA1ABFEB4E0056B5F5 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FC46E91ABFEB4E0056B5F5 /* Grid.swift */; };
+		808DD9D067BDA27B770F5015 /* Pods_Cattac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB7F672A1E98C1F253DC1EF /* Pods_Cattac.framework */; };
 		BD0441C31ADD3899003B93BC /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0441C21ADD3899003B93BC /* DateUtils.swift */; };
 		BD0441C41AE20649003B93BC /* Poop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD29ED721ADBF03D0090B934 /* Poop.swift */; };
 		BD29ED731ADBF03D0090B934 /* Poop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD29ED721ADBF03D0090B934 /* Poop.swift */; };
@@ -214,6 +208,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1FB7F672A1E98C1F253DC1EF /* Pods_Cattac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cattac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2991EF508B8E4E0C5C8C0F91 /* Pods-Cattac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cattac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cattac/Pods-Cattac.debug.xcconfig"; sourceTree = "<group>"; };
 		323454AE1AE29EED00CBB356 /* AnimationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationEvent.swift; sourceTree = "<group>"; };
 		32B6210C1AE34326001A6AB5 /* SKTouchSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTouchSpriteNode.swift; sourceTree = "<group>"; };
 		342584DD1AACDB02004A3CFD /* Cattac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cattac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -233,7 +229,6 @@
 		342585141AACDECA004A3CFD /* QueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		342585161AACDEDC004A3CFD /* StackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackTests.swift; sourceTree = "<group>"; };
 		342585181AACDEFF004A3CFD /* MusicPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
-		3425851A1AACDF11004A3CFD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		3425851C1AACDF40004A3CFD /* SoundPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
 		3425851E1AACDF61004A3CFD /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		342585201AACDF7A004A3CFD /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
@@ -255,15 +250,9 @@
 		342585521AACE392004A3CFD /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		342585541AACE406004A3CFD /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		3471CA541ACDA11400B0E68D /* ItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemFactory.swift; sourceTree = "<group>"; };
-		3471CA581ACDAE6500B0E68D /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
-		3471CA5A1ACDAE7300B0E68D /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		3471CA5E1ACDAE8500B0E68D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3471CA621ACDAEE400B0E68D /* Cattac-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cattac-Bridging-Header.h"; sourceTree = "<group>"; };
 		3471CA651ACEA01500B0E68D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3471CA671ACEA02300B0E68D /* GameDifficultyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDifficultyViewController.swift; sourceTree = "<group>"; };
-		3471CA691ACEAB3800B0E68D /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		34A356351AD1896000299049 /* Wall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wall.swift; sourceTree = "<group>"; };
 		34B4B20A1AD29B8F00D06BD8 /* LobbyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
 		34BA89C71AD6D55200413C1B /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
@@ -271,6 +260,7 @@
 		34ED9F1B1AE28BA2006DDA50 /* GameConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameConnectionManager.swift; sourceTree = "<group>"; };
 		34ED9F1D1AE29C80006DDA50 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		34ED9F1F1AE29C88006DDA50 /* FirebaseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseServer.swift; sourceTree = "<group>"; };
+		62B2E157B5903320D97BF66B /* Pods-Cattac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cattac.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cattac/Pods-Cattac.release.xcconfig"; sourceTree = "<group>"; };
 		760645351AE2830E00CC0279 /* Poop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poop.png; path = Images.xcassets/Poop.png; sourceTree = "<group>"; };
 		761BB59D1AD04348007C31C1 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		76229AE81AEFDB2400F66335 /* ball.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = ball.aiff; path = Sounds/ball.aiff; sourceTree = "<group>"; };
@@ -359,13 +349,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3471CA611ACDAE8F00B0E68D /* SystemConfiguration.framework in Frameworks */,
-				3471CA5F1ACDAE8500B0E68D /* Security.framework in Frameworks */,
-				3471CA5D1ACDAE7D00B0E68D /* CFNetwork.framework in Frameworks */,
-				3471CA6A1ACEAB3800B0E68D /* Firebase.framework in Frameworks */,
-				3471CA5B1ACDAE7300B0E68D /* libc++.dylib in Frameworks */,
-				3471CA591ACDAE6500B0E68D /* libicucore.dylib in Frameworks */,
-				3425851B1AACDF11004A3CFD /* AVFoundation.framework in Frameworks */,
+				808DD9D067BDA27B770F5015 /* Pods_Cattac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,16 +376,11 @@
 		342584D41AACDB02004A3CFD = {
 			isa = PBXGroup;
 			children = (
-				3471CA601ACDAE8F00B0E68D /* SystemConfiguration.framework */,
-				3471CA5E1ACDAE8500B0E68D /* Security.framework */,
-				3471CA5C1ACDAE7D00B0E68D /* CFNetwork.framework */,
-				3471CA5A1ACDAE7300B0E68D /* libc++.dylib */,
-				3471CA691ACEAB3800B0E68D /* Firebase.framework */,
-				3471CA581ACDAE6500B0E68D /* libicucore.dylib */,
-				3425851A1AACDF11004A3CFD /* AVFoundation.framework */,
 				342584DF1AACDB02004A3CFD /* Cattac */,
 				342584F91AACDB03004A3CFD /* CattacTests */,
 				342584DE1AACDB02004A3CFD /* Products */,
+				DEB212C6680FD5BFAEB88BC3 /* Pods */,
+				C6C36C32A5EE761186EE6EDC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -803,6 +782,23 @@
 			name = Items;
 			sourceTree = "<group>";
 		};
+		C6C36C32A5EE761186EE6EDC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1FB7F672A1E98C1F253DC1EF /* Pods_Cattac.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DEB212C6680FD5BFAEB88BC3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2991EF508B8E4E0C5C8C0F91 /* Pods-Cattac.debug.xcconfig */,
+				62B2E157B5903320D97BF66B /* Pods-Cattac.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -810,9 +806,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 342585001AACDB03004A3CFD /* Build configuration list for PBXNativeTarget "Cattac" */;
 			buildPhases = (
+				B754FDF524CE061766938176 /* Check Pods Manifest.lock */,
 				342584D91AACDB02004A3CFD /* Sources */,
 				342584DA1AACDB02004A3CFD /* Frameworks */,
 				342584DB1AACDB02004A3CFD /* Resources */,
+				7DC16EBC106E54FFF8CF8DEE /* Embed Pods Frameworks */,
+				65E29FB8CEE329BB0715EE75 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -847,12 +846,14 @@
 		342584D51AACDB02004A3CFD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0710;
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "National University of Singapore (Department of Computer Science)";
 				TargetAttributes = {
 					342584DC1AACDB02004A3CFD = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = W76H98A34A;
+						DevelopmentTeam = M88Q77EGQ6;
 					};
 					342584F51AACDB03004A3CFD = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -949,6 +950,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		65E29FB8CEE329BB0715EE75 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Cattac/Pods-Cattac-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7DC16EBC106E54FFF8CF8DEE /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Cattac/Pods-Cattac-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B754FDF524CE061766938176 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		342584D91AACDB02004A3CFD /* Sources */ = {
@@ -1148,6 +1197,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1162,7 +1212,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1199,7 +1249,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1209,6 +1259,7 @@
 		};
 		342585011AACDB03004A3CFD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2991EF508B8E4E0C5C8C0F91 /* Pods-Cattac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1220,7 +1271,8 @@
 				);
 				INFOPLIST_FILE = Cattac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = wudi.Cattac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
@@ -1231,6 +1283,7 @@
 		};
 		342585021AACDB03004A3CFD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 62B2E157B5903320D97BF66B /* Pods-Cattac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1242,7 +1295,8 @@
 				);
 				INFOPLIST_FILE = Cattac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = wudi.Cattac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
@@ -1255,7 +1309,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
@@ -1265,6 +1318,7 @@
 				);
 				INFOPLIST_FILE = CattacTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "wudi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cattac.app/Cattac";
@@ -1276,12 +1330,12 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = CattacTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "wudi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cattac/Cattac-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cattac.app/Cattac";

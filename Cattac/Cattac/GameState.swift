@@ -32,7 +32,7 @@ enum GameState: Int {
     }
 }
 
-extension GameState: Printable {
+extension GameState: CustomStringConvertible {
     var description: String {
         return name
     }

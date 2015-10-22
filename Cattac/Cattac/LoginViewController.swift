@@ -46,11 +46,11 @@ class LoginViewController: UIViewController {
         let email = loginUsername.text
         let password = loginPassword.text
         
-        if (email.isEmpty || password.isEmpty) {
-            println("email or password is empty")
+        if (email!.isEmpty || password!.isEmpty) {
+            print("email or password is empty")
             return
         }
         
-        login(email, password: password)
+        login(email!, password: password!)
     }
 }

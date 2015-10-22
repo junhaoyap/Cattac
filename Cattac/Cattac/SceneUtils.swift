@@ -11,9 +11,9 @@ class SceneUtils {
 
     /// Initializes the class with information of the current scene.
     ///
-    /// :param: windowWidth The width of the entire view.
-    /// :param: numRows The number of rows for the game level.
-    /// :param: numColumns The number of columns for the game level.
+    /// - parameter windowWidth: The width of the entire view.
+    /// - parameter numRows: The number of rows for the game level.
+    /// - parameter numColumns: The number of columns for the game level.
     init(windowWidth: CGFloat, numRows: Int, numColumns: Int) {
         self.numRows = numRows
         self.numColumns = numColumns
@@ -29,7 +29,7 @@ class SceneUtils {
 
     /// The position for drawing the grid.
     ///
-    /// :returns: The point to draw the layers (for spritekit, the origin of 
+    /// - returns: The point to draw the layers (for spritekit, the origin of 
     ///           the layer lies on the bottom left of the layer)
     func getLayerPosition() -> CGPoint {
         let x = -tileWidth * CGFloat(numColumns) / 2
@@ -39,9 +39,9 @@ class SceneUtils {
 
     /// Gets the point for the grid index.
     ///
-    /// :param: gridIndex The grid index given to calculate the point in the
+    /// - parameter gridIndex: The grid index given to calculate the point in the
     ///                   the view.
-    /// :returns: The point for the grid index.
+    /// - returns: The point for the grid index.
     func pointFor(gridIndex: GridIndex) -> CGPoint {
         return CGPoint(
             x: CGFloat(gridIndex.col) * tileWidth + tileWidth / 2,
@@ -51,10 +51,10 @@ class SceneUtils {
     /// Gets the `TileNode` that lies on the given location based on the grid
     /// of the game level.
     ///
-    /// :param: location The point in the view to be used to retrieve the tile
+    /// - parameter location: The point in the view to be used to retrieve the tile
     ///                  in the grid.
-    /// :param: grid The grid of the game level.
-    /// :returns: The `TileNode` that lies on the location point.
+    /// - parameter grid: The grid of the game level.
+    /// - returns: The `TileNode` that lies on the location point.
     func nodeForLocation(location: CGPoint, grid: Grid) -> TileNode? {
         let normalizedX = location.x + (CGFloat(numColumns)/2) * tileWidth
         let normalizedY = location.y + (CGFloat(numRows)/2) * tileHeight
@@ -66,9 +66,9 @@ class SceneUtils {
     /// Generates a SKAction that animates the traversal of TileNodes at
     /// given duration per TileNode
     ///
-    /// :param: path TileNode sequence to be traversed
-    /// :param: dur Duration of animation in seconds per tile
-    /// :returns: SKAction holding the sequence
+    /// - parameter path: TileNode sequence to be traversed
+    /// - parameter dur: Duration of animation in seconds per tile
+    /// - returns: SKAction holding the sequence
     func getTraverseAnim(path: [TileNode], _ dur: NSTimeInterval) -> SKAction {
         var pathSequence: [SKAction] = []
         for node in path {
@@ -81,9 +81,9 @@ class SceneUtils {
     
     /// Generates a SKAction that animates the spawning of an item
     ///
-    /// :returns: SKAction holding the sequence
+    /// - returns: SKAction holding the sequence
     func getSpawnItemAnimation() -> SKAction {
-        var sequence = [
+        let sequence = [
             SKAction.moveByX(0, y: 200, duration: 0),
             SKAction.moveByX(0, y: -200, duration: 0.3),
             SKAction.moveByX(0, y: 60, duration: 0.2),
@@ -100,8 +100,8 @@ class SceneUtils {
     
     /// Generates a poop sprite node used to animate the Poop activation.
     ///
-    /// :param: position Location to place the poop
-    /// :returns: The SKSpriteNode
+    /// - parameter position: Location to place the poop
+    /// - returns: The SKSpriteNode
     func getPoopNode(at position: CGPoint) -> SKSpriteNode {
         let poopNode = SKSpriteNode(imageNamed: "Poop.png")
         poopNode.size = tileSize
@@ -112,7 +112,7 @@ class SceneUtils {
     
     /// Generates a poop sprite node used to preview poop location.
     ///
-    /// :returns: The SKSpriteNode
+    /// - returns: The SKSpriteNode
     func getPoopPreviewNode() -> SKSpriteNode {
         let poopPreviewNode = SKSpriteNode(imageNamed: "Poop.png")
         poopPreviewNode.size = tileSize
@@ -123,8 +123,8 @@ class SceneUtils {
     
     /// Generates a fart sprite node used to animate the Fart attack.
     ///
-    /// :param: direction The direction of PuiAction
-    /// :returns: The SKSpriteNode
+    /// - parameter direction: The direction of PuiAction
+    /// - returns: The SKSpriteNode
     func getFartNode(at position: CGPoint) -> SKSpriteNode {
         let fartNode = SKSpriteNode(imageNamed: "Fart.png")
         fartNode.size = CGSize(width: tileWidth / 4,
@@ -138,8 +138,8 @@ class SceneUtils {
     /// Generates a SKAction that enters with fadeIn, rotateIn, and scaleUp
     /// and exits with fadeOut, rotateOut, and scaleDown
     ///
-    /// :param: timeInterval Delay before animation starts
-    /// :returns: SKAction holding the sequence
+    /// - parameter timeInterval: Delay before animation starts
+    /// - returns: SKAction holding the sequence
     func getFartAnimation(timeInterval: NSTimeInterval) -> SKAction {
         let wait = SKAction.waitForDuration(timeInterval)
         
@@ -162,7 +162,7 @@ class SceneUtils {
     /// Generates a SKAction that animates the non-currentPlayers obtaining an
     /// item.
     ///
-    /// :returns: SKAction holding the sequence
+    /// - returns: SKAction holding the sequence
     func getObtainItemAnimation() -> SKAction {
         let moveDistance = tileSize.height
         let actionGroup = [
@@ -178,7 +178,7 @@ class SceneUtils {
     /// Generates a SKAction that animates the aggressive item use for
     /// player on game tile
     ///
-    /// :returns: SKAction holding the sequence
+    /// - returns: SKAction holding the sequence
     func getAggressiveItemUsedAnimation(displacement: CGVector) -> SKAction {
         let dur = getAnimDuration(displacement)
         let actionSequence = [
@@ -194,7 +194,7 @@ class SceneUtils {
     /// Generates a SKAction that animates the passive item use for 
     /// player on game tile
     ///
-    /// :returns: SKAction holding the sequence
+    /// - returns: SKAction holding the sequence
     func getPassiveItemUsedAnimation() -> SKAction {
         let actionSequence = [
             SKAction.scaleTo(1, duration: 0),
@@ -210,8 +210,8 @@ class SceneUtils {
     
     /// Generates a spit sprite node that represents the Pui attack.
     ///
-    /// :param: direction The direction of PuiAction
-    /// :returns: The SKSpriteNode
+    /// - parameter direction: The direction of PuiAction
+    /// - returns: The SKSpriteNode
     func getPuiNode(direction: Direction) -> SKSpriteNode {
         let puiNode = SKSpriteNode(imageNamed: "Pui.png")
         puiNode.size = tileSize
@@ -222,8 +222,8 @@ class SceneUtils {
     
     /// Generates a floating text indicated the damage inflicted upon a player.
     ///
-    /// :param: dmg The damage inflicted upon player
-    /// :returns: The SKSpriteNode
+    /// - parameter dmg: The damage inflicted upon player
+    /// - returns: The SKSpriteNode
     func getDamageLabelNode(dmg: Int) -> SKLabelNode {
         let sign = dmg > 0 ? "-" : "+"
         let damageNode = SKLabelNode(text: "\(sign)\(abs(dmg))")
@@ -236,7 +236,7 @@ class SceneUtils {
     
     /// Generates a SKAction that animates floating number changed label.
     ///
-    /// :returns: SKAction holding the sequence
+    /// - returns: SKAction holding the sequence
     func getNumberChangeAnimation(distance: CGFloat) -> SKAction {
         let actionSequence = [
             SKAction.group([
@@ -251,14 +251,14 @@ class SceneUtils {
 
     /// Generates a SKAction that animates floating damage label.
     ///
-    /// :returns: SKAction holding the sequence
+    /// - returns: SKAction holding the sequence
     func getDamageLabelAnimation() -> SKAction {
         return getNumberChangeAnimation(tileHeight)
     }
     
     /// Generates a orange crosshair used for showing targeted player.
     ///
-    /// :returns: The SKSpriteNode
+    /// - returns: The SKSpriteNode
     func getCrosshairNode() -> SKSpriteNode {
         let node = SKSpriteNode(imageNamed: "Crosshairs.png")
         node.size = CGSize(width: tileSize.width * 1.5,
@@ -269,8 +269,8 @@ class SceneUtils {
     
     /// Generates a orange arrow sprite used for attracting user attention.
     ///
-    /// :param: pointAt Point to which the arrow will point at.
-    /// :returns: The SKSpriteNode
+    /// - parameter pointAt: Point to which the arrow will point at.
+    /// - returns: The SKSpriteNode
     func getPlayerTargetableArrow(pointAt: CGPoint) -> SKSpriteNode {
         let sprite = SKSpriteNode(imageNamed: "OrangeArrow.png")
         let offset = tileHeight * 1.2
@@ -285,7 +285,7 @@ class SceneUtils {
     /// Generates a SKAction that animates the passive item use for
     /// player on game tile
     ///
-    /// :returns: SKAction holding the sequence
+    /// - returns: SKAction holding the sequence
     func getFloatingAnimation() -> SKAction {
         let offset = tileHeight * 0.6
         let actionSequence = [
@@ -303,9 +303,9 @@ class SceneUtils {
     /// Returns the standard animation duration for animating object movement
     /// across game playing field
     ///
-    /// :param: source Starting point of object movement
-    /// :param: dest Ending point of object movement
-    /// :returns: duraction
+    /// - parameter source: Starting point of object movement
+    /// - parameter dest: Ending point of object movement
+    /// - returns: duraction
     func getAnimDuration(source: CGPoint, dest: CGPoint) -> NSTimeInterval {
         let v = self.dynamicType.vector(source, dest)
         return getAnimDuration(v)
@@ -314,8 +314,8 @@ class SceneUtils {
     /// Returns the standard animation duration for animating object movement
     /// across game playing field
     ///
-    /// :param: v The displacement vector
-    /// :returns: duraction
+    /// - parameter v: The displacement vector
+    /// - returns: duraction
     func getAnimDuration(v: CGVector) -> NSTimeInterval {
         let dist = self.dynamicType.distance(v)
         return NSTimeInterval(dist / tileHeight * 0.08)
@@ -323,8 +323,8 @@ class SceneUtils {
 
     /// Calculates the amount of rotation for a given direction.
     ///
-    /// :param: dir The direction used to calculate the rotation.
-    /// :returns: The rotation in radians.
+    /// - parameter dir: The direction used to calculate the rotation.
+    /// - returns: The rotation in radians.
     class func zRotation(dir: Direction) -> CGFloat {
         switch dir {
         case .Right:
@@ -340,17 +340,17 @@ class SceneUtils {
     
     /// Calculates the length given a vector.
     ///
-    /// :param: v The vector used to calculate the length.
-    /// :returns: vector length.
+    /// - parameter v: The vector used to calculate the length.
+    /// - returns: vector length.
     class func distance(v: CGVector) -> CGFloat {
         return sqrt(v.dx * v.dx + v.dy * v.dy)
     }
     
     /// Calculates the vector between points a and b.
     ///
-    /// :param: source Source point.
-    /// :param: dest Destination point.
-    /// :returns: calculated vector from source to dest.
+    /// - parameter source: Source point.
+    /// - parameter dest: Destination point.
+    /// - returns: calculated vector from source to dest.
     class func vector(source: CGPoint, _ dest: CGPoint) -> CGVector {
         return CGVectorMake(dest.x - source.x, dest.y - source.y)
     }

@@ -21,7 +21,7 @@ class DoodadFactory {
         return _doodadFactorySharedInstance
     }
     
-    func createDoodad(doodadType: DoodadType) -> Doodad? {
+    func createDoodad(doodadType: DoodadType) -> Doodad {
         switch doodadType {
         case .WatchTower:
             return WatchTowerDoodad()
@@ -33,8 +33,6 @@ class DoodadFactory {
             return FortressDoodad()
         case .Wormhole:
             return WormholeDoodad()
-        default:
-            return nil
         }
     }
     
@@ -67,10 +65,10 @@ class DoodadFactory {
     
     func randomDoodad(excludeDoodads: [DoodadType]) -> Doodad {
         var type = randomDoodadType()
-        while contains(excludeDoodads, type) {
+        while excludeDoodads.contains(type) {
             type = randomDoodadType()
         }
-        return createDoodad(type)!
+        return createDoodad(type)
     }
     
     func randomDoodadType() -> DoodadType {

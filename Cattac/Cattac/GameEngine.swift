@@ -1,4 +1,5 @@
 import Foundation
+import Firebase
 
 protocol EventListener {
     func onStateUpdate(state: GameState)
@@ -70,7 +71,7 @@ class GameEngine {
     var playerMoveToNodes = [GridIndex:Cat]()
     
     init(grid: Grid, playerNumber: Int, multiplayer: Bool) {
-        println("init GameEngine as playerNumber \(playerNumber)")
+        print("init GameEngine as playerNumber \(playerNumber)")
         
         self.playerNumber = playerNumber
         self.grid = grid
@@ -142,7 +143,7 @@ class GameEngine {
             postExecute()
             triggerStateAdvance()
         case .GameEnded:
-            println(gameManager.playerRanks)
+            print(gameManager.playerRanks)
         }
     }
     
@@ -194,7 +195,7 @@ class GameEngine {
             break
         }
         
-        println(state.description)
+        print(state.description)
         eventListener?.onStateUpdate(state)
         statesToAdvance--
     }
@@ -224,7 +225,7 @@ class GameEngine {
     }
     
     @objc func onCountDownForDrop() {
-        println("Initiate drop inactive players")
+        print("Initiate drop inactive players")
         if !gameManager.allTurnsCompleted {
             for (name, player) in gameManager.players {
                 if gameManager.samePlayer(player, currentPlayer) {
@@ -232,7 +233,7 @@ class GameEngine {
                 }
                 if gameManager.playersTurnCompleted[name] == nil {
                     let playerNum = gameManager[playerNumFor: player]!
-                    println("drop \(player.name)")
+                    print("drop \(player.name)")
                     gameConnectionManager.dropPlayer(playerNum)
                     gameManager[aiFor: player] = true
                 }
@@ -252,7 +253,7 @@ class GameEngine {
     private func calculateMovementPaths() {
         for player in gameManager.players.values {
             var shouldContinue = false
-            var playerAtNode = gameManager[positionOf: player]!
+            let playerAtNode = gameManager[positionOf: player]!
             var playerMoveToNode = gameManager[moveToPositionOf: player]!
             var path = grid.shortestPathFromNode(playerAtNode,
                 toNode: playerMoveToNode)
@@ -261,14 +262,13 @@ class GameEngine {
                 if player.name == otherPlayer.name {
                     continue
                 } else {
-                    var otherPlayerNode = gameManager[positionOf: otherPlayer]!
-                    var otherPlayerMoveToNode = gameManager[moveToPositionOf: otherPlayer]!
+                    let otherPlayerMoveToNode = gameManager[moveToPositionOf: otherPlayer]!
                     
                     if playerMoveToNode == otherPlayerMoveToNode {
                         if path.count == 0 {
-                            println("a cat moving onto another cat, no backward movement")
+                            print("a cat moving onto another cat, no backward movement")
                         } else {
-                            var reversedPath = reverse(path)
+                            var reversedPath = Array(path.reverse())
                             reversedPath.removeAtIndex(0)
                             reversedPath.append(playerAtNode)
                             
@@ -330,7 +330,7 @@ class GameEngine {
                     break
                 }
             }
-            println("\(player.name) \(gameManager[actionOf: player])")
+            print("\(player.name) \(gameManager[actionOf: player])")
         }
     }
     
@@ -401,7 +401,7 @@ class GameEngine {
     /// Called by UI to notify game engine that movement is executed on UI
     /// and player position can be updated
     ///
-    /// :param: cat The player's move to execute
+    /// - parameter cat: The player's move to execute
     func executePlayerMove(player: Cat) -> [TileNode]? {
         return gameManager[movementPathOf: player]
     }
@@ -428,7 +428,7 @@ class GameEngine {
     /// e.g. when collision detection is required to determine effects, 
     /// or when pre-calculation of effects is not possible
     ///
-    /// :param: cat The player's action to execute
+    /// - parameter cat: The player's action to execute
     func executePlayerAction(player: Cat) -> Action? {
         let action = gameManager[actionOf: player]
         if action is PoopAction {
@@ -583,7 +583,7 @@ class GameEngine {
         if gameManager.allTurnsCompleted {
             countDownTimer?.invalidate()
             triggerStateAdvance()
-            println("turn all completed")
+            print("turn all completed")
             gameManager.clearPlayerTurns()
         }
     }
@@ -628,8 +628,6 @@ class GameEngine {
             Constants.Firebase.keyAttkType) as? String
         let attackDir = snapshot.value.objectForKey(
             Constants.Firebase.keyAttkDir) as? String
-        let attackDmg = snapshot.value.objectForKey(
-            Constants.Firebase.keyAttkDmg) as? Int
         let attackRange = snapshot.value.objectForKey(
             Constants.Firebase.keyAttkRange) as? Int
 
@@ -643,7 +641,7 @@ class GameEngine {
         var action: Action?
         
         gameManager[positionOf: player] = grid[fromRow!, fromCol!]
-        println("\(player.name)[\(playerNum)]" +
+        print("\(player.name)[\(playerNum)]" +
             " moving to \(moveToRow!),\(moveToCol!)"
         )
         
@@ -698,7 +696,7 @@ class GameEngine {
 
 extension GameEngine {
     func triggerPuiButtonPressed(direction: Direction) {
-        var action = PuiAction(direction: direction)
+        let action = PuiAction(direction: direction)
         gameManager[actionOf: self.currentPlayer] = action
         notifyAction()
     }

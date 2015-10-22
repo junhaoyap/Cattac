@@ -31,9 +31,8 @@ class SoundPlayer {
         let nyanCatSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("NyanCat", ofType: "wav")!)
         
-        nyanCatSoundPlayer = AVAudioPlayer(
-            contentsOfURL: nyanCatSoundFile, error: nil
-        )
+        nyanCatSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: nyanCatSoundFile)
         
         nyanCatSoundPlayer.numberOfLoops = 0
         nyanCatSoundPlayer.prepareToPlay()
@@ -42,9 +41,8 @@ class SoundPlayer {
         let helloKittySoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("HelloKitty", ofType: "wav")!)
         
-        helloKittySoundPlayer = AVAudioPlayer(
-            contentsOfURL: helloKittySoundFile, error: nil
-        )
+        helloKittySoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: helloKittySoundFile)
         
         helloKittySoundPlayer.numberOfLoops = 0
         helloKittySoundPlayer.prepareToPlay()
@@ -53,9 +51,8 @@ class SoundPlayer {
         let grumpyCatSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("GrumpyCat", ofType: "wav")!)
         
-        grumpyCatSoundPlayer = AVAudioPlayer(
-            contentsOfURL: grumpyCatSoundFile, error: nil
-        )
+        grumpyCatSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: grumpyCatSoundFile)
         
         grumpyCatSoundPlayer.numberOfLoops = 0
         grumpyCatSoundPlayer.prepareToPlay()
@@ -64,9 +61,8 @@ class SoundPlayer {
         let octoCatSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("OctoCat", ofType: "wav")!)
         
-        octoCatSoundPlayer = AVAudioPlayer(
-            contentsOfURL: octoCatSoundFile, error: nil
-        )
+        octoCatSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: octoCatSoundFile)
         
         octoCatSoundPlayer.numberOfLoops = 0
         octoCatSoundPlayer.prepareToPlay()
@@ -75,9 +71,8 @@ class SoundPlayer {
         let milkSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("milk", ofType: "wav")!)
         
-        milkSoundPlayer = AVAudioPlayer(
-            contentsOfURL: milkSoundFile, error: nil
-        )
+        milkSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: milkSoundFile)
         
         milkSoundPlayer.numberOfLoops = 0
         milkSoundPlayer.prepareToPlay()
@@ -86,9 +81,8 @@ class SoundPlayer {
         let ballSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("ball", ofType: "aiff")!)
         
-        ballSoundPlayer = AVAudioPlayer(
-            contentsOfURL: ballSoundFile, error: nil
-        )
+        ballSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: ballSoundFile)
         
         ballSoundPlayer.numberOfLoops = 0
         ballSoundPlayer.prepareToPlay()
@@ -97,9 +91,8 @@ class SoundPlayer {
         let poopArmSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("poopArm", ofType: "wav")!)
         
-        poopArmSoundPlayer = AVAudioPlayer(
-            contentsOfURL: poopArmSoundFile, error: nil
-        )
+        poopArmSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: poopArmSoundFile)
         
         poopArmSoundPlayer.volume = 0.025
         poopArmSoundPlayer.numberOfLoops = 0
@@ -109,9 +102,8 @@ class SoundPlayer {
         let fartSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("fart", ofType: "wav")!)
         
-        fartSoundPlayer = AVAudioPlayer(
-            contentsOfURL: fartSoundFile, error: nil
-        )
+        fartSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: fartSoundFile)
         
         fartSoundPlayer.volume = 0.25
         fartSoundPlayer.numberOfLoops = 0
@@ -121,9 +113,8 @@ class SoundPlayer {
         let puiSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("pui", ofType: "wav")!)
         
-        puiSoundPlayer = AVAudioPlayer(
-            contentsOfURL: puiSoundFile, error: nil
-        )
+        puiSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: puiSoundFile)
         
         puiSoundPlayer.numberOfLoops = 0
         puiSoundPlayer.prepareToPlay()
@@ -132,9 +123,8 @@ class SoundPlayer {
         let poopSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("poop", ofType: "wav")!)
         
-        poopSoundPlayer = AVAudioPlayer(
-            contentsOfURL: poopSoundFile, error: nil
-        )
+        poopSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: poopSoundFile)
         
         poopSoundPlayer.numberOfLoops = 0
         poopSoundPlayer.prepareToPlay()
@@ -143,9 +133,8 @@ class SoundPlayer {
         let nukeSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("nuke", ofType: "wav")!)
         
-        nukeSoundPlayer = AVAudioPlayer(
-            contentsOfURL: nukeSoundFile, error: nil
-        )
+        nukeSoundPlayer = try? AVAudioPlayer(
+            contentsOfURL: nukeSoundFile)
         
         nukeSoundPlayer.volume = 0.25
         nukeSoundPlayer.numberOfLoops = 0

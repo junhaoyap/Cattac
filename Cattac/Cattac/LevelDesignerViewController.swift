@@ -58,18 +58,18 @@ class LevelDesignerViewController: UIViewController {
     }
 
     @IBAction func savePressed(sender: UIButton) {
-        var title: String = "Save Level"
+        let title: String = "Save Level"
         var message: String = "Please enter a level name:"
 
         if currentLevelName != nil {
             message = "Replace current level?"
         }
 
-        var alert = UIAlertController(title: title, message: message,
+        let alert = UIAlertController(title: title, message: message,
             preferredStyle: UIAlertControllerStyle.Alert)
 
         alert.addTextFieldWithConfigurationHandler(
-            { (textField: UITextField!) -> Void in
+            { (textField: UITextField) -> Void in
                 if let name = self.currentLevelName {
                     textField.text = name
                 } else {
@@ -84,15 +84,15 @@ class LevelDesignerViewController: UIViewController {
 
         alert.addAction(UIAlertAction(title: "Save",
             style: UIAlertActionStyle.Default, handler:
-            { (action: UIAlertAction!) -> Void in
-                var textField = alert.textFields!.first! as! UITextField
-                Storage.saveLevel(textField.text,
+            { (action: UIAlertAction) -> Void in
+                let textField = alert.textFields!.first! 
+                Storage.saveLevel(textField.text!,
                     levelData: self.createLevel().compress())
                 self.currentFile.text = textField.text
         }))
 
         if self.currentLevelName == nil {
-            (alert.actions[1] as! UIAlertAction).enabled = false
+            (alert.actions[1] ).enabled = false
         }
         self.presentViewController(alert, animated: true, completion: nil)
     }
@@ -106,9 +106,9 @@ class LevelDesignerViewController: UIViewController {
         for item in savedItems {
             alert.addAction(UIAlertAction(title: item,
                 style: UIAlertActionStyle.Default, handler: {
-                    (action: UIAlertAction!) -> Void in
+                    (action: UIAlertAction) -> Void in
                     self.gridViewController.reset()
-                    if let data = Storage.getLevelData(action.title) {
+                    if let data = Storage.getLevelData(action.title!) {
                         self.gridViewController.load(data)
                     }
                     self.currentLevelName = action.title
@@ -117,7 +117,7 @@ class LevelDesignerViewController: UIViewController {
         }
         alert.addAction(UIAlertAction(title: "New Level",
             style: UIAlertActionStyle.Default, handler:
-            { (action: UIAlertAction!) -> Void in
+            { (action: UIAlertAction) -> Void in
                 self.currentLevelName = nil
                 self.gridViewController.reset()
                 self.currentFile.text = "*unsaved level*"
@@ -138,7 +138,7 @@ class LevelDesignerViewController: UIViewController {
             responder = responder.nextResponder()
         }
         let alert = responder as! UIAlertController
-        let text: NSString = textField.text
+        let text: NSString = textField.text!
         var enableSave = !text.isEqual("")
 
         // checks for invalid file name
@@ -153,7 +153,7 @@ class LevelDesignerViewController: UIViewController {
             alert.message = "Please enter a level name:"
         }
 
-        (alert.actions[1] as! UIAlertAction).enabled = enableSave
+        (alert.actions[1] ).enabled = enableSave
     }
 
     @IBAction func controlPressed(sender: UIButton) {
@@ -252,7 +252,7 @@ class LevelDesignerViewController: UIViewController {
             level.grid.removeNodeFromGraph(tileNodeToRemove)
         }
 
-        let wormholes = gridViewController.wormholeLocations.keys.array
+        let wormholes = Array(gridViewController.wormholeLocations.keys)
 
         if wormholes.count == 2 {
             let firstWormholeTileNode = level.grid[wormholes[0]]!
@@ -287,9 +287,6 @@ class LevelDesignerViewController: UIViewController {
 
                 let positionA = startingPositions[i]
                 let positionB = startingPositions[j]
-
-                let path = grid.shortestPathFromNode(grid[positionA]!,
-                    toNode: grid[positionB]!)
 
                 if grid.shortestPathFromNode(grid[positionA]!,
                     toNode: grid[positionB]!).count == 0 {

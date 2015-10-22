@@ -21,10 +21,10 @@ class Poop {
     
     /// Execute poop effects on given player
     ///
-    /// :param: player Player to apply effect on
+    /// - parameter player: Player to apply effect on
     func effect(player: Cat) {
         player.inflict(_damage)
-        println("\(player.name) stumbled upon poop laid by \(pooper?.name)")
+        print("\(player.name) stumbled upon poop laid by \(pooper?.name)")
     }
     
 }

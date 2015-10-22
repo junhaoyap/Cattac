@@ -3,6 +3,7 @@
 */
 import Darwin
 import SpriteKit
+import Firebase
 
 // simulate singleton behaviour
 private let _levelGeneratorSharedInstance: LevelGenerator = LevelGenerator()
@@ -31,7 +32,7 @@ class LevelGenerator {
             generateWalls(level)
             attempt++
         }
-        println("Level generated in \(attempt) attempt(s)")
+        print("Level generated in \(attempt) attempt(s)")
         
         generateDoodad(level)
         generateItems(level)
@@ -54,8 +55,7 @@ class LevelGenerator {
         var wormholeCount = 0
         var excludedDoodads = [DoodadType]()
         
-        for i in 0...level.numDoodads {
-            var hasDoodadBeenAdded = false
+        for _ in 0...level.numDoodads {
             let doodad = doodadFactory.randomDoodad(excludedDoodads)
             let location = getValidEntityLocation(level)
             let tileNode = level.nodeAt(location)!
@@ -69,7 +69,7 @@ class LevelGenerator {
                 }
                 
                 let destDoodad =
-                    doodadFactory.createDoodad(.Wormhole)! as! WormholeDoodad
+                    doodadFactory.createDoodad(.Wormhole) as! WormholeDoodad
                 destDoodad.setColor(wormholeCount)
 
                 let destLocation = getValidEntityLocation(level)
@@ -83,7 +83,7 @@ class LevelGenerator {
     }
     
     private func generateWalls(level: GameLevel) {
-        for i in 0...level.numWalls {
+        for _ in 0...level.numWalls {
             let doodad = doodadFactory.generateWall()
             let location = getValidEntityLocation(level)
             let tileNode = level.nodeAt(location)!
@@ -93,7 +93,7 @@ class LevelGenerator {
     }
     
     private func generateItems(level: GameLevel) {
-        for i in 0...level.numItems {
+        for _ in 0...level.numItems {
             let item = itemFactory.randomItem()
             let location = getValidEntityLocation(level)
             let tileNode = level.nodeAt(location.row, location.col)!
@@ -110,7 +110,7 @@ class LevelGenerator {
         
         var location = GridIndex(row, col)
         
-        while contains(Constants.Level.invalidDoodadWallLocation, location) ||
+        while Constants.Level.invalidDoodadWallLocation.contains(location) ||
             level.nodeAt(location)?.doodad != nil {
             
             row = Int(arc4random_uniform(maxRow))
@@ -122,8 +122,8 @@ class LevelGenerator {
     
     /// Checks level validity, invalid if any empty tile is isolated from play.
     ///
-    /// :param: level The level to check
-    /// :returns: true if level is valid, false otherwise
+    /// - parameter level: The level to check
+    /// - returns: true if level is valid, false otherwise
     private func isValidLevel(level: GameLevel) -> Bool {
         let emptyTiles = level.emptyTiles()
         let emptyRegion = level.grid.largestEmptyRegion(emptyTiles.first!)

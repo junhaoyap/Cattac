@@ -3,6 +3,8 @@
     for Cattac
 */
 
+import Firebase
+
 class GameConnectionManager {
     let stringUtils = StringUtils()
     let connectionManager: ConnectionManager
@@ -25,7 +27,7 @@ class GameConnectionManager {
             onComplete: {
                 error, authData in
                 if error != nil {
-                    println(error)
+                    print(error)
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
@@ -43,7 +45,7 @@ class GameConnectionManager {
             onComplete: {
                 error, authData in
                 if error != nil {
-                    println(error)
+                    print(error)
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
@@ -61,7 +63,7 @@ class GameConnectionManager {
             onComplete: {
                 error, authData in
                 if error != nil {
-                    println(error)
+                    print(error)
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
@@ -79,7 +81,7 @@ class GameConnectionManager {
             onComplete: {
                 error, authData in
                 if error != nil {
-                    println(error)
+                    print(error)
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
@@ -117,11 +119,11 @@ class GameConnectionManager {
                         
                         break
                     case .InvalidEmail:
-                        println("Invalid Email")
+                        print("Invalid Email")
                         
                         break
                     case .InvalidPassword:
-                        println("Invalid Password")
+                        print("Invalid Password")
                         
                         break
                     default:
@@ -140,10 +142,10 @@ class GameConnectionManager {
                 error, result in
                 
                 if error != nil {
-                    println("Error creating user")
+                    print("Error creating user")
                 } else {
                     let uid = result["uid"] as? String
-                    println("Successfully created user account: \(uid)")
+                    print("Successfully created user account: \(uid)")
                 }
         })
     }
@@ -199,7 +201,6 @@ class GameConnectionManager {
     }
     
     func getName(theSender: AnyObject) {
-        let sender = theSender as! MenuViewController
         
         let uid = connectionManager.getAuthId()
         
@@ -217,9 +218,9 @@ class GameConnectionManager {
                 
                 self.createUsername(email)
                 
-                println(usernameToWrite)
+                print(usernameToWrite)
             } else {
-                println(myUsername)
+                print(myUsername)
             }
         })
     }
@@ -235,7 +236,7 @@ class GameConnectionManager {
             Constants.Firebase.nodeLobby
         )
         
-        var uid = connectionManager.getAuthId()
+        let uid = connectionManager.getAuthId()
         
         lobbyRef.readOnce("", onComplete: {
             theSnapshot in
@@ -275,12 +276,12 @@ class GameConnectionManager {
                     }
                 }
                 
-                let playerCount = players.count
+                _ = players.count
                 
                 self.waitPlayerName(theSender)
                 
                 sender.playerNumber = numberOfPlayers
-                println(sender.playerNumber)
+                print(sender.playerNumber)
                 
                 lobbyRef.update(Constants.Firebase.nodePlayers, data: [
                     "\(numberOfPlayers - 1)": uid
@@ -582,7 +583,7 @@ class GameConnectionManager {
     }
     
     func unregisterPlayerWatcher(playerNum: Int) {
-        println("unregistered \(playerNum)")
+        print("unregistered \(playerNum)")
         observerReferences[playerNum]?.unregister()
     }
 }

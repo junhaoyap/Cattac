@@ -54,7 +54,7 @@ extension Edge: Hashable {
         valueToHash += destinationHashString
         valueToHash += weightString
         
-        var hashToReturn = valueToHash.hashValue
+        let hashToReturn = valueToHash.hashValue
         
         return hashToReturn
     }

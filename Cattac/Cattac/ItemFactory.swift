@@ -49,7 +49,7 @@ class ItemFactory {
         return createItem(typeForName(name)!)
     }
     
-    func createItem(type: ItemType) -> Item? {
+    func createItem(type: ItemType) -> Item {
         switch type {
         case .Milk:
             return MilkItem()
@@ -57,13 +57,11 @@ class ItemFactory {
             return NukeItem()
         case .Projectile:
             return ProjectileItem()
-        default:
-            return nil
         }
     }
     
     func randomItem() -> Item {
-        return createItem(randomItemType())!
+        return createItem(randomItemType())
     }
     
     func randomItemType() -> ItemType {

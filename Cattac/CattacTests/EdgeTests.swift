@@ -66,9 +66,5 @@ class EdgeTests: XCTestCase {
     // There is currently no way to test assertion in Swift. This test
     // should give assertion error. Disable it after checking.
     func DISABLE_testRepInvariant_nonNegativeWeight() {
-        let node1 = Node("A")
-        let node2 = Node("B")
-        
-        let edge = Edge(source: node1, destination: node2, weight: -3.0)
     }
 }

@@ -77,11 +77,11 @@ class Cat: TileEntity {
     
     /// Constructs a cat with its base attributes
     ///
-    /// :param: catName Name speicifying cat type
-    /// :param: catHp Base HP
-    /// :param: catDef Base defence
-    /// :param: catPuiDmg Base Pui damage
-    /// :param: catFartDmg Base Fart damage
+    /// - parameter catName: Name speicifying cat type
+    /// - parameter catHp: Base HP
+    /// - parameter catDef: Base defence
+    /// - parameter catPuiDmg: Base Pui damage
+    /// - parameter catFartDmg: Base Fart damage
     init(catName: String, attributes: (hp: Int, defense: Int, puiDmg: Int,
         fartDmg: Int, poopDmg: Int, moveRange: Int, fartRange: Int)) {
         name = catName
@@ -108,11 +108,11 @@ class Cat: TileEntity {
     /// after applying cat's defence attribute.
     /// cat.hp -= damage * 1/defence
     ///
-    /// :param: damage Points to be reduced from hp
-    /// :returns: The amount of actual damage inflicted
+    /// - parameter damage: Points to be reduced from hp
+    /// - returns: The amount of actual damage inflicted
     func inflict(damage: Int) -> Int {
         if hp > 0 {
-            var realDamage = damage * 1/defence
+            let realDamage = damage * 1/defence
             hp -= realDamage
             hpListener?.onHpUpdate(hp)
             return realDamage
@@ -123,8 +123,8 @@ class Cat: TileEntity {
     /// Heals cat's HP directly.
     /// cat.hp += hp
     ///
-    /// :param: health Points to increase the hp
-    /// :returns: The amount of health restored
+    /// - parameter health: Points to increase the hp
+    /// - returns: The amount of health restored
     func heal(health: Int) -> Int {
         let diff = maxHp - hp
 
@@ -151,27 +151,27 @@ class Cat: TileEntity {
     /// attribute modifications.
     func postExecute() {
         moveRangeMods = moveRangeMods.filter {
-            (var mod) in
+            (mod) in
             return --mod.life > 0
         }
         defenceMods = defenceMods.filter {
-            (var mod) in
+            (mod) in
             return --mod.life > 0
         }
         fartRangeMods = fartRangeMods.filter {
-            (var mod) in
+            (mod) in
             return --mod.life > 0
         }
         dmgMods = dmgMods.filter {
-            (var mod) in
+            (mod) in
             return --mod.life > 0
         }
     }
     
     /// Helper method to apply attribute modifications.
     ///
-    /// :param: baseValue Base attribute of the cat
-    /// :param: mods StatModifications to be applied to base attribute value
+    /// - parameter baseValue: Base attribute of the cat
+    /// - parameter mods: StatModifications to be applied to base attribute value
     private func applyAttrMods(baseValue: Int, mods: [AttrModification]) -> Int {
         var value = baseValue
         for mod in mods {

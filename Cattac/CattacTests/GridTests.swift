@@ -3,7 +3,7 @@ import XCTest
 class GridTests: XCTestCase {
 
     func createGrid(modify: (Grid)->()) -> Grid {
-        var grid = Grid(rows: 10, columns: 10)
+        let grid = Grid(rows: 10, columns: 10)
 
         for row in 0..<10 {
             for column in 0..<10 {
@@ -20,7 +20,7 @@ class GridTests: XCTestCase {
     }
 
     func testShortestPathFromNode() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let startNode = grid[0, 0]!
         let endNode = grid[9, 9]!
@@ -31,7 +31,7 @@ class GridTests: XCTestCase {
     }
 
     func testShortestPathFromNodeWithObstruction() {
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             // Removes nodes from graph so that there is only nodes for the 
             // left, top and right side of the grid.
             for row in 0..<9 {
@@ -58,7 +58,7 @@ class GridTests: XCTestCase {
 
     func testShortestPathFromNodeToUnreachableNode() {
         let unreachable = (row: 9, col: 9)
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             grid.removeNodeFromGraph(grid[unreachable.row, unreachable.col]!)
         })
 
@@ -86,7 +86,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeCenter() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let centerRow = 5
         let centerCol = 5
@@ -101,7 +101,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeCenterWithObstruction() {
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             grid.removeNodeFromGraph(grid[6, 5]!)
             grid.removeNodeFromGraph(grid[4, 4]!)
         })
@@ -119,7 +119,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeSide() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let sideRow = 0
         let sideCol = 5
@@ -134,7 +134,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeSideWithObstruction() {
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             grid.removeNodeFromGraph(grid[0, 4]!)
             grid.removeNodeFromGraph(grid[0, 6]!)
         })
@@ -152,7 +152,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeCorner() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let cornerRow = 0
         let cornerCol = 0
@@ -167,7 +167,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeCornerWithObstruction() {
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             grid.removeNodeFromGraph(grid[0, 2]!)
             grid.removeNodeFromGraph(grid[1, 2]!)
         })
@@ -188,7 +188,7 @@ class GridTests: XCTestCase {
         range: Int, fromNode: TileNode) -> Int {
             var total = 0
 
-            for (i, layer) in enumerate(layers) {
+            for (_, layer) in layers.enumerate() {
                 total += layer.count
                 for node in layer.values {
                     let row = node.position.row
@@ -206,7 +206,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeAllDirectionsCenter() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let centerRow = 5
         let centerCol = 5
@@ -217,7 +217,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+        let total = checkNodesWithinRangeAllDirections(layers, range: range,
             fromNode: centerNode)
 
         XCTAssertEqual(total, 24,
@@ -225,7 +225,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeAllDirectionsCenterWithObstruction() {
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             grid[6, 5]!.setDoodad(Wall())
             grid[4, 4]!.setDoodad(Wall())
         })
@@ -239,7 +239,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+        let total = checkNodesWithinRangeAllDirections(layers, range: range,
             fromNode: centerNode)
 
         XCTAssertEqual(total, 10,
@@ -247,7 +247,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeAllDirectionsSide() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let sideRow = 0
         let sideCol = 5
@@ -258,7 +258,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+        let total = checkNodesWithinRangeAllDirections(layers, range: range,
             fromNode: sideNode)
 
         XCTAssertEqual(total, 14,
@@ -266,7 +266,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeAllDirectionsSideWithObstruction() {
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             grid[0, 4]!.setDoodad(Wall())
             grid[0, 6]!.setDoodad(Wall())
         })
@@ -280,7 +280,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+        let total = checkNodesWithinRangeAllDirections(layers, range: range,
             fromNode: sideNode)
 
         XCTAssertEqual(total, 2,
@@ -288,7 +288,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeAllDirectionsCorner() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let cornerRow = 0
         let cornerCol = 0
@@ -299,7 +299,7 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+        let total = checkNodesWithinRangeAllDirections(layers, range: range,
             fromNode: cornerNode)
 
         XCTAssertEqual(total, 8,
@@ -307,7 +307,7 @@ class GridTests: XCTestCase {
     }
 
     func testGetNodesInRangeAllDirectionsCornerWithObstruction() {
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             grid[1, 1]!.setDoodad(Wall())
         })
 
@@ -320,53 +320,53 @@ class GridTests: XCTestCase {
 
         XCTAssertEqual(layers.count, range, "Incorrect range obtained")
 
-        var total = checkNodesWithinRangeAllDirections(layers, range: range,
+        let total = checkNodesWithinRangeAllDirections(layers, range: range,
             fromNode: cornerNode)
         XCTAssertEqual(total, 4,
             "Incorrect number of nodes in range for all direcitons")
     }
 
     func testGetAvailableDirectionsCenter() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let directions = grid.getAvailableDirections(grid[5, 5]!)
 
         XCTAssertEqual(directions.count, 4, "Incorrect number of directions")
 
         for direction: Direction in [.Top, .Right, .Bottom, .Left] {
-            XCTAssertTrue(contains(directions, direction),
+            XCTAssertTrue(directions.contains(direction),
                 "\(direction.description) should be available")
         }
     }
 
     func testGetAvailableDirectionsSide() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let directions = grid.getAvailableDirections(grid[0, 5]!)
 
         XCTAssertEqual(directions.count, 3, "Incorrect number of directions")
 
         for direction: Direction in [.Top, .Right, .Left] {
-            XCTAssertTrue(contains(directions, direction),
+            XCTAssertTrue(directions.contains(direction),
                 "\(direction.description) should be available")
         }
     }
 
     func testGetAvailableDirectionsCorner() {
-        var grid = createGrid({ (grid) in () })
+        let grid = createGrid({ (grid) in () })
 
         let directions = grid.getAvailableDirections(grid[0, 0]!)
 
         XCTAssertEqual(directions.count, 2, "Incorrect number of directions")
 
         for direction: Direction in [.Top, .Right] {
-            XCTAssertTrue(contains(directions, direction),
+            XCTAssertTrue(directions.contains(direction),
                 "\(direction.description) should be available")
         }
     }
 
     func testGetAvailableDirectionsWithObstruction() {
-        var grid = createGrid({ (grid) in
+        let grid = createGrid({ (grid) in
             grid.removeNodeFromGraph(grid[4, 5]!)
             grid.removeNodeFromGraph(grid[6, 5]!)
         })
@@ -376,7 +376,7 @@ class GridTests: XCTestCase {
         XCTAssertEqual(directions.count, 2, "Incorrect number of directions")
 
         for direction: Direction in [.Left, .Right] {
-            XCTAssertTrue(contains(directions, direction),
+            XCTAssertTrue(directions.contains(direction),
                 "\(direction.description) should be available")
         }
     }

@@ -214,7 +214,7 @@ class GameManager {
         }
 
         if _players.count == 1 {
-            for (playerName, player) in _players {
+            for (playerName, _) in _players {
                 _playerRanks[playerName] = 1
             }
         }
@@ -233,7 +233,7 @@ class GameManager {
         _dyingPlayers = []
 
         for (playerName, tileNode) in _playerPositions {
-            var player = _players[playerName]!
+            let player = _players[playerName]!
             
             // effect only move range modification
             if let doodad = tileNode.doodad {

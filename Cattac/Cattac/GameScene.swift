@@ -94,10 +94,10 @@ class GameScene: SKScene {
 
     /// Initializes the game scene.
     ///
-    /// :param: size The size of the view.
-    /// :param: level The game level that is selected.
-    /// :param: currentPlayerNumber The index/id for the current player.
-    /// :param: multiplayer Whether the game is multiplayer or single player.
+    /// - parameter size: The size of the view.
+    /// - parameter level: The game level that is selected.
+    /// - parameter currentPlayerNumber: The index/id for the current player.
+    /// - parameter multiplayer: Whether the game is multiplayer or single player.
     init(size: CGSize, level: GameLevel, currentPlayerNumber: Int,
         multiplayer: Bool, names: [String]) {
             self.playerNames = names
@@ -128,7 +128,7 @@ class GameScene: SKScene {
     }
     
     /// When player tries to perform movement actions
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if !gameEngine.currentPlayer.isDead {
             for touch: AnyObject in touches {
                 let location = touch.locationInNode(gameLayer)
@@ -142,7 +142,7 @@ class GameScene: SKScene {
     }
     
     /// When player tries to change their movement actions
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if !gameEngine.currentPlayer.isDead {
             for touch: AnyObject in touches {
                 let location = touch.locationInNode(gameLayer)
@@ -187,7 +187,7 @@ extension GameScene: EventListener {
     
     /// Updates the scene whenever the game state updates.
     ///
-    /// :param: state The update game state.
+    /// - parameter state: The update game state.
     func onStateUpdate(state: GameState) {
         // we should restrict next-state calls in game engine
         switch state {
@@ -229,7 +229,7 @@ extension GameScene: EventListener {
     
     /// Updates the scene based on the current action selected.
     ///
-    /// :param: action The current selected action.
+    /// - parameter action: The current selected action.
     func onActionUpdate(action: Action?) {
         if let action = action {
             switch action.actionType {
@@ -270,8 +270,8 @@ extension GameScene: EventListener {
     /// Adds poop activation animation to pending animations. Pending animations
     /// are animated immediately after moves execution.
     ///
-    /// :param: poop The Poop that is being activated.
-    /// :param: target The target TileNode to animate at.
+    /// - parameter poop: The Poop that is being activated.
+    /// - parameter target: The target TileNode to animate at.
     func addPendingPoopAnimation(poop: Poop, target: TileNode) {
         let poopSprite = sceneUtils.getPoopNode(at: target.sprite.position)
         let action = sceneUtils.getFartAnimation(0)
@@ -287,8 +287,8 @@ extension GameScene: EventListener {
     /// and disappears. If item is obtained by current player, the item number
     /// will increase in the inventory box.
     ///
-    /// :param: item The item that is obtained.
-    /// :param: isCurrentPlayer true if item is picked by current player, false
+    /// - parameter item: The item that is obtained.
+    /// - parameter isCurrentPlayer: true if item is picked by current player, false
     ///         otherwise.
     func onItemObtained(item: Item, _ isCurrentPlayer: Bool) {
         let animAction = sceneUtils.getObtainItemAnimation()
@@ -316,7 +316,7 @@ extension GameScene: EventListener {
     
     /// Animates the spawning of an item.
     ///
-    /// :param: node The node with the spawnedItem
+    /// - parameter node: The node with the spawnedItem
     func onItemSpawned(node: TileNode) {
         let animAction = sceneUtils.getSpawnItemAnimation()
         let itemSprite = node.item!.sprite
@@ -327,7 +327,7 @@ extension GameScene: EventListener {
             itemSprite.zPosition = Constants.Z.items
         })
         
-        println("Spawned \(node.item!.name)")
+        print("Spawned \(node.item!.name)")
         entityLayer.addChild(itemSprite)
     }
 
@@ -516,7 +516,7 @@ private extension GameScene {
             CGPoint(x: 175, y: -32)
         ]
 
-        for (index, player) in enumerate(gameManager.players.values) {
+        for (index, player) in gameManager.players.values.enumerate() {
             let playerInfoNode = SKPlayerInfoNode(player: player,
                 size: playerInfoNodeSize, playerName: playerNames[index])
             playerInfoNode.position = playerInfoNodePositions[index]
@@ -530,7 +530,7 @@ private extension GameScene {
 
     /// Initializes the preview nodes.
     ///
-    /// :param: currentPlayerNumber The index/id of the currentPlayer.
+    /// - parameter currentPlayerNumber: The index/id of the currentPlayer.
     func initializePreviewNodes(currentPlayerNumber: Int) {
         previewNode = gameEngine.currentPlayer.previewSprite
         previewNode.size = sceneUtils.tileSize
@@ -563,7 +563,7 @@ private extension GameScene {
     /// Draws the tiles on the scene based on the `TileNode` given, including
     /// the doodads.
     ///
-    /// :param: tileNode The given `TileNode` to be drawn.
+    /// - parameter tileNode: The given `TileNode` to be drawn.
     func drawTile(tileNode: TileNode) {
         let spriteNode = tileNode.sprite
         spriteNode.size = sceneUtils.tileSize
@@ -581,9 +581,9 @@ private extension GameScene {
     /// Draws the `TileEntity` on the `SKSpriteNode` of the `TileNode` that it
     /// belongs to.
     ///
-    /// :param: spriteNode The `SKSpriteNode` on which the parent `TileNode` is
+    /// - parameter spriteNode: The `SKSpriteNode` on which the parent `TileNode` is
     ///                    drawn.
-    /// :param: tileEntity The given `TileEntity` to be drawn.
+    /// - parameter tileEntity: The given `TileEntity` to be drawn.
     func drawTileEntity(spriteNode: SKSpriteNode, _ tileEntity: TileEntity) {
         let entityNode = tileEntity.getSprite()
         if entityNode is SKSpriteNode {
@@ -618,7 +618,7 @@ private extension GameScene {
 
     /// Sets the next position to move to for the current player.
     ///
-    /// :param: node The `TileNode` that the player will be moving to.
+    /// - parameter node: The `TileNode` that the player will be moving to.
     func registerPlayerMovement(node: TileNode) {
         if gameEngine.state == GameState.PlayerAction {
             if gameEngine.reachableNodes[Node(node).hashValue] != nil {
@@ -636,9 +636,9 @@ private extension GameScene {
         let currentPlayer = gameEngine.currentPlayer
         let action = gameManager[actionOf: currentPlayer]
         if let puiAction = action as? PuiAction {
-            let moveToPosition = gameManager[moveToPositionOf: currentPlayer]
+            _ = gameManager[moveToPositionOf: currentPlayer]
             let directions = gameEngine.getAvailablePuiDirections(currentPlayer)
-            if contains(directions, puiAction.direction) {
+            if directions.contains(puiAction.direction) {
                 puiButton.resetDirectionNode(puiAction.direction)
             } else {
                 puiButton.unselect()
@@ -651,7 +651,7 @@ private extension GameScene {
     ///
     /// Notifies the game manager and game engine of movement completion.
     func movePlayers() {
-        for (playerName, player) in gameManager.players {
+        for (_, player) in gameManager.players {
             if let path = gameEngine.executePlayerMove(player) {
                 if path.count == 0 {
                     continue
@@ -664,7 +664,7 @@ private extension GameScene {
     }
     
     func deconflictPlayer() {
-        for (playerName, player) in gameManager.players {
+        for (_, player) in gameManager.players {
             if let path = gameEngine.executePlayerDeconflict(player) {
                 runAnimation(player.getSprite(),
                     action: sceneUtils.getTraverseAnim(path, 0.25),
@@ -675,8 +675,8 @@ private extension GameScene {
 
     /// Animates the pui action of the given player in the given direction.
     ///
-    /// :param: player The cat that is performing the pui action.
-    /// :param: direction The direction to pui in.
+    /// - parameter player: The cat that is performing the pui action.
+    /// - parameter direction: The direction to pui in.
     func animatePuiAction(player: Cat, direction: Direction) {
         let startNode = gameManager[moveToPositionOf: player]!
         let path = gameEngine.pathOfPui(startNode, direction: direction)
@@ -697,7 +697,7 @@ private extension GameScene {
             if victimPlayer != nil {
                 victimPlayer!.inflict(player.puiDmg)
                 self.showDamage(player.puiDmg, node: path.last!)
-                println("\(player.name) pui on \(victimPlayer!.name) with" +
+                print("\(player.name) pui on \(victimPlayer!.name) with" +
                     "\(player.puiDmg) damage.")
             }
         })
@@ -705,15 +705,15 @@ private extension GameScene {
 
     /// Animates the fart action of the given player.
     ///
-    /// :param: player The cat that is performing the fart action.
+    /// - parameter player: The cat that is performing the fart action.
     func animateFartAction(player: Cat) {
         let startNode = gameManager[moveToPositionOf: player]!
         let path = gameEngine.pathOfFart(startNode, range: player.fartRange)
         let delay = 0.25
 
-        for (i, nodes) in enumerate(path) {
+        for (i, nodes) in path.enumerate() {
             let timeInterval = Double(i) * delay
-            for (j, node) in enumerate(nodes.values) {
+            for (_, node) in nodes.values.enumerate() {
                 var victimPlayer: Cat?
 
                 if let player = gameEngine.playerMoveToNodes[node.position] {
@@ -729,7 +729,7 @@ private extension GameScene {
                     if victimPlayer != nil {
                         let dmg = victimPlayer!.inflict(player.fartDmg)
                         self.showDamage(dmg, node: node)
-                        println("\(player.name) fart on \(victimPlayer!.name)" +
+                        print("\(player.name) fart on \(victimPlayer!.name)" +
                             " with \(player.fartDmg) damage.")
                     }
                 })
@@ -739,8 +739,8 @@ private extension GameScene {
     
     /// Animates the item action of the given player.
     ///
-    /// :param: player The cat that is performing the action.
-    /// :param: action ItemAction used
+    /// - parameter player: The cat that is performing the action.
+    /// - parameter action: ItemAction used
     func animateItemAction(player: Cat, action: ItemAction) {
         if player.name == gameEngine.currentPlayer.name {
             switch action.item {
@@ -767,7 +767,7 @@ private extension GameScene {
         
         if gameManager.samePlayer(player, targetPlayer) {
             animAction = sceneUtils.getPassiveItemUsedAnimation()
-            if let item = action.item as? NukeItem {
+            if let _ = action.item as? NukeItem {
                 soundPlayer.playNuke()
                 completion = {
                     for player in self.gameManager.players.values {
@@ -776,7 +776,7 @@ private extension GameScene {
                             node: self.gameManager[moveToPositionOf: player]!)
                     }
                 }
-            } else if let item = action.item as? MilkItem {
+            } else if let _ = action.item as? MilkItem {
                 soundPlayer.playMilk()
                 completion = {
                     let heal = self.gameEngine.currentPlayer!.heal(
@@ -790,7 +790,7 @@ private extension GameScene {
             let v = SceneUtils.vector(tileNode.sprite.position, dest)
             animAction = sceneUtils.getAggressiveItemUsedAnimation(v)
             soundPlayer.playBall()
-            if let item = action.item as? ProjectileItem {
+            if let _ = action.item as? ProjectileItem {
                 completion = {
                     let dmg = targetPlayer.inflict(Constants.itemEffect.projectileDmg)
                     self.showDamage(dmg,
@@ -808,12 +808,12 @@ private extension GameScene {
 
     /// Performs the respective actions for each player.
     func performActions() {
-        for (playerName, player) in gameManager.players {
+        for (_, player) in gameManager.players {
             let path = gameEngine.executePlayerDeconflict(player)
             let action = gameEngine.executePlayerAction(player)
             
             if path == nil && action != nil  {
-                println(action)
+                print(action)
                 switch action!.actionType {
                 case .Pui:
                     let direction = (action! as! PuiAction).direction
@@ -875,16 +875,16 @@ private extension GameScene {
 
     /// Shows the health awarded on the TileNode of the receiving player.
     ///
-    /// :param: health The amount of health awarded.
-    /// :param: node The TileNode of the receiving player.
+    /// - parameter health: The amount of health awarded.
+    /// - parameter node: The TileNode of the receiving player.
     func showHeal(health: Int, node: TileNode) {
         showDamage(-health, node: node)
     }
 
     /// Show the damage dealt on the TileNode of the victim player.
     ///
-    /// :param: damange The amount of damage dealt.
-    /// :param: node The TileNode of the victim player.
+    /// - parameter damange: The amount of damage dealt.
+    /// - parameter node: The TileNode of the victim player.
     func showDamage(damage: Int, node: TileNode) {
         let damageNode = sceneUtils.getDamageLabelNode(damage)
         damageNode.position = node.sprite.position
@@ -899,7 +899,7 @@ private extension GameScene {
 
     /// Show an increase in inventory for that item.
     ///
-    /// :param: inventory The inventory of the item.
+    /// - parameter inventory: The inventory of the item.
     func showInventoryItemIncrease(inventory: SKNode) {
         let additionNode = sceneUtils.getDamageLabelNode(-1)
         additionNode.position = inventory.position
@@ -949,7 +949,7 @@ private extension GameScene {
     /// Unselect all of the actions buttons that is not the given selected
     /// action button.
     ///
-    /// :param: actionButton The action button that corresponds to the selected
+    /// - parameter actionButton: The action button that corresponds to the selected
     ///                      action.
     func unselectActionButtonsExcept(actionButton: SKActionButtonNode) {
         for button in actionButtons {
@@ -1051,7 +1051,7 @@ private extension GameScene {
 
     /// Draws the preview poop on tile pooper is on.
     ///
-    /// :param: action The PoopAction object.
+    /// - parameter action: The PoopAction object.
     func drawPoop(action: PoopAction) {
         let referenceSprite = action.targetNode!.sprite
         poopPreviewNode.position = referenceSprite.position

@@ -31,8 +31,8 @@ class Grid {
     /// tileNodes by calling `constructGraph()`, in order to utilize all the
     /// functionalities.
     ///
-    /// :param: rows The number of rows in the grid
-    /// :param: columns The number of columns in the grid
+    /// - parameter rows: The number of rows in the grid
+    /// - parameter columns: The number of columns in the grid
     init(rows: Int, columns: Int) {
         self.columns = columns
         self.rows = rows
@@ -41,8 +41,8 @@ class Grid {
 
     /// TileNode with the given grid index.
     ///
-    /// :param: gridIndex The GridIndex of the TileNode
-    /// :returns: The TileNode with the given grid index or nil if it does not 
+    /// - parameter gridIndex: The GridIndex of the TileNode
+    /// - returns: The TileNode with the given grid index or nil if it does not 
     ///           exist
     subscript(gridIndex: GridIndex) -> TileNode? {
         get {
@@ -57,9 +57,9 @@ class Grid {
     ///
     /// :throws: KeyError exception if trying to set to an invalid grid index
     ///
-    /// :param: row The row index of the TileNode
-    /// :param: column The column index of the TileNode
-    /// :returns: The TileNode with the given row and column or nil if it does
+    /// - parameter row: The row index of the TileNode
+    /// - parameter column: The column index of the TileNode
+    /// - returns: The TileNode with the given row and column or nil if it does
     ///           not exist
     subscript(row: Int, column: Int) -> TileNode? {
         get {
@@ -85,9 +85,9 @@ class Grid {
     ///
     /// :throws: KeyError exception if trying to set to an invalid grid index
     ///
-    /// :param: gridIndex The grid index of the base TileNode
-    /// :param: offset The offset from the base TileNode
-    /// :returns: The TileNode with the given row and column or nil if it does
+    /// - parameter gridIndex: The grid index of the base TileNode
+    /// - parameter offset: The offset from the base TileNode
+    /// - returns: The TileNode with the given row and column or nil if it does
     ///           not exist
     subscript(gridIndex: GridIndex, with offset: (row: Int, column: Int))
         -> TileNode? {
@@ -105,7 +105,7 @@ class Grid {
         
         // Adds the edges by finding the neighbours of each node
         for sourceNode in self {
-            for (direction, offset) in neighboursOffset {
+            for (_, offset) in neighboursOffset {
                 if let destNode =
                     self[sourceNode.position, with: offset] {
                         graph.addEdge(Edge(source: Node(sourceNode),
@@ -119,7 +119,7 @@ class Grid {
     /// TileNodes that you do not want to be reachable from the rest of the
     /// TileNodes (stuff like TileNodes with walls)
     ///
-    /// :param: removedNode The TileNode to be removed.
+    /// - parameter removedNode: The TileNode to be removed.
     func removeNodeFromGraph(removedNode: TileNode) {
         graph.removeNode(Node(removedNode))
     }
@@ -127,9 +127,9 @@ class Grid {
     /// Retrieves a Dictionary of TileNodes that are reachable within the given
     /// range from the given TileNode.
     ///
-    /// :param: fromNode The center TileNode to calculate the range from.
-    /// :param: range The range from the center node.
-    /// :returns: A Dictionary of TileNodes that are within range.
+    /// - parameter fromNode: The center TileNode to calculate the range from.
+    /// - parameter range: The range from the center node.
+    /// - returns: A Dictionary of TileNodes that are within range.
     func getNodesInRange(fromNode: TileNode, range: Int) -> [Int:TileNode] {
         var nodes: [Int:TileNode] = [:]
         var neighbours: [TileNode] = []
@@ -162,9 +162,9 @@ class Grid {
     /// the given range in all directions from the given TileNode. Each item in 
     /// the array represent the distance from the given TileNode.
     ///
-    /// :param: fromNode The center TileNode to calculate the range from.
-    /// :param: range The range from the center node.
-    /// :returns: An array of dictionary of TileNodes that are within the range.
+    /// - parameter fromNode: The center TileNode to calculate the range from.
+    /// - parameter range: The range from the center node.
+    /// - returns: An array of dictionary of TileNodes that are within the range.
     func getNodesInRangeAllDirections(fromNode: TileNode, range: Int)
             -> [[Int:TileNode]] {
             var nodes: [[Int:TileNode]] = []
@@ -232,20 +232,20 @@ class Grid {
                 switch quadrant {
                 case 0:
                     // top right quadrant
-                    addNodesInQuadrant(Array(1...range), Array(1...range),
-                        (row: -1, col: -1))
+                    addNodesInQuadrant(Array(1...range), colOffsetRange: Array(1...range),
+                        checkOffset: (row: -1, col: -1))
                 case 1:
                     // top left quadrant
-                    addNodesInQuadrant(Array(1...range), reverse(-range...(-1)),
-                        (row: -1, col: 1))
+                    addNodesInQuadrant(Array(1...range), colOffsetRange: Array((-range...(-1)).reverse()),
+                        checkOffset: (row: -1, col: 1))
                 case 2:
                     // bottom left quadrant
-                    addNodesInQuadrant(reverse(-range...(-1)),
-                        reverse(-range...(-1)), (row: 1, col: 1))
+                    addNodesInQuadrant(Array((-range...(-1)).reverse()),
+                        colOffsetRange: Array((-range...(-1)).reverse()), checkOffset: (row: 1, col: 1))
                 case 3:
                     // bottom right quadrant
-                    addNodesInQuadrant(reverse(-range...(-1)), Array(1...range),
-                        (row: 1, col: -1))
+                    addNodesInQuadrant(Array((-range...(-1)).reverse()), colOffsetRange: Array(1...range),
+                        checkOffset: (row: 1, col: -1))
                 default:
                     break
                 }
@@ -273,9 +273,9 @@ class Grid {
 
     /// Calculates the shortest path from one node to another.
     ///
-    /// :param: fromNode The starting TileNode to be used to calculate the path.
-    /// :param: toNode The ending TileNode to be used to calculate the path.
-    /// :returns: An array of TileNodes that represents the shortest path. Empty 
+    /// - parameter fromNode: The starting TileNode to be used to calculate the path.
+    /// - parameter toNode: The ending TileNode to be used to calculate the path.
+    /// - returns: An array of TileNodes that represents the shortest path. Empty 
     ///           if path does not exist.
     func shortestPathFromNode(fromNode: TileNode, toNode: TileNode)
         -> [TileNode] {
@@ -291,8 +291,8 @@ class Grid {
     
     /// Retrieve the largest empty region from a given origin node.
     ///
-    /// :param: origin TileNode to check from
-    /// :returns: Array of TileNodes representing the region
+    /// - parameter origin: TileNode to check from
+    /// - returns: Array of TileNodes representing the region
     func largestEmptyRegion(origin: TileNode) -> [TileNode] {
         var visitedNodes: [Int: TileNode] = [:]
         var enqueuedNodes: [TileNode] = []
@@ -305,7 +305,7 @@ class Grid {
                 let neighbourNode = neighbour.getLabel()
                 if neighbourNode.doodad == nil
                     && visitedNodes[neighbourNode.hashValue] == nil
-                    && !contains(enqueuedNodes, neighbourNode) {
+                    && !enqueuedNodes.contains(neighbourNode) {
                         enqueuedNodes += [neighbourNode]
                 }
             }
@@ -316,8 +316,8 @@ class Grid {
     /// Get all the available directions of a given TileNode. Available
     /// directions being directions where another reachable TileNode exists.
     ///
-    /// :param: fromNode The TileNode to be used to find available directions.
-    /// :returns: An array of available directions.
+    /// - parameter fromNode: The TileNode to be used to find available directions.
+    /// - returns: An array of available directions.
     func getAvailableDirections(fromNode: TileNode) -> [Direction] {
         var directions = [Direction]()
         
@@ -339,12 +339,12 @@ class Grid {
 extension Grid: SequenceType {
     /// Generator for Grid to allow it to be iterable.
     ///
-    /// :returns: A generator of TileNodes.
-    func generate() -> GeneratorOf<TileNode> {
+    /// - returns: A generator of TileNodes.
+    func generate() -> AnyGenerator<TileNode> {
         var nextRow = 0
         var nextColumn = 0
         
-        return GeneratorOf<TileNode> {
+        return anyGenerator {
             if nextRow == self.rows && nextColumn == self.columns {
                 return nil
             } else if nextColumn == self.columns {

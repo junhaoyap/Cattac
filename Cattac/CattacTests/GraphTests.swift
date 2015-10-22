@@ -7,7 +7,7 @@ import XCTest
 class GraphTests: XCTestCase {
     
     func testAddNodeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -17,7 +17,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveNodeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -28,7 +28,7 @@ class GraphTests: XCTestCase {
     }
     
     func testContainsNodeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -36,7 +36,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddEdgeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -51,7 +51,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddLoopEdgeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -64,7 +64,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveEdgeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -85,7 +85,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveLoopEdgeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -103,7 +103,7 @@ class GraphTests: XCTestCase {
     }
     
     func testContainsEdgeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -114,7 +114,7 @@ class GraphTests: XCTestCase {
     }
     
     func testEdgesFromNodeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -136,7 +136,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAdjacentNodesFromNodeDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -158,7 +158,7 @@ class GraphTests: XCTestCase {
     }
     
     func testVarNodesDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         XCTAssertEqual(testDirectedGraph.nodes, [Node<String>](), "Nodes are not being read from a directed unweighted graph properly!")
         
@@ -178,7 +178,7 @@ class GraphTests: XCTestCase {
     }
     
     func testVarEdgesDirectedUnweightedGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         XCTAssertEqual(testDirectedGraph.edges, [Edge<String>](), "Edges are not being read from a directed unweighted graph properly!")
         
@@ -197,7 +197,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddNodeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         
@@ -207,7 +207,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveNodeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         
@@ -218,7 +218,7 @@ class GraphTests: XCTestCase {
     }
     
     func testContainsNodeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         
@@ -226,7 +226,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddEdgeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -242,7 +242,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddLoopEdgeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         
@@ -256,7 +256,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveEdgeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -279,7 +279,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveLoopEdgeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         
@@ -299,7 +299,7 @@ class GraphTests: XCTestCase {
     }
     
     func testContainsEdgeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -310,7 +310,7 @@ class GraphTests: XCTestCase {
     }
     
     func testEdgesFromNodeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -336,7 +336,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAdjacentNodesFromNodeUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -362,7 +362,7 @@ class GraphTests: XCTestCase {
     }
     
     func testVarNodesUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         XCTAssertEqual(testUndirectedGraph.nodes, [Node<String>](), "Nodes are not being read from an undirected weighted graph properly!")
         
@@ -382,7 +382,7 @@ class GraphTests: XCTestCase {
     }
     
     func testVarEdgesUndirectedWeightedGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         XCTAssertEqual(testUndirectedGraph.edges, [Edge<String>](), "Edges are not being read from an undirected weighted graph properly!")
         
@@ -402,7 +402,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddNodeSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         
@@ -412,7 +412,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveNodeSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         
@@ -423,7 +423,7 @@ class GraphTests: XCTestCase {
     }
     
     func testContainsNodeSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         
@@ -431,7 +431,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddEdgeSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -451,7 +451,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveEdgeSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -478,7 +478,7 @@ class GraphTests: XCTestCase {
     }
     
     func testContainsEdgeSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -489,7 +489,7 @@ class GraphTests: XCTestCase {
     }
     
     func testEdgesFromNodeSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -515,7 +515,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAdjacentNodesFromNodeSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -541,7 +541,7 @@ class GraphTests: XCTestCase {
     }
     
     func testVarNodesSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         XCTAssertEqual(testSimpleGraph.nodes, [Node<String>](), "Nodes are not being read from an undirected weighted graph properly!")
         
@@ -561,7 +561,7 @@ class GraphTests: XCTestCase {
     }
     
     func testVarEdgesSimpleGraph() {
-        var testSimpleGraph = Graph<String>(isDirected: false)
+        let testSimpleGraph = Graph<String>(isDirected: false)
         
         XCTAssertEqual(testSimpleGraph.edges, [Edge<String>](), "Edges are not being read from a simple graph properly!")
         
@@ -581,7 +581,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddNodeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -591,7 +591,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveNodeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -602,7 +602,7 @@ class GraphTests: XCTestCase {
     }
     
     func testContainsNodeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -610,7 +610,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddEdgeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -633,7 +633,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAddLoopEdgeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -653,7 +653,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveEdgeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -683,7 +683,7 @@ class GraphTests: XCTestCase {
     }
     
     func testRemoveLoopEdgeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         
@@ -709,7 +709,7 @@ class GraphTests: XCTestCase {
     }
     
     func testContainsEdgeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -722,7 +722,7 @@ class GraphTests: XCTestCase {
     }
     
     func testEdgesFromNodeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -747,7 +747,7 @@ class GraphTests: XCTestCase {
     }
     
     func testAdjacentNodesFromNodeDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -771,7 +771,7 @@ class GraphTests: XCTestCase {
     }
     
     func testVarNodesDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         XCTAssertEqual(testDirectedMultiGraph.nodes, [Node<String>](), "Nodes are not being read from a directed weighted multigraph properly!")
         
@@ -793,7 +793,7 @@ class GraphTests: XCTestCase {
     }
     
     func testVarEdgesDirectedWeightedMultiGraph() {
-        var testDirectedMultiGraph = Graph<String>(isDirected: true)
+        let testDirectedMultiGraph = Graph<String>(isDirected: true)
         
         XCTAssertEqual(testDirectedMultiGraph.edges, [Edge<String>](), "Edges are not being read from a directed weighted multigraph properly!")
         
@@ -815,7 +815,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathDirectedGraphVerySimpleGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -832,7 +832,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathDirectedCyclicGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -855,7 +855,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathDirectedGraphWithSelfPointers() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -884,7 +884,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathDirectedSampleGraphFromAssignment() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -929,7 +929,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathDirectedSampleGraphFromCLRS() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("S")
         let node2 = Node("T")
@@ -975,7 +975,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathDirectedLinkedListGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -1004,18 +1004,18 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathDirectedEmptyGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
         
-        var edgeListToBeReturned = [Edge<String>]()
+        let edgeListToBeReturned = [Edge<String>]()
         
         XCTAssertEqual(testDirectedGraph.shortestPathFromNode(node1, toNode: node2), edgeListToBeReturned, "Shortest path is not being found correctly on a directed weighted graph that is empty, i.e. has no nodes in it!")
     }
     
     func testShortestPathDirectedNoPathGraph() {
-        var testDirectedGraph = Graph<String>(isDirected: true)
+        let testDirectedGraph = Graph<String>(isDirected: true)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -1023,13 +1023,13 @@ class GraphTests: XCTestCase {
         testDirectedGraph.addNode(node1)
         testDirectedGraph.addNode(node2)
         
-        var edgeListToBeReturned = [Edge<String>]()
+        let edgeListToBeReturned = [Edge<String>]()
         
         XCTAssertEqual(testDirectedGraph.shortestPathFromNode(node1, toNode: node2), edgeListToBeReturned, "Shortest path is not being found correctly on a directed weighted graph without a path!")
     }
     
     func testShortestPathUndirectedUnweightedGraphVerySimpleGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -1046,7 +1046,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathUndirectedUnweightedCyclicGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -1068,7 +1068,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathUndirectedUnweightedSampleGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -1111,7 +1111,7 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathUndirectedUnweightedLinkedListGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -1140,18 +1140,18 @@ class GraphTests: XCTestCase {
     }
     
     func testShortestPathUndirectedUnweightedEmptyGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
         
-        var edgeListToBeReturned = [Edge<String>]()
+        let edgeListToBeReturned = [Edge<String>]()
         
         XCTAssertEqual(testUndirectedGraph.shortestPathFromNode(node1, toNode: node2), edgeListToBeReturned, "Shortest path is not being found correctly on a undirected unweighted graph that is empty, i.e. has no nodes in it!")
     }
     
     func testShortestPathUndirectedNoPathGraph() {
-        var testUndirectedGraph = Graph<String>(isDirected: false)
+        let testUndirectedGraph = Graph<String>(isDirected: false)
         
         let node1 = Node("A")
         let node2 = Node("B")
@@ -1159,7 +1159,7 @@ class GraphTests: XCTestCase {
         testUndirectedGraph.addNode(node1)
         testUndirectedGraph.addNode(node2)
         
-        var edgeListToBeReturned = [Edge<String>]()
+        let edgeListToBeReturned = [Edge<String>]()
         
         XCTAssertEqual(testUndirectedGraph.shortestPathFromNode(node1, toNode: node2), edgeListToBeReturned, "Shortest path is not being found correctly on a undirected unweighted graph without a path!")
     }

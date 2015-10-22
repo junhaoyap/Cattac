@@ -15,15 +15,15 @@ enum Direction: Int {
     }
 }
 
-extension Direction: Printable {
+extension Direction: CustomStringConvertible {
     var description: String {
         return name
     }
 
     /// Creates a Direction from a string value.
     ///
-    /// :param: name The string representation of a Direction.
-    /// :returns: A Direction of the given string input or nil if the string input is invalid.
+    /// - parameter name: The string representation of a Direction.
+    /// - returns: A Direction of the given string input or nil if the string input is invalid.
     static func create(name: String) -> Direction? {
         let types = [
             "all directions": Direction.All,

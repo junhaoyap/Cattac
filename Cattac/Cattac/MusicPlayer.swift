@@ -20,9 +20,8 @@ class MusicPlayer {
         let nyanBackgroundMusic = NSURL(fileURLWithPath: NSBundle.mainBundle()
             .pathForResource("NyanBackgroundMusic", ofType: "mp3")!)
         
-        nyanBackgroundMusicPlayer = AVAudioPlayer(
-            contentsOfURL: nyanBackgroundMusic, error: nil
-        )
+        nyanBackgroundMusicPlayer = try? AVAudioPlayer(
+            contentsOfURL: nyanBackgroundMusic)
         
         nyanBackgroundMusicPlayer.volume = 0.01
         nyanBackgroundMusicPlayer.numberOfLoops = -1

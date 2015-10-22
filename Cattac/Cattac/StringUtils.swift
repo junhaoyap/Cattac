@@ -15,7 +15,7 @@ class StringUtils {
             let endStringIndex: String.Index = stringWithSlashes.endIndex
                 .predecessor()
             
-            for index in indices(stringWithSlashes) {
+            for index in stringWithSlashes.characters.indices {
                 if stringWithSlashes[index] == "/" {
                     slashIndexes.append(index)
                 }
@@ -23,10 +23,10 @@ class StringUtils {
             
             var stringToAppend = ""
             
-            for index in indices(stringWithSlashes) {
+            for index in stringWithSlashes.characters.indices {
                 let character = stringWithSlashes[index]
                 
-                if contains(slashIndexes, index) {
+                if slashIndexes.contains(index) {
                     stringsToReturn.append(stringToAppend)
                     stringToAppend = ""
                 } else if (index == endStringIndex) {
@@ -46,13 +46,13 @@ class StringUtils {
         
         var atIndex = email.startIndex
         
-        for index in indices(email) {
+        for index in email.characters.indices {
             if email[index] == "@" {
                 atIndex = index
             }
         }
         
-        for index in indices(email) {
+        for index in email.characters.indices {
             let character = email[index]
             
             if index == atIndex {

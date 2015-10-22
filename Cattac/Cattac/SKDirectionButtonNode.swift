@@ -20,7 +20,7 @@ class SKDirectionButtonNode: SKNode {
         self.activeTexture = SKTexture(imageNamed: activeButtonImage)
         
         for direction in availableDirection {
-            var button = SKSpriteNode(texture: self.defaultTexture)
+            let button = SKSpriteNode(texture: self.defaultTexture)
             button.size = size
             button.zRotation = SceneUtils.zRotation(direction)
             

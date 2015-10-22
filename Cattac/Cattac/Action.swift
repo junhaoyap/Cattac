@@ -23,7 +23,7 @@ enum ActionType: Int {
     }
 }
 
-extension ActionType: Printable {
+extension ActionType: CustomStringConvertible {
     var description: String {
         return name
     }
@@ -84,7 +84,7 @@ class PuiAction: Action {
     }
 }
 
-extension PuiAction: Printable {
+extension PuiAction: CustomStringConvertible {
     var description: String {
         return "Pui towards \(direction)"
     }
@@ -102,7 +102,7 @@ class FartAction: Action {
     }
 }
 
-extension FartAction: Printable {
+extension FartAction: CustomStringConvertible {
     var description: String {
         return "Fart with range \(range)"
     }
@@ -115,7 +115,7 @@ class PoopAction: Action {
     }
 }
 
-extension PoopAction: Printable {
+extension PoopAction: CustomStringConvertible {
     var description: String {
         return "Poop at \(targetNode)"
     }
@@ -133,7 +133,7 @@ class ItemAction: Action {
     }
 }
 
-extension ItemAction: Printable {
+extension ItemAction: CustomStringConvertible {
     var description: String {
         return "Used \(item.name) at \(targetPlayer.name)"
     }
